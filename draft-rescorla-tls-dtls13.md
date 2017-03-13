@@ -749,7 +749,16 @@ TLS 1.3 ClientHello format as shown below.
 ~~~~
 
 legacy_version: 
-: In previous versions of DTLS, this field was used for version negotiation and represented the highest version number supported by the client. Experience has shown that many servers do not properly implement version negotiation, leading to “version intolerance” in which the server rejects an otherwise acceptable ClientHello with a version number higher than it supports. In DTLS 1.3, the client indicates its version preferences in the “supported_versions” extension (see Section 4.2.1 of {{I-D.ietf-tls-tls13}}) and the legacy_version field MUST be set to {254, 253}, which was the version number for DTLS 1.2.
+: In previous versions of DTLS, this field was used for version
+negotiation and represented the highest version number supported by
+the client. Experience has shown that many servers do not properly
+implement version negotiation, leading to “version intolerance” in
+which the server rejects an otherwise acceptable ClientHello with a
+version number higher than it supports. In DTLS 1.3, the client
+indicates its version preferences in the “supported_versions”
+extension (see Section 4.2.1 of {{I-D.ietf-tls-tls13}}) and the
+legacy_version field MUST be set to {254, 253}, which was the version
+number for DTLS 1.2.
 
 random: 
 : Same as for TLS 1.3
@@ -1241,21 +1250,51 @@ updating its sending cryptographic keys.
 This version of DTLS assigns dedicated epoch values to messages in the 
 protocol exchange to allow identification of the correct cipher state:
 
-   * epoch value (0) is used with unencrypted messages. There are three unencrypted messages in DTLS, namely ClientHello, 
-ServerHello, and HelloRetryRequest.
-   * epoch value (1) is used for messages protected using keys derived from early_traffic_secret. This includes early data 
-     sent by the client and the EndOfEarlyData message. 
-   * epoch value (2) is used for messages protected using keys derived from the handshake_traffic_secret. Messages transmitted 
-     during the initial handshake, such as EncryptedExtensions, CertificateRequest, Certificate, CertificateVerify, and Finished belong to this category. Note, however, post-handshake are protected under the appropriate application traffic key and are not included in this category. 
-   * epoch value (3) is used for payloads protected using keys derived from the initial traffic_secret_0. This may include handshake messages, such as post-handshake messages (e.g., a NewSessionTicket message).
+   * epoch value (0) is used with unencrypted messages. There are
+   three unencrypted messages in DTLS, namely ClientHello, ServerHello,
+   and HelloRetryRequest.
+   * epoch value (1) is used for messages protected using keys derived
+     from early_traffic_secret. This includes early data sent by the
+     client and the EndOfEarlyData message.
+   * epoch value (2) is used for messages protected using keys derived
+     from the handshake_traffic_secret. Messages transmitted during
+     the initial handshake, such as EncryptedExtensions,
+     CertificateRequest, Certificate, CertificateVerify, and Finished
+     belong to this category. Note, however, post-handshake are
+     protected under the appropriate application traffic key and are not included in this category. 
+   * epoch value (3) is used for payloads protected using keys derived
+     from the initial traffic_secret_0. This may include handshake
+     messages, such as post-handshake messages (e.g., a
+     NewSessionTicket message).
    * epoch value (4 to 2^16-1) is used for payloads protected using keys from the traffic_secret_N (N>0).
 
-Using these reserved epoch values a receiver knows what cipher state has been used to encrypt and integrity protect a message. Implementations that receive a payload with an epoch value for which no corresponding cipher state can be determined MUST generate a "unexpected_message" alert. For example, client incorrectly uses epoch value 5 when sending early application data in a 0-RTT exchange. A server will not be able to compute the appropriate keys and will therefore have to respond with an alert. 
+Using these reserved epoch values a receiver knows what cipher state
+has been used to encrypt and integrity protect a
+message. Implementations that receive a payload with an epoch value
+for which no corresponding cipher state can be determined MUST
+generate a "unexpected_message" alert. For example, client incorrectly
+uses epoch value 5 when sending early application data in a 0-RTT
+exchange. A server will not be able to compute the appropriate keys
+and will therefore have to respond with an alert.
 
-Increasing the epoch value by a sender (starting with value 4 upwards) corresponds semantically to rekeying using the KeyUpdate message in TLS 1.3. Instead of utilizing an dedicated message in DTLS 1.3 the sender uses an increase in the epoch value to signal rekeying. Hence, a sender that decides to increment the epoch value MUST send all its traffic using the next generation of keys, computed as described in Section 7.2 of {{I-D.ietf-tls-tls13}}. Upon receiving a payload with such a new epoch value, the receiver MUST update their receiving keys and if they have not already updated their sending state up to or past the then current receiving generation MUST send messages with the new epoch value prior to sending any other messages. For epoch values lower than 4 the key schedule described in Section 7.1 of {{I-D.ietf-tls-tls13}} is applicable. As a difference to the functionality of the KeyUpdate in TLS 1.3 the sender forces 
-the receiver to increase the epoch value for outgoing data as well. 
+Increasing the epoch value by a sender (starting with value 4 upwards)
+corresponds semantically to rekeying using the KeyUpdate message in
+TLS 1.3. Instead of utilizing an dedicated message in DTLS 1.3 the
+sender uses an increase in the epoch value to signal rekeying. Hence,
+a sender that decides to increment the epoch value MUST send all its
+traffic using the next generation of keys, computed as described in
+Section 7.2 of {{I-D.ietf-tls-tls13}}. Upon receiving a payload with
+such a new epoch value, the receiver MUST update their receiving keys
+and if they have not already updated their sending state up to or past
+the then current receiving generation MUST send messages with the new
+epoch value prior to sending any other messages. For epoch values
+lower than 4 the key schedule described in Section 7.1 of
+{{I-D.ietf-tls-tls13}} is applicable. As a difference to the
+functionality of the KeyUpdate in TLS 1.3 the sender forces the
+receiver to increase the epoch value for outgoing data as well.
 
-Note that epoch values do not wrap. If a DTLS implementation would need to wrap the epoch value, it MUST terminate the connection.
+Note that epoch values do not wrap. If a DTLS implementation would
+need to wrap the epoch value, it MUST terminate the connection.
 
 The traffic key calculation is described in Section 7.3 of {{I-D.ietf-tls-tls13}}. 
 
@@ -1347,7 +1386,9 @@ are treated as transparent data to the record layer.
 
 #  Changes to DTLS 1.2
 
-Since TLS 1.3 introduce a large number of changes to TLS 1.2, the list of changes from DTLS 1.2 to DTLS 1.3 is equally large. For this reason this section focuses on the most important changes only. 
+Since TLS 1.3 introduce a large number of changes to TLS 1.2, the list
+of changes from DTLS 1.2 to DTLS 1.3 is equally large. For this reason
+this section focuses on the most important changes only.
 
   * New handshake pattern, which leads to a shorter message exchange
   * Support for AEAD-only ciphers
