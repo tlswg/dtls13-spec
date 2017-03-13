@@ -36,10 +36,10 @@ author:
        email: hannes.tschofenig@arm.com
 
  -
-    ins: N. Modadugu
-    name: Nagendra Modadugu
-    organization: Google, Inc.
-    email: nagendra@cs.stanford.edu
+       ins: N. Modadugu
+       name: Nagendra Modadugu
+       organization: Google, Inc.
+       email: nagendra@cs.stanford.edu
 
 normative:
   RFC2119: 
@@ -1061,50 +1061,50 @@ timeout and retransmission calculation.
 ~~~~
                       +-----------+
                       | PREPARING |
-                +---> |           | <--------------------+
-                |     |           |                      |
-                |     +-----------+                      |
-                |           |                            |
-                |           | Buffer next flight         |
-                |           |                            |
-                |          \|/                           |
-                |     +-----------+                      |
-                |     |           |                      |
-                |     |  SENDING  |<------------------+  |
-                |     |           |                   |  | Send
-                |     +-----------+                   |  | HelloRequest
-        Receive |           |                         |  |
-           next |           | Send flight             |  | or
-         flight |  +--------+                         |  |
-                |  |        | Set retransmit timer    |  | Receive
-                |  |       \|/                        |  | HelloRequest
-                |  |  +-----------+                   |  | Send
-                |  |  |           |                   |  | ClientHello
-                +--)--|  WAITING  |-------------------+  |
-                |  |  |           |   Timer expires   |  |
-                |  |  +-----------+                   |  |
-                |  |         |                        |  |
-                |  |         |                        |  |
-                |  |         +------------------------+  |
-                |  |                Read retransmit      |
-        Receive |  |                                     |
-           last |  |                                     |
-         flight |  |                                     |
-                |  |                                     |
-               \|/\|/                                    |
-                                                         |
-            +-----------+                                |
-            |           |                                |
-            | FINISHED  | -------------------------------+
+                +---> |           | 
+                |     |           |                      
+                |     +-----------+                      
+                |           |                            
+                |           | Buffer next flight         
+                |           |                            
+                |          \|/                           
+                |     +-----------+                      
+                |     |           |                      
+                |     |  SENDING  |<------------------+  
+                |     |           |                   |  
+                |     +-----------+                   |  
+        Receive |           |                         |  
+           next |           | Send flight             |  
+         flight |  +--------+                         |  
+                |  |        | Set retransmit timer    |  
+                |  |       \|/                        |  
+                |  |  +-----------+                   |  
+                |  |  |           |                   |  
+                +--)--|  WAITING  |-------------------+  
+                |  |  |           |   Timer expires   |  
+                |  |  +-----------+                   |  
+                |  |         |                        |  
+                |  |         |                        |  
+                |  |         +------------------------+  
+                |  |                Read retransmit      
+        Receive |  |                                     
+           last |  |                                     
+         flight |  |                                     
+                |  |                                     
+               \|/\|/                                    
+                                                         
+            +-----------+                                
+            |           |                                
+            | FINISHED  |
             |           |
             +-----------+
-                 |  /|\
-                 |   |
-                 |   |
-                 +---+
+                |  /|\
+                |   |
+                |   |
+                +---+
 
-              Read retransmit
-           Retransmit last flight
+          Server read retransmit
+              Retransmit ACK
 ~~~~
 {: #dtls-timeout-state-machine title="DTLS Timeout and Retransmission State Machine"}
 
@@ -1147,26 +1147,10 @@ timeout and retransmission calculation.
    in the PREPARING state.  DTLS servers start in the WAITING state, but
    with empty buffers and no retransmit timer.
 
-   When the server desires a rehandshake, it transitions from the
-   FINISHED state to the PREPARING state to transmit the HelloRequest.
-   When the client receives a HelloRequest, it transitions from FINISHED
-   to PREPARING to transmit the ClientHello.
-
    In addition, for at least twice the default Maximum Segment Lifetime 
-   (MSL) defined for {{RFC0793}},
-   when in the FINISHED state, the node that transmits the last flight
-   (the server in an ordinary handshake or the client in a resumed
-   handshake) MUST respond to a retransmit of the peer's last flight
-   with a retransmit of the last flight.  This avoids deadlock
-   conditions if the last flight gets lost.  To see why
-   this is necessary, consider what happens in an ordinary handshake if
-   the server's Finished message is lost: the server believes the
-   handshake is complete but it actually is not.  As the client is
-   waiting for the Finished message, the client's retransmit timer will
-   fire and it will retransmit the client's Finished message.  This will
-   cause the server to respond with its own Finished message, completing
-   the handshake.  The same logic applies on the server side for the
-   resumed handshake.
+   (MSL) defined for {{RFC0793}}, when in the FINISHED state, the server
+   MUST respond to retransmission of the client's second flight with
+   a retransmit of its ACK.
 
    Note that because of packet loss, it is possible for one side to be
    sending application data even though the other side has not received
