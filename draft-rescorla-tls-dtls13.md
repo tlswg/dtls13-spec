@@ -35,6 +35,11 @@ author:
        organization: ARM Limited
        email: hannes.tschofenig@arm.com
 
+ -
+    ins: N. Modadugu
+    name: Nagendra Modadugu
+    organization: Google, Inc.
+    email: nagendra@cs.stanford.edu
 
 normative:
   RFC2119: 
@@ -1438,12 +1443,6 @@ Many people have contributed to previous DTLS versions and they are acknowledged
 in prior versions of DTLS specifications. 
 
 For this version of the document we would like to thank:  
-
-~~~ 
-* Nagendra Modadugu (co-author of {{RFC6347}})
-  Google, Inc.
-  nagendra@cs.stanford.edu
-~~~
 
 ~~~ 
 * Ilari Liusvaara 
