@@ -1333,7 +1333,7 @@ ClientHello                 -------->
 (epoch=2)
 
                             <--------                   [Ack] 
-                                                    (epoch=3)
+                                                    (epoch=2)
 
 [Application Data]         -------->
 (epoch=3)
