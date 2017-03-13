@@ -134,10 +134,11 @@ The reader is assumed to be familiar with the TLS 1.3 specification since this
 document defined as a delta from TLS 1.3.
 
 Figures in this document illustrate various combinations of the DTLS protocol exchanges and the symbols have the following meaning:
- * '+' indicates noteworthy extensions sent in the previously noted message.
- * '*' indicates optional or situation-dependent messages/extensions that are not always sent.
- * '{}' indicates messages protected using keys derived from a [sender]_handshake_traffic_secret.
- * '[]' indicates messages protected using keysderived from traffic_secret_N.
+
+  * '+' indicates noteworthy extensions sent in the previously noted message.
+  * '*' indicates optional or situation-dependent messages/extensions that are not always sent.
+  * '{}' indicates messages protected using keys derived from a [sender]_handshake_traffic_secret.
+  * '[]' indicates messages protected using keysderived from traffic_secret_N.
 
 # DTLS Design Rational and Overview {#dtls-rational}
 
@@ -309,10 +310,7 @@ DTLS uses an explicit sequence number, rather than an implicit one,
    the handshake to ensure that retransmitted messages use the right
    epoch and keying material.
 
-   If several handshakes are performed in close succession, there might
-   be multiple records on the wire with the same sequence number but
-   from different cipher states.  The epoch field allows recipients to
-   distinguish such packets.  The epoch number is initially zero and is
+   The epoch number is initially zero and is
    incremented each time keying material changes and a sender aims to rekey. 
    More details are provided in {{dtls-epoch}}. In order
    to ensure that any given sequence/epoch pair is unique,
@@ -615,7 +613,7 @@ such as version, random, ciphersuites. The server MUST use the same
    version number in the HelloRetryRequest that it would use when
    sending a ServerHello.  Upon receipt of the ServerHello, the client
    MUST verify that the server version values match and MUST terminate the 
-   connection with an "illegal_parameter" alert.
+   connection with an "illegal_parameter" alert otherwise.
 
    If the HelloRetryRequest message is used, the initial ClientHello and
    the HelloRetryRequest are included in the calculation of the
@@ -860,15 +858,18 @@ Finished
 struct {} ACK;
 ~~~~
 
-The ACK handshake message is used by a server to return a response to a 
-client-provided message where the TLS 1.3 handshake does not foresee such 
-return message. With the use of the ACK message the client is able to 
+The ACK handshake message is used by an endpoint to respond to a 
+message where the TLS 1.3 handshake does not foresee such 
+return message. With the use of the ACK message the sender is able to 
 determine whether a transmitted request has been lost and needs to be 
 retransmitted. Since the ACK message does not contain any correlation information 
-the server MUST only have one message outstanding at a time. 
+the sender MUST only have one such message outstanding at a time. 
 
-The ACK message uses a handshake content tyope and is encrypted under the 
-appropriate application traffic key. 
+The ACK message uses a handshake content type and is encrypted under the 
+appropriate application traffic key.
+[[OPEN ISSUE: It seems odd to have the ACK that responds to CFIN
+encrypted under the application key. Also, what do you do about
+ACKs that have to deal with key changes.]]
 
 ##  Handshake Message Fragmentation and Reassembly
 
