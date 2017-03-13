@@ -128,6 +128,12 @@ The following terms are used:
 The reader is assumed to be familiar with the TLS 1.3 specification since this 
 document defined as a delta from TLS 1.3.
 
+Figures in this document illustrate various combinations of the DTLS protocol exchanges and the symbols have the following meaning:
+ * '+' indicates noteworthy extensions sent in the previously noted message.
+ * '*' indicates optional or situation-dependent messages/extensions that are not always sent.
+ * '{}' indicates messages protected using keys derived from a [sender]_handshake_traffic_secret.
+ * '[]' indicates messages protected using keysderived from traffic_secret_N.
+
 # DTLS Design Rational and Overview {#dtls-rational}
 
 The basic design philosophy of DTLS is to construct "TLS over
@@ -683,6 +689,7 @@ such as version, random, ciphersuites. The server MUST use the same
       client_key_exchange_RESERVED(16),
       finished(20),
       key_update_RESERVED(24),
+      ack([[TBD RFC Editor -- Proposal: 25]]), 
       message_hash(254),
       (255)
   } HandshakeType;
@@ -846,6 +853,9 @@ determine whether a transmitted request has been lost and needs to be
 retransmitted. Since the ACK message does not contain any correlation information 
 the server MUST only have one message outstanding at a time. 
 
+The ACK message uses a handshake content tyope and is encrypted under the 
+appropriate application traffic key. 
+
 ##  Handshake Message Fragmentation and Reassembly
 
    Each DTLS message MUST fit within a single
@@ -920,11 +930,10 @@ ClientHello                                                 +----------+
  [Application Data]
 
                                                             +----------+
-                        <--------                    {Ack}  | Flight 6 |
+                        <--------                    [Ack]  | Flight 6 |
                                        [Application Data*]  +----------+
 
  [Application Data]     <------->      [Application Data]
-
 ~~~~
 {: #dtls-full title="Message Flights for full DTLS Handshake (with Cookie Exchange)"}
 
@@ -945,11 +954,10 @@ ClientHello                                                 +----------+
  [Application Data*]                                      +----------+
 
                                                           +----------+
-                       <--------                   {Ack}  | Flight 4 |
+                       <--------                   [Ack]  | Flight 4 |
                                      [Application Data*]  +----------+
 
  [Application Data]    <------->      [Application Data]
-
 ~~~~
 {: #dtls-psk title="Message Flights for Resumption and PSK Handshake (without Cookie Exchange)"}
 
@@ -976,7 +984,7 @@ ClientHello
  {Finished}            -------->                          +----------+ 
  [Application Data*]
                                                           +----------+
-                       <--------                   {Ack}  | Flight 4 |
+                       <--------                   [Ack]  | Flight 4 |
                                      [Application Data*]  +----------+
 
  [Application Data]    <------->      [Application Data]
@@ -987,13 +995,12 @@ ClientHello
 Client                                            Server
 
                                                           +----------+
-                       <--------       {NewSessionTicket} | Flight 1 |
+                       <--------       [NewSessionTicket] | Flight 1 |
                                                           +----------+
 
                                                           +----------+
-{Ack}                  -------->                          | Flight 2 |
+[Ack]                  -------->                          | Flight 2 |
                                                           +----------+
-
 ~~~~
 {: #dtls-post-handshake-ticket title="Message Flights for New Session Ticket Message"} 
 
@@ -1002,13 +1009,12 @@ Client                                            Server
 Client                                            Server
 
                                                           +----------+
-                       <--------     {CertificateRequest} | Flight 1 |
+                       <--------     [CertificateRequest] | Flight 1 |
                                                           +----------+
 
-{Certificate}                                             +----------+
-{CertificateVerify}                                       | Flight 2 |
-{Finished}             -------->                          +----------+
-
+[Certificate]                                             +----------+
+[CertificateVerify]                                       | Flight 2 |
+[Finished]             -------->                          +----------+
 ~~~~
 {: #dtls-post-handshake-auth-success title="Message Flights for Post-Handshake Authentication (Success)"} 
 
@@ -1017,13 +1023,12 @@ Client                                            Server
 Client                                            Server
 
                                                           +----------+
-                       <--------     {CertificateRequest} | Flight 1 |
+                       <--------     [CertificateRequest] | Flight 1 |
                                                           +----------+
 
-{Certificate}                                             +----------+
-{Finished}             -------->                          | Flight 2 |
+[Certificate]                                             +----------+
+[Finished]             -------->                          | Flight 2 |
                                                           +----------+
-
 ~~~~
 {: #dtls-post-handshake-auth-failure title="Message Flights for Post-Handshake Authentication (Decline)"} 
 
@@ -1272,23 +1277,23 @@ ClientHello                 -------->
 
                             <--------             ServerHello
                                                     (epoch=0)
-                                          EncryptedExtensions
+                                        {EncryptedExtensions}
                                                     (epoch=2)
-                                                  Certificate 
+                                                {Certificate}
                                                     (epoch=2)
-                                            CertificateVerify 
+                                          {CertificateVerify} 
                                                     (epoch=2)
-                                                     Finished
+                                                   {Finished}
                                                     (epoch=2)
 
-Certificate                -------->
+{Certificate}               -------->
 (epoch=2)
-CertificateVerify
+{CertificateVerify}
 (epoch=2)
-Finished 
+{Finished}
 (epoch=2)
 
-                           <--------                    [Ack] 
+                            <--------                   [Ack] 
                                                     (epoch=3)
 
 [Application Data]         -------->
