@@ -1,11 +1,11 @@
 # 
 
-This is the working area for the Individual internet-draft, "".
+This is the working area for the [IETF TLS Working
+Group](https://datatracker.ietf.org/wg/tls/documents/) draft of [DTLS 1.3]
 
-* [Editor's copy](https://ekr.github.io/dtls13-spec/)
-* [Individual Draft] (https://tools.ietf.org/html/draft-rescorla-tls-dtls13)
-* [Compare Individual Draft and Editor's copy] (https://tools.ietf.org/rfcdiff?url1=https://tools.ietf.org/id/draft-rescorla-tls-dtls13.txt&url2=https://ekr.github.io/dtls13-spec/draft-rescorla-tls-dtls13.txt)
-
+DTLS 1.3 specification:
+* [Editor's copy](https://tlswg.github.io/dtls13-spec/)
+* [Working Group Draft](https://tools.ietf.org/html/draft-ietf-tls-dtls13)
 
 ## Building the Draft
 
