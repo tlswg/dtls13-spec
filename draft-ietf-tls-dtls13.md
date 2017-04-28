@@ -115,7 +115,7 @@ document are to be interpreted as described in RFC 2119 {{RFC2119}}.
 
 The following terms are used:
 
-  - client: The endpoint initiating the TLS connection.
+  - client: The endpoint initiating the DTLS connection.
 
   - connection: A transport-layer connection between two endpoints.
 
@@ -133,7 +133,7 @@ The following terms are used:
 
   - session: An association between a client and a server resulting from a handshake.
 
-  - server: The endpoint which did not initiate the TLS connection.
+  - server: The endpoint which did not initiate the DTLS connection.
 
 The reader is assumed to be familiar with the TLS 1.3 specification since this 
 document defined as a delta from TLS 1.3.
