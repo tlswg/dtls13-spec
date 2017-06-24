@@ -42,6 +42,7 @@ author:
        email: nagendra@cs.stanford.edu
 
 normative:
+  RFC0768:
   RFC2119: 
   RFC1191:
   RFC4443:
@@ -54,7 +55,11 @@ informative:
   RFC2522:
   RFC4303:
   RFC4340:
+  RFC4346:
+  RFC4347:
   RFC5238:
+  RFC5246:
+  RFC6347:
   RFC7525:
 --- abstract
 
@@ -84,17 +89,17 @@ between two communicating peers. The TLS protocol is composed of two layers:
 the TLS Record Protocol and the TLS Handshake Protocol. However, TLS must 
 run over a reliable transport channel -- typically TCP {{RFC0793}}.
 
-There are applications that utilize UDP as a transport and to offer communication
+There are applications that utilize UDP {{RFC0768}} as a transport and to offer communication
 security protection for those applications the Datagram Transport Layer
 Security (DTLS) protocol has been designed. DTLS is deliberately designed to be 
 as similar to TLS as possible, both to minimize new security invention and to
 maximize the amount of code and infrastructure reuse. 
 
-DTLS 1.0 was originally defined as a delta from TLS 1.1 and DTLS 1.2 was defined 
-as a series of deltas to TLS 1.2.  There is no DTLS 1.1; that version number 
-was skipped in order to harmonize version numbers with TLS.  This specification 
-describes the most current version of the DTLS protocol aligning with the efforts 
-around TLS 1.3.
+DTLS 1.0 {{RFC4347}} was originally defined as a delta from TLS 1.1 {{RFC4346}} and 
+DTLS 1.2 {{RFC6347}} was defined as a series of deltas to TLS 1.2 {{RFC5246}}.  There
+is no DTLS 1.1; that version number was skipped in order to harmonize version numbers
+with TLS.  This specification describes the most current version of the DTLS protocol
+aligning with the efforts around TLS 1.3 {{I-D.ietf-tls-tls13}}.
 
 Implementations that speak both DTLS 1.2 and DTLS 1.3 can interoperate with those 
 that speak only DTLS 1.2 (using DTLS 1.2 of course), just as TLS 1.3 implementations 
@@ -110,7 +115,7 @@ document are to be interpreted as described in RFC 2119 {{RFC2119}}.
 
 The following terms are used:
 
-  - client: The endpoint initiating the TLS connection.
+  - client: The endpoint initiating the DTLS connection.
 
   - connection: A transport-layer connection between two endpoints.
 
@@ -128,7 +133,7 @@ The following terms are used:
 
   - session: An association between a client and a server resulting from a handshake.
 
-  - server: The endpoint which did not initiate the TLS connection.
+  - server: The endpoint which did not initiate the DTLS connection.
 
 The reader is assumed to be familiar with the TLS 1.3 specification since this 
 document defined as a delta from TLS 1.3.
@@ -1376,7 +1381,7 @@ are treated as transparent data to the record layer.
 
 #  Changes to DTLS 1.2
 
-Since TLS 1.3 introduce a large number of changes to TLS 1.2, the list
+Since TLS 1.3 introduces a large number of changes to TLS 1.2, the list
 of changes from DTLS 1.2 to DTLS 1.3 is equally large. For this reason
 this section focuses on the most important changes only.
 
