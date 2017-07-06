@@ -1455,6 +1455,15 @@ IANA is requested to allocate a new value in the TLS ContentType Registry for th
 
 RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
+IETF Drafts
+draft-02
+- Restructured the ACK to contain a list of packets and also
+  be a record rather than a handshake message.
+
+draft-00
+- First IETF Draft
+
+Personal Drafts
 draft-01
 - Alignment with version -19 of the TLS 1.3 specification
 
