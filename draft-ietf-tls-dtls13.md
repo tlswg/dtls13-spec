@@ -633,7 +633,8 @@ If the HelloRetryRequest message is used, the initial ClientHello and
    ClientHello apparently from another user.
 
  One potential attack on this scheme is for the attacker to collect a
-   number of cookies from different addresses and then reuse them to
+   number of cookies from different addresses where it controls endpoints
+   and then reuse them to
    attack the server. The server can defend against this attack by
    changing the secret value frequently, thus invalidating those
    cookies. If the server wishes that legitimate clients be able to
