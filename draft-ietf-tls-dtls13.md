@@ -613,13 +613,6 @@ and MUST be ignored by a server negotiating DTLS 1.3.
 When responding to a HelloRetryRequest, the client MUST create a new
 ClientHello message following the description in Section 4.1.2 of {{I-D.ietf-tls-tls13}}.
 
-The server SHOULD use information received in the ClientHello to generate its cookie,
-such as version, random, ciphersuites. The server MUST use the same
-   version number in the HelloRetryRequest that it would use when
-   sending a ServerHello.  Upon receipt of the ServerHello, the client
-   MUST verify that the server version values match and MUST terminate the
-   connection with an "illegal_parameter" alert otherwise.
-
    If the HelloRetryRequest message is used, the initial ClientHello and
    the HelloRetryRequest are included in the calculation of the
    handshake_messages (for the CertificateVerify message) and
