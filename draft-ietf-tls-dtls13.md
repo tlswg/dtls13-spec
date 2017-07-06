@@ -613,7 +613,7 @@ and MUST be ignored by a server negotiating DTLS 1.3.
 When responding to a HelloRetryRequest, the client MUST create a new
 ClientHello message following the description in Section 4.1.2 of {{I-D.ietf-tls-tls13}}.
 
-   If the HelloRetryRequest message is used, the initial ClientHello and
+If the HelloRetryRequest message is used, the initial ClientHello and
    the HelloRetryRequest are included in the calculation of the
    handshake_messages (for the CertificateVerify message) and
    verify_data (for the Finished message).  However, the computation of the
@@ -628,7 +628,9 @@ ClientHello message following the description in Section 4.1.2 of {{I-D.ietf-tls
 
  When the second ClientHello is received, the server can verify that
    the cookie is valid and that the client can receive packets at the
-   given IP address.
+   given IP address. If the client's apparent IP address is embedded
+   in the cookie, this prevents an attacker from generating an acceptable
+   ClientHello apparently from another user.
 
  One potential attack on this scheme is for the attacker to collect a
    number of cookies from different addresses and then reuse them to
