@@ -103,9 +103,10 @@ aligning with the efforts around TLS 1.3 {{I-D.ietf-tls-tls13}}.
 
 Implementations that speak both DTLS 1.2 and DTLS 1.3 can interoperate with those
 that speak only DTLS 1.2 (using DTLS 1.2 of course), just as TLS 1.3 implementations
-can interoperate with TLS 1.2 (see Appendix D of {{I-D.ietf-tls-tls13}} for details). While
-backwards compatibility with DTLS 1.0 is possible the use of DTLS 1.0 is not
+can interoperate with TLS 1.2 (see Appendix D of {{I-D.ietf-tls-tls13}} for details).
+While backwards compatibility with DTLS 1.0 is possible the use of DTLS 1.0 is not
 recommended as explained in Section 3.1.2 of RFC 7525 {{RFC7525}}.
+
 
 #  Conventions and Terminology
 
@@ -140,26 +141,24 @@ document defined as a delta from TLS 1.3.
 
 Figures in this document illustrate various combinations of the DTLS protocol exchanges and the symbols have the following meaning:
 
-  * '+' indicates noteworthy extensions sent in the previously noted message.
-  * '*' indicates optional or situation-dependent messages/extensions that are not always sent.
+  * '+'  indicates noteworthy extensions sent in the previously noted message.
+  * '*'  indicates optional or situation-dependent messages/extensions that are not always sent.
   * '{}' indicates messages protected using keys derived from a [sender]_handshake_traffic_secret.
-  * '[]' indicates messages protected using keysderived from traffic_secret_N.
+  * '[]' indicates messages protected using keys derived from traffic_secret_N.
+
 
 # DTLS Design Rational and Overview {#dtls-rational}
 
-The basic design philosophy of DTLS is to construct "TLS over
-   datagram transport". Datagram transport does not require or provide
-   reliable or in-order delivery of data.  The DTLS protocol preserves
-   this property for
-   application data.  Applications such as media streaming, Internet
-   telephony, and online gaming use datagram transport for communication
-   due to the delay-sensitive nature of transported data.  The behavior
-   of such applications is unchanged when the DTLS protocol is used to
-   secure communication, since the DTLS protocol does not compensate for
-   lost or re-ordered data traffic.
+The basic design philosophy of DTLS is to construct "TLS over datagram transport".
+Datagram transport does not require nor provide reliable or in-order delivery of data.
+The DTLS protocol preserves this property for application data.
+Applications such as media streaming, Internet telephony, and online gaming use
+datagram transport for communication due to the delay-sensitive nature
+of transported data.  The behavior of such applications is unchanged when the
+DTLS protocol is used to secure communication, since the DTLS protocol
+does not compensate for lost or re-ordered data traffic.
 
-   TLS cannot be used directly in datagram environments for the following
-   five reasons:
+TLS cannot be used directly in datagram environments for the following five reasons:
 
 1. TLS does not allow independent decryption of individual records.
    Because the integrity check indirectly depends on a sequence number,
@@ -169,17 +168,16 @@ The basic design philosophy of DTLS is to construct "TLS over
    sequence numbers.
 
 2. The TLS handshake is a lock-step cryptographic handshake.
-   Messages must be transmitted and received in a defined order; any other order
-   is an error. Clearly, this is incompatible with reordering and
-   message loss.
+   Messages must be transmitted and received in a defined order;
+   any other order is an error.
+   This is incompatible with reordering and message loss.
 
 3. Not all TLS 1.3 handshake messages (such as the NewSessionTicket message)
    are acknowledged. Hence, a new acknowledgement message has to be added
    to detect message loss.
 
-4. Handshake messages are potentially
-   larger than any given datagram, thus creating the problem of IP
-   fragmentation.
+4. Handshake messages are potentially larger than any given datagram,
+   thus creating the problem of IP fragmentation.
 
 5. Datagram transport protocols, like UDP, are more vulnerable to denial of
    service attacks and require a return-routability check with the help of
@@ -207,58 +205,59 @@ phase of the DTLS handshake:
 ~~~~
 {: #dtls-retransmission title="DTLS Retransmission Example."}
 
-   Once the client has transmitted the ClientHello message, it expects
-   to see a HelloRetryRequest from the server.  However, if the
-   server's message is lost, the client knows that either the
-   ClientHello or the HelloRetryRequest has been lost and retransmits.
-   When the server receives the retransmission, it knows to retransmit.
+Once the client has transmitted the ClientHello message, it expects
+to see a HelloRetryRequest from the server.  However, if the
+server's message is lost, the client knows that either the
+ClientHello or the HelloRetryRequest has been lost and retransmits.
+When the server receives the retransmission, it knows to retransmit.
 
-   The server also maintains a retransmission timer and retransmits when
-   that timer expires.
+The server also maintains a retransmission timer and retransmits when
+that timer expires.
 
-   Note that timeout and retransmission do not apply to the
-   HelloRetryRequest since this would require creating state on the
-   server.  The HelloRetryRequest is designed to be small enough that
-   it will not itself be fragmented, thus avoiding concerns about
-   interleaving multiple HelloRetryRequests.
+Note that timeout and retransmission do not apply to the
+HelloRetryRequest since this would require creating state on the
+server.  The HelloRetryRequest is designed to be small enough that
+it will not itself be fragmented, thus avoiding concerns about
+interleaving multiple HelloRetryRequests.
 
 ###  Reordering
 
 In DTLS, each handshake message is assigned a specific sequence
-   number within that handshake.  When a peer receives a handshake
-   message, it can quickly determine whether that message is the next
-   message it expects.  If it is, then it processes it.  If not, it
-   queues it for future handling once all previous messages have been
-   received.
+number within that handshake.  When a peer receives a handshake
+message, it can quickly determine whether that message is the next
+message it expects.  If it is, then it processes it.  If not, it
+queues it for future handling once all previous messages have been
+received.
 
 ###  Message Size
 
 TLS and DTLS handshake messages can be quite large (in theory up to
-   2^24-1 bytes, in practice many kilobytes).  By contrast, UDP
-   datagrams are often limited to less than 1500 bytes if IP fragmentation is not
-   desired.  In order to compensate for this limitation, each DTLS
-   handshake message may be fragmented over several DTLS records, each
-   of which is intended to fit in a single IP datagram.  Each DTLS
-   handshake message contains both a fragment offset and a fragment
-   length.  Thus, a recipient in possession of all bytes of a handshake
-   message can reassemble the original unfragmented message.
+2^24-1 bytes, in practice many kilobytes).  By contrast, UDP
+datagrams are often limited to less than 1500 bytes if IP fragmentation is not
+desired.  In order to compensate for this limitation, each DTLS
+handshake message may be fragmented over several DTLS records, each
+of which is intended to fit in a single IP datagram.  Each DTLS
+handshake message contains both a fragment offset and a fragment
+length.  Thus, a recipient in possession of all bytes of a handshake
+message can reassemble the original unfragmented message.
+
 
 ##  Replay Detection
 
 DTLS optionally supports record replay detection.  The technique used
-   is the same as in IPsec AH/ESP, by maintaining a bitmap window of
-   received records.  Records that are too old to fit in the window and
-   records that have previously been received are silently discarded.
-   The replay detection feature is optional, since packet duplication is
-   not always malicious, but can also occur due to routing errors.
-   Applications may conceivably detect duplicate packets and accordingly
-   modify their data transmission strategy.
+is the same as in IPsec AH/ESP, by maintaining a bitmap window of
+received records.  Records that are too old to fit in the window and
+records that have previously been received are silently discarded.
+The replay detection feature is optional, since packet duplication is
+not always malicious, but can also occur due to routing errors.
+Applications may conceivably detect duplicate packets and accordingly
+modify their data transmission strategy.
 
 
 # The DTLS Record Layer
 
-The DTLS record layer is similar to that of TLS 1.3 unless noted otherwise.  The
-only change is the inclusion of an explicit epoch and sequence number
+The DTLS record layer is similar to that of TLS 1.3 unless noted otherwise.
+The only change is the inclusion of an explicit epoch and sequence number
 in the record.  This sequence number allows the recipient to correctly
 verify the TLS MAC.  The DTLS record format is shown below:
 
@@ -280,145 +279,139 @@ verify the TLS MAC.  The DTLS record format is shown below:
 ~~~~
 
 type:
-
 : The content type of the record.
 
 legacy_record_version:
-
-: This field is redundant and it is treated in the same way as specified in the TLS 1.3 specification. The DTLS version 1.2 version number is reused, namely { 254, 253 }. This field is deprecated and MUST be ignored.
+: This field is redundant and it is treated in the same way as specified in the TLS 1.3 specification.
+  The DTLS version 1.2 version number is reused, namely { 254, 253 }.
+  This field is deprecated and MUST be ignored.
 
 epoch:
-
 : A counter value that is incremented on every cipher state change.
 
 sequence_number:
-
 : The sequence number for this record.
 
 length:
-
 : Identical to the length field in a TLS 1.3 record.
 
 encrypted_record:
-
-:  Identical to the encrypted_record field in a TLS 1.3 record.
+: Identical to the encrypted_record field in a TLS 1.3 record.
 
 ## Sequence Number Handling
 
 DTLS uses an explicit sequence number, rather than an implicit one,
-  carried in the sequence_number field of the record.  Sequence numbers
-   are maintained separately for each epoch, with each sequence_number
-   initially being 0 for each epoch.  For instance, if a handshake
-   message from epoch 0 is retransmitted, it might have a sequence
-   number after a message from epoch 1, even if the message from epoch 1
-   was transmitted first.  Note that some care needs to be taken during
-   the handshake to ensure that retransmitted messages use the right
-   epoch and keying material.
+carried in the sequence_number field of the record.  Sequence numbers
+are maintained separately for each epoch, with each sequence_number
+initially being 0 for each epoch.  For instance, if a handshake
+message from epoch 0 is retransmitted, it might have a sequence
+number after a message from epoch 1, even if the message from epoch 1
+was transmitted first.  Note that some care needs to be taken during
+the handshake to ensure that retransmitted messages use the right
+epoch and keying material.
 
-   The epoch number is initially zero and is
-   incremented each time keying material changes and a sender aims to rekey.
-   More details are provided in {{dtls-epoch}}. In order
-   to ensure that any given sequence/epoch pair is unique,
-   implementations MUST NOT allow the same epoch value to be reused
-   within two times the TCP maximum segment lifetime.
+The epoch number is initially zero and is
+incremented each time keying material changes and a sender aims to rekey.
+More details are provided in {{dtls-epoch}}. In order
+to ensure that any given sequence/epoch pair is unique,
+implementations MUST NOT allow the same epoch value to be reused
+within two times the TCP maximum segment lifetime (MSL).
 
-   Note that because DTLS records may be reordered, a record from epoch
-   1 may be received after epoch 2 has begun.  In general,
-   implementations SHOULD discard packets from earlier epochs, but if
-   packet loss causes noticeable problems they MAY choose to retain
-   keying material from previous epochs for up to the default MSL
-   specified for TCP {{RFC0793}} to allow for packet reordering.  (Note that
-   the intention here is that implementers use the current guidance from
-   the IETF for MSL, not that they attempt to interrogate the MSL that
-   the system TCP stack is using.)  Until the handshake has completed,
-   implementations MUST accept packets from the old epoch.
+Note that because DTLS records may be reordered, a record from epoch
+1 may be received after epoch 2 has begun.  In general,
+implementations SHOULD discard packets from earlier epochs, but if
+packet loss causes noticeable problems they MAY choose to retain
+keying material from previous epochs for up to the default MSL
+specified for TCP {{RFC0793}} to allow for packet reordering.  (Note that
+the intention here is that implementers use the current guidance from
+the IETF for MSL, not that they attempt to interrogate the MSL that
+the system TCP stack is using.)  Until the handshake has completed,
+implementations MUST accept packets from the old epoch.
 
-   Conversely, it is possible for records that are protected by the
-   newly negotiated context to be received prior to the completion of a
-   handshake.  For instance, the server may send its Finished message
-   and then start transmitting data.  Implementations MAY either buffer
-   or discard such packets, though when DTLS is used over reliable
-   transports (e.g., SCTP), they SHOULD be buffered and processed once
-   the handshake completes.  Note that TLS's restrictions on when
-   packets may be sent still apply, and the receiver treats the packets
-   as if they were sent in the right order.  In particular, it is still
-   impermissible to send data prior to completion of the first
-   handshake.
+Conversely, it is possible for records that are protected by the
+newly negotiated context to be received prior to the completion of a
+handshake.  For instance, the server may send its Finished message
+and then start transmitting data.  Implementations MAY either buffer
+or discard such packets, though when DTLS is used over reliable
+transports (e.g., SCTP), they SHOULD be buffered and processed once
+the handshake completes.  Note that TLS's restrictions on when
+packets may be sent still apply, and the receiver treats the packets
+as if they were sent in the right order.  In particular, it is still
+impermissible to send data prior to completion of the first handshake.
 
-   Implementations MUST either abandon an association or
-   re-key prior to allowing the sequence number to wrap.
+Implementations MUST either abandon an association or re-key prior to
+allowing the sequence number to wrap.
 
-   Implementations MUST NOT allow the epoch to wrap, but
-   instead MUST establish a new association, terminating the old
-   association.
+Implementations MUST NOT allow the epoch to wrap, but instead MUST establish
+a new association, terminating the old association.
+
 
 ##  Transport Layer Mapping
 
-   Each DTLS record MUST fit within a single datagram.  In order to
-   avoid IP fragmentation, clients of the DTLS record layer SHOULD
-   attempt to size records so that they fit within any PMTU estimates
-   obtained from the record layer.
+Each DTLS record MUST fit within a single datagram.  In order to
+avoid IP fragmentation, clients of the DTLS record layer SHOULD
+attempt to size records so that they fit within any PMTU estimates
+obtained from the record layer.
 
-   Note that unlike IPsec, DTLS records do not contain any association
-   identifiers.  Applications must arrange to multiplex between
-   associations.   With UDP, the host/port number is used to look up the
-   appropriate security association for incoming records.
+Note that unlike IPsec, DTLS records do not contain any association
+identifiers.  Applications must arrange to multiplex between associations.
+With UDP, the host/port number is used to look up the appropriate
+security association for incoming records.
 
-   Multiple DTLS records may be placed in a single datagram.  They are
-   simply encoded consecutively.  The DTLS record framing is sufficient
-   to determine the boundaries.  Note, however, that the first byte of
-   the datagram payload must be the beginning of a record.  Records may
-   not span datagrams.
+Multiple DTLS records may be placed in a single datagram.  They are
+simply encoded consecutively.  The DTLS record framing is sufficient
+to determine the boundaries.  Note, however, that the first byte of
+the datagram payload must be the beginning of a record.  Records may
+not span datagrams.
 
-   Some transports, such as DCCP {{RFC4340}}, provide their own sequence
-   numbers.  When carried over those transports, both the DTLS and the
-   transport sequence numbers will be present.  Although this introduces
-   a small amount of inefficiency, the transport layer and DTLS sequence
-   numbers serve different purposes; therefore, for conceptual
-   simplicity, it is superior to use both sequence numbers.
+Some transports, such as DCCP {{RFC4340}}, provide their own sequence
+numbers.  When carried over those transports, both the DTLS and the
+transport sequence numbers will be present.  Although this introduces
+a small amount of inefficiency, the transport layer and DTLS sequence
+numbers serve different purposes; therefore, for conceptual simplicity,
+it is superior to use both sequence numbers.
 
-   Some transports provide congestion control for traffic
-   carried over them.  If the congestion window is sufficiently narrow,
-   DTLS handshake retransmissions may be held rather than transmitted
-   immediately, potentially leading to timeouts and spurious
-   retransmission.  When DTLS is used over such transports, care should
-   be taken not to overrun the likely congestion window. {{RFC5238}}
-   defines a mapping of DTLS to DCCP that takes these issues into
-   account.
+Some transports provide congestion control for traffic
+carried over them.  If the congestion window is sufficiently narrow,
+DTLS handshake retransmissions may be held rather than transmitted
+immediately, potentially leading to timeouts and spurious
+retransmission.  When DTLS is used over such transports, care should
+be taken not to overrun the likely congestion window. {{RFC5238}}
+defines a mapping of DTLS to DCCP that takes these issues into account.
+
 
 ##  PMTU Issues
 
-   In general, DTLS's philosophy is to leave PMTU discovery to the
-   application.  However, DTLS cannot completely ignore PMTU for three
-   reasons:
+In general, DTLS's philosophy is to leave PMTU discovery to the application.
+However, DTLS cannot completely ignore PMTU for three reasons:
 
--  The DTLS record framing expands the datagram size, thus lowering
-   the effective PMTU from the application's perspective.
+- The DTLS record framing expands the datagram size, thus lowering
+  the effective PMTU from the application's perspective.
 
--  In some implementations, the application may not directly talk to
-   the network, in which case the DTLS stack may absorb ICMP
-   {{RFC1191}} "Datagram Too Big" indications or ICMPv6 {{RFC4443}}
-   "Packet Too Big" indications.
+- In some implementations, the application may not directly talk to
+  the network, in which case the DTLS stack may absorb ICMP
+  {{RFC1191}} "Datagram Too Big" indications or ICMPv6 {{RFC4443}}
+  "Packet Too Big" indications.
 
--  The DTLS handshake messages can exceed the PMTU.
+- The DTLS handshake messages can exceed the PMTU.
 
 In order to deal with the first two issues, the DTLS record layer
 SHOULD behave as described below.
 
 If PMTU estimates are available from the underlying transport
-protocol, they should be made available to upper layer protocols.  In
-particular:
+protocol, they should be made available to upper layer
+protocols. In particular:
 
--  For DTLS over UDP, the upper layer protocol SHOULD be allowed to
-   obtain the PMTU estimate maintained in the IP layer.
+- For DTLS over UDP, the upper layer protocol SHOULD be allowed to
+  obtain the PMTU estimate maintained in the IP layer.
 
--  For DTLS over DCCP, the upper layer protocol SHOULD be allowed to
-   obtain the current estimate of the PMTU.
+- For DTLS over DCCP, the upper layer protocol SHOULD be allowed to
+  obtain the current estimate of the PMTU.
 
--  For DTLS over TCP or SCTP, which automatically fragment and
-   reassemble datagrams, there is no PMTU limitation.  However, the
-   upper layer protocol MUST NOT write any record that exceeds the
-   maximum record size of 2^14 bytes.
+- For DTLS over TCP or SCTP, which automatically fragment and
+  reassemble datagrams, there is no PMTU limitation.  However, the
+  upper layer protocol MUST NOT write any record that exceeds the
+  maximum record size of 2^14 bytes.
 
 The DTLS record layer SHOULD allow the upper layer protocol to
 discover the amount of record expansion expected by the DTLS
@@ -432,13 +425,13 @@ The DTLS record layer SHOULD NOT interfere with upper layer protocols
 performing PMTU discovery, whether via {{RFC1191}} or {{RFC4821}}
 mechanisms.  In particular:
 
--  Where allowed by the underlying transport protocol, the upper
-   layer protocol SHOULD be allowed to set the state of the DF bit
-   (in IPv4) or prohibit local fragmentation (in IPv6).
+- Where allowed by the underlying transport protocol, the upper
+  layer protocol SHOULD be allowed to set the state of the DF bit
+  (in IPv4) or prohibit local fragmentation (in IPv6).
 
--  If the underlying transport protocol allows the application to
-   request PMTU probing (e.g., DCCP), the DTLS record layer should
-   honor this request.
+- If the underlying transport protocol allows the application to
+  request PMTU probing (e.g., DCCP), the DTLS record layer should
+  honor this request.
 
 The final issue is the DTLS handshake protocol.  From the perspective
 of the DTLS record layer, this is merely another upper layer
@@ -448,77 +441,79 @@ handling places a premium on rapid completion over accurate PMTU
 discovery.  In order to allow connections under these circumstances,
 DTLS implementations SHOULD follow the following rules:
 
--  If the DTLS record layer informs the DTLS handshake layer that a
-   message is too big, it SHOULD immediately attempt to fragment it,
-   using any existing information about the PMTU.
+- If the DTLS record layer informs the DTLS handshake layer that a
+  message is too big, it SHOULD immediately attempt to fragment it,
+  using any existing information about the PMTU.
 
--  If repeated retransmissions do not result in a response, and the
-   PMTU is unknown, subsequent retransmissions SHOULD back off to a
-   smaller record size, fragmenting the handshake message as
-   appropriate.  This standard does not specify an exact number of
-   retransmits to attempt before backing off, but 2-3 seems
-   appropriate.
+- If repeated retransmissions do not result in a response, and the
+  PMTU is unknown, subsequent retransmissions SHOULD back off to a
+  smaller record size, fragmenting the handshake message as
+  appropriate.  This standard does not specify an exact number of
+  retransmits to attempt before backing off, but 2-3 seems
+  appropriate.
+
 
 ##  Record Payload Protection
 
-   Like TLS, DTLS transmits data as a series of protected records.  The
-   rest of this section describes the details of that format.
+Like TLS, DTLS transmits data as a series of protected records.  The
+rest of this section describes the details of that format.
 
 ###  Anti-Replay
 
-   DTLS records contain a sequence number to provide replay protection.
-   Sequence number verification SHOULD be performed using the following
-   sliding window procedure, borrowed from Section 3.4.3 of {{RFC4303}}.
+DTLS records contain a sequence number to provide replay protection.
+Sequence number verification SHOULD be performed using the following
+sliding window procedure, borrowed from Section 3.4.3 of {{RFC4303}}.
 
-   The receiver packet counter for this session MUST be initialized to
-   zero when the session is established.  For each received record, the
-   receiver MUST verify that the record contains a sequence number that
-   does not duplicate the sequence number of any other record received
-   during the life of this session.  This SHOULD be the first check
-   applied to a packet after it has been matched to a session, to speed
-   rejection of duplicate records.
+The receiver packet counter for this session MUST be initialized to
+zero when the session is established.  For each received record, the
+receiver MUST verify that the record contains a sequence number that
+does not duplicate the sequence number of any other record received
+during the life of this session.  This SHOULD be the first check
+applied to a packet after it has been matched to a session, to speed
+rejection of duplicate records.
 
-   Duplicates are rejected through the use of a sliding receive window.
-   (How the window is implemented is a local matter, but the following
-   text describes the functionality that the implementation must
-   exhibit.)  A minimum window size of 32 MUST be supported, but a
-   window size of 64 is preferred and SHOULD be employed as the default.
-   Another window size (larger than the minimum) MAY be chosen by the
-   receiver.  (The receiver does not notify the sender of the window
-   size.)
+Duplicates are rejected through the use of a sliding receive window.
+(How the window is implemented is a local matter, but the following
+text describes the functionality that the implementation must
+exhibit.)  A minimum window size of 32 MUST be supported, but a
+window size of 64 is preferred and SHOULD be employed as the default.
+Another window size (larger than the minimum) MAY be chosen by the
+receiver.  (The receiver does not notify the sender of the window
+size.)
 
-   The "right" edge of the window represents the highest validated
-   sequence number value received on this session.  Records that contain
-   sequence numbers lower than the "left" edge of the window are
-   rejected.  Packets falling within the window are checked against a
-   list of received packets within the window.  An efficient means for
-   performing this check, based on the use of a bit mask, is described
-   in Section 3.4.3 of {{RFC4303}}.
+The "right" edge of the window represents the highest validated
+sequence number value received on this session.  Records that contain
+sequence numbers lower than the "left" edge of the window are
+rejected.  Packets falling within the window are checked against a
+list of received packets within the window.  An efficient means for
+performing this check, based on the use of a bit mask, is described
+in Section 3.4.3 of {{RFC4303}}.
 
-   If the received record falls within the window and is new, or if the
-   packet is to the right of the window, then the receiver proceeds to
-   MAC verification.  If the MAC validation fails, the receiver MUST
-   discard the received record as invalid.  The receive window is
-   updated only if the MAC verification succeeds.
+If the received record falls within the window and is new, or if the
+packet is to the right of the window, then the receiver proceeds to
+MAC verification.  If the MAC validation fails, the receiver MUST
+discard the received record as invalid.  The receive window is
+updated only if the MAC verification succeeds.
 
 ### Handling Invalid Records
 
-   Unlike TLS, DTLS is resilient in the face of invalid records (e.g.,
-   invalid formatting, length, MAC, etc.).  In general, invalid records
-   SHOULD be silently discarded, thus preserving the association;
-   however, an error MAY be logged for diagnostic purposes.
-   Implementations which choose to generate an alert instead, MUST
-   generate error alerts to avoid attacks where the attacker
-   repeatedly probes the implementation to see how it responds to
-   various types of error.  Note that if DTLS is run over UDP, then any
-   implementation which does this will be extremely susceptible to
-   denial-of-service (DoS) attacks because UDP forgery is so easy.
-   Thus, this practice is NOT RECOMMENDED for such transports.
+Unlike TLS, DTLS is resilient in the face of invalid records (e.g.,
+invalid formatting, length, MAC, etc.).  In general, invalid records
+SHOULD be silently discarded, thus preserving the association;
+however, an error MAY be logged for diagnostic purposes.
+Implementations which choose to generate an alert instead, MUST
+generate error alerts to avoid attacks where the attacker
+repeatedly probes the implementation to see how it responds to
+various types of error.  Note that if DTLS is run over UDP, then any
+implementation which does this will be extremely susceptible to
+denial-of-service (DoS) attacks because UDP forgery is so easy.
+Thus, this practice is NOT RECOMMENDED for such transports.
 
-   If DTLS is being carried over a transport that is resistant to
-   forgery (e.g., SCTP with SCTP-AUTH), then it is safer to send alerts
-   because an attacker will have difficulty forging a datagram that will
-   not be rejected by the transport layer.
+If DTLS is being carried over a transport that is resistant to
+forgery (e.g., SCTP with SCTP-AUTH), then it is safer to send alerts
+because an attacker will have difficulty forging a datagram that will
+not be rejected by the transport layer.
+
 
 # The DTLS Handshake Protocol {#dtls}
 
@@ -532,7 +527,7 @@ the following changes:
 
 3. The TLS 1.3 KeyUpdate message is not used in DTLS 1.3 for re-keying.
 
-4. A new ACK content type has been added for reliable message delivery of handshake messages.    
+4. A new ACK content type has been added for reliable message delivery of handshake messages.
 
 Note that TLS 1.3 already supports a cookie extension, which used to
 prevent denial-of-service attacks. This DoS prevention mechanism is
@@ -542,6 +537,7 @@ that performs return-routability checks as part of the connection establishment.
 
 With these exceptions, the DTLS message formats, flows, and logic are
 the same as those of TLS 1.3.
+
 
 ## Denial-of-Service Countermeasures {#dos}
 
@@ -561,29 +557,28 @@ DoS attacks.  Two attacks are of particular concern:
    is the case for a Certificate message.
 
 In order to counter both of these attacks, DTLS borrows the stateless
-   cookie technique used by Photuris {{RFC2522}} and IKE {{RFC5996}}.  When
-   the client sends its ClientHello message to the server, the server
-   MAY respond with a HelloRetryRequest message. The HelloRetryRequest message,
-   as well as the cookie extension, is defined in TLS 1.3. The
-   HelloRetryRequest message contains
-   a stateless cookie generated using the technique of {{RFC2522}}. The
-   client MUST retransmit the ClientHello with the cookie added as an extension.  The
-   server then verifies the cookie and proceeds with the handshake only
-   if it is valid.  This mechanism forces the attacker/client to be able
-   to receive the cookie, which makes DoS attacks with spoofed IP
-   addresses difficult.  This mechanism does not provide any defence
-   against DoS attacks mounted from valid IP addresses.
+cookie technique used by Photuris {{RFC2522}} and IKE {{RFC5996}}.  When
+the client sends its ClientHello message to the server, the server
+MAY respond with a HelloRetryRequest message. The HelloRetryRequest message,
+as well as the cookie extension, is defined in TLS 1.3.
+The HelloRetryRequest message contains a stateless cookie generated using
+the technique of {{RFC2522}}. The client MUST retransmit the ClientHello
+with the cookie added as an extension.  The server then verifies the cookie
+and proceeds with the handshake only if it is valid.  This mechanism forces
+the attacker/client to be able to receive the cookie, which makes DoS attacks
+with spoofed IP addresses difficult.  This mechanism does not provide any defence
+against DoS attacks mounted from valid IP addresses.
 
 The DTLS 1.3 specification changes the way how cookies are exchanged
-   compared to DTLS 1.2. DTLS 1.3 re-uses the HelloRetryRequest message
-   and conveys the cookie to the client via an extension. The client
-   receiving the cookie uses the same extension to place
-   the cookie subsequently into a ClientHello message.
-   DTLS 1.2 on the other hand used a separate message, namely the HelloVerifyRequest,
-   to pass a cookie to the client and did not utilize the extension mechanism.
-   For backwards compatibility reason the cookie field in the ClientHello
-   is present in DTLS 1.3 but is ignored by a DTLS 1.3 compliant server
-   implementation.
+compared to DTLS 1.2. DTLS 1.3 re-uses the HelloRetryRequest message
+and conveys the cookie to the client via an extension. The client
+receiving the cookie uses the same extension to place
+the cookie subsequently into a ClientHello message.
+DTLS 1.2 on the other hand used a separate message, namely the HelloVerifyRequest,
+to pass a cookie to the client and did not utilize the extension mechanism.
+For backwards compatibility reason the cookie field in the ClientHello
+is present in DTLS 1.3 but is ignored by a DTLS 1.3 compliant server
+implementation.
 
 The exchange is shown in {{dtls-cookie-exchange}}. Note that
 the figure focuses on the cookie exchange; all other extensions
@@ -614,66 +609,66 @@ When responding to a HelloRetryRequest, the client MUST create a new
 ClientHello message following the description in Section 4.1.2 of {{I-D.ietf-tls-tls13}}.
 
 If the HelloRetryRequest message is used, the initial ClientHello and
-   the HelloRetryRequest are included in the calculation of the
-   handshake_messages (for the CertificateVerify message) and
-   verify_data (for the Finished message).  However, the computation of the
-   message hash for the HelloRetryRequest is done according to the description
-   in Section 4.4.1 of {{I-D.ietf-tls-tls13}}.
+the HelloRetryRequest are included in the calculation of the
+handshake_messages (for the CertificateVerify message) and
+verify_data (for the Finished message).  However, the computation of the
+message hash for the HelloRetryRequest is done according to the description
+in Section 4.4.1 of {{I-D.ietf-tls-tls13}}.
 
-   The handshake transcript is not reset with the second ClientHello
-   and a stateless server-cookie implementation requires the transcript
-   of the HelloRetryRequest to be stored in the cookie or the internal state
-   of the hash algorithm, since only the hash of the transcript is required
-   for the handshake to complete.
+The handshake transcript is not reset with the second ClientHello
+and a stateless server-cookie implementation requires the transcript
+of the HelloRetryRequest to be stored in the cookie or the internal state
+of the hash algorithm, since only the hash of the transcript is required
+for the handshake to complete.
 
- When the second ClientHello is received, the server can verify that
-   the cookie is valid and that the client can receive packets at the
-   given IP address. If the client's apparent IP address is embedded
-   in the cookie, this prevents an attacker from generating an acceptable
-   ClientHello apparently from another user.
+When the second ClientHello is received, the server can verify that
+the cookie is valid and that the client can receive packets at the
+given IP address. If the client's apparent IP address is embedded
+in the cookie, this prevents an attacker from generating an acceptable
+ClientHello apparently from another user.
 
- One potential attack on this scheme is for the attacker to collect a
-   number of cookies from different addresses where it controls endpoints
-   and then reuse them to
-   attack the server. The server can defend against this attack by
-   changing the secret value frequently, thus invalidating those
-   cookies. If the server wishes that legitimate clients be able to
-   handshake through the transition (e.g., they received a cookie with
-   Secret 1 and then sent the second ClientHello after the server has
-   changed to Secret 2), the server can have a limited window during
-   which it accepts both secrets.  {{RFC5996}} suggests adding a key
-   identifier to cookies to detect this case. An alternative approach is
-   simply to try verifying with both secrets. It is RECOMMENDED that
-   servers implement a key rotation scheme that allows the server
-   to manage keys with overlapping lifetime.
+One potential attack on this scheme is for the attacker to collect a
+number of cookies from different addresses where it controls endpoints
+and then reuse them to attack the server.
+The server can defend against this attack by
+changing the secret value frequently, thus invalidating those
+cookies. If the server wishes that legitimate clients be able to
+handshake through the transition (e.g., they received a cookie with
+Secret 1 and then sent the second ClientHello after the server has
+changed to Secret 2), the server can have a limited window during
+which it accepts both secrets.  {{RFC5996}} suggests adding a key
+identifier to cookies to detect this case. An alternative approach is
+simply to try verifying with both secrets. It is RECOMMENDED that
+servers implement a key rotation scheme that allows the server
+to manage keys with overlapping lifetime.
 
-   Alternatively, the server can store timestamps in the cookie and
-   reject those cookies that were not generated within a certain
-   amount of time.
+Alternatively, the server can store timestamps in the cookie and
+reject those cookies that were not generated within a certain
+amount of time.
 
-   DTLS servers SHOULD perform a cookie exchange whenever a new
-   handshake is being performed.  If the server is being operated in an
-   environment where amplification is not a problem, the server MAY be
-   configured not to perform a cookie exchange.  The default SHOULD be
-   that the exchange is performed, however.  In addition, the server MAY
-   choose not to do a cookie exchange when a session is resumed.
-   Clients MUST be prepared to do a cookie exchange with every
-   handshake.
+DTLS servers SHOULD perform a cookie exchange whenever a new
+handshake is being performed.  If the server is being operated in an
+environment where amplification is not a problem, the server MAY be
+configured not to perform a cookie exchange.  The default SHOULD be
+that the exchange is performed, however.  In addition, the server MAY
+choose not to do a cookie exchange when a session is resumed.
+Clients MUST be prepared to do a cookie exchange with every
+handshake.
 
-   If a server receives a ClientHello with an invalid cookie, it
-   MUST NOT respond with a HelloRetryRequest. Restarting the handshake from
-   scratch, without a cookie, allows the client to recover from a situation
-   where it obtained a cookie that cannot be verified by the server.
-   As described in Section 4.1.4 of {{I-D.ietf-tls-tls13}},clients SHOULD
-   also abort the handshake with an “unexpected_message” alert in response
-   to any second HelloRetryRequest which was sent in the same connection
-   (i.e., where the ClientHello was itself in response to a HelloRetryRequest).
+If a server receives a ClientHello with an invalid cookie, it
+MUST NOT respond with a HelloRetryRequest. Restarting the handshake from
+scratch, without a cookie, allows the client to recover from a situation
+where it obtained a cookie that cannot be verified by the server.
+As described in Section 4.1.4 of {{I-D.ietf-tls-tls13}},clients SHOULD
+also abort the handshake with an “unexpected_message” alert in response
+to any second HelloRetryRequest which was sent in the same connection
+(i.e., where the ClientHello was itself in response to a HelloRetryRequest).
 
 
 ##  DTLS Handshake Message Format
 
-   In order to support message loss, reordering, and message
-   fragmentation, DTLS modifies the TLS 1.3 handshake header:
+In order to support message loss, reordering, and message
+fragmentation, DTLS modifies the TLS 1.3 handshake header:
 
 ~~~~
   enum {
@@ -723,11 +718,10 @@ If the HelloRetryRequest message is used, the initial ClientHello and
 The first message each side transmits in each association always has
 message_seq = 0.  Whenever a new message is generated, the
 message_seq value is incremented by one. When a message is
-retransmitted, the old message_seq value is re-used, i.e., not 
+retransmitted, the old message_seq value is re-used, i.e., not
 incremented. From the perspective of the DTLS record layer, the retransmission is
 a new record.  This record will have a new
 DTLSPlaintext.sequence_number value.
-
 
 DTLS implementations maintain (at least notionally) a
 next_receive_seq counter.  This counter is initially set to zero.
@@ -749,9 +743,10 @@ A DTLS 1.3 MUST NOT use the KeyUpdate message to change keying material
 used for the protection of traffic data. Instead the epoch field is used,
 which is explained in {{dtls-epoch}}.
 
+
 ## ClientHello Message
 
-The format of the ClientHello used by a DTLS 1.3 client differs from the 
+The format of the ClientHello used by a DTLS 1.3 client differs from the
 TLS 1.3 ClientHello format as shown below.
 
 ~~~~
@@ -773,15 +768,15 @@ TLS 1.3 ClientHello format as shown below.
 
 legacy_version:
 : In previous versions of DTLS, this field was used for version
-negotiation and represented the highest version number supported by
-the client. Experience has shown that many servers do not properly
-implement version negotiation, leading to “version intolerance” in
-which the server rejects an otherwise acceptable ClientHello with a
-version number higher than it supports. In DTLS 1.3, the client
-indicates its version preferences in the “supported_versions”
-extension (see Section 4.2.1 of {{I-D.ietf-tls-tls13}}) and the
-legacy_version field MUST be set to {254, 253}, which was the version
-number for DTLS 1.2.
+  negotiation and represented the highest version number supported by
+  the client. Experience has shown that many servers do not properly
+  implement version negotiation, leading to “version intolerance” in
+  which the server rejects an otherwise acceptable ClientHello with a
+  version number higher than it supports. In DTLS 1.3, the client
+  indicates its version preferences in the “supported_versions”
+  extension (see Section 4.2.1 of {{I-D.ietf-tls-tls13}}) and the
+  legacy_version field MUST be set to {254, 253}, which was the version
+  number for DTLS 1.2.
 
 random:
 : Same as for TLS 1.3
@@ -806,41 +801,42 @@ extensions:
 
 ##  Handshake Message Fragmentation and Reassembly
 
-   Each DTLS message MUST fit within a single
-   transport layer datagram.  However, handshake messages are
-   potentially bigger than the maximum record size.  Therefore, DTLS
-   provides a mechanism for fragmenting a handshake message over a
-   number of records, each of which can be transmitted separately, thus
-   avoiding IP fragmentation.
+Each DTLS message MUST fit within a single
+transport layer datagram.  However, handshake messages are
+potentially bigger than the maximum record size.  Therefore, DTLS
+provides a mechanism for fragmenting a handshake message over a
+number of records, each of which can be transmitted separately, thus
+avoiding IP fragmentation.
 
-   When transmitting the handshake message, the sender divides the
-   message into a series of N contiguous data ranges.  These ranges MUST
-   NOT be larger than the maximum handshake fragment size and MUST
-   jointly contain the entire handshake message.  The ranges MUST NOT
-   overlap.  The sender then creates N handshake messages, all with the
-   same message_seq value as the original handshake message.  Each new
-   message is labeled with the fragment_offset (the number of bytes
-   contained in previous fragments) and the fragment_length (the length
-   of this fragment).  The length field in all messages is the same as
-   the length field of the original message.  An unfragmented message is
-   a degenerate case with fragment_offset=0 and fragment_length=length.
+When transmitting the handshake message, the sender divides the
+message into a series of N contiguous data ranges.  These ranges MUST
+NOT be larger than the maximum handshake fragment size and MUST
+jointly contain the entire handshake message.  The ranges MUST NOT
+overlap.  The sender then creates N handshake messages, all with the
+same message_seq value as the original handshake message.  Each new
+message is labeled with the fragment_offset (the number of bytes
+contained in previous fragments) and the fragment_length (the length
+of this fragment).  The length field in all messages is the same as
+the length field of the original message.  An unfragmented message is
+a degenerate case with fragment_offset=0 and fragment_length=length.
 
-   When a DTLS implementation receives a handshake message fragment, it
-   MUST buffer it until it has the entire handshake message.  DTLS
-   implementations MUST be able to handle overlapping fragment ranges.
-   This allows senders to retransmit handshake messages with smaller
-   fragment sizes if the PMTU estimate changes.
+When a DTLS implementation receives a handshake message fragment, it
+MUST buffer it until it has the entire handshake message.  DTLS
+implementations MUST be able to handle overlapping fragment ranges.
+This allows senders to retransmit handshake messages with smaller
+fragment sizes if the PMTU estimate changes.
 
-   Note that as with TLS, multiple handshake messages may be placed in
-   the same DTLS record, provided that there is room and that they are
-   part of the same flight.  Thus, there are two acceptable ways to pack
-   two DTLS messages into the same datagram: in the same record or in
-   separate records.
+Note that as with TLS, multiple handshake messages may be placed in
+the same DTLS record, provided that there is room and that they are
+part of the same flight.  Thus, there are two acceptable ways to pack
+two DTLS messages into the same datagram: in the same record or in
+separate records.
+
 
 ##  DTLS Handshake Flights
 
-   DTLS messages are grouped into a series of message flights, according
-   to the diagrams below. 
+DTLS messages are grouped into a series of message flights, according
+to the diagrams below.
 
 ~~~~
 Client                                             Server
@@ -910,12 +906,12 @@ ClientHello                                                 +----------+
 ~~~~
 Client                                            Server
 
-ClientHello
+ ClientHello
   + early_data
   + psk_key_exchange_modes                                +----------+
   + key_share*                                            | Flight 1 |
   + pre_shared_key                                        +----------+
-(Application Data*)     -------->
+ (Application Data*)     -------->
 
                                              ServerHello
                                         + pre_shared_key
@@ -950,58 +946,58 @@ Client                                            Server
 ~~~~
 {: #dtls-post-handshake-ticket title="Message Flights for New Session Ticket Message"}
 
-Note: The application data sent by the client is not included in the 
-timeout and retransmission calculation. 
+Note: The application data sent by the client is not included in the
+timeout and retransmission calculation.
 
 
 ## Timeout and Retransmission
 
 ### State Machine
 
-   DTLS uses a simple timeout and retransmission scheme with the
-   state machine shown in {{dtls-timeout-state-machine}}.
-   Because DTLS clients send the first message
-   (ClientHello), they start in the PREPARING state.  DTLS servers start
-   in the WAITING state, but with empty buffers and no retransmit timer.
+DTLS uses a simple timeout and retransmission scheme with the
+state machine shown in {{dtls-timeout-state-machine}}.
+Because DTLS clients send the first message
+(ClientHello), they start in the PREPARING state.  DTLS servers start
+in the WAITING state, but with empty buffers and no retransmit timer.
 
 ~~~~
                              +-----------+
                              | PREPARING |
-                +----------> |           | 
-                |            |           |                      
-                |            +-----------+                      
-                |                  |                            
-                |                  | Buffer next flight         
-                |                  |                            
-                |                 \|/                           
-                |            +-----------+                      
-                |            |           |                      
-                |            |  SENDING  |<------------------+  
-                |            |           |                   |  
-                |            +-----------+                   |  
-        Receive |                  |                         |  
+                +----------> |           |
+                |            |           |
+                |            +-----------+
+                |                  |
+                |                  | Buffer next flight
+                |                  |
+                |                 \|/
+                |            +-----------+
+                |            |           |
+                |            |  SENDING  |<------------------+
+                |            |           |                   |
+                |            +-----------+                   |
+        Receive |                  |                         |
            next |                  | Send flight or partial  |
          flight |                  | flight                  |
-                |  +---------------+                         |  
-                |  |               | Set retransmit timer    |  
-                |  |              \|/                        |  
-                |  |         +-----------+                   |  
-                |  |         |           |                   |  
-                +--)---------|  WAITING  |-------------------+  
-                |  |  +----->|           |   Timer expires   |  
-                |  |  |      +-----------+                   |  
-                |  |  |          |  |   |                    |  
-                |  |  |          |  |   |                    |  
-                |  |  +----------+  |   +--------------------+  
+                |  +---------------+                         |
+                |  |               | Set retransmit timer    |
+                |  |              \|/                        |
+                |  |         +-----------+                   |
+                |  |         |           |                   |
+                +--)---------|  WAITING  |-------------------+
+                |  |  +----->|           |   Timer expires   |
+                |  |  |      +-----------+                   |
+                |  |  |          |  |   |                    |
+                |  |  |          |  |   |                    |
+                |  |  +----------+  |   +--------------------+
                 |  | Receive record |   Read retransmit or ACK
-        Receive |  |  Send ACK      |                                    
-           last |  |                |                                                        
-         flight |  |                | Receive ACK                     
-                |  |                | for last flight                    
-               \|/\|/               |                     
-                                    |                     
-            +-----------+           |                     
-            |           | <---------+                               
+        Receive |  |  Send ACK      |
+           last |  |                |
+         flight |  |                | Receive ACK
+                |  |                | for last flight
+               \|/\|/               |
+                                    |
+            +-----------+           |
+            |           | <---------+
             | FINISHED  |
             |           |
             +-----------+
@@ -1015,23 +1011,23 @@ timeout and retransmission calculation.
 ~~~~
 {: #dtls-timeout-state-machine title="DTLS Timeout and Retransmission State Machine"}
 
-   The state machine has three basic states.
+The state machine has three basic states.
 
-   In the PREPARING state, the implementation does whatever computations
-   are necessary to prepare the next flight of messages.  It then
-   buffers them up for transmission (emptying the buffer first) and
-   enters the SENDING state.
+In the PREPARING state, the implementation does whatever computations
+are necessary to prepare the next flight of messages.  It then
+buffers them up for transmission (emptying the buffer first) and
+enters the SENDING state.
 
-   In the SENDING state, the implementation transmits the buffered
-   flight of messages. If the implementation has received one or more
-   ACKs {{ack-msg}} from the peer, then it SHOULD omit any messages or
-   message fragments which have already been ACKed. Once the messages
-   have been sent, the implementation then enters the FINISHED state
-   if this is the last flight in the handshake.  Or, if the
-   implementation expects to receive more messages, it sets a
-   retransmit timer and then enters the WAITING state.
+In the SENDING state, the implementation transmits the buffered
+flight of messages. If the implementation has received one or more
+ACKs {{ack-msg}} from the peer, then it SHOULD omit any messages or
+message fragments which have already been ACKed. Once the messages
+have been sent, the implementation then enters the FINISHED state
+if this is the last flight in the handshake.  Or, if the
+implementation expects to receive more messages, it sets a
+retransmit timer and then enters the WAITING state.
 
-   There are four ways to exit the WAITING state:
+There are four ways to exit the WAITING state:
 
 1. The retransmit timer expires: the implementation transitions to
    the SENDING state, where it retransmits the flight, resets the
@@ -1063,87 +1059,88 @@ timeout and retransmission calculation.
    flight) may also trigger the implementation to send an ACK, as
    described in {{sending-acks}}.
 
-   Because DTLS clients send the first message (ClientHello), they start
-   in the PREPARING state.  DTLS servers start in the WAITING state, but
-   with empty buffers and no retransmit timer.
+Because DTLS clients send the first message (ClientHello), they start
+in the PREPARING state.  DTLS servers start in the WAITING state, but
+with empty buffers and no retransmit timer.
 
-   In addition, for at least twice the default Maximum Segment Lifetime
-   (MSL) defined for {{RFC0793}}, when in the FINISHED state, the server
-   MUST respond to retransmission of the client's second flight with
-   a retransmit of its ACK.
+In addition, for at least twice the default Maximum Segment Lifetime
+(MSL) defined for {{RFC0793}}, when in the FINISHED state, the server
+MUST respond to retransmission of the client's second flight with
+a retransmit of its ACK.
 
-   Note that because of packet loss, it is possible for one side to be
-   sending application data even though the other side has not received
-   the first side's Finished message.  Implementations MUST either
-   discard or buffer all application data packets for the new epoch
-   until they have received the Finished message for that epoch.
-   Implementations MAY treat receipt of application data with a new
-   epoch prior to receipt of the corresponding Finished message as
-   evidence of reordering or packet loss and retransmit their final
-   flight immediately, shortcutting the retransmission timer.
+Note that because of packet loss, it is possible for one side to be
+sending application data even though the other side has not received
+the first side's Finished message.  Implementations MUST either
+discard or buffer all application data packets for the new epoch
+until they have received the Finished message for that epoch.
+Implementations MAY treat receipt of application data with a new
+epoch prior to receipt of the corresponding Finished message as
+evidence of reordering or packet loss and retransmit their final
+flight immediately, shortcutting the retransmission timer.
 
 ### Timer Values
 
-   Though timer values are the choice of the implementation, mishandling
-   of the timer can lead to serious congestion problems; for example, if
-   many instances of a DTLS time out early and retransmit too quickly on
-   a congested link.  Implementations SHOULD use an initial timer value
-   of 100 msec (the minimum defined in RFC 6298 {{RFC6298}}) and double
-   the value at each retransmission, up to no less than the RFC 6298
-   maximum of 60 seconds. Application specific profiles, such as those
-   used for the Internet of Things environment, may recommend longer
-   timer values. Note that we recommend a 100 msec timer
-   rather than the 3-second RFC 6298 default in order to improve latency
-   for time-sensitive applications.  Because DTLS only uses
-   retransmission for handshake and not dataflow, the effect on
-   congestion should be minimal.
+Though timer values are the choice of the implementation, mishandling
+of the timer can lead to serious congestion problems; for example, if
+many instances of a DTLS time out early and retransmit too quickly on
+a congested link.  Implementations SHOULD use an initial timer value
+of 100 msec (the minimum defined in RFC 6298 {{RFC6298}}) and double
+the value at each retransmission, up to no less than the RFC 6298
+maximum of 60 seconds. Application specific profiles, such as those
+used for the Internet of Things environment, may recommend longer
+timer values. Note that we recommend a 100 msec timer
+rather than the 3-second RFC 6298 default in order to improve latency
+for time-sensitive applications.  Because DTLS only uses
+retransmission for handshake and not dataflow, the effect on
+congestion should be minimal.
 
-   Implementations SHOULD retain the current timer value until a
-   transmission without loss occurs, at which time the value may be
-   reset to the initial value.  After a long period of idleness, no less
-   than 10 times the current timer value, implementations may reset the
-   timer to the initial value.  One situation where this might occur is
-   when a rehandshake is used after substantial data transfer.
+Implementations SHOULD retain the current timer value until a
+transmission without loss occurs, at which time the value may be
+reset to the initial value.  After a long period of idleness, no less
+than 10 times the current timer value, implementations may reset the
+timer to the initial value.  One situation where this might occur is
+when a rehandshake is used after substantial data transfer.
 
 
 ##  CertificateVerify and Finished Messages
 
-   CertificateVerify and Finished messages have the same format as in
-   TLS 1.3.  Hash calculations include entire handshake messages, including
-   DTLS-specific fields: message_seq, fragment_offset, and
-   fragment_length.  However, in order to remove sensitivity to
-   handshake message fragmentation, the CertificateVerify and the Finished messages MUST be computed as
-   if each handshake message had been sent as a single fragment following
-   the algorithm described in Section 4.4.3 and Section 4.4.4 of {{I-D.ietf-tls-tls13}}, respectively.
+CertificateVerify and Finished messages have the same format as in
+TLS 1.3.  Hash calculations include entire handshake messages, including
+DTLS-specific fields: message_seq, fragment_offset, and
+fragment_length.  However, in order to remove sensitivity to
+handshake message fragmentation, the CertificateVerify and the Finished messages MUST be computed as
+if each handshake message had been sent as a single fragment following
+the algorithm described in Section 4.4.3 and Section 4.4.4 of {{I-D.ietf-tls-tls13}}, respectively.
+
 
 ##  Alert Messages
 
-   Note that Alert messages are not retransmitted at all, even when they
-   occur in the context of a handshake.  However, a DTLS implementation
-   which would ordinarily issue an alert SHOULD generate a new alert
-   message if the offending record is received again (e.g., as a
-   retransmitted handshake message).  Implementations SHOULD detect when
-   a peer is persistently sending bad messages and terminate the local
-   connection state after such misbehavior is detected.
+Note that Alert messages are not retransmitted at all, even when they
+occur in the context of a handshake.  However, a DTLS implementation
+which would ordinarily issue an alert SHOULD generate a new alert
+message if the offending record is received again (e.g., as a
+retransmitted handshake message).  Implementations SHOULD detect when
+a peer is persistently sending bad messages and terminate the local
+connection state after such misbehavior is detected.
 
 ##  Establishing New Associations with Existing Parameters
 
-   If a DTLS client-server pair is configured in such a way that
-   repeated connections happen on the same host/port quartet, then it is
-   possible that a client will silently abandon one connection and then
-   initiate another with the same parameters (e.g., after a reboot).
-   This will appear to the server as a new handshake with epoch=0.  In
-   cases where a server believes it has an existing association on a
-   given host/port quartet and it receives an epoch=0 ClientHello, it
-   SHOULD proceed with a new handshake but MUST NOT destroy the existing
-   association until the client has demonstrated reachability either by
-   completing a cookie exchange or by completing a complete handshake
-   including delivering a verifiable Finished message.  After a correct
-   Finished message is received, the server MUST abandon the previous
-   association to avoid confusion between two valid associations with
-   overlapping epochs.  The reachability requirement prevents
-   off-path/blind attackers from destroying associations merely by
-   sending forged ClientHellos.
+If a DTLS client-server pair is configured in such a way that
+repeated connections happen on the same host/port quartet, then it is
+possible that a client will silently abandon one connection and then
+initiate another with the same parameters (e.g., after a reboot).
+This will appear to the server as a new handshake with epoch=0.  In
+cases where a server believes it has an existing association on a
+given host/port quartet and it receives an epoch=0 ClientHello, it
+SHOULD proceed with a new handshake but MUST NOT destroy the existing
+association until the client has demonstrated reachability either by
+completing a cookie exchange or by completing a complete handshake
+including delivering a verifiable Finished message.  After a correct
+Finished message is received, the server MUST abandon the previous
+association to avoid confusion between two valid associations with
+overlapping epochs.  The reachability requirement prevents
+off-path/blind attackers from destroying associations merely by
+sending forged ClientHellos.
 
 
 # Example of Handshake with Timeout and Retransmission
@@ -1154,10 +1151,10 @@ retransmissions.
 ~~~~
 Client                                                Server
 ------                                                ------
- 
-Record 0                   -------->
-ClientHello                
-(message_seq=0)
+
+ Record 0                  -------->
+ ClientHello
+ (message_seq=0)
   +cookie
 
                              X<-----                 Record 0
@@ -1165,18 +1162,18 @@ ClientHello
                                               (message_seq=1)
                                           EncryptedExtensions
                                               (message_seq=2)
-                                                  Certificate 
+                                                  Certificate
                                               (message_seq=3)
-                                   
-  
+
+
                            <--------                 Record 1
-                                            CertificateVerify 
+                                            CertificateVerify
                                               (message_seq=4)
                                                      Finished
                                               (message_seq=5)
 
-Record 1                   -------->
-ACK [1]
+ Record 1                  -------->
+ ACK [1]
 
 
                            <--------                 Record 2
@@ -1187,19 +1184,20 @@ ACK [1]
                                                   Certificate
                                               (message_seq=3)
 
-Record 2                   -------->
-Certificate               
-(message_seq=2)
-CertificateVerify
-(message_seq=3)
-Finished 
-(message_seq=4)
+ Record 2                  -------->
+ Certificate
+ (message_seq=2)
+ CertificateVerify
+ (message_seq=3)
+ Finished
+ (message_seq=4)
 
                            <--------               Record 3
                                                     ACK [2]
-                                              
+
 ~~~~
 {: #dtls-msg-loss title="Example DTLS Exchange illustrating Message Loss"}
+
 
 ## Epoch Values and Rekeying {#dtls-epoch}
 
@@ -1217,8 +1215,8 @@ This version of DTLS assigns dedicated epoch values to messages in the
 protocol exchange to allow identification of the correct cipher state:
 
    * epoch value (0) is used with unencrypted messages. There are
-   three unencrypted messages in DTLS, namely ClientHello, ServerHello,
-   and HelloRetryRequest.
+     three unencrypted messages in DTLS, namely ClientHello, ServerHello,
+     and HelloRetryRequest.
    * epoch value (1) is used for messages protected using keys derived
      from early_traffic_secret. This includes early data sent by the
      client and the EndOfEarlyData message.
@@ -1270,15 +1268,15 @@ The traffic key calculation is described in Section 7.3 of {{I-D.ietf-tls-tls13}
 Client                                             Server
 ------                                             ------
 
-ClientHello
-(epoch=0)
+ ClientHello
+ (epoch=0)
                             -------->
 
                             <--------       HelloRetryRequest
                                                     (epoch=0)
 
-ClientHello                 -------->
-(epoch=0)
+ ClientHello                -------->
+ (epoch=0)
 
                             <--------             ServerHello
                                                     (epoch=0)
@@ -1291,38 +1289,38 @@ ClientHello                 -------->
                                                    {Finished}
                                                     (epoch=2)
 
-{Certificate}               -------->
-(epoch=2)
-{CertificateVerify}
-(epoch=2)
-{Finished}
-(epoch=2)
+ {Certificate}              -------->
+ (epoch=2)
+ {CertificateVerify}
+ (epoch=2)
+ {Finished}
+ (epoch=2)
 
                             <--------                   [Ack]
                                                     (epoch=3)
 
-[Application Data]         -------->
-(epoch=3)
+ [Application Data]         -------->
+ (epoch=3)
 
-                           <--------       [Application Data]
+                            <--------      [Application Data]
                                                     (epoch=3)
 
                          Some time later ...
                  (Post-Handshake Message Exchange)
 
-                           <--------       [NewSessionTicket]
+                            <--------      [NewSessionTicket]
                                                     (epoch=3)
 
-[Ack]                      -------->
-(epoch=3)
+ [Ack]                      -------->
+ (epoch=3)
 
                          Some time later ...
                            (Rekeying)
 
-                           <--------       [Application Data]
+                            <--------      [Application Data]
                                                     (epoch=4)
-[Application Data]         -------->
-(epoch=4)
+ [Application Data]         -------->
+ (epoch=4)
 ~~~~
 {: #dtls-msg-epoch title="Example DTLS Exchange with Epoch Information"}
 
@@ -1343,14 +1341,13 @@ struct {
 ~~~~
 
 record_numbers:
-
 : a list of the records containing handshake messages in the current
-flight which the endpoint has received, in numerically increasing
-order. ACKs only cover the current outstanding flight (this is
-possible because DTLS is generally a lockstep protocol). Thus, an ACK
-from the server would not cover both the ClientHello and the client's
-Certificate. Implementations can accomplish this by clearing their ACK
-list upon receiving the start of the next flight.
+  flight which the endpoint has received, in numerically increasing
+  order. ACKs only cover the current outstanding flight (this is
+  possible because DTLS is generally a lockstep protocol). Thus, an ACK
+  from the server would not cover both the ClientHello and the client's
+  Certificate. Implementations can accomplish this by clearing their ACK
+  list upon receiving the start of the next flight.
 
 ACK records MUST be sent with an epoch that is equal to or higher
 than the record which is being acknowledged. Implementations SHOULD
@@ -1363,21 +1360,21 @@ When an implementation receives a partial flight, it SHOULD generate
 an ACK that covers the messages from that flight which it has
 received so far. Implementations have some discretion about when
 to generate ACKs, but it is RECOMMENDED that they do so under
-two circumstances: 
+two circumstances:
 
-    - When they receive a message or fragment which is out of order,
-    either because it is not the next expected message or because
-    it is not the next piece of the current message. Implementations
-    MUST NOT send ACKs for handshake messages which they discard
-    as out-of-order, because otherwise those messages will not be
-    retransmitted.
+- When they receive a message or fragment which is out of order,
+  either because it is not the next expected message or because
+  it is not the next piece of the current message. Implementations
+  MUST NOT send ACKs for handshake messages which they discard
+  as out-of-order, because otherwise those messages will not be
+  retransmitted.
 
-    - When they have received part of a flight and do not immediately
-    receive the rest of the flight (which may be in the same UDP
-    datagram). A reasonable approach here is to
-    set a timer for 1/4 the current retransmit timer value when
-    the first record in the flight is received and then send an
-    ACK when that timer expires.
+- When they have received part of a flight and do not immediately
+  receive the rest of the flight (which may be in the same UDP
+  datagram). A reasonable approach here is to
+  set a timer for 1/4 the current retransmit timer value when
+  the first record in the flight is received and then send an
+  ACK when that timer expires.
 
 In addition, implementations MUST send ACKs upon receiving
 all of any flight which they do not respond to with their
@@ -1390,6 +1387,7 @@ immediately follows the flight.
 
 ACKs MUST NOT be sent for other records of any content type
 other than handshake.
+
 
 ## Receiving ACKs
 
@@ -1405,15 +1403,17 @@ of that flight. As noted above, the receipt of any packet responding
 to a given flight MUST be taken as an implicit ACK for the entire
 flight.
 
+
 #  Application Data Protocol
 
 Application data messages are carried by the record layer and are fragmented
 and encrypted based on the current connection state. The messages
 are treated as transparent data to the record layer.
 
+
 #  Security Considerations
 
-Security issues are discussed primarily in {{I-D.ietf-tls-tls13}}. 
+Security issues are discussed primarily in {{I-D.ietf-tls-tls13}}.
 
 The primary additional security consideration raised by DTLS is that
 of denial of service.  DTLS includes a cookie exchange designed to
@@ -1428,6 +1428,7 @@ cookie exchange with every handshake.
 
 Unlike TLS implementations, DTLS implementations SHOULD NOT respond
 to invalid records by terminating the connection.
+
 
 #  Changes to DTLS 1.2
 
@@ -1445,11 +1446,13 @@ this section focuses on the most important changes only.
   * Removed support for weaker and older cryptographic algorithms
   * Improved version negotation
 
+
 #  IANA Considerations
 
 IANA is requested to allocate a new value in the TLS ContentType Registry for the ACK message defined in {{ack-msg}}.
 
 --- back
+
 
 # History
 
@@ -1475,6 +1478,7 @@ draft-00
     ClientHello and HelloVerifyRequest messages
   - Added ACK message
   - Text about sequence number handling
+
 
 # Working Group Information
 
