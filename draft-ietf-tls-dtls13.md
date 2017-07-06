@@ -735,7 +735,7 @@ DTLSPlaintext.sequence_number value.
 
 DTLS implementations maintain (at least notionally) a
 next_receive_seq counter.  This counter is initially set to zero.
-When a message is received, if its sequence number matches
+When a handshake message is received, if its message_seq value matches
 next_receive_seq, next_receive_seq is incremented and the message is
 processed.  If the sequence number is less than next_receive_seq, the
 message MUST be discarded.  If the sequence number is greater than
