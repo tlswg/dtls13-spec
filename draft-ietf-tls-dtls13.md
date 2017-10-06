@@ -1386,7 +1386,17 @@ by the receipt of the next flight, which generally
 immediately follows the flight.
 
 ACKs MUST NOT be sent for other records of any content type
-other than handshake.
+other than handshake or for records which cannot be unprotected.
+
+Note that in some cases it may be necessary to send an ACK which
+does not contain any record numbers. For instance, a client
+might receive an EncryptedExtensions message prior to receiving
+a ServerHello. Because it cannot decrypt the EncryptedExtensions,
+it cannot safely ACK it (as it might be damaged). If the client
+does not send an ACK, the server will eventually retransmit
+its first flight, but this might take far longer than the
+actual round trip time between client and server. Having
+the client send an empty ACK shortcuts this process.
 
 
 ## Receiving ACKs
