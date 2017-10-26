@@ -692,7 +692,6 @@ fragmentation, DTLS modifies the TLS 1.3 handshake header:
       client_key_exchange_RESERVED(16),
       finished(20),
       key_update_RESERVED(24),
-      ack([[TBD RFC Editor -- Proposal: 25]]),
       message_hash(254),
       (255)
   } HandshakeType;
@@ -1334,7 +1333,7 @@ Client                                             Server
 The ACK message is used by an endpoint to indicate handshake-containing
 the TLS records it has received from the other side. ACK is not
 a handshake message but is rather a separate content type,
-with code point TBD. This avoids it consuming space in the
+with code point TBD (proposed, 25). This avoids it consuming space in the
 handshake message sequence. Note that ACKs can still be
 piggybacked on the same UDP datagram as handshake records.
 
@@ -1473,7 +1472,7 @@ this section focuses on the most important changes only.
 
 #  IANA Considerations
 
-IANA is requested to allocate a new value in the TLS ContentType Registry for the ACK message defined in {{ack-msg}}.
+IANA is requested to allocate a new value in the TLS ContentType Registry for the ACK message defined in {{ack-msg}}, with content type 25.
 
 --- back
 
