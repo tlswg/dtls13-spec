@@ -179,8 +179,10 @@ TLS cannot be used directly in datagram environments for the following five reas
 4. Handshake messages are potentially larger than any given datagram,
    thus creating the problem of IP fragmentation.
 
-5. Datagram transport protocols, like UDP, are more vulnerable to denial of
-   service attacks and require a return-routability check with the help of
+5. Datagram transport protocols, like UDP, are susceptible to abusive behavior
+   effecting denial of
+   service attacks against nonparticipants,
+   and require a return-routability check with the help of
    cookies to be integrated into the handshake. A detailed discussion of
    countermeasures can be found in {{dos}}.
 
@@ -507,7 +509,9 @@ repeatedly probes the implementation to see how it responds to
 various types of error.  Note that if DTLS is run over UDP, then any
 implementation which does this will be extremely susceptible to
 denial-of-service (DoS) attacks because UDP forgery is so easy.
-Thus, this practice is NOT RECOMMENDED for such transports.
+Thus, this practice is NOT RECOMMENDED for such transports, both
+to increase the reliability of DTLS service and to avoid the risk
+of spoofing attacks sending traffic to unrelated third parties.
 
 If DTLS is being carried over a transport that is resistant to
 forgery (e.g., SCTP with SCTP-AUTH), then it is safer to send alerts
