@@ -61,6 +61,8 @@ informative:
   RFC5246:
   RFC6347:
   RFC7525:
+  I-D.ietf-tls-record-limit:
+  RFC6066:
 --- abstract
 
 This document specifies Version 1.3 of the Datagram Transport Layer Security
@@ -179,10 +181,8 @@ TLS cannot be used directly in datagram environments for the following five reas
 4. Handshake messages are potentially larger than any given datagram,
    thus creating the problem of IP fragmentation.
 
-5. Datagram transport protocols, like UDP, are susceptible to abusive behavior
-   effecting denial of
-   service attacks against nonparticipants,
-   and require a return-routability check with the help of
+5. Datagram transport protocols, like UDP, are more vulnerable to denial of
+   service attacks and require a return-routability check with the help of
    cookies to be integrated into the handshake. A detailed discussion of
    countermeasures can be found in {{dos}}.
 
@@ -347,42 +347,27 @@ allowing the sequence number to wrap.
 Implementations MUST NOT allow the epoch to wrap, but instead MUST establish
 a new association, terminating the old association.
 
-
 ##  Transport Layer Mapping
 
-Each DTLS record MUST fit within a single datagram.  In order to
-avoid IP fragmentation, clients of the DTLS record layer SHOULD
-attempt to size records so that they fit within any PMTU estimates
-obtained from the record layer.
+### Fragmentation and Reassembly 
 
-Note that unlike IPsec, DTLS records do not contain any association
-identifiers.  Applications must arrange to multiplex between associations.
-With UDP, the host/port number is used to look up the appropriate
-security association for incoming records.
+When a DTLS library transmits handshake messages and application data
+it has to decide how much data to place in a single DTLS record and
+how many records to encapsulate within a single datagram. One one 
+hand the sender SHOULD attempt to size records so that they fit within 
+any PMTU estimates obtained from the record layer and on the other 
+hand it needs to take the memory limitations expressed via the 
+Maximum Fragment Length extension {{RFC6066}} or the Record Size 
+Limit extension {{I-D.ietf-tls-record-limit}} into account. 
 
-Multiple DTLS records may be placed in a single datagram.  They are
-simply encoded consecutively.  The DTLS record framing is sufficient
-to determine the boundaries.  Note, however, that the first byte of
-the datagram payload must be the beginning of a record.  Records may
-not span datagrams.
+There are, however, rules an implementation needs to adhere to:
 
-Some transports, such as DCCP {{RFC4340}}, provide their own sequence
-numbers.  When carried over those transports, both the DTLS and the
-transport sequence numbers will be present.  Although this introduces
-a small amount of inefficiency, the transport layer and DTLS sequence
-numbers serve different purposes; therefore, for conceptual simplicity,
-it is superior to use both sequence numbers.
+- Each DTLS record MUST fit within a single datagram. The first byte of
+the datagram payload must be the beginning of a record. 
 
-Some transports provide congestion control for traffic
-carried over them.  If the congestion window is sufficiently narrow,
-DTLS handshake retransmissions may be held rather than transmitted
-immediately, potentially leading to timeouts and spurious
-retransmission.  When DTLS is used over such transports, care should
-be taken not to overrun the likely congestion window. {{RFC5238}}
-defines a mapping of DTLS to DCCP that takes these issues into account.
-
-
-##  PMTU Issues
+- Multiple DTLS records may be placed in a single datagram. They are
+simply encoded consecutively. The DTLS record framing is sufficient
+to determine the boundaries.
 
 In general, DTLS's philosophy is to leave PMTU discovery to the application.
 However, DTLS cannot completely ignore PMTU for three reasons:
@@ -454,6 +439,33 @@ DTLS implementations SHOULD follow the following rules:
   retransmits to attempt before backing off, but 2-3 seems
   appropriate.
 
+## Demultiplexing 
+
+Note that unlike IPsec, DTLS records do not contain any association
+identifiers.  Applications must arrange to multiplex between associations.
+With UDP, the host/port number is used to look up the appropriate
+security association for incoming records. To reduce this limitation
+an extension, the connection id, has been defined in 
+{{I-D.rescorla-tls-dtls-connection-id}} and may be used with this specification.
+
+## Sequence Numbers 
+
+Some transports, such as DCCP {{RFC4340}}, provide their own sequence
+numbers.  When carried over those transports, both the DTLS and the
+transport sequence numbers will be present.  Although this introduces
+a small amount of inefficiency, the transport layer and DTLS sequence
+numbers serve different purposes; therefore, for conceptual simplicity,
+it is superior to use both sequence numbers.
+
+## Congestion Control 
+
+Some transports provide congestion control for traffic
+carried over them.  If the congestion window is sufficiently narrow,
+DTLS handshake retransmissions may be held rather than transmitted
+immediately, potentially leading to timeouts and spurious
+retransmission.  When DTLS is used over such transports, care should
+be taken not to overrun the likely congestion window. {{RFC5238}}
+defines a mapping of DTLS to DCCP that takes these issues into account.
 
 ##  Record Payload Protection
 
@@ -509,9 +521,7 @@ repeatedly probes the implementation to see how it responds to
 various types of error.  Note that if DTLS is run over UDP, then any
 implementation which does this will be extremely susceptible to
 denial-of-service (DoS) attacks because UDP forgery is so easy.
-Thus, this practice is NOT RECOMMENDED for such transports, both
-to increase the reliability of DTLS service and to avoid the risk
-of spoofing attacks sending traffic to unrelated third parties.
+Thus, this practice is NOT RECOMMENDED for such transports.
 
 If DTLS is being carried over a transport that is resistant to
 forgery (e.g., SCTP with SCTP-AUTH), then it is safer to send alerts
@@ -1340,7 +1350,7 @@ piggybacked on the same UDP datagram as handshake records.
 
 ~~~~
 struct {
-       uint64 record_numbers<0..2^16-1>;
+       uint64 record_numbers<8..2^16-1>;
 } ACK;
 ~~~~
 
@@ -1390,17 +1400,7 @@ by the receipt of the next flight, which generally
 immediately follows the flight.
 
 ACKs MUST NOT be sent for other records of any content type
-other than handshake or for records which cannot be unprotected.
-
-Note that in some cases it may be necessary to send an ACK which
-does not contain any record numbers. For instance, a client
-might receive an EncryptedExtensions message prior to receiving
-a ServerHello. Because it cannot decrypt the EncryptedExtensions,
-it cannot safely ACK it (as it might be damaged). If the client
-does not send an ACK, the server will eventually retransmit
-its first flight, but this might take far longer than the
-actual round trip time between client and server. Having
-the client send an empty ACK shortcuts this process.
+other than handshake.
 
 
 ## Receiving ACKs
@@ -1443,16 +1443,6 @@ cookie exchange with every handshake.
 Unlike TLS implementations, DTLS implementations SHOULD NOT respond
 to invalid records by terminating the connection.
 
-Updating sending traffic keys is done implicitly by increasing the 
-epoch value, as described in {{dtls-epoch}}, instead of 
-using the KeyUpdate handshake message. While this is more efficient 
-it also creates a denial of service risk since an adverary could 
-inject packets with fake epoch values. This forces the recipient 
-to compute the next-generation application_traffic_secret using the 
-HKDF-Expand-Label construct to only find out that the message was 
-does not pass the AEAD cipher processing. The impact of this 
-attack is small since the HKDF-Expand-Label only performs symmetric
-key hashing operations. 
 
 #  Changes to DTLS 1.2
 
