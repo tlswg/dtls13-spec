@@ -259,16 +259,18 @@ modify their data transmission strategy.
 # The DTLS Record Layer
 
 The DTLS record layer is similar to that of TLS 1.3.
-There are two major changes:
+There are three major changes:
 
-1. The DTLS record layer includes an explicit epoch and sequence number
+1. The DTLSCiphertext structure omits the superfluous version number field
+
+2. The DTLSCiphertext structure adds an explicit epoch and sequence number
 in the record.  This sequence number allows the recipient to correctly
-verify the TLS MAC.
+verify the DTLS MAC.
 
-2. DTLS adds a short header format that can be used to reduce overhead
-once the handshake is complete.
+3. DTLS adds a short header format (DTLSShortCiphertext) that can be
+used to reduce overhead once the handshake is complete.
 
-The basic DTLS record format is shown below:
+The DTLS record formats are shown below:
 
 ~~~~
   struct {
@@ -279,9 +281,7 @@ The basic DTLS record format is shown below:
 
    struct {
        ContentType opaque_type = 23; /* application_data */
-       ProtocolVersion legacy_record_version = {254,253); // DTLSv1.2
-       uint16 epoch;                         // DTLS-related field
-       uint48 sequence_number;               // DTLS-related field
+       uint32 epoch_and_sequence;
        uint16 length;
        opaque encrypted_record[length];
     } DTLSCiphertext;
@@ -290,16 +290,12 @@ The basic DTLS record format is shown below:
 type:
 : The content type of the record.
 
-legacy_record_version:
-: This field is redundant and it is treated in the same way as specified in the TLS 1.3 specification.
-  The DTLS version 1.2 version number is reused, namely { 254, 253 }.
-  This field is deprecated and MUST be ignored.
-
-epoch:
-: A counter value that is incremented on every cipher state change.
-
-sequence_number:
-: The sequence number for this record.
+epoch_and_sequence:
+: The low order two bits of the epoch and the low order 30 bits of
+  the sequence number, laid out as a 32 bit integer with the
+  epoch constituting the first two bits and the sequence number
+  constituting the last 30 bits (see {{reconstructing}}
+  for how to use this value).
 
 length:
 : Identical to the length field in a TLS 1.3 record.
@@ -332,10 +328,6 @@ packed into a 16 bit integer as follows:
 
 - The remaining bits contain the low order 12 bits of the sequence
   number.
-
-For deprotecion purposes, the nonce is computed using the full
-sequence number, which can be reconstructed as described in
-{{reconstructing}}.
 
 In this format, the length field is omitted and therefore the
 record consumes the entire rest of the datagram in the lower
@@ -415,7 +407,7 @@ deprotection.
 
 ### Reconstructing the Sequence Number and Epoch {#reconstructing}
 
-When receiving a DTLSShortCiphertext message, the recipient does not
+When receiving protected DTLS records message, the recipient does not
 have a full epoch or sequence number value and so there is some
 opportunity for ambiguity.  Because the full epoch and sequence number
 are used to compute the per-record nonce, failure to reconstruct these
@@ -424,7 +416,7 @@ MAY use a mechanism of their choice to determine the full values.
 This section provides an algorithm which is comparatively simple
 and which implementations are RECOMMENDED to follow.
 
-If the epoch bit has the same parity as the current epoch, then
+If the epoch bits match those of the current epoch, then
 implementations SHOULD reconstruct the sequence number by computing
 the full sequence number which is numerically closest to one plus the
 sequence number of the highest successfully deprotected record.
