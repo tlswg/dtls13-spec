@@ -1429,6 +1429,16 @@ cookie exchange with every handshake.
 Unlike TLS implementations, DTLS implementations SHOULD NOT respond
 to invalid records by terminating the connection.
 
+Updating sending traffic keys is done implicitly by increasing the 
+epoch value, as described in {{dtls-epoch}}, instead of 
+using the KeyUpdate handshake message. While this is more efficient 
+it also creates a denial of service risk since an adverary could 
+inject packets with fake epoch values. This forces the recipient 
+to compute the next-generation application_traffic_secret using the 
+HKDF-Expand-Label construct to only find out that the message was 
+does not pass the AEAD cipher processing. The impact of this 
+attack is small since the HKDF-Expand-Label only performs symmetric
+key hashing operations. 
 
 #  Changes to DTLS 1.2
 
