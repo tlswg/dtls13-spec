@@ -321,9 +321,9 @@ The short DTLS header format is:
 The short_epoch_and_sequence document contains the epoch and sequence
 packed into a 16 bit integer as follows:
 
-- The first three bits are set to 001 in order to allow demuxing
-  between DTLS and other protocols {{?RFC7983}} and distinguish the
-  short from long header formats.
+- The first three bits are set to 001 in order to allow multiplexing
+  between DTLS and VoIP protocols (STUN, RTP/RTCP, etc.) {{?RFC7983}}
+  and distinguish the short from long header formats.
 
 - The fourth bit is the low order bit of the epoch value.
 
@@ -397,8 +397,9 @@ a new association, terminating the old association.
 Implementations can distinguish the two header formats by examining
 the first byte, which in the DTLSCiphertext header represents the
 content type. The only valid values for the content type are
-alert(21), handshake(22), or application_data(23), which actually
-represents protected data with the true content type being
+alert(21), handshake(22), application_data(23), and ack(25),
+with application_data actually
+representing protected data with the true content type being
 encrypted. If any of these values is present, then the record MUST be
 handled as DTLSCiphertext.
 
