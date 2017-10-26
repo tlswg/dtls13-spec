@@ -428,8 +428,9 @@ sequence number of the highest successfully deprotected record.
 If the epoch bit has a different parity from the current epoch, then
 the record is either from a previous epoch or from a future
 epoch. Implementations SHOULD use the epoch value which would produce
-a sequence number which is numerically closest, as determined by the
-algorithm in the paragraph above.
+a sequence number which is numerically closest to what would
+be reconstructed for that epoch, as determined by the algorithm
+in the paragraph above.
 
 [[OPEN ISSUE: Say something about how many outstanding packets?
 Difficulty here is that we have no ACKs to tell us what's outstanding.]]
