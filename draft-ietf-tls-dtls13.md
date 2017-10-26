@@ -1336,7 +1336,7 @@ piggybacked on the same UDP datagram as handshake records.
 
 ~~~~
 struct {
-       uint64 record_numbers<8..2^16-1>;
+       uint64 record_numbers<0..2^16-1>;
 } ACK;
 ~~~~
 
