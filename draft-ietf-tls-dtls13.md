@@ -422,8 +422,8 @@ and which implementations are RECOMMENDED to follow.
 
 If the epoch bit has the same parity as the current epoch, then
 implementations SHOULD reconstruct the sequence number by computing
-the full sequence number which is numerically closest to the most
-recently successfully deprotected record.
+the full sequence number which is numerically closest to one plus the
+sequence number of the highest successfully deprotected record.
 
 If the epoch bit has a different parity from the current epoch, then
 the record is either from a previous epoch or from a future
