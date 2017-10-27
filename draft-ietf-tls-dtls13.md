@@ -258,47 +258,96 @@ modify their data transmission strategy.
 
 # The DTLS Record Layer
 
-The DTLS record layer is similar to that of TLS 1.3 unless noted otherwise.
-The only change is the inclusion of an explicit epoch and sequence number
+The DTLS record layer is similar to that of TLS 1.3.
+There are three major changes:
+
+1. The DTLSCiphertext structure omits the superfluous version number field
+
+2. The DTLSCiphertext structure adds an explicit epoch and sequence number
 in the record.  This sequence number allows the recipient to correctly
-verify the TLS MAC.  The DTLS record format is shown below:
+verify the DTLS MAC.
+
+3. DTLS adds a short header format (DTLSShortCiphertext) that can be
+used to reduce overhead once the handshake is complete.
+
+The DTLS record formats are shown below:
 
 ~~~~
+  struct {
+      ContentType type;
+      ProtocolVersion version;
+      uint16 epoch = 0                                 // DTLS field
+      uint48 sequence_number;                          // DTLS field
+      uint16 length;
+      opaque fragment[DTLSPlaintext.length];
+  } DTLSPlaintext;
+
   struct {
        opaque content[DTLSPlaintext.length];
        ContentType type;
        uint8 zeros[length_of_padding];
-   } DTLSInnerPlaintext;
+  } DTLSInnerPlaintext;
 
-   struct {
-       ContentType opaque_type = 23; /* application_data */
-       ProtocolVersion legacy_record_version = {254,253); // DTLSv1.2
-       uint16 epoch;                         // DTLS-related field
-       uint48 sequence_number;               // DTLS-related field
-       uint16 length;
-       opaque encrypted_record[length];
-} DTLSCiphertext;
+  struct {
+      ContentType opaque_type = 23; /* application_data */
+      uint32 epoch_and_sequence;
+      uint16 length;
+      opaque encrypted_record[length];
+  } DTLSCiphertext;
 ~~~~
 
 type:
 : The content type of the record.
 
-legacy_record_version:
-: This field is redundant and it is treated in the same way as specified in the TLS 1.3 specification.
-  The DTLS version 1.2 version number is reused, namely { 254, 253 }.
-  This field is deprecated and MUST be ignored.
-
-epoch:
-: A counter value that is incremented on every cipher state change.
-
-sequence_number:
-: The sequence number for this record.
+epoch_and_sequence:
+: The low order two bits of the epoch and the low order 30 bits of
+  the sequence number, laid out as a 32 bit integer.
+  The first 2 bits hold low order bits from the epoch and the
+  remaining 30 bits hold the low order bits from the sequence number
+  (see {{reconstructing}} for how to use this value).
 
 length:
 : Identical to the length field in a TLS 1.3 record.
 
 encrypted_record:
 : Identical to the encrypted_record field in a TLS 1.3 record.
+
+{:br}
+
+The short DTLS header format is:
+
+~~~~
+    struct {
+      uint16 short_epoch_and_sequence;  // 001ESSSS SSSSSSSS
+      opaque encrypted_record[remainder_of_datagram];
+    } DTLSShortCiphertext;
+~~~~
+
+DTLSPlaintext is used to send unprotected records and DTLSCiphertext
+or DTLSShortCiphertext are used to send protected records.
+
+The short_epoch_and_sequence document contains the epoch and sequence
+packed into a 16 bit integer as follows:
+
+- The first three bits are set to 001 in order to allow multiplexing
+  between DTLS and VoIP protocols (STUN, RTP/RTCP, etc.) {{?RFC7983}}
+  and distinguish the short from long header formats.
+
+- The fourth bit is the low order bit of the epoch value.
+
+- The remaining bits contain the low order 12 bits of the sequence
+  number.
+
+In this format, the length field is omitted and therefore the
+record consumes the entire rest of the datagram in the lower
+level transport. It is not possible to have multiple
+DTLSShortCiphertext format records in the same datagram.
+
+DTLSShortCiphertext MUST only be used for data which is protected with
+one of the application_traffic_secret values and not for either
+handshake or early data. When using the application_traffic_secret,
+Implementations MAY use either DTLSCiphertext or DTLSShortCiphertext
+at their discretion.
 
 ## Sequence Number Handling
 
@@ -347,6 +396,57 @@ allowing the sequence number to wrap.
 Implementations MUST NOT allow the epoch to wrap, but instead MUST establish
 a new association, terminating the old association.
 
+### Determining the Header Format
+
+Implementations can distinguish the three header formats by examining
+the first byte, which in the DTLSPlaintext and DTLSCiphertext header represents the
+content type. If the first byte is alert(21), handshake(22), or ack(25),
+the record MUST be interpreted as a DTLSPlaintext record. If the
+first byte is application_data(23) then the record MUST be
+interpreted handled as DTLSCiphertext; the true content type
+will be inside the protected portion.
+
+If the first byte is any other other value, then receivers
+MUST check to see if the leading bits of the first byte are
+001. If so, they MUST process the record as DTLSShortCiphertext.
+Otherwise, the record MUST be rejected as if it had failed
+deprotection.
+
+### Reconstructing the Sequence Number and Epoch {#reconstructing}
+
+When receiving protected DTLS records message, the recipient does not
+have a full epoch or sequence number value and so there is some
+opportunity for ambiguity.  Because the full epoch and sequence number
+are used to compute the per-record nonce, failure to reconstruct these
+values leads to failure to deprotect the record, and so implementations
+MAY use a mechanism of their choice to determine the full values.
+This section provides an algorithm which is comparatively simple
+and which implementations are RECOMMENDED to follow.
+
+If the epoch bits match those of the current epoch, then
+implementations SHOULD reconstruct the sequence number by computing
+the full sequence number which is numerically closest to one plus the
+sequence number of the highest successfully deprotected record.
+
+If the epoch bits do not match those from the current epoch, then
+the record is either from a previous epoch or from a future
+epoch. Implementations SHOULD use the epoch value which would produce
+a sequence number which is numerically closest to what would
+be reconstructed for that epoch, as determined by the algorithm
+in the paragraph above.
+
+Note: the DTLSShortCiphertext format does not allow for easy
+reconstruction of sequence numbers if ~2000 datagrams in sequence
+are lost. Implementations which may encounter this situation
+SHOULD use the DTLSDCiphertext format.
+
+[[OPEN ISSUE: Say something about how many outstanding packets?
+Difficulty here is that we have no ACKs to tell us what's outstanding.]]
+
+[[OPEN ISSUE: This isn't going to work well with multiple key updates.
+There are a number of options here, including limiting to one
+outstanding update, or saying that you have to use long headers
+in that case.]]
 
 ##  Transport Layer Mapping
 
@@ -1145,6 +1245,15 @@ association to avoid confusion between two valid associations with
 overlapping epochs.  The reachability requirement prevents
 off-path/blind attackers from destroying associations merely by
 sending forged ClientHellos.
+
+Note: it is not always possible to distinguish which association
+a given packet is from. For instance, if the client performs
+a handshake, abandons the connection, and then immediately starts
+a new handshake, it may not be possible to tell which connection
+a given protected record is for. In these cases, trial decryption
+MAY be necessary, though implementations could also use some sort
+of connection identifier, such as the one specified in
+{{?I-D.rescorla-tls-dtls-connection-id}}.
 
 
 # Example of Handshake with Timeout and Retransmission
