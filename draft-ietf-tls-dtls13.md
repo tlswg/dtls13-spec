@@ -529,9 +529,7 @@ the following changes:
 
 2. Retransmission timers are introduced to handle message loss.
 
-3. The TLS 1.3 KeyUpdate message is not used in DTLS 1.3 for re-keying.
-
-4. A new ACK content type has been added for reliable message delivery of handshake messages.
+3. A new ACK content type has been added for reliable message delivery of handshake messages.
 
 Note that TLS 1.3 already supports a cookie extension, which used to
 prevent denial-of-service attacks. This DoS prevention mechanism is
@@ -691,7 +689,7 @@ fragmentation, DTLS modifies the TLS 1.3 handshake header:
       certificate_verify(15),
       client_key_exchange_RESERVED(16),
       finished(20),
-      key_update_RESERVED(24),
+      key_update(24),
       ack([[TBD RFC Editor -- Proposal: 25]]),
       message_hash(254),
       (255)
@@ -714,7 +712,7 @@ fragmentation, DTLS modifies the TLS 1.3 handshake header:
           case certificate_verify:    CertificateVerify;
           case finished:              Finished;
           case new_session_ticket:    NewSessionTicket;
-          case key_update:            KeyUpdate; /* reserved */
+          case key_update:            KeyUpdate;
       } body;
   } Handshake;
 ~~~~
@@ -742,10 +740,6 @@ originally defined in DTLS 1.0. DTLS 1.3-compliant implements MUST NOT
 use the HelloVerifyRequest to execute a return-routability check. A
 dual-stack DTLS 1.2/DTLS 1.3 client MUST, however, be prepared to
 interact with a DTLS 1.2 server.
-
-A DTLS 1.3 MUST NOT use the KeyUpdate message to change keying material
-used for the protection of traffic data. Instead the epoch field is used,
-which is explained in {{dtls-epoch}}.
 
 
 ## ClientHello Message
@@ -1245,22 +1239,6 @@ uses epoch value 5 when sending early application data in a 0-RTT
 exchange. A server will not be able to compute the appropriate keys
 and will therefore have to respond with an alert.
 
-Increasing the epoch value by a sender (starting with value 4 upwards)
-corresponds semantically to rekeying using the KeyUpdate message in
-TLS 1.3. Instead of utilizing an dedicated message in DTLS 1.3 the
-sender uses an increase in the epoch value to signal rekeying. Hence,
-a sender that decides to increment the epoch value MUST send all its
-traffic using the next generation of keys, computed as described in
-Section 7.2 of {{I-D.ietf-tls-tls13}}. Upon receiving a payload with
-such a new epoch value, the receiver MUST update their receiving keys
-and if they have not already updated their sending state up to or past
-the then current receiving generation MUST send messages with the new
-epoch value prior to sending any other messages. For epoch values
-lower than 4 the key schedule described in Section 7.1 of
-{{I-D.ietf-tls-tls13}} is applicable. As a difference to the
-functionality of the KeyUpdate in TLS 1.3 the sender forces the
-receiver to increase the epoch value for outgoing data as well.
-
 Note that epoch values do not wrap. If a DTLS implementation would
 need to wrap the epoch value, it MUST terminate the connection.
 
@@ -1417,6 +1395,26 @@ of that flight. As noted above, the receipt of any packet responding
 to a given flight MUST be taken as an implicit ACK for the entire
 flight.
 
+## Key Updates
+
+DLTS 1.3 implementations MUST send a KeyUpdate message prior to
+updating the keys they are using to protect application data traffic.
+As with other handshake messages with no built-in response,
+KeyUpdates MUST be acknowledged. In order to facilitate
+epoch reconstruction {{#reconstruction}} implementations MUST
+NOT send a new KeyUpdate until the previous KeyUpdate has
+been acknowledged (this avoids having too many epochs in
+active use).
+
+Due to loss and/or re-ordering, DTLS 1.3 implementations
+may receive a record with a different epoch than the
+current one. They SHOULD attempt to process those records
+with that epoch (see [REF: #reconstructing] for information
+on determining the correct epoch), but MAY opt to discard
+such out-of-epoch records. Implementations SHOULD
+NOT discard the keys for their current epoch prior to
+receiving a KeyUpdate.
+
 
 #  Application Data Protocol
 
@@ -1443,16 +1441,15 @@ cookie exchange with every handshake.
 Unlike TLS implementations, DTLS implementations SHOULD NOT respond
 to invalid records by terminating the connection.
 
-Updating sending traffic keys is done implicitly by increasing the 
-epoch value, as described in {{dtls-epoch}}, instead of 
-using the KeyUpdate handshake message. While this is more efficient 
-it also creates a denial of service risk since an adverary could 
-inject packets with fake epoch values. This forces the recipient 
-to compute the next-generation application_traffic_secret using the 
-HKDF-Expand-Label construct to only find out that the message was 
-does not pass the AEAD cipher processing. The impact of this 
+If implementations process out-of-epoch records as recommended in
+{{key-updates}}, then this creates a denial of service risk since an adversary could
+inject packets with fake epoch values, forcing the recipient
+to compute the next-generation application_traffic_secret using the
+HKDF-Expand-Label construct to only find out that the message was
+does not pass the AEAD cipher processing. The impact of this
 attack is small since the HKDF-Expand-Label only performs symmetric
-key hashing operations. 
+key hashing operations. Implementations which are concerned about
+this form of attack can discard out-of-epoch records.
 
 #  Changes to DTLS 1.2
 
