@@ -442,7 +442,7 @@ in the paragraph above.
 Note: the DTLSShortCiphertext format does not allow for easy
 reconstruction of sequence numbers if ~2000 datagrams in sequence
 are lost. Implementations which may encounter this situation
-SHOULD use the DTLSDCiphertext format.
+SHOULD use the DTLSCiphertext format.
 
 [[OPEN ISSUE: Say something about how many outstanding packets?
 Difficulty here is that we have no ACKs to tell us what's outstanding.]]
