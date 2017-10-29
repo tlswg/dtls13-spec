@@ -258,10 +258,17 @@ modify their data transmission strategy.
 
 # The DTLS Record Layer
 
-The DTLS record layer is similar to that of TLS 1.3 unless noted otherwise.
-The only change is the inclusion of an explicit epoch and sequence number
+The DTLS record layer is similar to that of TLS 1.3.
+There are two major changes:
+
+1. The DTLS record layer includes an explicit epoch and sequence number
 in the record.  This sequence number allows the recipient to correctly
-verify the TLS MAC.  The DTLS record format is shown below:
+verify the TLS MAC.
+
+2. DTLS adds a short header format that can be used to reduce overhead
+once the handshake is complete.
+
+The basic DTLS record format is shown below:
 
 ~~~~
   struct {
@@ -277,7 +284,7 @@ verify the TLS MAC.  The DTLS record format is shown below:
        uint48 sequence_number;               // DTLS-related field
        uint16 length;
        opaque encrypted_record[length];
-} DTLSCiphertext;
+    } DTLSCiphertext;
 ~~~~
 
 type:
@@ -299,6 +306,48 @@ length:
 
 encrypted_record:
 : Identical to the encrypted_record field in a TLS 1.3 record.
+{:br}
+
+As with previous versions of DTLS, mutliple DTLSCiphertext records can be included
+in the same underlying transport datagram.
+
+
+The short DTLS header format is:
+
+~~~~
+    struct {
+      uint16 short_epoch_and_sequence;  // 001ESSSS SSSSSSSS
+      opaque encrypted_record[remainder_of_datagram];
+    } DTLSShortCiphertext;
+~~~~
+
+The short_epoch_and_sequence document contains the epoch and sequence
+packed into a 16 bit integer as follows:
+
+- The first three bits are set to 001 in order to allow multiplexing
+  between DTLS and VoIP protocols (STUN, RTP/RTCP, etc.) {{?RFC7983}}
+  and distinguish the short from long header formats.
+
+- The fourth bit is the low order bit of the epoch value.
+
+- The remaining bits contain the low order 12 bits of the sequence
+  number.
+
+For deprotecion purposes, the nonce is computed using the full
+sequence number, which can be reconstructed as described in
+{{reconstructing}}.
+
+In this format, the length field is omitted and therefore the
+record consumes the entire rest of the datagram in the lower
+level transport. It is not possible to have multiple
+DTLSShortCiphertext format records in the same datagram.
+
+DTLSShortCiphertext MUST only be used for data which is protected with
+one of the application_traffic_secrets, and not for either
+handshake or early data. When using an application_traffic_secret
+for message protection,
+Implementations MAY use either DTLSCiphertext or DTLSShortCiphertext
+at their discretion.
 
 ## Sequence Number Handling
 
@@ -347,6 +396,53 @@ allowing the sequence number to wrap.
 Implementations MUST NOT allow the epoch to wrap, but instead MUST establish
 a new association, terminating the old association.
 
+### Determining the Header Format
+
+Implementations can distinguish the two header formats by examining
+the first byte, which in the DTLSCiphertext header represents the
+content type. The only valid values for the content type are
+alert(21), handshake(22), application_data(23), and ack(25),
+with application_data actually
+representing protected data with the true content type being
+encrypted. If any of these values is present, then the record MUST be
+handled as DTLSCiphertext.
+
+If the first byte is any other other value, then receivers
+MUST check to see if the leading bits of the first byte are
+001. If so, they MUST process the record as DTLSShortCiphertext.
+Otherwise, the record MUST be rejected as if it had failed
+deprotection.
+
+### Reconstructing the Sequence Number and Epoch {#reconstructing}
+
+When receiving a DTLSShortCiphertext message, the recipient does not
+have a full epoch or sequence number value and so there is some
+opportunity for ambiguity.  Because the full epoch and sequence number
+are used to compute the per-record nonce, failure to reconstruct these
+values leads to failure to deprotect the record, and so implementations
+MAY use a mechanism of their choice to determine the full values.
+This section provides an algorithm which is comparatively simple
+and which implementations are RECOMMENDED to follow.
+
+If the epoch bit has the same parity as the current epoch, then
+implementations SHOULD reconstruct the sequence number by computing
+the full sequence number which is numerically closest to one plus the
+sequence number of the highest successfully deprotected record.
+
+If the epoch bit has a different parity from the current epoch, then
+the record is either from a previous epoch or from a future
+epoch. Implementations SHOULD use the epoch value which would produce
+a sequence number which is numerically closest to what would
+be reconstructed for that epoch, as determined by the algorithm
+in the paragraph above.
+
+[[OPEN ISSUE: Say something about how many outstanding packets?
+Difficulty here is that we have no ACKs to tell us what's outstanding.]]
+
+[[OPEN ISSUE: This isn't going to work well with multiple key updates.
+There are a number of options here, including limiting to one
+outstanding update, or saying that you have to use long headers
+in that case.]]
 
 ##  Transport Layer Mapping
 
