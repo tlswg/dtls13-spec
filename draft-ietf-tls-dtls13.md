@@ -1465,11 +1465,15 @@ two circumstances:
 In addition, implementations MUST send ACKs upon receiving
 all of any flight which they do not respond to with their
 own messages. Specifically, this means the client's final
-flight of the main handshake and the server's transmission
-of the NewSessionTicket. ACKs SHOULD NOT be sent for other
+flight of the main handshake, the server's transmission
+of the NewSessionTicket, and KeyUpdate messages.
+ACKs SHOULD NOT be sent for other
 complete flights because they are implicitly acknowledged
 by the receipt of the next flight, which generally
-immediately follows the flight.
+immediately follows the flight. Each NewSessionTicket
+or KeyUpdate is an individual flight. Implementations MAY
+ACK the records corresponding to each transmission of
+that flight or simply the most recent one.
 
 ACKs MUST NOT be sent for other records of any content type
 other than handshake or for records which cannot be unprotected.
@@ -1483,7 +1487,6 @@ does not send an ACK, the server will eventually retransmit
 its first flight, but this might take far longer than the
 actual round trip time between client and server. Having
 the client send an empty ACK shortcuts this process.
-
 
 ## Receiving ACKs
 
@@ -1499,7 +1502,8 @@ of that flight. As noted above, the receipt of any packet responding
 to a given flight MUST be taken as an implicit ACK for the entire
 flight.
 
-## Key Updates
+
+# Key Updates
 
 DTLS 1.3 implementations MUST send a KeyUpdate message prior to
 updating the keys they are using to protect application data traffic.
@@ -1519,6 +1523,14 @@ such out-of-epoch records. Implementations SHOULD
 NOT discard the keys for their current epoch prior to
 receiving a KeyUpdate.
 
+Although KeyUpdate MUST be ACKed, it is possible for the ACK to be
+lost, in which case the sender of the KeyUpdate will retransmit it.
+Implementations MUST retain the ability to ACK the KeyUpdate for
+up to 2MSL. It is RECOMMENDED that they do so by retaining the
+pre-update keying material, but they MAY do so by responding
+to messages which appear to be out-of-epoch with a canned ACK
+message; in this case, implementations SHOULD rate limit how
+often they send such ACKs.
 
 #  Application Data Protocol
 
