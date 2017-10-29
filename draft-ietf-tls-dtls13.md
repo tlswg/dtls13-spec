@@ -444,14 +444,6 @@ reconstruction of sequence numbers if ~2000 datagrams in sequence
 are lost. Implementations which may encounter this situation
 SHOULD use the DTLSCiphertext format.
 
-[[OPEN ISSUE: Say something about how many outstanding packets?
-Difficulty here is that we have no ACKs to tell us what's outstanding.]]
-
-[[OPEN ISSUE: This isn't going to work well with multiple key updates.
-There are a number of options here, including limiting to one
-outstanding update, or saying that you have to use long headers
-in that case.]]
-
 ##  Transport Layer Mapping
 
 Each DTLS record MUST fit within a single datagram.  In order to
@@ -1509,11 +1501,11 @@ flight.
 
 ## Key Updates
 
-DLTS 1.3 implementations MUST send a KeyUpdate message prior to
+DTLS 1.3 implementations MUST send a KeyUpdate message prior to
 updating the keys they are using to protect application data traffic.
 As with other handshake messages with no built-in response,
 KeyUpdates MUST be acknowledged. In order to facilitate
-epoch reconstruction {{#reconstruction}} implementations MUST
+epoch reconstruction {{reconstructing}} implementations MUST
 NOT send a new KeyUpdate until the previous KeyUpdate has
 been acknowledged (this avoids having too many epochs in
 active use).
@@ -1521,7 +1513,7 @@ active use).
 Due to loss and/or re-ordering, DTLS 1.3 implementations
 may receive a record with a different epoch than the
 current one. They SHOULD attempt to process those records
-with that epoch (see [REF: #reconstructing] for information
+with that epoch (see {{reconstructing}} for information
 on determining the correct epoch), but MAY opt to discard
 such out-of-epoch records. Implementations SHOULD
 NOT discard the keys for their current epoch prior to
