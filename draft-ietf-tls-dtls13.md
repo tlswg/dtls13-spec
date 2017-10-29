@@ -306,8 +306,11 @@ length:
 
 encrypted_record:
 : Identical to the encrypted_record field in a TLS 1.3 record.
-
 {:br}
+
+As with previous versions of DTLS, mutliple DTLSCiphertext records can be included
+in the same underlying transport datagram.
+
 
 The short DTLS header format is:
 
@@ -341,7 +344,8 @@ DTLSShortCiphertext format records in the same datagram.
 
 DTLSShortCiphertext MUST only be used for data which is protected with
 one of the application_traffic_secrets, and not for either
-handshake or early data. When using the application_traffic_secret,
+handshake or early data. When using an application_traffic_secret
+for message protection,
 Implementations MAY use either DTLSCiphertext or DTLSShortCiphertext
 at their discretion.
 
