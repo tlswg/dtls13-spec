@@ -263,14 +263,16 @@ There are three major changes:
 
 1. The DTLSCiphertext structure omits the superfluous version number field
 
-2. The DTLSCiphertext structure adds an explicit epoch and sequence number
-in the record.  This sequence number allows the recipient to correctly
+2. DTLS adds an explicit epoch and sequence number
+in the record header.  This sequence number allows the recipient to correctly
 verify the DTLS MAC.
 
 3. DTLS adds a short header format (DTLSShortCiphertext) that can be
 used to reduce overhead once the handshake is complete.
 
-The DTLS record formats are shown below:
+The DTLS record formats are shown below.
+DTLSPlaintext records are used to send unprotected records and DTLSCiphertext
+or DTLSShortCiphertext are used to send protected records.
 
 ~~~~
   struct {
@@ -302,7 +304,7 @@ type:
 epoch_and_sequence:
 : The low order two bits of the epoch and the low order 30 bits of
   the sequence number, laid out as a 32 bit integer.
-  The first 2 bits hold low order bits from the epoch and the
+  The first 2 bits hold the low order bits from the epoch and the
   remaining 30 bits hold the low order bits from the sequence number
   (see {{reconstructing}} for how to use this value).
 
@@ -313,7 +315,8 @@ encrypted_record:
 : Identical to the encrypted_record field in a TLS 1.3 record.
 {:br}
 
-As with previous versions of DTLS, mutliple DTLSCiphertext records can be included
+As with previous versions of DTLS, multiple DTLSPlaintext
+and DTLSCiphertext records can be included
 in the same underlying transport datagram.
 
 
@@ -325,9 +328,6 @@ The short DTLS header format is:
       opaque encrypted_record[remainder_of_datagram];
     } DTLSShortCiphertext;
 ~~~~
-
-DTLSPlaintext is used to send unprotected records and DTLSCiphertext
-or DTLSShortCiphertext are used to send protected records.
 
 The short_epoch_and_sequence document contains the epoch and sequence
 packed into a 16 bit integer as follows:
@@ -1473,7 +1473,7 @@ by the receipt of the next flight, which generally
 immediately follows the flight. Each NewSessionTicket
 or KeyUpdate is an individual flight. Implementations MAY
 ACK the records corresponding to each transmission of
-that flight or simply the most recent one.
+that flight or simply ACK the most recent one.
 
 ACKs MUST NOT be sent for other records of any content type
 other than handshake or for records which cannot be unprotected.
@@ -1597,6 +1597,12 @@ RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
 IETF Drafts
 draft-02
+- Shorten the protected record header and introduce an ultra-short
+  version of the record header.
+- Reintroduce KeyUpdate, which works properly now that we have ACK.
+- Clarify the ACK rules.
+
+draft-01
 - Restructured the ACK to contain a list of packets and also
   be a record rather than a handshake message.
 
