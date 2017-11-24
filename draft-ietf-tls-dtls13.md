@@ -432,10 +432,12 @@ implementations SHOULD reconstruct the sequence number by computing
 the full sequence number which is numerically closest to one plus the
 sequence number of the highest successfully deprotected record.
 
-If the epoch bits do not match those from the current epoch, then the
-record may be from a past epoch. Implementations SHOULD use the most
-recent epoch which has matching bits, and then reconstruct the
-sequence number as described above.
+During the handshake phase, the epoch bits unambiguously indicate the
+correct key to use. After the
+handshake is complete, if the epoch bits do not match those from the
+current epoch implementations SHOULD use the most recent past epoch
+which has matching bits, and then reconstruct the sequence number as
+described above.
 
 Note: the DTLSShortCiphertext format does not allow for easy
 reconstruction of sequence numbers if ~2000 datagrams in sequence
