@@ -147,7 +147,7 @@ Figures in this document illustrate various combinations of the DTLS protocol ex
   * '[]' indicates messages protected using keys derived from traffic_secret_N.
 
 
-# DTLS Design Rational and Overview {#dtls-rational}
+# DTLS Design Rationale and Overview {#dtls-rational}
 
 The basic design philosophy of DTLS is to construct "TLS over datagram transport".
 Datagram transport does not require nor provide reliable or in-order delivery of data.
@@ -1598,6 +1598,9 @@ IANA is requested to allocate a new value in the TLS ContentType Registry for th
 RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
 IETF Drafts
+draft-03
+- Only update keys after KeyUpdate is ACKed.
+
 draft-02
 - Shorten the protected record header and introduce an ultra-short
   version of the record header.
