@@ -1471,7 +1471,9 @@ ACKs SHOULD NOT be sent for other
 complete flights because they are implicitly acknowledged
 by the receipt of the next flight, which generally
 immediately follows the flight. Each NewSessionTicket
-or KeyUpdate is an individual flight. Implementations MAY
+or KeyUpdate is an individual flight; in particular, a KeyUpdate
+sent in response to a KeyUpdate with update_requested does not
+implicitly acknowledge that message. Implementations MAY
 ACK the records corresponding to each transmission of
 that flight or simply ACK the most recent one.
 
