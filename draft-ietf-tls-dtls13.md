@@ -1499,7 +1499,7 @@ retransmissions. Upon receipt of an ACK for only some messages
 from a flight, an implementation SHOULD retransmit the remaining
 messages or fragments. Note that this requires implementations to
 track which messages appear in which records. Once all the messages in a flight have been
-acknowledged, the implemenation MUST cancel all retransmissions
+acknowledged, the implementation MUST cancel all retransmissions
 of that flight. As noted above, the receipt of any packet responding
 to a given flight MUST be taken as an implicit ACK for the entire
 flight.
