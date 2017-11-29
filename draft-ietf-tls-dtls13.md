@@ -1656,4 +1656,3 @@ For this version of the document we would like to thank:
   Mozilla
   martin.thomson@gmail.com
 ~~~
-
