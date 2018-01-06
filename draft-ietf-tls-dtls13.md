@@ -695,7 +695,7 @@ are omitted.
 
       [Rest of handshake]
 ~~~~
-{: #dtls-cookie-exchange title="DTLS Exchange with HelloRetryRequest contain the Cookie Extension"}
+{: #dtls-cookie-exchange title="DTLS Exchange with HelloRetryRequest containing the Cookie Extension"}
 
 The cookie extension is defined in Section 4.2.2 of {{I-D.ietf-tls-tls13}}. When sending the
 initial ClientHello, the client does not have a cookie yet. In this case,
