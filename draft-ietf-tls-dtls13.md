@@ -205,7 +205,7 @@ phase of the DTLS handshake:
          ClientHello           ------>
          (retransmit)
 ~~~~
-{: #dtls-retransmission title="DTLS Retransmission Example."}
+{: #dtls-retransmission title="DTLS retransmission example"}
 
 Once the client has transmitted the ClientHello message, it expects
 to see a HelloRetryRequest from the server.  However, if the
@@ -695,7 +695,7 @@ are omitted.
 
       [Rest of handshake]
 ~~~~
-{: #dtls-cookie-exchange title="DTLS Exchange with HelloRetryRequest containing the Cookie Extension"}
+{: #dtls-cookie-exchange title="DTLS exchange with HelloRetryRequest containing the \"cookie\" extension"}
 
 The cookie extension is defined in Section 4.2.2 of {{I-D.ietf-tls-tls13}}. When sending the
 initial ClientHello, the client does not have a cookie yet. In this case,
@@ -970,7 +970,7 @@ ClientHello                                                 +----------+
 
  [Application Data]     <------->      [Application Data]
 ~~~~
-{: #dtls-full title="Message Flights for full DTLS Handshake (with Cookie Exchange)"}
+{: #dtls-full title="Message flights for a full DTLS Handshake (with cookie exchange)"}
 
 ~~~~
  ClientHello                                              +----------+
@@ -994,7 +994,7 @@ ClientHello                                                 +----------+
 
  [Application Data]    <------->      [Application Data]
 ~~~~
-{: #dtls-psk title="Message Flights for Resumption and PSK Handshake (without Cookie Exchange)"}
+{: #dtls-psk title="Message flights for resumption and PSK handshake (without cookie exchange)"}
 
 ~~~~
 Client                                            Server
@@ -1024,7 +1024,7 @@ Client                                            Server
 
  [Application Data]    <------->      [Application Data]
 ~~~~
-{: #dtls-zero-rtt title="Message Flights for the Zero-RTT Handshake"}
+{: #dtls-zero-rtt title="Message flights for the Zero-RTT handshake"}
 
 ~~~~
 Client                                            Server
@@ -1037,7 +1037,7 @@ Client                                            Server
 [Ack]                  -------->                          | Flight 2 |
                                                           +----------+
 ~~~~
-{: #dtls-post-handshake-ticket title="Message Flights for New Session Ticket Message"}
+{: #dtls-post-handshake-ticket title="Message flights for the new session ticket message"}
 
 Note: The application data sent by the client is not included in the
 timeout and retransmission calculation.
@@ -1102,7 +1102,7 @@ in the WAITING state, but with empty buffers and no retransmit timer.
           Server read retransmit
               Retransmit ACK
 ~~~~
-{: #dtls-timeout-state-machine title="DTLS Timeout and Retransmission State Machine"}
+{: #dtls-timeout-state-machine title="DTLS timeout and retransmission state machine"}
 
 The state machine has three basic states.
 
@@ -1298,7 +1298,7 @@ Client                                                Server
                                                     ACK [2]
 
 ~~~~
-{: #dtls-msg-loss title="Example DTLS Exchange illustrating Message Loss"}
+{: #dtls-msg-loss title="Example DTLS exchange illustrating message loss"}
 
 
 ## Epoch Values and Rekeying {#dtls-epoch}
@@ -1408,7 +1408,7 @@ Client                                             Server
  [Application Data]         -------->
  (epoch=4)
 ~~~~
-{: #dtls-msg-epoch title="Example DTLS Exchange with Epoch Information"}
+{: #dtls-msg-epoch title="Example DTLS exchange with epoch information"}
 
 
 # ACK Message {#ack-msg}
