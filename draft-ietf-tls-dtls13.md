@@ -261,7 +261,7 @@ modify their data transmission strategy.
 The DTLS record layer is similar to that of TLS 1.3.
 There are three major changes:
 
-1. The DTLSCiphertext structure omits the superfluous version number field
+1. The DTLSCiphertext structure omits the superfluous version number field.
 
 2. DTLS adds an explicit epoch and sequence number
 in the record header.  This sequence number allows the recipient to correctly
@@ -872,22 +872,22 @@ legacy_version:
   number for DTLS 1.2.
 
 random:
-: Same as for TLS 1.3
+: Same as for TLS 1.3.
 
 legacy_session_id:
-: Same as for TLS 1.3
+: Same as for TLS 1.3.
 
 legacy_cookie:
 : A DTLS 1.3-only client MUST set the legacy_cookie field to zero length.
 
 cipher_suites:
-: Same as for TLS 1.3
+: Same as for TLS 1.3.
 
 legacy_compression_methods:
-: Same as for TLS 1.3
+: Same as for TLS 1.3.
 
 extensions:
-: Same as for TLS 1.3
+: Same as for TLS 1.3.
 {:br }
 
 
