@@ -965,7 +965,7 @@ ClientHello                                                 +----------+
  [Application Data]
 
                                                             +----------+
-                        <--------                    [Ack]  | Flight 6 |
+                        <--------                    [ACK]  | Flight 6 |
                                        [Application Data*]  +----------+
 
  [Application Data]     <------->      [Application Data]
@@ -989,7 +989,7 @@ ClientHello                                                 +----------+
  [Application Data*]                                      +----------+
 
                                                           +----------+
-                       <--------                   [Ack]  | Flight 4 |
+                       <--------                   [ACK]  | Flight 4 |
                                      [Application Data*]  +----------+
 
  [Application Data]    <------->      [Application Data]
@@ -1019,7 +1019,7 @@ Client                                            Server
  {Finished}            -------->                          +----------+
  [Application Data*]
                                                           +----------+
-                       <--------                   [Ack]  | Flight 4 |
+                       <--------                   [ACK]  | Flight 4 |
                                      [Application Data*]  +----------+
 
  [Application Data]    <------->      [Application Data]
@@ -1034,7 +1034,7 @@ Client                                            Server
                                                           +----------+
 
                                                           +----------+
-[Ack]                  -------->                          | Flight 2 |
+[ACK]                  -------->                          | Flight 2 |
                                                           +----------+
 ~~~~
 {: #dtls-post-handshake-ticket title="Message flights for the new session ticket message"}
@@ -1382,7 +1382,7 @@ Client                                             Server
  {Finished}
  (epoch=2)
 
-                            <--------                   [Ack]
+                            <--------                   [ACK]
                                                     (epoch=3)
 
  [Application Data]         -------->
@@ -1397,7 +1397,7 @@ Client                                             Server
                             <--------      [NewSessionTicket]
                                                     (epoch=3)
 
- [Ack]                      -------->
+ [ACK]                      -------->
  (epoch=3)
 
                          Some time later ...
