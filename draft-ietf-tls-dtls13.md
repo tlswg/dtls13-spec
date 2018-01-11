@@ -558,7 +558,7 @@ rest of this section describes the details of that format.
 
 ###  Anti-Replay
 
-DTLS records contain a sequence number to provide replay protection.
+Each DTLS record contains a sequence number to provide replay protection.
 Sequence number verification SHOULD be performed using the following
 sliding window procedure, borrowed from Section 3.4.3 of {{RFC4303}}.
 
