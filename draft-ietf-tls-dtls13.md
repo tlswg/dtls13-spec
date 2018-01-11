@@ -562,13 +562,13 @@ DTLS records contain a sequence number to provide replay protection.
 Sequence number verification SHOULD be performed using the following
 sliding window procedure, borrowed from Section 3.4.3 of {{RFC4303}}.
 
-The received packet counter for this session MUST be initialized to
-zero when the session is established.  For each received record, the
+The received packet counter for a session MUST be initialized to
+zero when that session is established. For each received record, the
 receiver MUST verify that the record contains a sequence number that
 does not duplicate the sequence number of any other record received
-during the life of this session.  This SHOULD be the first check
+during the lifetime of the session. This SHOULD be the first check
 applied to a packet after it has been matched to a session, to speed
-the rejection of duplicate records.
+up the rejection of duplicate records.
 
 Duplicates are rejected through the use of a sliding receive window.
 (How the window is implemented is a local matter, but the following
@@ -580,7 +580,7 @@ receiver.  (The receiver does not notify the sender of the window
 size.)
 
 The "right" edge of the window represents the highest validated
-sequence number value received on this session.  Records that contain
+sequence number value received on the session.  Records that contain
 sequence numbers lower than the "left" edge of the window are
 rejected.  Packets falling within the window are checked against a
 list of received packets within the window.  An efficient means for
