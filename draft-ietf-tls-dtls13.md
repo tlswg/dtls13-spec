@@ -51,7 +51,7 @@ normative:
   RFC6298:
   I-D.ietf-tls-tls13:
 informative:
-  RFC5996:
+  RFC7296:
   RFC2522:
   RFC4303:
   RFC4340:
@@ -655,7 +655,7 @@ DoS attacks.  Two attacks are of particular concern:
    is the case for a Certificate message.
 
 In order to counter both of these attacks, DTLS borrows the stateless
-cookie technique used by Photuris {{RFC2522}} and IKE {{RFC5996}}.  When
+cookie technique used by Photuris {{RFC2522}} and IKE {{RFC7296}}.  When
 the client sends its ClientHello message to the server, the server
 MAY respond with a HelloRetryRequest message. The HelloRetryRequest message,
 as well as the cookie extension, is defined in TLS 1.3.
@@ -734,7 +734,7 @@ cookies. If the server wishes that legitimate clients be able to
 handshake through the transition (e.g., they received a cookie with
 Secret 1 and then sent the second ClientHello after the server has
 changed to Secret 2), the server can have a limited window during
-which it accepts both secrets.  {{RFC5996}} suggests adding a key
+which it accepts both secrets.  {{RFC7296}} suggests adding a key
 identifier to cookies to detect this case. An alternative approach is
 simply to try verifying with both secrets. It is RECOMMENDED that
 servers implement a key rotation scheme that allows the server
