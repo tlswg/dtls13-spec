@@ -414,7 +414,7 @@ If the first byte is any other other value, then receivers
 MUST check to see if the leading bits of the first byte are
 001. If so, they MUST process the record as DTLSShortCiphertext.
 Otherwise, the record MUST be rejected as if it had failed
-deprotection.
+deprotection, as described in {{handling-invalid-records}}.
 
 ### Reconstructing the Sequence Number and Epoch {#reconstructing}
 
@@ -456,11 +456,11 @@ identifiers.  Applications must arrange to multiplex between associations.
 With UDP, the host/port number is used to look up the appropriate
 security association for incoming records.
 
-Multiple DTLS records may be placed in a single datagram.  They are
+Multiple DTLS records MAY be placed in a single datagram.  They are
 simply encoded consecutively.  The DTLS record framing is sufficient
 to determine the boundaries.  Note, however, that the first byte of
-the datagram payload must be the beginning of a record.  Records may
-not span datagrams.
+the datagram payload MUST be the beginning of a record.  Records MUST
+NOT span datagrams.
 
 Some transports, such as DCCP {{RFC4340}}, provide their own sequence
 numbers.  When carried over those transports, both the DTLS and the
@@ -528,7 +528,7 @@ mechanisms.  In particular:
   (in IPv4) or prohibit local fragmentation (in IPv6).
 
 - If the underlying transport protocol allows the application to
-  request PMTU probing (e.g., DCCP), the DTLS record layer should
+  request PMTU probing (e.g., DCCP), the DTLS record layer SHOULD
   honor this request.
 
 The final issue is the DTLS handshake protocol.  From the perspective
@@ -708,8 +708,7 @@ ClientHello message following the description in Section 4.1.2 of {{I-D.ietf-tls
 
 If the HelloRetryRequest message is used, the initial ClientHello and
 the HelloRetryRequest are included in the calculation of the
-handshake_messages (for the CertificateVerify message) and
-verify_data (for the Finished message).  However, the computation of the
+Transcript-Hash. The computation of the
 message hash for the HelloRetryRequest is done according to the description
 in Section 4.4.1 of {{I-D.ietf-tls-tls13}}.
 
@@ -776,7 +775,7 @@ fragmentation, DTLS modifies the TLS 1.3 handshake header:
       hello_verify_request_RESERVED(3),
       new_session_ticket(4),
       end_of_early_data(5),
-      hello_retry_request(6),
+      hello_retry_request_RESRVED(13),
       encrypted_extensions(8),
       certificate(11),
       server_key_exchange_RESERVED(12),
@@ -800,7 +799,6 @@ fragmentation, DTLS modifies the TLS 1.3 handshake header:
           case client_hello:          ClientHello;
           case server_hello:          ServerHello;
           case end_of_early_data:     EndOfEarlyData;
-          case hello_retry_request:   HelloRetryRequest;
           case encrypted_extensions:  EncryptedExtensions;
           case certificate_request:   CertificateRequest;
           case certificate:           Certificate;
