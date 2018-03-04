@@ -139,7 +139,7 @@ The following terms are used:
   - server: The endpoint which did not initiate the DTLS connection.
 
 The reader is assumed to be familiar with the TLS 1.3 specification since this
-document defined as a delta from TLS 1.3.
+document is defined as a delta from TLS 1.3.
 
 Figures in this document illustrate various combinations of the DTLS protocol exchanges and the symbols have the following meaning:
 
@@ -279,7 +279,7 @@ or DTLSShortCiphertext are used to send protected records.
 ~~~~
   struct {
       ContentType type;
-      ProtocolVersion version;
+      ProtocolVersion legacy_record_version;
       uint16 epoch = 0                                 // DTLS field
       uint48 sequence_number;                          // DTLS field
       uint16 length;
@@ -300,8 +300,8 @@ or DTLSShortCiphertext are used to send protected records.
   } DTLSCiphertext;
 ~~~~
 
-type:
-: The content type of the record.
+opaque_type:
+: Identical to the opaque_type field in a TLS 1.3 record.
 
 epoch_and_sequence:
 : The low order two bits of the epoch and the low order 30 bits of
@@ -349,9 +349,10 @@ level transport. It is not possible to have multiple
 DTLSShortCiphertext format records in the same datagram.
 
 DTLSShortCiphertext MUST only be used for data which is protected with
-one of the application_traffic_secret values, and not for either
-handshake or early data. When using an application_traffic_secret
-for message protection,
+one of the application_traffic_secret values, and not for messages
+protected with either [sender]_handshake_traffic_sercret or
+[sender]_early_traffic_secret values. When using an
+[sender]_application_traffic_secret for message protection,
 Implementations MAY use either DTLSCiphertext or DTLSShortCiphertext
 at their discretion.
 
@@ -377,8 +378,8 @@ within two times the TCP maximum segment lifetime (MSL).
 Note that because DTLS records may be reordered, a record from epoch
 1 may be received after epoch 2 has begun.  In general,
 implementations SHOULD discard packets from earlier epochs, but if
-packet loss causes noticeable problems they MAY choose to retain
-keying material from previous epochs for up to the default MSL
+packet loss causes noticeable problems implementations MAY choose to
+retain keying material from previous epochs for up to the default MSL
 specified for TCP {{RFC0793}} to allow for packet reordering.  (Note that
 the intention here is that implementers use the current guidance from
 the IETF for MSL, not that they attempt to interrogate the MSL that
@@ -390,7 +391,7 @@ newly negotiated context to be received prior to the completion of a
 handshake.  For instance, the server may send its Finished message
 and then start transmitting data.  Implementations MAY either buffer
 or discard such packets, though when DTLS is used over reliable
-transports (e.g., SCTP), they SHOULD be buffered and processed once
+transports (e.g., SCTP {{?RFC4960}}), they SHOULD be buffered and processed once
 the handshake completes.  Note that TLS's restrictions on when
 packets may be sent still apply, and the receiver treats the packets
 as if they were sent in the right order.  In particular, it is still
@@ -406,7 +407,7 @@ a new association, terminating the old association.
 
 Implementations can distinguish the three header formats by examining
 the first byte, which in the DTLSPlaintext and DTLSCiphertext header represents the
-content type. If the first byte is alert(21), handshake(22), or ack(25),
+content type. If the first byte is alert(21), handshake(22), or ack(proposed, 25),
 the record MUST be interpreted as a DTLSPlaintext record. If the
 first byte is application_data(23) then the record MUST be
 interpreted handled as DTLSCiphertext; the true content type
@@ -629,7 +630,7 @@ the following changes:
 
 3. A new ACK content type has been added for reliable message delivery of handshake messages.
 
-Note that TLS 1.3 already supports a cookie extension, which used to
+Note that TLS 1.3 already supports a cookie extension, which is used to
 prevent denial-of-service attacks. This DoS prevention mechanism is
 described in more detail below since UDP-based protocols are more vulnerable
 to amplification attacks than a connection-oriented transport like TCP
@@ -764,7 +765,7 @@ If a server receives a ClientHello with an invalid cookie, it
 MUST NOT respond with a HelloRetryRequest. Restarting the handshake from
 scratch, without a cookie, allows the client to recover from a situation
 where it obtained a cookie that cannot be verified by the server.
-As described in Section 4.1.4 of {{I-D.ietf-tls-tls13}},clients SHOULD
+As described in Section 4.1.4 of {{I-D.ietf-tls-tls13}}, clients SHOULD
 also abort the handshake with an “unexpected_message” alert in response
 to any second HelloRetryRequest which was sent in the same connection
 (i.e., where the ClientHello was itself in response to a HelloRetryRequest).
@@ -783,7 +784,7 @@ fragmentation, DTLS modifies the TLS 1.3 handshake header:
       hello_verify_request_RESERVED(3),
       new_session_ticket(4),
       end_of_early_data(5),
-      hello_retry_request_RESRVED(13),
+      hello_retry_request_RESERVED(6),
       encrypted_extensions(8),
       certificate(11),
       server_key_exchange_RESERVED(12),
@@ -861,7 +862,7 @@ TLS 1.3 ClientHello format as shown below.
        opaque legacy_cookie<0..2^8-1>;                  // DTLS
        CipherSuite cipher_suites<2..2^16-2>;
        opaque legacy_compression_methods<1..2^8-1>;
-       Extension extensions<0..2^16-1>;
+       Extension extensions<8..2^16-1>;
    } ClientHello;
 ~~~~
 
@@ -1110,7 +1111,8 @@ in the WAITING state, but with empty buffers and no retransmit timer.
 ~~~~
 {: #dtls-timeout-state-machine title="DTLS Timeout and Retransmission State Machine"}
 
-The state machine has three basic states.
+The state machine has four basic states: PREPARING, SENDING, WAITING,
+and FINISHED.
 
 In the PREPARING state, the implementation does whatever computations
 are necessary to prepare the next flight of messages.  It then
@@ -1119,7 +1121,7 @@ enters the SENDING state.
 
 In the SENDING state, the implementation transmits the buffered
 flight of messages. If the implementation has received one or more
-ACKs {{ack-msg}} from the peer, then it SHOULD omit any messages or
+ACKs (see {{ack-msg}}) from the peer, then it SHOULD omit any messages or
 message fragments which have already been ACKed. Once the messages
 have been sent, the implementation then enters the FINISHED state
 if this is the last flight in the handshake.  Or, if the
@@ -1133,7 +1135,7 @@ There are four ways to exit the WAITING state:
    retransmit timer, and returns to the WAITING state.
 
 2. The implementation reads a ACK from the peer: upon receiving
-   an ACK for a partial flight (as mentioned in {{sending-acks}},
+   an ACK for a partial flight (as mentioned in {{sending-acks}}),
    the implementation transitions
    to the SENDING state, where it retransmits the unacked portion
    of the flight, resets the retransmit timer, and returns to the
@@ -1187,7 +1189,7 @@ of 100 msec (the minimum defined in RFC 6298 {{RFC6298}}) and double
 the value at each retransmission, up to no less than the RFC 6298
 maximum of 60 seconds. Application specific profiles, such as those
 used for the Internet of Things environment, may recommend longer
-timer values. Note that we recommend a 100 msec timer
+timer values. Note that a 100 msec timer is recommend
 rather than the 3-second RFC 6298 default in order to improve latency
 for time-sensitive applications.  Because DTLS only uses
 retransmission for handshake and not dataflow, the effect on
@@ -1326,10 +1328,10 @@ protocol exchange to allow identification of the correct cipher state:
      three unencrypted messages in DTLS, namely ClientHello, ServerHello,
      and HelloRetryRequest.
    * epoch value (1) is used for messages protected using keys derived
-     from early_traffic_secret. This includes early data sent by the
+     from client_early_traffic_secret. This includes early data sent by the
      client and the EndOfEarlyData message.
    * epoch value (2) is used for messages protected using keys derived
-     from the handshake_traffic_secret. Messages transmitted during
+     from [sender]_handshake_traffic_secret. Messages transmitted during
      the initial handshake, such as EncryptedExtensions,
      CertificateRequest, Certificate, CertificateVerify, and Finished
      belong to this category. Note, however, post-handshake are
