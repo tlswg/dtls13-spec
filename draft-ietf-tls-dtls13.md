@@ -61,6 +61,7 @@ informative:
   RFC5246:
   RFC6347:
   RFC7525:
+  I-D.ietf-tls-dtls-connection-id:
 --- abstract
 
 This document specifies Version 1.3 of the Datagram Transport Layer Security
@@ -137,7 +138,9 @@ The following terms are used:
   - server: The endpoint which did not initiate the DTLS connection.
 
 The reader is assumed to be familiar with the TLS 1.3 specification since this
-document defined as a delta from TLS 1.3.
+document defined as a delta from TLS 1.3. As in TLS 1.3 the HelloRetryRequest has 
+the same format as a ServerHello message but for convenience we use the term 
+HelloRetryRequest throughout this document as if it were a distinct message.
 
 Figures in this document illustrate various combinations of the DTLS protocol exchanges and the symbols have the following meaning:
 
