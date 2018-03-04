@@ -210,7 +210,7 @@ phase of the DTLS handshake:
          ClientHello           ------>
          (retransmit)
 ~~~~
-{: #dtls-retransmission title="DTLS Retransmission Example."}
+{: #dtls-retransmission title="DTLS retransmission example"}
 
 Once the client has transmitted the ClientHello message, it expects
 to see a HelloRetryRequest or a ServerHello from the server. However, if the
@@ -266,7 +266,7 @@ modify their data transmission strategy.
 The DTLS record layer is similar to that of TLS 1.3.
 There are three major changes:
 
-1. The DTLSCiphertext structure omits the superfluous version number field
+1. The DTLSCiphertext structure omits the superfluous version number field.
 
 2. DTLS adds an explicit epoch and sequence number
 in the record header.  This sequence number allows the recipient to correctly
@@ -710,7 +710,7 @@ are omitted.
 
       [Rest of handshake]
 ~~~~
-{: #dtls-cookie-exchange title="DTLS Exchange with HelloRetryRequest containing the Cookie Extension"}
+{: #dtls-cookie-exchange title="DTLS exchange with HelloRetryRequest containing the \"cookie\" extension"}
 
 The cookie extension is defined in Section 4.2.2 of {{I-D.ietf-tls-tls13}}. When sending the
 initial ClientHello, the client does not have a cookie yet. In this case,
@@ -885,22 +885,22 @@ legacy_version:
   number for DTLS 1.2.
 
 random:
-: Same as for TLS 1.3
+: Same as for TLS 1.3.
 
 legacy_session_id:
-: Same as for TLS 1.3
+: Same as for TLS 1.3.
 
 legacy_cookie:
 : A DTLS 1.3-only client MUST set the legacy_cookie field to zero length.
 
 cipher_suites:
-: Same as for TLS 1.3
+: Same as for TLS 1.3.
 
 legacy_compression_methods:
-: Same as for TLS 1.3
+: Same as for TLS 1.3.
 
 extensions:
-: Same as for TLS 1.3
+: Same as for TLS 1.3.
 {:br }
 
 
@@ -978,12 +978,12 @@ ClientHello                                                 +----------+
  [Application Data]
 
                                                             +----------+
-                        <--------                    [Ack]  | Flight 6 |
+                        <--------                    [ACK]  | Flight 6 |
                                        [Application Data*]  +----------+
 
  [Application Data]     <------->      [Application Data]
 ~~~~
-{: #dtls-full title="Message Flights for full DTLS Handshake (with Cookie Exchange)"}
+{: #dtls-full title="Message flights for a full DTLS Handshake (with cookie exchange)"}
 
 ~~~~
  ClientHello                                              +----------+
@@ -1002,12 +1002,12 @@ ClientHello                                                 +----------+
  [Application Data*]                                      +----------+
 
                                                           +----------+
-                       <--------                   [Ack]  | Flight 4 |
+                       <--------                   [ACK]  | Flight 4 |
                                      [Application Data*]  +----------+
 
  [Application Data]    <------->      [Application Data]
 ~~~~
-{: #dtls-psk title="Message Flights for Resumption and PSK Handshake (without Cookie Exchange)"}
+{: #dtls-psk title="Message flights for resumption and PSK handshake (without cookie exchange)"}
 
 ~~~~
 Client                                            Server
@@ -1032,12 +1032,12 @@ Client                                            Server
  {Finished}            -------->                          +----------+
  [Application Data*]
                                                           +----------+
-                       <--------                   [Ack]  | Flight 4 |
+                       <--------                   [ACK]  | Flight 4 |
                                      [Application Data*]  +----------+
 
  [Application Data]    <------->      [Application Data]
 ~~~~
-{: #dtls-zero-rtt title="Message Flights for the Zero-RTT Handshake"}
+{: #dtls-zero-rtt title="Message flights for the Zero-RTT handshake"}
 
 ~~~~
 Client                                            Server
@@ -1047,10 +1047,10 @@ Client                                            Server
                                                           +----------+
 
                                                           +----------+
-[Ack]                  -------->                          | Flight 2 |
+[ACK]                  -------->                          | Flight 2 |
                                                           +----------+
 ~~~~
-{: #dtls-post-handshake-ticket title="Message Flights for New Session Ticket Message"}
+{: #dtls-post-handshake-ticket title="Message flights for the new session ticket message"}
 
 Note: The application data sent by the client is not included in the
 timeout and retransmission calculation.
@@ -1115,7 +1115,7 @@ in the WAITING state, but with empty buffers and no retransmit timer.
           Server read retransmit
               Retransmit ACK
 ~~~~
-{: #dtls-timeout-state-machine title="DTLS Timeout and Retransmission State Machine"}
+{: #dtls-timeout-state-machine title="DTLS timeout and retransmission state machine"}
 
 The state machine has four basic states: PREPARING, SENDING, WAITING,
 and FINISHED.
@@ -1312,7 +1312,7 @@ Client                                                Server
                                                     ACK [2]
 
 ~~~~
-{: #dtls-msg-loss title="Example DTLS Exchange illustrating Message Loss"}
+{: #dtls-msg-loss title="Example DTLS exchange illustrating message loss"}
 
 
 ## Epoch Values and Rekeying {#dtls-epoch}
@@ -1396,7 +1396,7 @@ Client                                             Server
  {Finished}
  (epoch=2)
 
-                            <--------                   [Ack]
+                            <--------                   [ACK]
                                                     (epoch=3)
 
  [Application Data]         -------->
@@ -1411,7 +1411,7 @@ Client                                             Server
                             <--------      [NewSessionTicket]
                                                     (epoch=3)
 
- [Ack]                      -------->
+ [ACK]                      -------->
  (epoch=3)
 
                          Some time later ...
@@ -1422,7 +1422,7 @@ Client                                             Server
  [Application Data]         -------->
  (epoch=4)
 ~~~~
-{: #dtls-msg-epoch title="Example DTLS Exchange with Epoch Information"}
+{: #dtls-msg-epoch title="Example DTLS exchange with epoch information"}
 
 
 # ACK Message {#ack-msg}
