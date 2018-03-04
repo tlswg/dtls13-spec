@@ -465,7 +465,7 @@ DTLS records, as defined in this document, do not contain any association
 identifiers and applications must arrange to multiplex between associations. 
 With UDP, the host/port number is used to look up the appropriate security 
 association for incoming records. However, the Connection ID extension 
-defined in {{I-D.ietf-tls-dtls-connection-id}} adds a connection identifier 
+defined in {{I-D.ietf-tls-dtls-connection-id}} adds an association identifier
 to DTLS records.
 
 Some transports, such as DCCP {{RFC4340}}, provide their own sequence
