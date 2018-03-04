@@ -373,10 +373,7 @@ epoch and keying material.
 
 The epoch number is initially zero and is
 incremented each time keying material changes and a sender aims to rekey.
-More details are provided in {{dtls-epoch}}. In order
-to ensure that any given sequence/epoch pair is unique,
-implementations MUST NOT allow the same epoch value to be reused
-within two times the TCP maximum segment lifetime (MSL).
+More details are provided in {{dtls-epoch}}.
 
 Note that because DTLS records may be reordered, a record from epoch
 1 may be received after epoch 2 has begun.  In general,
