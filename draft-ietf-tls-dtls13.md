@@ -32,7 +32,7 @@ author:
  -
        ins: H. Tschofenig
        name: Hannes Tschofenig
-       organization: ARM Limited
+       organization: Arm Limited
        email: hannes.tschofenig@arm.com
 
  -
@@ -62,6 +62,7 @@ informative:
   RFC5246:
   RFC6347:
   RFC7525:
+  I-D.ietf-tls-dtls-connection-id:
 --- abstract
 
 This document specifies Version 1.3 of the Datagram Transport Layer Security
@@ -139,7 +140,9 @@ The following terms are used:
   - server: The endpoint which did not initiate the DTLS connection.
 
 The reader is assumed to be familiar with the TLS 1.3 specification since this
-document is defined as a delta from TLS 1.3.
+document is defined as a delta from TLS 1.3. As in TLS 1.3 the HelloRetryRequest has 
+the same format as a ServerHello message but for convenience we use the term 
+HelloRetryRequest throughout this document as if it were a distinct message.
 
 Figures in this document illustrate various combinations of the DTLS protocol exchanges and the symbols have the following meaning:
 
@@ -210,9 +213,9 @@ phase of the DTLS handshake:
 {: #dtls-retransmission title="DTLS Retransmission Example."}
 
 Once the client has transmitted the ClientHello message, it expects
-to see a HelloRetryRequest from the server.  However, if the
+to see a HelloRetryRequest or a ServerHello from the server. However, if the
 server's message is lost, the client knows that either the
-ClientHello or the HelloRetryRequest has been lost and retransmits.
+ClientHello or the response from the server has been lost and retransmits.
 When the server receives the retransmission, it knows to retransmit.
 
 The server also maintains a retransmission timer and retransmits when
@@ -449,21 +452,24 @@ SHOULD use the DTLSCiphertext format.
 
 ##  Transport Layer Mapping
 
+DTLS messages MAY be fragmentmented into multiple DTLS records. 
 Each DTLS record MUST fit within a single datagram.  In order to
 avoid IP fragmentation, clients of the DTLS record layer SHOULD
 attempt to size records so that they fit within any PMTU estimates
 obtained from the record layer.
-
-Note that unlike IPsec, DTLS records do not contain any association
-identifiers.  Applications must arrange to multiplex between associations.
-With UDP, the host/port number is used to look up the appropriate
-security association for incoming records.
 
 Multiple DTLS records MAY be placed in a single datagram.  They are
 simply encoded consecutively.  The DTLS record framing is sufficient
 to determine the boundaries.  Note, however, that the first byte of
 the datagram payload MUST be the beginning of a record.  Records MUST
 NOT span datagrams.
+
+DTLS records, as defined in this document, do not contain any association 
+identifiers and applications must arrange to multiplex between associations. 
+With UDP, the host/port number is used to look up the appropriate security 
+association for incoming records. However, the Connection ID extension 
+defined in {{I-D.ietf-tls-dtls-connection-id}} adds an association identifier
+to DTLS records.
 
 Some transports, such as DCCP {{RFC4340}}, provide their own sequence
 numbers.  When carried over those transports, both the DTLS and the
