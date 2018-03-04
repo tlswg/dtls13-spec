@@ -268,7 +268,7 @@ There are three major changes:
 
 1. The DTLSCiphertext structure omits the superfluous version number field
 
-2. DTLS adds an explicit epoch and sequence numbers
+2. DTLS adds an explicit epoch and sequence number
 in the record header.  This sequence number allows the recipient to correctly
 verify the DTLS MAC.
 
