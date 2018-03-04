@@ -434,12 +434,12 @@ implementations SHOULD reconstruct the sequence number by computing
 the full sequence number which is numerically closest to one plus the
 sequence number of the highest successfully deprotected record.
 
-If the epoch bits do not match those from the current epoch, then
-the record is either from a previous epoch or from a future
-epoch. Implementations SHOULD use the epoch value which would produce
-a sequence number which is numerically closest to what would
-be reconstructed for that epoch, as determined by the algorithm
-in the paragraph above.
+During the handshake phase, the epoch bits unambiguously indicate the
+correct key to use. After the
+handshake is complete, if the epoch bits do not match those from the
+current epoch implementations SHOULD use the most recent past epoch
+which has matching bits, and then reconstruct the sequence number as
+described above.
 
 Note: the DTLSShortCiphertext format does not allow for easy
 reconstruction of sequence numbers if ~2000 datagrams in sequence
@@ -1513,23 +1513,21 @@ flight.
 
 # Key Updates
 
-DTLS 1.3 implementations MUST send a KeyUpdate message prior to
-updating the keys they are using to protect application data traffic.
-As with other handshake messages with no built-in response,
-KeyUpdates MUST be acknowledged. In order to facilitate
-epoch reconstruction {{reconstructing}} implementations MUST
-NOT send a new KeyUpdate until the previous KeyUpdate has
-been acknowledged (this avoids having too many epochs in
-active use).
+As with TLS 1.3, DTLS 1.3 implementations send a KeyUpdate message to
+indicate that they are updating their sending keys.  As with other
+handshake messages with no built-in response, KeyUpdates MUST be
+acknowledged.  In order to facilitate epoch reconstruction
+{{reconstructing}} implementations MUST NOT send with the new keys or
+send a new KeyUpdate until the previous KeyUpdate has been
+acknowledged (this avoids having too many epochs in active use).
 
 Due to loss and/or re-ordering, DTLS 1.3 implementations
-may receive a record with a different epoch than the
-current one. They SHOULD attempt to process those records
+may receive a record with an older epoch than the
+current one (the requirements above preclude receiving
+a newer record). They SHOULD attempt to process those records
 with that epoch (see {{reconstructing}} for information
 on determining the correct epoch), but MAY opt to discard
-such out-of-epoch records. Implementations SHOULD
-NOT discard the keys for their current epoch prior to
-receiving a KeyUpdate.
+such out-of-epoch records.
 
 Although KeyUpdate MUST be ACKed, it is possible for the ACK to be
 lost, in which case the sender of the KeyUpdate will retransmit it.
