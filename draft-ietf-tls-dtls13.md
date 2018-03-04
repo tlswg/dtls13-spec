@@ -386,8 +386,8 @@ the IETF for MSL, not that they attempt to interrogate the MSL that
 the system TCP stack is using.)  Until the handshake has completed,
 implementations MUST accept packets from the old epoch.
 
-Conversely, it is possible for records that are protected by the
-newly negotiated context to be received prior to the completion of a
+Conversely, it is possible for records that are protected with the
+new epoch to be received prior to the completion of a
 handshake.  For instance, the server may send its Finished message
 and then start transmitting data.  Implementations MAY either buffer
 or discard such packets, though when DTLS is used over reliable
