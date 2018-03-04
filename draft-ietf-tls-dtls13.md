@@ -49,6 +49,7 @@ normative:
   RFC4821:
   RFC0793:
   RFC6298:
+  RFC8174:
   I-D.ietf-tls-tls13:
 informative:
   RFC7296:
@@ -112,7 +113,8 @@ recommended as explained in Section 3.1.2 of RFC 7525 {{RFC7525}}.
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this
-document are to be interpreted as described in RFC 2119 {{RFC2119}}.
+document are to be interpreted as described in BCP 14 {{RFC2119}} {{RFC8174}}
+when, and only when, they appear in all capitals, as shown here.
 
 The following terms are used:
 
