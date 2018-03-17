@@ -742,8 +742,8 @@ number of cookies from different addresses where it controls endpoints
 and then reuse them to attack the server.
 The server can defend against this attack by
 changing the secret value frequently, thus invalidating those
-cookies. If the server wishes that legitimate clients be able to
-handshake through the transition (e.g., they received a cookie with
+cookies. If the server wishes to allow legitimate clients to
+handshake through the transition (e.g., a client received a cookie with
 Secret 1 and then sent the second ClientHello after the server has
 changed to Secret 2), the server can have a limited window during
 which it accepts both secrets.  {{RFC7296}} suggests adding a key
@@ -753,8 +753,8 @@ servers implement a key rotation scheme that allows the server
 to manage keys with overlapping lifetime.
 
 Alternatively, the server can store timestamps in the cookie and
-reject those cookies that were not generated within a certain
-amount of time.
+reject cookies that were generated outside a certain
+interval of time.
 
 DTLS servers SHOULD perform a cookie exchange whenever a new
 handshake is being performed.  If the server is being operated in an
