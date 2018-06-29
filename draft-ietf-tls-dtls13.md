@@ -353,33 +353,34 @@ underlying transport datagram.
 {{hdr_examples}} illustrates different record layer header types. 
 
 ~~~~
-   0 1 2 3 4 5 6 7        0 1 2 3 4 5 6 7      0 1 2 3 4 5 6 7
-  +-+-+-+-+-+-+-+-+      +-+-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+-+
-  |0|0|1|C|L|X|X|X|      |0|0|1|0|0|X|X|X|    |   16 bit      |
-  +-+-+-+-+-+-+-+-+      +-+-+-+-+-+-+-+-+    |   Version     |
-  |E|E| 14 bit    |      |E|E| 14 bit    |    +-+-+-+-+-+-+-+-+
-  +-+-+           |      +-+-+           |    |   16 bit      |
-  |Sequence Number|      |Sequence Number|    |    Epoch      |
-  +-+-+-+-+-+-+-+-+      +-+-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+-+
-  |   16 bit      |      |               |    |               |
-  |   Length      |      |   Encrypted   |    |               |
-  +-+-+-+-+-+-+-+-+      /   Record      /    |   48 bit      |
-  |               |      |               |    |Sequence Number|
-  |               |      +-+-+-+-+-+-+-+-+    |               |
-  / Connection ID /                           |               |
-  |               |                           +-+-+-+-+-+-+-+-+
-  +-+-+-+-+-+-+-+-+                           |    16 bit     |
-  |               |                           |    Length     |
-  |  Encrypted    |                           +-+-+-+-+-+-+-+-+
-  /  Record       /                           |               |
-  |               |                           |               |
-  +-+-+-+-+-+-+-+-+                           /   Fragment    /
-                                              |               |
-                                              +-+-+-+-+-+-+-+-+
+    0 1 2 3 4 5 6 7        0 1 2 3 4 5 6 7      0 1 2 3 4 5 6 7
+   +-+-+-+-+-+-+-+-+      +-+-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+-+
+   |0|0|1|C|L|X|X|X|      |0|0|1|0|0|X|X|X|    | Content Type  |
+   +-+-+-+-+-+-+-+-+      +-+-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+-+
+   |E|E| 14 bit    |      |E|E| 14 bit    |    |   16 bit      |
+   +-+-+           |      +-+-+           |    |   Version     |
+   |Sequence Number|      |Sequence Number|    +-+-+-+-+-+-+-+-+
+   +-+-+-+-+-+-+-+-+      +-+-+-+-+-+-+-+-+    |   16 bit      |
+   |   16 bit      |      |               |    |    Epoch      |
+   |   Length      |      |   Encrypted   |    +-+-+-+-+-+-+-+-+
+   +-+-+-+-+-+-+-+-+      /   Record      /    |               |
+   |               |      |               |    |               |
+   |               |      +-+-+-+-+-+-+-+-+    |   48 bit      |
+   / Connection ID /                           |Sequence Number|
+   |               |        DTLSCiphertext     |               |
+   +-+-+-+-+-+-+-+-+          Structure        |               |
+   |               |          (minimal)        +-+-+-+-+-+-+-+-+
+   |  Encrypted    |                           |    16 bit     |
+   /  Record       /                           |    Length     |
+   |               |                           +-+-+-+-+-+-+-+-+
+   +-+-+-+-+-+-+-+-+                           |               |
+                                               |               |
+    DTLSCiphertext                             /   Fragment    /
+      Structure                                |               |
+       (full)                                  +-+-+-+-+-+-+-+-+
 
-   DTLSCiphertext         DTLSCiphertext       DTLSPlaintext
-     Structure              Structure            Structure
-      (full)                (minimal)
+                                                DTLSPlaintext
+                                                  Structure
 ~~~~
 {: #hdr_examples title="Header Examples"}
 
