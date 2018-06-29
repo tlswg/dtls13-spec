@@ -263,9 +263,7 @@ modify their data transmission strategy.
 
 # The DTLS Record Layer
 
-The DTLS record layer is different than the TLS 1.3 record layer and 
-there are changes to previous versions of the DTLS record layer. The
-changes are: 
+The DTLS record layer is different from the TLS 1.3 record layer. 
 
 1. The DTLSCiphertext structure omits the superfluous version number field.
 
@@ -274,13 +272,14 @@ This sequence number allows the recipient to correctly verify the DTLS MAC.
 However, the number of bits used for the epoch and sequence number fields 
 in the DTLSCiphertext structure have been reduced.
 
-3. The DTLSCiphertext structure has variable length, depending on the 
-presence or absence of the connection ID and the length field. 
+3. The DTLSCiphertext structure is a variable length header. 
 
-The DTLS record formats are shown below.
+Note that the DTLS 1.3 record layer is different from the DTLS 1.2 record layer.
 
 DTLSPlaintext records are used to send unprotected records and DTLSCiphertext
 or DTLSShortCiphertext are used to send protected records.
+
+The DTLS record formats are shown below.
 
 ~~~~
   struct {
@@ -312,6 +311,10 @@ opaque_type:
 unified_hdr:
 : The unified_hdr is field of variable length, as shown in {{cid_hdr}}. 
 
+encrypted_record:
+: Identical to the encrypted_record field in a TLS 1.3 record.
+{:br}
+
 ~~~~
   0 1 2 3 4 5 6 7
  +-+-+-+-+-+-+-+-+
@@ -332,16 +335,6 @@ unified_hdr:
 ~~~~
 {: #cid_hdr title="DTLS 1.3 Unified Header"}
 
-opaque_type:
-: Identical to the opaque_type field in a TLS 1.3 record.
-
-unified_hdr:
-: The low order two bits of the epoch and the low order 30 bits of
-  the sequence number, laid out as a 32 bit integer.
-  The first 2 bits hold the low order bits from the epoch and the
-  remaining 30 bits hold the low order bits from the sequence number
-  (see {{reconstructing}} for how to use this value).
-
 sequence number: 
 : 14 bit sequence number field. 
 
@@ -352,10 +345,6 @@ connection ID:
 : Variable length connection ID. The connection ID concept 
 is described in {{I-D.ietf-tls-dtls-connection-id}}. An example
 can be found in {{connection-id-example}}.
-
-encrypted_record:
-: Identical to the encrypted_record field in a TLS 1.3 record.
-{:br}
 
 As with previous versions of DTLS, multiple DTLSPlaintext
 and DTLSCiphertext records can be included in the same 
@@ -1599,7 +1588,7 @@ often they send such ACKs.
 If the client and server have negotiated the "connection_id" 
 extension {{I-D.ietf-tls-dtls-connection-id}}, either side 
 can send a new connection ID which it wishes the other side to use
-in a NewConnectionId message:
+in a NewConnectionId message. 
 
 ~~~
    enum {
@@ -1634,6 +1623,8 @@ Endpoints SHOULD respond to RequestConnectionId by sending a NewConnectionId
 with usage "cid_spare" as soon as possible. Note that an endpoint MAY ignore
 requests, which it considers excessive (though they MUST be ACKed as usual).
 
+Endpoints MUST NOT send either of these messages if they did not negotiate a 
+connection ID. 
 
 #  Application Data Protocol
 
