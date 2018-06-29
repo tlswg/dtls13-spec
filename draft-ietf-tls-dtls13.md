@@ -1765,11 +1765,12 @@ this section focuses on the most important changes only.
 
 #  IANA Considerations
 
-IANA is requested to allocate a new value in the TLS ContentType Registry for the ACK message defined in {{ack-msg}}, with content type 25.
+IANA is requested to allocate a new value in the "TLS ContentType" 
+registry for the ACK message, defined in {{ack-msg}}, with content type 25.
 
-  IANA is requested to allocate one value in the "TLS Handshake Type"
-   registry, defined in {{RFC5246}}, for request_connection_id (TBD), 
-   as defined in this document.
+IANA is requested to allocate two values in the "TLS Handshake Type"
+registry, defined in {{RFC5246}}, for RequestConnectionId (TBD), and
+NewConnectionId (TBD), as defined in this document.
 
 --- back
 
