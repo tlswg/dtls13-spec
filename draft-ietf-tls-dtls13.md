@@ -265,7 +265,8 @@ modify their data transmission strategy.
 
 The DTLS record layer is different from the TLS 1.3 record layer. 
 
-1. The DTLSCiphertext structure omits the superfluous version number field.
+1. The DTLSCiphertext structure omits the superfluous version number and 
+   type fields.
 
 2. DTLS adds an explicit epoch and sequence number to the TLS record header. 
 This sequence number allows the recipient to correctly verify the DTLS MAC.
@@ -298,8 +299,7 @@ The DTLS record formats are shown below.
   } DTLSInnerPlaintext;
 
   struct {
-     ContentType opaque_type = 23; /* application_data */
-     opaque unified_hdr[variable]; 
+      opaque unified_hdr[variable]; 
       opaque encrypted_record[length];
   } DTLSCiphertext;
 ~~~~
@@ -354,8 +354,6 @@ underlying transport datagram.
 
 ~~~~
    0 1 2 3 4 5 6 7        0 1 2 3 4 5 6 7      0 1 2 3 4 5 6 7
-  +-+-+-+-+-+-+-+-+      +-+-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+-+
-  | Content Type  |      | Content Type  |    | Content Type  |
   +-+-+-+-+-+-+-+-+      +-+-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+-+
   |0|0|1|C|L|X|X|X|      |0|0|1|0|0|X|X|X|    |   16 bit      |
   +-+-+-+-+-+-+-+-+      +-+-+-+-+-+-+-+-+    |   Version     |
