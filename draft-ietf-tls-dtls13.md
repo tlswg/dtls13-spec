@@ -278,9 +278,10 @@ in the DTLSCiphertext structure have been reduced.
 Note that the DTLS 1.3 record layer is different from the DTLS 1.2 record layer.
 
 DTLSPlaintext records are used to send unprotected records and DTLSCiphertext
-or DTLSShortCiphertext are used to send protected records.
+records are used to send protected records.
 
-The DTLS record formats are shown below.
+The DTLS record formats are shown below. Unless explicitly stated the 
+meaning of the fields is unchanged from previous TLS / DTLS versions. 
 
 ~~~~
   struct {
@@ -303,13 +304,10 @@ The DTLS record formats are shown below.
       opaque encrypted_record[length];
   } DTLSCiphertext;
 ~~~~
-{: #dtls-record title="DTLS 1.3 Record Format with Connection ID"}
-
-opaque_type:
-: Identical to the opaque_type field in a TLS 1.3 record.
+{: #dtls-record title="DTLS 1.3 Record Format"}
 
 unified_hdr:
-: The unified_hdr is field of variable length, as shown in {{cid_hdr}}. 
+: The unified_hdr is a field of variable length, as shown in {{cid_hdr}}. 
 
 encrypted_record:
 : Identical to the encrypted_record field in a TLS 1.3 record.
@@ -387,7 +385,7 @@ underlying transport datagram.
 The length field may be omitted and therefore the
 record consumes the entire rest of the datagram in the lower
 level transport. In this case it is not possible to have multiple
-DTLSShortCiphertext format records in the same datagram.
+DTLSCiphertext format records without length fields in the same datagram.
 
 Omitting the length field MUST only be used for data which is protected with
 one of the application_traffic_secret values, and not for messages
@@ -396,23 +394,38 @@ protected with either [sender]_handshake_traffic_sercret or
 [sender]_application_traffic_secret for message protection,
 Implementations MAY include the length field at their discretion.
 
-## Sequence Number Handling
+
+## Determining the Header Format
+
+Implementations can distinguish the two header formats by examining
+the first byte: 
+
+* If the first byte is alert(21), handshake(22), or ack(proposed, 25),
+the record MUST be interpreted as a DTLSPlaintext record. 
+
+* If the first byte is any other other value, then receivers
+MUST check to see if the leading bits of the first byte are
+001. If so, the implementation MUST process the record as 
+DTLSCiphertext; the true content type will be inside the 
+protected portion.
+
+* Otherwise, the record MUST be rejected as if it had failed
+deprotection, as described in {{handling-invalid-records}}.
+
+## Sequence Number and Epoch 
+
+### Processing Guidlines 
 
 DTLS uses an explicit sequence number, rather than an implicit one,
 carried in the sequence_number field of the record.  Sequence numbers
 are maintained separately for each epoch, with each sequence_number
-initially being 0 for each epoch.  For instance, if a handshake
-message from epoch 0 is retransmitted, it might have a sequence
-number after a message from epoch 1, even if the message from epoch 1
-was transmitted first.  Note that some care needs to be taken during
-the handshake to ensure that retransmitted messages use the right
-epoch and keying material.
+initially being 0 for each epoch.  
 
-The epoch number is initially zero and is
-incremented each time keying material changes and a sender aims to rekey.
-More details are provided in {{dtls-epoch}}.
+The epoch number is initially zero and is incremented each time 
+keying material changes and a sender aims to rekey. More details 
+are provided in {{dtls-epoch}}.
 
-Note that because DTLS records may be reordered, a record from epoch
+Because DTLS records may be reordered, a record from epoch
 1 may be received after epoch 2 has begun.  In general,
 implementations SHOULD discard packets from earlier epochs, but if
 packet loss causes noticeable problems implementations MAY choose to
@@ -429,33 +442,21 @@ new epoch to be received prior to the completion of a
 handshake.  For instance, the server may send its Finished message
 and then start transmitting data.  Implementations MAY either buffer
 or discard such packets, though when DTLS is used over reliable
-transports (e.g., SCTP {{?RFC4960}}), they SHOULD be buffered and processed once
-the handshake completes.  Note that TLS's restrictions on when
-packets may be sent still apply, and the receiver treats the packets
-as if they were sent in the right order.  In particular, it is still
-impermissible to send data prior to completion of the first handshake.
+transports (e.g., SCTP {{?RFC4960}}), they SHOULD be buffered and 
+processed once the handshake completes.  Note that TLS's restrictions 
+on when packets may be sent still apply, and the receiver treats the 
+packets as if they were sent in the right order.  In particular, it is 
+still impermissible to send data prior to completion of the first 
+handshake.
+
+Note that some care needs to be taken during the handshake to ensure 
+that retransmitted messages use the right epoch and keying material.
 
 Implementations MUST either abandon an association or re-key prior to
 allowing the sequence number to wrap.
 
-Implementations MUST NOT allow the epoch to wrap, but instead MUST establish
-a new association, terminating the old association.
-
-### Determining the Header Format
-
-Implementations can distinguish the three header formats by examining
-the first byte, which in the DTLSPlaintext and DTLSCiphertext header represents the
-content type. If the first byte is alert(21), handshake(22), or ack(proposed, 25),
-the record MUST be interpreted as a DTLSPlaintext record. If the
-first byte is application_data(23) then the record MUST be
-interpreted handled as DTLSCiphertext; the true content type
-will be inside the protected portion.
-
-If the first byte is any other other value, then receivers
-MUST check to see if the leading bits of the first byte are
-001. If so, they MUST process the record as DTLSShortCiphertext.
-Otherwise, the record MUST be rejected as if it had failed
-deprotection, as described in {{handling-invalid-records}}.
+Implementations MUST NOT allow the epoch to wrap, but instead MUST 
+establish a new association, terminating the old association.
 
 ### Reconstructing the Sequence Number and Epoch {#reconstructing}
 
@@ -479,11 +480,6 @@ handshake is complete, if the epoch bits do not match those from the
 current epoch implementations SHOULD use the most recent past epoch
 which has matching bits, and then reconstruct the sequence number as
 described above.
-
-Note: the DTLSShortCiphertext format does not allow for easy
-reconstruction of sequence numbers if ~2000 datagrams in sequence
-are lost. Implementations which may encounter this situation
-SHOULD use the DTLSCiphertext format.
 
 ##  Transport Layer Mapping
 
