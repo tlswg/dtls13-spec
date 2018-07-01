@@ -481,6 +481,72 @@ current epoch implementations SHOULD use the most recent past epoch
 which has matching bits, and then reconstruct the sequence number as
 described above.
 
+### Sequence Number Encryption {#sne}
+
+The sequence number encryption algorithm defined in this document 
+takes the following form:
+
+~~~~
+  Mask = AES-ECB(sn_key, Ciphertext[0..15])
+
+  with encrypted_sn = sequence_number XOR Mask
+~~~~
+
+whereby 
+ 
+  * sequence_number is the plaintext sequence number before encryption. 
+
+  * sn_key is a key derived differently depending on the stages of the 
+    handshake. The key derivation steps are shown below and follow the 
+    TLS 1.3 key derivation hierarchy. 
+
+  * Ciphertext is the encrypted packet following the header. 
+
+An implementation may compute the encrypted_sn as follows: 
+
+~~~~
+  Header[1] ^= (Mask[0] & 0x3f)   // Exclude the epoch bits
+  Header[2] ^= Mask [1]
+~~~~
+
+Sequence number encryption is applied after regular handshake and/or traffic 
+encryption is completed. The first 16 bytes of the packet ciphertext are used 
+as input to the encryption algorithm. An implementation MUST ensure that at 
+least 16 bytes of ciphertext are available. In some (rare) cases there may 
+not be enough ciphertext available for described sequence number encryption 
+algorithm to work since the tag of the negotiated AEAD algorithm is only 8 
+bytes long, as it is the case with AES-128-CCM-8, and the plaintext may be 
+too short. In this case an implementation may use padding to fill in the 
+remaining bytes. 
+
+sn_key is computed as follows: 
+
+  * client_early_traffic_sn_key = 
+    Derive-Secret(Early Secret, "sn es", ClientHello)
+
+  * client_handshake_traffic_sn_key = 
+    Derive-Secret(Handshake Secret, "c hs sn", ClientHello...ServerHello)
+
+  * server_handshake_trafffic_sn_key = 
+    Derive-Secret(Handshake Secret, "s hs sn", ClientHello...ServerHello)
+
+  * client_application_traffic_sn_key = 
+    Derive-Secret(Master Secret, "c ap sn", ClientHello...server Finished)
+
+  * server_application_traffic_sn_key = 
+    Derive-Secret(Master Secret, "s ap sn",ClientHello...server Finished)
+
+Once the handshake is complete, it is possible for either side to update its 
+sending traffic keys using the KeyUpdate handshake message. This key update 
+also triggers re-generation of the sequence number encryption key as: 
+
+  * application_traffic_sn_N+1 = 
+   HKDF-Expand-Label(application_traffic_sn_N, "sn upd", "", Hash.length)
+
+Note that sequence number encryption is only applied to the DTLSCiphertext
+structure and not to the DTLSPlaintext structure, which also contains a 
+sequence number. 
+
 ##  Transport Layer Mapping
 
 DTLS messages MAY be fragmentmented into multiple DTLS records. 
@@ -1725,7 +1791,8 @@ to ask for new IDs in order to ensure that you have a pool of suitable IDs.
 
   * Switching connection ID based on certain events, or even regularly, helps against 
 tracking by onpath adversaries but the sequence numbers can still allow
-linkability. [[OPEN ISSUE: We need to update the document to offer sequence number encryption. ]]
+linkability. For this reason this specification defines an algorithm for encrypting 
+sequence numbers, see {{sne}}. 
 
   * Since the DTLS 1.3 exchange encrypts handshake messages much earlier than in previous 
 DTLS versions information identifying the DTLS client, such as the client certificate, less 
@@ -1748,6 +1815,7 @@ this section focuses on the most important changes only.
   * Improved version negotation
   * Optimized record layer encoding and thereby its size
   * Added connection ID functionality
+  * Sequence numbers are encrypted. 
 
 #  IANA Considerations
 
@@ -1769,6 +1837,7 @@ IETF Drafts
 draft-27: 
 - Incorporated unified header format
 - Added connection ID concept
+- Added support for sequence number encryption
 
 draft-04 - 26: 
 - Submissions to align with TLS 1.3 draft versions
@@ -1816,7 +1885,9 @@ Archives of the list can be found at:
 # Contributors
 
 Many people have contributed to previous DTLS versions and they are acknowledged
-in prior versions of DTLS specifications or in the referenced specifications.
+in prior versions of DTLS specifications or in the referenced specifications. The
+sequence number encryption concept is taken from the QUIC specification. We would 
+like to thank the authors of the QUIC specification for their work. 
 
 In addition, we would like to thank:
 
