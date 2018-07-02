@@ -1775,6 +1775,9 @@ NewConnectionId (TBD), as defined in this document.
 RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
 IETF Drafts
+draft-28:
+- Version bump to align with TLS 1.3 pre-RFC version.
+
 draft-27:
 - Incorporated unified header format.
 - Added support for connection IDs.
