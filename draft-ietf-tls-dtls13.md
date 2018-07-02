@@ -519,29 +519,14 @@ bytes long, as it is the case with AES-128-CCM-8, and the plaintext may be
 too short. In this case an implementation may use padding to fill in the 
 remaining bytes. 
 
-sn_key is computed as follows: 
+The sn_key is computed as follows: 
 
-  * client_early_traffic_sn_key = 
-    Derive-Secret(Early Secret, "sn es", ClientHello)
+~~~~
+   [sender]_sn_key  = HKDF-Expand-Label(Secret, "sn key" , "", key_length)
+~~~~
 
-  * client_handshake_traffic_sn_key = 
-    Derive-Secret(Handshake Secret, "c hs sn", ClientHello...ServerHello)
-
-  * server_handshake_trafffic_sn_key = 
-    Derive-Secret(Handshake Secret, "s hs sn", ClientHello...ServerHello)
-
-  * client_application_traffic_sn_key = 
-    Derive-Secret(Master Secret, "c ap sn", ClientHello...server Finished)
-
-  * server_application_traffic_sn_key = 
-    Derive-Secret(Master Secret, "s ap sn",ClientHello...server Finished)
-
-Once the handshake is complete, it is possible for either side to update its 
-sending traffic keys using the KeyUpdate handshake message. This key update 
-also triggers re-generation of the sequence number encryption key as: 
-
-  * application_traffic_sn_N+1 = 
-   HKDF-Expand-Label(application_traffic_sn_N, "sn upd", "", Hash.length)
+[sender] denotes the sending side. The Secret value to be used is described 
+in Section 7.3 of {{I-D.ietf-tls-tls13}}.
 
 Note that sequence number encryption is only applied to the DTLSCiphertext
 structure and not to the DTLSPlaintext structure, which also contains a 
