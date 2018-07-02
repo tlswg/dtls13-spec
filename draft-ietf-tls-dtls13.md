@@ -273,7 +273,7 @@ This sequence number allows the recipient to correctly verify the DTLS MAC.
 However, the number of bits used for the epoch and sequence number fields
 in the DTLSCiphertext structure have been reduced.
 
-3. The DTLSCiphertext structure is a variable length header.
+3. The DTLSCiphertext structure has a variable length header.
 
 Note that the DTLS 1.3 record layer is different from the DTLS 1.2 record layer.
 
@@ -303,6 +303,7 @@ meaning of the fields is unchanged from previous TLS / DTLS versions.
       opaque unified_hdr[variable];
       opaque encrypted_record[length];
   } DTLSCiphertext;
+  [[OPEN ISSUE: Should we try to find some way to render this?]]
 ~~~~
 {: #dtls-record title="DTLS 1.3 Record Format"}
 
@@ -312,6 +313,8 @@ unified_hdr:
 encrypted_record:
 : Identical to the encrypted_record field in a TLS 1.3 record.
 {:br}
+
+The DTLSCiphertext header is tightly bit-packed, as shown below:
 
 ~~~~
   0 1 2 3 4 5 6 7
@@ -331,7 +334,7 @@ encrypted_record:
  | (if present)  |
  +-+-+-+-+-+-+-+-+
 ~~~~
-{: #cid_hdr title="DTLS 1.3 Unified Header"}
+{: #cid_hdr title="DTLS 1.3 CipherText Header"}
 
 Ep.
 : The low order two bits of the epoch.
@@ -1622,16 +1625,12 @@ with usage "cid_spare" as soon as possible. Note that an endpoint MAY ignore
 requests, which it considers excessive (though they MUST be ACKed as usual).
 
 Endpoints MUST NOT send either of these messages if they did not negotiate a
-connection ID.
-
-#  Application Data Protocol
-
-Application data messages are carried by the record layer and are fragmented
-and encrypted based on the current connection state. The messages
-are treated as transparent data to the record layer.
+connection ID. If an implementation receives these messages when connection IDs
+were not negotiated, it MUST abort the connection with an unexpected_message
+alert.
 
 
-# DTLS 1.3 Connection ID Example {#connection-id-example}
+## ID Example {#connection-id-example}
 
 Below is an example exchange for DTLS 1.3 using a single
 connection id in each direction.
@@ -1682,6 +1681,13 @@ Application Data           ========>
                                                       (cid=5)
 ~~~~
 {: #dtls-example title="Example DTLS 1.3 Exchange with Connection IDs"}
+
+
+#  Application Data Protocol
+
+Application data messages are carried by the record layer and are fragmented
+and encrypted based on the current connection state. The messages
+are treated as transparent data to the record layer.
 
 #  Security Considerations
 
@@ -1770,8 +1776,8 @@ RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
 IETF Drafts
 draft-27:
-- Incorporated unified header format
-- Added connection ID concept.
+- Incorporated unified header format.
+- Added support for connection IDs.
 
 draft-04 - 26:
 - Submissions to align with TLS 1.3 draft versions
