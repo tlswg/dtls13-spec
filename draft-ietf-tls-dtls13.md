@@ -318,23 +318,26 @@ encrypted_record:
  +-+-+-+-+-+-+-+-+
  |0|0|1|C|L|X|X|X|
  +-+-+-+-+-+-+-+-+
- |E|E| 14 bit    |   Legend:
+ |Ep.| 14 bit    |   Legend:
  +-+-+           |
- |Sequence Number|   C - CID present
- +-+-+-+-+-+-+-+-+   L - Length present
- | 16 bit Length |   E - Epoch
- | (if present)  |   X - Reserved
- +-+-+-+-+-+-+-+-+
- | Connection ID |
- | (if any,      |
+ |Sequence Number|   Ep. - Epoch
+ +-+-+-+-+-+-+-+-+   C   - CID present
+ | Connection ID |   L   - Length present
+ | (if any,      |   X   - Reserved
  /  length as    /
  |  negotiated)  |
+ +-+-+-+-+-+-+-+-+
+ | 16 bit Length |   
+ | (if present)  |   
  +-+-+-+-+-+-+-+-+
 ~~~~
 {: #cid_hdr title="DTLS 1.3 Unified Header"}
 
+Ep.
+: The low order two bits of the epoch.
+
 sequence number: 
-: 14 bit sequence number field. 
+: The low order 14 bits of the record sequence number.
 
 length:
 : Identical to the length field in a TLS 1.3 record.
