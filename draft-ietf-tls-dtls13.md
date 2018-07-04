@@ -140,8 +140,8 @@ The following terms are used:
   - server: The endpoint which did not initiate the DTLS connection.
 
 The reader is assumed to be familiar with the TLS 1.3 specification since this
-document is defined as a delta from TLS 1.3. As in TLS 1.3 the HelloRetryRequest has 
-the same format as a ServerHello message but for convenience we use the term 
+document is defined as a delta from TLS 1.3. As in TLS 1.3 the HelloRetryRequest has
+the same format as a ServerHello message but for convenience we use the term
 HelloRetryRequest throughout this document as if it were a distinct message.
 
 Figures in this document illustrate various combinations of the DTLS protocol exchanges and the symbols have the following meaning:
@@ -263,25 +263,25 @@ modify their data transmission strategy.
 
 # The DTLS Record Layer
 
-The DTLS record layer is different from the TLS 1.3 record layer. 
+The DTLS record layer is different from the TLS 1.3 record layer.
 
-1. The DTLSCiphertext structure omits the superfluous version number and 
+1. The DTLSCiphertext structure omits the superfluous version number and
    type fields.
 
-2. DTLS adds an explicit epoch and sequence number to the TLS record header. 
+2. DTLS adds an explicit epoch and sequence number to the TLS record header.
 This sequence number allows the recipient to correctly verify the DTLS MAC.
-However, the number of bits used for the epoch and sequence number fields 
+However, the number of bits used for the epoch and sequence number fields
 in the DTLSCiphertext structure have been reduced.
 
-3. The DTLSCiphertext structure is a variable length header. 
+3. The DTLSCiphertext structure has a variable length header.
 
 Note that the DTLS 1.3 record layer is different from the DTLS 1.2 record layer.
 
 DTLSPlaintext records are used to send unprotected records and DTLSCiphertext
 records are used to send protected records.
 
-The DTLS record formats are shown below. Unless explicitly stated the 
-meaning of the fields is unchanged from previous TLS / DTLS versions. 
+The DTLS record formats are shown below. Unless explicitly stated the
+meaning of the fields is unchanged from previous TLS / DTLS versions.
 
 ~~~~
   struct {
@@ -300,85 +300,91 @@ meaning of the fields is unchanged from previous TLS / DTLS versions.
   } DTLSInnerPlaintext;
 
   struct {
-      opaque unified_hdr[variable]; 
+      opaque unified_hdr[variable];
       opaque encrypted_record[length];
   } DTLSCiphertext;
+  [[OPEN ISSUE: Should we try to find some way to render this?]]
 ~~~~
 {: #dtls-record title="DTLS 1.3 Record Format"}
 
 unified_hdr:
-: The unified_hdr is a field of variable length, as shown in {{cid_hdr}}. 
+: The unified_hdr is a field of variable length, as shown in {{cid_hdr}}.
 
 encrypted_record:
 : Identical to the encrypted_record field in a TLS 1.3 record.
 {:br}
+
+The DTLSCiphertext header is tightly bit-packed, as shown below:
 
 ~~~~
   0 1 2 3 4 5 6 7
  +-+-+-+-+-+-+-+-+
  |0|0|1|C|L|X|X|X|
  +-+-+-+-+-+-+-+-+
- |E|E| 14 bit    |   Legend:
+ |Ep.| 14 bit    |   Legend:
  +-+-+           |
- |Sequence Number|   C - CID present
- +-+-+-+-+-+-+-+-+   L - Length present
- | 16 bit Length |   E - Epoch
- | (if present)  |   X - Reserved
- +-+-+-+-+-+-+-+-+
- | Connection ID |
- | (if any,      |
+ |Sequence Number|   Ep. - Epoch
+ +-+-+-+-+-+-+-+-+   C   - CID present
+ | Connection ID |   L   - Length present
+ | (if any,      |   X   - Reserved
  /  length as    /
  |  negotiated)  |
  +-+-+-+-+-+-+-+-+
+ | 16 bit Length |
+ | (if present)  |
+ +-+-+-+-+-+-+-+-+
 ~~~~
-{: #cid_hdr title="DTLS 1.3 Unified Header"}
+{: #cid_hdr title="DTLS 1.3 CipherText Header"}
 
-sequence number: 
-: 14 bit sequence number field. 
+Ep.
+: The low order two bits of the epoch.
+
+sequence number:
+: The low order 14 bits of the record sequence number.
 
 length:
 : Identical to the length field in a TLS 1.3 record.
 
-connection ID: 
-: Variable length connection ID. The connection ID concept 
+connection ID:
+: Variable length connection ID. The connection ID concept
 is described in {{I-D.ietf-tls-dtls-connection-id}}. An example
 can be found in {{connection-id-example}}.
 
 As with previous versions of DTLS, multiple DTLSPlaintext
-and DTLSCiphertext records can be included in the same 
+and DTLSCiphertext records can be included in the same
 underlying transport datagram.
 
-{{hdr_examples}} illustrates different record layer header types. 
+{{hdr_examples}} illustrates different record layer header types.
 
 ~~~~
-    0 1 2 3 4 5 6 7        0 1 2 3 4 5 6 7      0 1 2 3 4 5 6 7
-   +-+-+-+-+-+-+-+-+      +-+-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+-+
-   |0|0|1|C|L|X|X|X|      |0|0|1|0|0|X|X|X|    | Content Type  |
-   +-+-+-+-+-+-+-+-+      +-+-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+-+
-   |E|E| 14 bit    |      |E|E| 14 bit    |    |   16 bit      |
-   +-+-+           |      +-+-+           |    |   Version     |
-   |Sequence Number|      |Sequence Number|    +-+-+-+-+-+-+-+-+
-   +-+-+-+-+-+-+-+-+      +-+-+-+-+-+-+-+-+    |   16 bit      |
-   |   16 bit      |      |               |    |    Epoch      |
-   |   Length      |      |   Encrypted   |    +-+-+-+-+-+-+-+-+
-   +-+-+-+-+-+-+-+-+      /   Record      /    |               |
-   |               |      |               |    |               |
-   |               |      +-+-+-+-+-+-+-+-+    |   48 bit      |
-   / Connection ID /                           |Sequence Number|
-   |               |        DTLSCiphertext     |               |
-   +-+-+-+-+-+-+-+-+          Structure        |               |
-   |               |          (minimal)        +-+-+-+-+-+-+-+-+
-   |  Encrypted    |                           |    16 bit     |
-   /  Record       /                           |    Length     |
-   |               |                           +-+-+-+-+-+-+-+-+
-   +-+-+-+-+-+-+-+-+                           |               |
-                                               |               |
-    DTLSCiphertext                             /   Fragment    /
-      Structure                                |               |
-       (full)                                  +-+-+-+-+-+-+-+-+
+ 0 1 2 3 4 5 6 7       0 1 2 3 4 5 6 7        0 1 2 3 4 5 6 7
++-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+
+| Content Type  |     |0|0|1|C|L|X|X|X|     |0|0|1|0|0|X|X|X|
++-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+
+|   16 bit      |     |E|E| 14 bit    |     |E|E| 14 bit    |
+|   Version     |     +-+-+           |     +-+-+           |
++-+-+-+-+-+-+-+-+     |Sequence Number|     |Sequence Number|
+|   16 bit      |     +-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+
+|    Epoch      |     |               |     |               |
++-+-+-+-+-+-+-+-+     / Connection ID /     |   Encrypted   |
+|               |     |               |     /   Record      /
+|               |     +-+-+-+-+-+-+-+-+     |               |
+|   48 bit      |     |   16 bit      |     +-+-+-+-+-+-+-+-+
+|Sequence Number|     |   Length      |
+|               |     +-+-+-+-+-+-+-+-+       DTLSCiphertext
+|               |     |               |         Structure
++-+-+-+-+-+-+-+-+     |  Encrypted    |         (minimal)
+|    16 bit     |     /  Record       /
+|    Length     |     |               |
++-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+
+|               |
+|               |      DTLSCiphertext
+/   Fragment    /        Structure
+|               |          (full)
++-+-+-+-+-+-+-+-+
 
-                                                DTLSPlaintext
-                                                  Structure
+ DTLSPlaintext
+   Structure
 ~~~~
 {: #hdr_examples title="Header Examples"}
 
@@ -398,31 +404,31 @@ Implementations MAY include the length field at their discretion.
 ## Determining the Header Format
 
 Implementations can distinguish the two header formats by examining
-the first byte: 
+the first byte:
 
 * If the first byte is alert(21), handshake(22), or ack(proposed, 25),
-the record MUST be interpreted as a DTLSPlaintext record. 
+the record MUST be interpreted as a DTLSPlaintext record.
 
 * If the first byte is any other other value, then receivers
 MUST check to see if the leading bits of the first byte are
-001. If so, the implementation MUST process the record as 
-DTLSCiphertext; the true content type will be inside the 
+001. If so, the implementation MUST process the record as
+DTLSCiphertext; the true content type will be inside the
 protected portion.
 
 * Otherwise, the record MUST be rejected as if it had failed
 deprotection, as described in {{handling-invalid-records}}.
 
-## Sequence Number and Epoch 
+## Sequence Number and Epoch
 
-### Processing Guidlines 
+### Processing Guidlines
 
 DTLS uses an explicit sequence number, rather than an implicit one,
 carried in the sequence_number field of the record.  Sequence numbers
 are maintained separately for each epoch, with each sequence_number
-initially being 0 for each epoch.  
+initially being 0 for each epoch.
 
-The epoch number is initially zero and is incremented each time 
-keying material changes and a sender aims to rekey. More details 
+The epoch number is initially zero and is incremented each time
+keying material changes and a sender aims to rekey. More details
 are provided in {{dtls-epoch}}.
 
 Because DTLS records may be reordered, a record from epoch
@@ -442,20 +448,20 @@ new epoch to be received prior to the completion of a
 handshake.  For instance, the server may send its Finished message
 and then start transmitting data.  Implementations MAY either buffer
 or discard such packets, though when DTLS is used over reliable
-transports (e.g., SCTP {{?RFC4960}}), they SHOULD be buffered and 
-processed once the handshake completes.  Note that TLS's restrictions 
-on when packets may be sent still apply, and the receiver treats the 
-packets as if they were sent in the right order.  In particular, it is 
-still impermissible to send data prior to completion of the first 
+transports (e.g., SCTP {{?RFC4960}}), they SHOULD be buffered and
+processed once the handshake completes.  Note that TLS's restrictions
+on when packets may be sent still apply, and the receiver treats the
+packets as if they were sent in the right order.  In particular, it is
+still impermissible to send data prior to completion of the first
 handshake.
 
-Note that some care needs to be taken during the handshake to ensure 
+Note that some care needs to be taken during the handshake to ensure
 that retransmitted messages use the right epoch and keying material.
 
 Implementations MUST either abandon an association or re-key prior to
 allowing the sequence number to wrap.
 
-Implementations MUST NOT allow the epoch to wrap, but instead MUST 
+Implementations MUST NOT allow the epoch to wrap, but instead MUST
 establish a new association, terminating the old association.
 
 ### Reconstructing the Sequence Number and Epoch {#reconstructing}
@@ -534,7 +540,7 @@ sequence number.
 
 ##  Transport Layer Mapping
 
-DTLS messages MAY be fragmentmented into multiple DTLS records. 
+DTLS messages MAY be fragmentmented into multiple DTLS records.
 Each DTLS record MUST fit within a single datagram.  In order to
 avoid IP fragmentation, clients of the DTLS record layer SHOULD
 attempt to size records so that they fit within any PMTU estimates
@@ -546,10 +552,10 @@ to determine the boundaries.  Note, however, that the first byte of
 the datagram payload MUST be the beginning of a record.  Records MUST
 NOT span datagrams.
 
-DTLS records, as defined in this document, do not contain any association 
-identifiers and applications must arrange to multiplex between associations. 
-With UDP, the host/port number is used to look up the appropriate security 
-association for incoming records. However, the Connection ID extension 
+DTLS records, as defined in this document, do not contain any association
+identifiers and applications must arrange to multiplex between associations.
+With UDP, the host/port number is used to look up the appropriate security
+association for incoming records. However, the Connection ID extension
 defined in {{I-D.ietf-tls-dtls-connection-id}} adds an association identifier
 to DTLS records.
 
@@ -1631,10 +1637,10 @@ often they send such ACKs.
 
 # Connection ID Updates
 
-If the client and server have negotiated the "connection_id" 
-extension {{I-D.ietf-tls-dtls-connection-id}}, either side 
+If the client and server have negotiated the "connection_id"
+extension {{I-D.ietf-tls-dtls-connection-id}}, either side
 can send a new connection ID which it wishes the other side to use
-in a NewConnectionId message. 
+in a NewConnectionId message.
 
 ~~~
    enum {
@@ -1669,23 +1675,19 @@ Endpoints SHOULD respond to RequestConnectionId by sending a NewConnectionId
 with usage "cid_spare" as soon as possible. Note that an endpoint MAY ignore
 requests, which it considers excessive (though they MUST be ACKed as usual).
 
-Endpoints MUST NOT send either of these messages if they did not negotiate a 
-connection ID. 
-
-#  Application Data Protocol
-
-Application data messages are carried by the record layer and are fragmented
-and encrypted based on the current connection state. The messages
-are treated as transparent data to the record layer.
+Endpoints MUST NOT send either of these messages if they did not negotiate a
+connection ID. If an implementation receives these messages when connection IDs
+were not negotiated, it MUST abort the connection with an unexpected_message
+alert.
 
 
-# DTLS 1.3 Connection ID Example {#connection-id-example}
+## ID Example {#connection-id-example}
 
 Below is an example exchange for DTLS 1.3 using a single
 connection id in each direction.
 
-Note: The connection_id extension is defined in 
-{{I-D.ietf-tls-dtls-connection-id}}, which is used 
+Note: The connection_id extension is defined in
+{{I-D.ietf-tls-dtls-connection-id}}, which is used
 in ClientHello and ServerHello messages.
 
 ~~~~
@@ -1731,6 +1733,13 @@ Application Data           ========>
 ~~~~
 {: #dtls-example title="Example DTLS 1.3 Exchange with Connection IDs"}
 
+
+#  Application Data Protocol
+
+Application data messages are carried by the record layer and are fragmented
+and encrypted based on the current connection state. The messages
+are treated as transparent data to the record layer.
+
 #  Security Considerations
 
 Security issues are discussed primarily in {{I-D.ietf-tls-tls13}}.
@@ -1759,13 +1768,13 @@ attack is small since the HKDF-Expand-Label only performs symmetric
 key hashing operations. Implementations which are concerned about
 this form of attack can discard out-of-epoch records.
 
-The security and privacy properties of the connection ID for DTLS 1.3 builds 
-on top of what is described in {{I-D.ietf-tls-dtls-connection-id}}. There are, 
-however, several improvements: 
+The security and privacy properties of the connection ID for DTLS 1.3 builds
+on top of what is described in {{I-D.ietf-tls-dtls-connection-id}}. There are,
+however, several improvements:
 
-  * The use of the Post-Handshake message allows the client and the server 
-to update their connection IDs and those values are exchanged with confidentiality 
-protection. 
+  * The use of the Post-Handshake message allows the client and the server
+to update their connection IDs and those values are exchanged with confidentiality
+protection.
 
   * With multi-homing, an adversary is able to correlate the communication
 interaction over the two paths, which adds further privacy concerns. In order
@@ -1774,14 +1783,14 @@ whenever they change local addresses or ports (though this is not always
 possible to detect). The RequestConnectionId message can be used
 to ask for new IDs in order to ensure that you have a pool of suitable IDs.
 
-  * Switching connection ID based on certain events, or even regularly, helps against 
+  * Switching connection ID based on certain events, or even regularly, helps against
 tracking by onpath adversaries but the sequence numbers can still allow
 linkability. For this reason this specification defines an algorithm for encrypting 
 sequence numbers, see {{sne}}. 
 
-  * Since the DTLS 1.3 exchange encrypts handshake messages much earlier than in previous 
-DTLS versions information identifying the DTLS client, such as the client certificate, less 
-information is available to an on-path adversary. 
+  * Since the DTLS 1.3 exchange encrypts handshake messages much earlier than in previous
+DTLS versions information identifying the DTLS client, such as the client certificate, less
+information is available to an on-path adversary.
 
 #  Changes to DTLS 1.2
 
@@ -1804,7 +1813,7 @@ this section focuses on the most important changes only.
 
 #  IANA Considerations
 
-IANA is requested to allocate a new value in the "TLS ContentType" 
+IANA is requested to allocate a new value in the "TLS ContentType"
 registry for the ACK message, defined in {{ack-msg}}, with content type 25.
 
 IANA is requested to allocate two values in the "TLS Handshake Type"
@@ -1819,12 +1828,17 @@ NewConnectionId (TBD), as defined in this document.
 RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
 IETF Drafts
-draft-27: 
-- Incorporated unified header format
-- Added connection ID concept
+draft-29: 
 - Added support for sequence number encryption
 
-draft-04 - 26: 
+draft-28:
+- Version bump to align with TLS 1.3 pre-RFC version.
+
+draft-27:
+- Incorporated unified header format.
+- Added support for connection IDs.
+
+draft-04 - 26:
 - Submissions to align with TLS 1.3 draft versions
 
 draft-03
@@ -1896,7 +1910,7 @@ In addition, we would like to thank:
 
 ~~~
 * Thomas Fossati
-  Nokia 
+  Nokia
   thomas.fossati@nokia.com
 ~~~
 
