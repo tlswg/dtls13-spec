@@ -319,15 +319,14 @@ The DTLSCiphertext header is tightly bit-packed, as shown below:
 ~~~~
   0 1 2 3 4 5 6 7
  +-+-+-+-+-+-+-+-+
- |0|0|1|C|L|X|X|X|
+ |0|0|1|C|L|E E|S|
  +-+-+-+-+-+-+-+-+
- |Ep.| 14 bit    |   Legend:
- +-+-+           |
- |Sequence Number|   Ep. - Epoch
+ |  8 or 16 bit  |   Legend:
+ |Sequence Number|
  +-+-+-+-+-+-+-+-+   C   - CID present
  | Connection ID |   L   - Length present
- | (if any,      |   X   - Reserved
- /  length as    /
+ | (if any,      |   E   - Epoch
+ /  length as    /   S   - Sequence number length
  |  negotiated)  |
  +-+-+-+-+-+-+-+-+
  | 16 bit Length |
@@ -336,19 +335,30 @@ The DTLSCiphertext header is tightly bit-packed, as shown below:
 ~~~~
 {: #cid_hdr title="DTLS 1.3 CipherText Header"}
 
-Ep.
+C:
+: The C bit is set if the connection ID is present.
+
+L:
+: The L bit is set if the length is present.
+
+E:
 : The low order two bits of the epoch.
 
-sequence number:
-: The low order 14 bits of the record sequence number.
+S:
+: The size of the sequence number.  0 means an 8-bit sequence number, 1 means
+16-bit.
 
-length:
-: Identical to the length field in a TLS 1.3 record.
+sequence number:
+: The low order 8 or 16 bits of the record sequence number.  This value is 16
+bits if the S bit is set to 1, and 8 bits if the S bit is 0.
 
 connection ID:
 : Variable length connection ID. The connection ID concept
 is described in {{I-D.ietf-tls-dtls-connection-id}}. An example
 can be found in {{connection-id-example}}.
+
+length:
+: Identical to the length field in a TLS 1.3 record.
 
 As with previous versions of DTLS, multiple DTLSPlaintext
 and DTLSCiphertext records can be included in the same
@@ -359,28 +369,28 @@ underlying transport datagram.
 ~~~~
  0 1 2 3 4 5 6 7       0 1 2 3 4 5 6 7        0 1 2 3 4 5 6 7
 +-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+
-| Content Type  |     |0|0|1|C|L|X|X|X|     |0|0|1|0|0|X|X|X|
+| Content Type  |     |0|0|1|C|L|E|E|S|     |0|0|1|0|0|E|E|0|
 +-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+
-|   16 bit      |     |E|E| 14 bit    |     |E|E| 14 bit    |
-|   Version     |     +-+-+           |     +-+-+           |
-+-+-+-+-+-+-+-+-+     |Sequence Number|     |Sequence Number|
-|   16 bit      |     +-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+
-|    Epoch      |     |               |     |               |
-+-+-+-+-+-+-+-+-+     / Connection ID /     |   Encrypted   |
-|               |     |               |     /   Record      /
-|               |     +-+-+-+-+-+-+-+-+     |               |
-|   48 bit      |     |   16 bit      |     +-+-+-+-+-+-+-+-+
-|Sequence Number|     |   Length      |
-|               |     +-+-+-+-+-+-+-+-+       DTLSCiphertext
-|               |     |               |         Structure
-+-+-+-+-+-+-+-+-+     |  Encrypted    |         (minimal)
-|    16 bit     |     /  Record       /
-|    Length     |     |               |
-+-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+
-|               |
+|   16 bit      |     |    16 bit     |     |8-bit Seq. No. |
+|   Version     |     |Sequence Number|     +-+-+-+-+-+-+-+-+
++-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+     |               |
+|   16 bit      |     |               |     |   Encrypted   |
+|    Epoch      |     / Connection ID /     /   Record      /
++-+-+-+-+-+-+-+-+     |               |     |               |
+|               |     +-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+
+|               |     |   16 bit      |
+|   48 bit      |     |   Length      |       DTLSCiphertext
+|Sequence Number|     +-+-+-+-+-+-+-+-+         Structure
+|               |     |               |         (minimal)
+|               |     |  Encrypted    |
++-+-+-+-+-+-+-+-+     /  Record       /
+|    16 bit     |     |               |
+|    Length     |     +-+-+-+-+-+-+-+-+
++-+-+-+-+-+-+-+-+
 |               |      DTLSCiphertext
-/   Fragment    /        Structure
-|               |          (full)
+|               |        Structure
+/   Fragment    /          (full)
+|               |
 +-+-+-+-+-+-+-+-+
 
  DTLSPlaintext
@@ -1858,4 +1868,3 @@ In addition, we would like to thank:
   Huawei
   tobias.gondrom@gondrom.org
 ~~~
-
