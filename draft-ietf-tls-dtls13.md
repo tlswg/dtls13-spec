@@ -178,7 +178,7 @@ TLS cannot be used directly in datagram environments for the following five reas
    This is incompatible with reordering and message loss.
 
 3. Not all TLS 1.3 handshake messages (such as the NewSessionTicket message)
-   are acknowledged. Hence, a new acknowledgement message has to be added
+   are acknowledged. Hence, a new acknowledgment message has to be added
    to detect message loss.
 
 4. Handshake messages are potentially larger than any given datagram,
@@ -420,7 +420,7 @@ deprotection, as described in {{handling-invalid-records}}.
 
 ## Sequence Number and Epoch
 
-### Processing Guidlines
+### Processing Guidelines
 
 DTLS uses an explicit sequence number, rather than an implicit one,
 carried in the sequence_number field of the record.  Sequence numbers
@@ -716,7 +716,7 @@ the technique of {{RFC2522}}. The client MUST retransmit the ClientHello
 with the cookie added as an extension.  The server then verifies the cookie
 and proceeds with the handshake only if it is valid.  This mechanism forces
 the attacker/client to be able to receive the cookie, which makes DoS attacks
-with spoofed IP addresses difficult.  This mechanism does not provide any defence
+with spoofed IP addresses difficult.  This mechanism does not provide any defense
 against DoS attacks mounted from valid IP addresses.
 
 The DTLS 1.3 specification changes the way how cookies are exchanged
@@ -1754,7 +1754,7 @@ this section focuses on the most important changes only.
   * PSK authentication redefined
   * New key derivation hierarchy utilizing a new key derivation construct
   * Removed support for weaker and older cryptographic algorithms
-  * Improved version negotation
+  * Improved version negotiation
   * Optimized record layer encoding and thereby its size
   * Added connection ID functionality
 
