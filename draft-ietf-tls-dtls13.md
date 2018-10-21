@@ -760,7 +760,7 @@ ClientHello message following the description in Section 4.1.2 of {{I-D.ietf-tls
 
 If the HelloRetryRequest message is used, the initial ClientHello and
 the HelloRetryRequest are included in the calculation of the
-Transcript-Hash. The computation of the
+transcript hash. The computation of the
 message hash for the HelloRetryRequest is done according to the description
 in Section 4.4.1 of {{I-D.ietf-tls-tls13}}.
 
