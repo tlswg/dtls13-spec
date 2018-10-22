@@ -986,6 +986,17 @@ part of the same flight.  Thus, there are two acceptable ways to pack
 two DTLS messages into the same datagram: in the same record or in
 separate records.
 
+##  End Of Early Data
+
+The DTLS 1.3 handshake has one important difference from the
+TLS 1.3 handshake: the EndOfEarlyData message is omitted both
+from the wire and the handshake transcript: because DTLS
+records have epochs, EndOfEarlyData is not necessary to determine
+when the early data is complete. Servers SHOULD aggressively
+age out the epoch 1 keys upon receiving the first epoch 1 record
+and SHOULD NOT accept epoch 1 data after the first epoch 3 record
+is received.
+
 
 ##  DTLS Handshake Flights
 
