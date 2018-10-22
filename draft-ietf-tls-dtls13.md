@@ -522,7 +522,7 @@ The encrypted sequence number is computed by XORing the leading
 bytes of the Mask with the sequence number. Decryption is
 accomplished by the same process.
 
-In some (rare) cases where the ciphertext may be less than 16 bytes.
+In some (rare) cases the ciphertext may be less than 16 bytes.
 This cannot happen with most of the DTLS AEAD algorithms because
 the authentication tag itself is 16 bytes, however some algorithms
 such as TLS_AES_128_CCM_8_SHA256 have a shorter authentication tag,
