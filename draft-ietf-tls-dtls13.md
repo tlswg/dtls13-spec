@@ -410,6 +410,8 @@ protected with either [sender]_handshake_traffic_sercret or
 [sender]_application_traffic_secret for message protection,
 Implementations MAY include the length field at their discretion.
 
+The entire header value shown above is used as it appears on the
+wire as the additional data value for the AEAD function.
 
 ## Determining the Header Format
 
