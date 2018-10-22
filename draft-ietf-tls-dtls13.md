@@ -503,7 +503,7 @@ computing AES-ECB on the first 16 bytes of the ciphertext:
 
 When the AEAD is based on ChaCha20, then the mask is generated
 by treating the first 12 bytes of the ciphertext as the
-Nonce and the next 4 bytes as the nonce:
+Nonce and the next 4 bytes as the counter:
 
 ~~~~
   Mask = ChaCha20(sn_key, Ciphertext[0..12], Ciphertext[13..15])
@@ -522,13 +522,14 @@ The encrypted sequence number is computed by XORing the leading
 bytes of the Mask with the sequence number. Decryption is
 accomplished by the same process.
 
-In some (rare) cases there the ciphertext may be less than 16 bytes.
+In some (rare) cases where the ciphertext may be less than 16 bytes.
 This cannot happen with most of the DTLS AEAD algorithms because
 the authentication tag itself is 16 bytes, however some algorithms
 such as TLS_AES_128_CCM_8_SHA256 have a shorter authentication tag,
 and in combination with a short plaintext, the result might be
 less than 16 bytes. In this case, implementations MUST pad the
-plaintext out in order to make a suitable-length ciphertext.
+plaintext out (using the conventional record padding mechanism)
+in order to make a suitable-length ciphertext.
 
 Note that sequence number encryption is only applied to the DTLSCiphertext
 structure and not to the DTLSPlaintext structure, which also contains a 
