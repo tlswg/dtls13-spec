@@ -50,7 +50,8 @@ normative:
   RFC0793:
   RFC6298:
   RFC8174:
-
+  TLS13:RFC8446
+  
 informative:
   RFC7296:
   RFC2522:
@@ -101,7 +102,7 @@ DTLS 1.0 {{RFC4347}} was originally defined as a delta from TLS 1.1 {{RFC4346}} 
 DTLS 1.2 {{RFC6347}} was defined as a series of deltas to TLS 1.2 {{RFC5246}}.  There
 is no DTLS 1.1; that version number was skipped in order to harmonize version numbers
 with TLS.  This specification describes the most current version of the DTLS protocol
-aligning with the efforts around TLS 1.3 {{!TLS13=RFC8446}}.
+aligning with the efforts around TLS 1.3 {{TLS13}}.
 
 Implementations that speak both DTLS 1.2 and DTLS 1.3 can interoperate with those
 that speak only DTLS 1.2 (using DTLS 1.2 of course), just as TLS 1.3 implementations
@@ -528,7 +529,7 @@ The sn_key is computed as follows:
 ~~~~
 
 [sender] denotes the sending side. The Secret value to be used is described 
-in Section 7.3 of {{I-D.ietf-tls-tls13}}.
+in Section 7.3 of {{TLS13}}.
 
 The encrypted sequence number is computed by XORing the leading
 bytes of the Mask with the sequence number. Decryption is
