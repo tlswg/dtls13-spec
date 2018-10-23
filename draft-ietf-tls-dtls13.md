@@ -1838,6 +1838,9 @@ RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 IETF Drafts
 draft-29: 
 - Added support for sequence number encryption
+- Update to new record format
+- Emphasize that compatibility mode isn't used.
+
 
 draft-28:
 - Version bump to align with TLS 1.3 pre-RFC version.
