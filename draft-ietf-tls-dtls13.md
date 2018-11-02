@@ -284,28 +284,26 @@ records are used to send protected records.
 The DTLS record formats are shown below. Unless explicitly stated the
 meaning of the fields is unchanged from previous TLS / DTLS versions.
 
-~~~~
-  struct {
-      ContentType type;
-      ProtocolVersion legacy_record_version;
-      uint16 epoch = 0                                 // DTLS field
-      uint48 sequence_number;                          // DTLS field
-      uint16 length;
-      opaque fragment[DTLSPlaintext.length];
-  } DTLSPlaintext;
-
-  struct {
-       opaque content[DTLSPlaintext.length];
-       ContentType type;
-       uint8 zeros[length_of_padding];
-  } DTLSInnerPlaintext;
-
-  struct {
-      opaque unified_hdr[variable];
-      opaque encrypted_record[length];
-  } DTLSCiphertext;
-  [[OPEN ISSUE: Should we try to find some way to render this?]]
-~~~~
+%%% Record Layer
+    struct {
+        ContentType type;
+        ProtocolVersion legacy_record_version;
+        uint16 epoch = 0                                 // DTLS field
+        uint48 sequence_number;                          // DTLS field
+        uint16 length;
+        opaque fragment[DTLSPlaintext.length];
+    } DTLSPlaintext;
+  
+    struct {
+         opaque content[DTLSPlaintext.length];
+         ContentType type;
+         uint8 zeros[length_of_padding];
+    } DTLSInnerPlaintext;
+  
+    struct {
+        opaque unified_hdr[variable];
+        opaque encrypted_record[length];
+    } DTLSCiphertext;
 {: #dtls-record title="DTLS 1.3 Record Format"}
 
 unified_hdr:
@@ -317,23 +315,22 @@ encrypted_record:
 
 The DTLSCiphertext header is tightly bit-packed, as shown below:
 
-~~~~
-  0 1 2 3 4 5 6 7
- +-+-+-+-+-+-+-+-+
- |0|0|1|C|L|E E|S|
- +-+-+-+-+-+-+-+-+
- |  8 or 16 bit  |   Legend:
- |Sequence Number|
- +-+-+-+-+-+-+-+-+   C   - CID present
- | Connection ID |   L   - Length present
- | (if any,      |   E   - Epoch
- /  length as    /   S   - Sequence number length
- |  negotiated)  |
- +-+-+-+-+-+-+-+-+
- | 16 bit Length |
- | (if present)  |
- +-+-+-+-+-+-+-+-+
-~~~~
+%%% Record Layer
+    0 1 2 3 4 5 6 7
+    +-+-+-+-+-+-+-+-+
+    |0|0|1|C|L|E E|S|
+    +-+-+-+-+-+-+-+-+
+    |  8 or 16 bit  |   Legend:
+    |Sequence Number|
+    +-+-+-+-+-+-+-+-+   C   - CID present
+    | Connection ID |   L   - Length present
+    | (if any,      |   E   - Epoch
+    /  length as    /   S   - Sequence number length
+    |  negotiated)  |
+    +-+-+-+-+-+-+-+-+
+    | 16 bit Length |
+    | (if present)  |
+    +-+-+-+-+-+-+-+-+
 {: #cid_hdr title="DTLS 1.3 CipherText Header"}
 
 C:
@@ -879,48 +876,47 @@ to any second HelloRetryRequest which was sent in the same connection
 In order to support message loss, reordering, and message
 fragmentation, DTLS modifies the TLS 1.3 handshake header:
 
-~~~~
-  enum {
-      hello_request_RESERVED(0),
-      client_hello(1),
-      server_hello(2),
-      hello_verify_request_RESERVED(3),
-      new_session_ticket(4),
-      end_of_early_data(5),
-      hello_retry_request_RESERVED(6),
-      encrypted_extensions(8),
-      certificate(11),
-      server_key_exchange_RESERVED(12),
-      certificate_request(13),
-      server_hello_done_RESERVED(14),
-      certificate_verify(15),
-      client_key_exchange_RESERVED(16),
-      finished(20),
-      key_update(24),
-      message_hash(254),
-      (255)
-  } HandshakeType;
-
-  struct {
-      HandshakeType msg_type;    /* handshake type */
-      uint24 length;             /* bytes in message */
-      uint16 message_seq;        /* DTLS-required field */
-      uint24 fragment_offset;    /* DTLS-required field */
-      uint24 fragment_length;    /* DTLS-required field */
-      select (HandshakeType) {
-          case client_hello:          ClientHello;
-          case server_hello:          ServerHello;
-          case end_of_early_data:     EndOfEarlyData;
-          case encrypted_extensions:  EncryptedExtensions;
-          case certificate_request:   CertificateRequest;
-          case certificate:           Certificate;
-          case certificate_verify:    CertificateVerify;
-          case finished:              Finished;
-          case new_session_ticket:    NewSessionTicket;
-          case key_update:            KeyUpdate;
-      } body;
-  } Handshake;
-~~~~
+%%% Handshake Protocol
+    enum {
+        hello_request_RESERVED(0),
+        client_hello(1),
+        server_hello(2),
+        hello_verify_request_RESERVED(3),
+        new_session_ticket(4),
+        end_of_early_data(5),
+        hello_retry_request_RESERVED(6),
+        encrypted_extensions(8),
+        certificate(11),
+        server_key_exchange_RESERVED(12),
+        certificate_request(13),
+        server_hello_done_RESERVED(14),
+        certificate_verify(15),
+        client_key_exchange_RESERVED(16),
+        finished(20),
+        key_update(24),
+        message_hash(254),
+        (255)
+    } HandshakeType;
+  
+    struct {
+        HandshakeType msg_type;    /* handshake type */
+        uint24 length;             /* bytes in message */
+        uint16 message_seq;        /* DTLS-required field */
+        uint24 fragment_offset;    /* DTLS-required field */
+        uint24 fragment_length;    /* DTLS-required field */
+        select (HandshakeType) {
+            case client_hello:          ClientHello;
+            case server_hello:          ServerHello;
+            case end_of_early_data:     EndOfEarlyData;
+            case encrypted_extensions:  EncryptedExtensions;
+            case certificate_request:   CertificateRequest;
+            case certificate:           Certificate;
+            case certificate_verify:    CertificateVerify;
+            case finished:              Finished;
+            case new_session_ticket:    NewSessionTicket;
+            case key_update:            KeyUpdate;
+        } body;
+    } Handshake;
 
 The first message each side transmits in each association always has
 message_seq = 0.  Whenever a new message is generated, the
@@ -952,22 +948,23 @@ interact with a DTLS 1.2 server.
 The format of the ClientHello used by a DTLS 1.3 client differs from the
 TLS 1.3 ClientHello format as shown below.
 
-~~~~
-   uint16 ProtocolVersion;
-   opaque Random[32];
 
-   uint8 CipherSuite[2];    /* Cryptographic suite selector */
+%%% Handshake Protocol
+    uint16 ProtocolVersion;
+    opaque Random[32];
+ 
+    uint8 CipherSuite[2];    /* Cryptographic suite selector */
+ 
+    struct {
+        ProtocolVersion legacy_version = { 254,253 }; // DTLSv1.2
+        Random random;
+        opaque legacy_session_id<0..32>;
+        opaque legacy_cookie<0..2^8-1>;                  // DTLS
+        CipherSuite cipher_suites<2..2^16-2>;
+        opaque legacy_compression_methods<1..2^8-1>;
+        Extension extensions<8..2^16-1>;
+    } ClientHello;
 
-   struct {
-       ProtocolVersion legacy_version = { 254,253 }; // DTLSv1.2
-       Random random;
-       opaque legacy_session_id<0..32>;
-       opaque legacy_cookie<0..2^8-1>;                  // DTLS
-       CipherSuite cipher_suites<2..2^16-2>;
-       opaque legacy_compression_methods<1..2^8-1>;
-       Extension extensions<8..2^16-1>;
-   } ClientHello;
-~~~~
 
 legacy_version:
 : In previous versions of DTLS, this field was used for version
@@ -1531,11 +1528,10 @@ with code point TBD (proposed, 25). This avoids it consuming space in the
 handshake message sequence. Note that ACKs can still be
 piggybacked on the same UDP datagram as handshake records.
 
-~~~~
-struct {
-       uint64 record_numbers<0..2^16-1>;
-} ACK;
-~~~~
+%%% ACKs
+    struct {
+        uint64 record_numbers<0..2^16-1>;
+    } ACK;
 
 record_numbers:
 : a list of the records containing handshake messages in the current
@@ -1651,16 +1647,15 @@ extension {{?DTLS-CID}}, either side
 can send a new connection ID which it wishes the other side to use
 in a NewConnectionId message.
 
-~~~
-   enum {
-       cid_immediate(0), cid_spare(1), (255)
-   } ConnectionIdUsage;
-
-   struct {
-       opaque cid<0..2^8-1>;
-       ConnectionIdUsage usage;
-   } NewConnectionId;
-~~~
+%%% Connection ID Management
+    enum {
+        cid_immediate(0), cid_spare(1), (255)
+    } ConnectionIdUsage;
+ 
+    struct {
+        opaque cid<0..2^8-1>;
+        ConnectionIdUsage usage;
+    } NewConnectionId;
 
 cid
 : Indicates the CID which the sender wishes the peer to use.
@@ -1675,10 +1670,9 @@ be used.
 If the client and server have negotiated the "connection_id" extension,
 either side can request a new CID using the RequestConnectionId message.
 
-~~~
-   struct {
-   } RequestConnectionId;
-~~~
+%%% Connection ID Management
+    struct {
+    } RequestConnectionId;
 
 Endpoints SHOULD respond to RequestConnectionId by sending a NewConnectionId
 with usage "cid_spare" as soon as possible. Note that an endpoint MAY ignore
@@ -1831,6 +1825,14 @@ NewConnectionId (TBD), as defined in this document.
 
 --- back
 
+# Protocol Data Structures and Constant Values
+
+This section provides the normative protocol types and constants definitions.
+
+%%## Record Layer
+%%## Handshake Protocol
+%%## ACKs
+%%## Connection ID Management
 
 # History
 
