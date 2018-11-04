@@ -51,7 +51,7 @@ normative:
   RFC6298:
   RFC8174:
   TLS13: RFC8446
-  
+
 informative:
   RFC7296:
   RFC2522:
@@ -293,13 +293,13 @@ meaning of the fields is unchanged from previous TLS / DTLS versions.
         uint16 length;
         opaque fragment[DTLSPlaintext.length];
     } DTLSPlaintext;
-  
+
     struct {
          opaque content[DTLSPlaintext.length];
          ContentType type;
          uint8 zeros[length_of_padding];
     } DTLSInnerPlaintext;
-  
+
     struct {
         opaque unified_hdr[variable];
         opaque encrypted_record[length];
@@ -519,13 +519,13 @@ Nonce and the next 4 bytes as the counter:
   Mask = ChaCha20(sn_key, Ciphertext[0..12], Ciphertext[13..15])
 ~~~~
 
-The sn_key is computed as follows: 
+The sn_key is computed as follows:
 
 ~~~~
    [sender]_sn_key  = HKDF-Expand-Label(Secret, "sn" , "", key_length)
 ~~~~
 
-[sender] denotes the sending side. The Secret value to be used is described 
+[sender] denotes the sending side. The Secret value to be used is described
 in Section 7.3 of {{TLS13}}.
 
 The encrypted sequence number is computed by XORing the leading
@@ -542,8 +542,8 @@ plaintext out (using the conventional record padding mechanism)
 in order to make a suitable-length ciphertext.
 
 Note that sequence number encryption is only applied to the DTLSCiphertext
-structure and not to the DTLSPlaintext structure, which also contains a 
-sequence number. 
+structure and not to the DTLSPlaintext structure, which also contains a
+sequence number.
 
 ##  Transport Layer Mapping
 
@@ -897,7 +897,7 @@ fragmentation, DTLS modifies the TLS 1.3 handshake header:
         message_hash(254),
         (255)
     } HandshakeType;
-  
+
     struct {
         HandshakeType msg_type;    /* handshake type */
         uint24 length;             /* bytes in message */
@@ -952,9 +952,9 @@ TLS 1.3 ClientHello format as shown below.
 %%% Handshake Protocol
     uint16 ProtocolVersion;
     opaque Random[32];
- 
+
     uint8 CipherSuite[2];    /* Cryptographic suite selector */
- 
+
     struct {
         ProtocolVersion legacy_version = { 254,253 }; // DTLSv1.2
         Random random;
@@ -1651,32 +1651,45 @@ in a NewConnectionId message.
     enum {
         cid_immediate(0), cid_spare(1), (255)
     } ConnectionIdUsage;
- 
+
+    opaque ConnectionId<0..2^8-1>;
+
     struct {
-        opaque cid<0..2^8-1>;
+        ConnectionIds cids<0..2^16-1>;
         ConnectionIdUsage usage;
     } NewConnectionId;
 
 cid
-: Indicates the CID which the sender wishes the peer to use.
+: Indicates the set of CIDs which the sender wishes the peer to use.
 
 usage
-: Indicates whether the new CID should be used immediately or is a spare.
-If usage is set to "cid_immediate", then the new CID MUST be used immediately
-for all future records. If it is set to "cid_spare", then either CID MAY
-be used.
+: Indicates whether the new CIDs should be used immediately or are
+spare.  If usage is set to "cid_immediate", then one of the new CID
+MUST be used immediately for all future records. If it is set to
+"cid_spare", then either existing or new CID MAY be used.
 {:br}
+
+Endpoints SHOULD use receiver-provided CIDs in the order they were provided.
+Endpoints MUST NOT have more than one NewConnectionId message outstanding.
 
 If the client and server have negotiated the "connection_id" extension,
 either side can request a new CID using the RequestConnectionId message.
 
 %%% Connection ID Management
     struct {
+      uint8 num_cids;
     } RequestConnectionId;
 
-Endpoints SHOULD respond to RequestConnectionId by sending a NewConnectionId
-with usage "cid_spare" as soon as possible. Note that an endpoint MAY ignore
-requests, which it considers excessive (though they MUST be ACKed as usual).
+num_cids
+: The number of CIDs desired.
+
+Endpoints SHOULD respond to RequestConnectionId by sending a
+NewConnectionId with usage "cid_spare" containing num_cid CIDs soon as
+possible.  Endpoints MUST NOT send a RequestConnectionId message
+when an existing request is still unfulfilled; this implies that
+endpoints needs to request new CIDs well in advance.  An endpoint MAY
+ignore requests, which it considers excessive (though they MUST be
+ACKed as usual).
 
 Endpoints MUST NOT send either of these messages if they did not negotiate a
 connection ID. If an implementation receives these messages when connection IDs
@@ -1788,8 +1801,8 @@ to ask for new IDs in order to ensure that you have a pool of suitable IDs.
 
   * Switching connection ID based on certain events, or even regularly, helps against
 tracking by onpath adversaries but the sequence numbers can still allow
-linkability. For this reason this specification defines an algorithm for encrypting 
-sequence numbers, see {{sne}}. 
+linkability. For this reason this specification defines an algorithm for encrypting
+sequence numbers, see {{sne}}.
 
   * Since the DTLS 1.3 exchange encrypts handshake messages much earlier than in previous
 DTLS versions information identifying the DTLS client, such as the client certificate, less
@@ -1812,7 +1825,7 @@ this section focuses on the most important changes only.
   * Improved version negotiation
   * Optimized record layer encoding and thereby its size
   * Added connection ID functionality
-  * Sequence numbers are encrypted. 
+  * Sequence numbers are encrypted.
 
 #  IANA Considerations
 
@@ -1841,7 +1854,7 @@ This section provides the normative protocol types and constants definitions.
 RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
 IETF Drafts
-draft-29: 
+draft-29:
 - Added support for sequence number encryption
 - Update to new record format
 - Emphasize that compatibility mode isn't used.
@@ -1901,8 +1914,8 @@ Archives of the list can be found at:
 
 Many people have contributed to previous DTLS versions and they are acknowledged
 in prior versions of DTLS specifications or in the referenced specifications. The
-sequence number encryption concept is taken from the QUIC specification. We would 
-like to thank the authors of the QUIC specification for their work. 
+sequence number encryption concept is taken from the QUIC specification. We would
+like to thank the authors of the QUIC specification for their work.
 
 In addition, we would like to thank:
 
