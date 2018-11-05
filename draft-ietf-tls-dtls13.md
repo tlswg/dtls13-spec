@@ -318,15 +318,15 @@ The DTLSCiphertext header is tightly bit-packed, as shown below:
 %%% Record Layer
     0 1 2 3 4 5 6 7
     +-+-+-+-+-+-+-+-+
-    |0|0|1|C|L|E E|S|
+    |0|0|1|C|S|L|E E|
     +-+-+-+-+-+-+-+-+
-    |  8 or 16 bit  |   Legend:
+    | Connection ID |   Legend:
+    | (if any,      |
+    /  length as    /   C   - CID present
+    |  negotiated)  |   S   - Sequence number length
+    +-+-+-+-+-+-+-+-+   L   - Length present
+    |  8 or 16 bit  |   E   - Epoch
     |Sequence Number|
-    +-+-+-+-+-+-+-+-+   C   - CID present
-    | Connection ID |   L   - Length present
-    | (if any,      |   E   - Epoch
-    /  length as    /   S   - Sequence number length
-    |  negotiated)  |
     +-+-+-+-+-+-+-+-+
     | 16 bit Length |
     | (if present)  |
@@ -336,24 +336,24 @@ The DTLSCiphertext header is tightly bit-packed, as shown below:
 C:
 : The C bit is set if the connection ID is present.
 
+S:
+: The size of the sequence number.  0 means an 8-bit sequence number, 1 means
+16-bit.
+
 L:
 : The L bit is set if the length is present.
 
 E:
 : The low order two bits of the epoch.
 
-S:
-: The size of the sequence number.  0 means an 8-bit sequence number, 1 means
-16-bit.
-
-sequence number:
-: The low order 8 or 16 bits of the record sequence number.  This value is 16
-bits if the S bit is set to 1, and 8 bits if the S bit is 0.
-
 connection ID:
 : Variable length connection ID. The connection ID concept
 is described in {{?DTLS-CID=I-D.ietf-tls-dtls-connection-id}}. An example
 can be found in {{connection-id-example}}.
+
+sequence number:
+: The low order 8 or 16 bits of the record sequence number.  This value is 16
+bits if the S bit is set to 1, and 8 bits if the S bit is 0.
 
 length:
 : Identical to the length field in a TLS 1.3 record.
