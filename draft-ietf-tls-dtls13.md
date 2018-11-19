@@ -243,7 +243,7 @@ TLS and DTLS handshake messages can be quite large (in theory up to
 datagrams are often limited to less than 1500 bytes if IP fragmentation is not
 desired.  In order to compensate for this limitation, each DTLS
 handshake message may be fragmented over several DTLS records, each
-of which is intended to fit in a single IP datagram.  Each DTLS
+of which is intended to fit in a single IP packet.  Each DTLS
 handshake message contains both a fragment offset and a fragment
 length.  Thus, a recipient in possession of all bytes of a handshake
 message can reassemble the original unfragmented message.
