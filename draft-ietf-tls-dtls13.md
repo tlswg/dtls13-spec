@@ -269,9 +269,10 @@ The DTLS record layer is different from the TLS 1.3 record layer.
    type fields.
 
 2. DTLS adds an explicit epoch and sequence number to the TLS record header.
-This sequence number allows the recipient to correctly verify the DTLS MAC.
-However, the number of bits used for the epoch and sequence number fields
-in the DTLSCiphertext structure have been reduced.
+   This sequence number allows the recipient to correctly verify the DTLS MAC.
+   However, the number of bits used for the epoch and sequence number fields in
+   the DTLSCiphertext structure have been reduced from those in previous
+   versions.
 
 3. The DTLSCiphertext structure has a variable length header.
 
