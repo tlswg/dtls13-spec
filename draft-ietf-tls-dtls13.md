@@ -102,7 +102,7 @@ DTLS 1.0 {{RFC4347}} was originally defined as a delta from TLS 1.1 {{RFC4346}} 
 DTLS 1.2 {{RFC6347}} was defined as a series of deltas to TLS 1.2 {{RFC5246}}.  There
 is no DTLS 1.1; that version number was skipped in order to harmonize version numbers
 with TLS.  This specification describes the most current version of the DTLS protocol
-aligning with the efforts around TLS 1.3 {{TLS13}}.
+based on TLS 1.3 {{TLS13}}.
 
 Implementations that speak both DTLS 1.2 and DTLS 1.3 can interoperate with those
 that speak only DTLS 1.2 (using DTLS 1.2 of course), just as TLS 1.3 implementations
