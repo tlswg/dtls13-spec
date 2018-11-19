@@ -517,7 +517,8 @@ computing AES-ECB on the first 16 bytes of the ciphertext:
 
 When the AEAD is based on ChaCha20, then the mask is generated
 by treating the first 12 bytes of the ciphertext as the
-Nonce and the next 4 bytes as the counter:
+Nonce and the next 4 bytes as the counter, passing them to the ChaCha20
+block function (Section 2.3 of {{!CHACHA=RFC8439}}):
 
 ~~~~
   Mask = ChaCha20(sn_key, Ciphertext[0..12], Ciphertext[13..15])
