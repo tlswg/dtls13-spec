@@ -558,11 +558,11 @@ avoid IP fragmentation, clients of the DTLS record layer SHOULD
 attempt to size records so that they fit within any PMTU estimates
 obtained from the record layer.
 
-Multiple DTLS records MAY be placed in a single datagram.  They are
-simply encoded consecutively.  The DTLS record framing is sufficient
-to determine the boundaries.  Note, however, that the first byte of
-the datagram payload MUST be the beginning of a record.  Records MUST
-NOT span datagrams.
+Multiple DTLS records MAY be placed in a single datagram.  Records are encoded
+consecutively.  The length field from DTLS records containing that field can be
+used to determine the boundaries between records.  The final record in a
+datagram can omit the length field.  The first byte of the datagram payload MUST
+be the beginning of a record.  Records MUST NOT span datagrams.
 
 DTLS records, as defined in this document, do not contain any association
 identifiers and applications must arrange to multiplex between associations.
