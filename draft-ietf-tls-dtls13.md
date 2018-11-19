@@ -333,29 +333,33 @@ The DTLSCiphertext header is tightly bit-packed, as shown below:
     +-+-+-+-+-+-+-+-+
 {: #cid_hdr title="DTLS 1.3 CipherText Header"}
 
+Fixed Bits:
+: The three high bits of the first byte of the DTLSCiphertext header are set to
+  001.
+
 C:
-: The C bit is set if the connection ID is present.
+: The C bit (0x10) is set if the connection ID is present.
 
 S:
-: The size of the sequence number.  0 means an 8-bit sequence number, 1 means
-16-bit.
+: The S bit (0x08) indicates the size of the sequence number.
+  0 means an 8-bit sequence number, 1 means 16-bit.
 
 L:
-: The L bit is set if the length is present.
+: The L bit (0x04) is set if the length is present.
 
 E:
-: The low order two bits of the epoch.
+: The two low bits (0x03) include the low order two bits of the epoch.
 
-connection ID:
+Connection ID:
 : Variable length connection ID. The connection ID concept
 is described in {{?DTLS-CID=I-D.ietf-tls-dtls-connection-id}}. An example
 can be found in {{connection-id-example}}.
 
-sequence number:
+Sequence Number:
 : The low order 8 or 16 bits of the record sequence number.  This value is 16
 bits if the S bit is set to 1, and 8 bits if the S bit is 0.
 
-length:
+Length:
 : Identical to the length field in a TLS 1.3 record.
 
 As with previous versions of DTLS, multiple DTLSPlaintext
