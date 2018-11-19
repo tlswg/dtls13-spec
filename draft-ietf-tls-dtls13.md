@@ -1713,7 +1713,7 @@ were not negotiated, it MUST abort the connection with an unexpected_message
 alert.
 
 
-## ID Example {#connection-id-example}
+## Connection ID Example {#connection-id-example}
 
 Below is an example exchange for DTLS 1.3 using a single
 connection id in each direction.
