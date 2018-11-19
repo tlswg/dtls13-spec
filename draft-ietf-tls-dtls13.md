@@ -975,10 +975,10 @@ legacy_version:
 : In previous versions of DTLS, this field was used for version
   negotiation and represented the highest version number supported by
   the client. Experience has shown that many servers do not properly
-  implement version negotiation, leading to “version intolerance” in
+  implement version negotiation, leading to "version intolerance" in
   which the server rejects an otherwise acceptable ClientHello with a
   version number higher than it supports. In DTLS 1.3, the client
-  indicates its version preferences in the “supported_versions”
+  indicates its version preferences in the "supported_versions"
   extension (see Section 4.2.1 of {{!TLS13}}) and the
   legacy_version field MUST be set to {254, 253}, which was the version
   number for DTLS 1.2.
