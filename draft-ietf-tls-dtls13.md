@@ -941,7 +941,7 @@ next_receive_seq, the implementation SHOULD queue the message but MAY
 discard it.  (This is a simple space/bandwidth tradeoff).
 
 In addition to the handshake messages that are deprecated by the TLS 1.3
-specification DTLS 1.3 furthermore deprecates the HelloVerifyRequest message
+specification, DTLS 1.3 furthermore deprecates the HelloVerifyRequest message
 originally defined in DTLS 1.0. DTLS 1.3-compliant implements MUST NOT
 use the HelloVerifyRequest to execute a return-routability check. A
 dual-stack DTLS 1.2/DTLS 1.3 client MUST, however, be prepared to
