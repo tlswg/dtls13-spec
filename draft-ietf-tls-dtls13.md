@@ -230,7 +230,7 @@ interleaving multiple HelloRetryRequests.
 ###  Reordering
 
 In DTLS, each handshake message is assigned a specific sequence
-number within that handshake.  When a peer receives a handshake
+number.  When a peer receives a handshake
 message, it can quickly determine whether that message is the next
 message it expects.  If it is, then it processes it.  If not, it
 queues it for future handling once all previous messages have been
