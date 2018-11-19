@@ -434,8 +434,6 @@ deprotection, as described in {{handling-invalid-records}}.
 
 ## Sequence Number and Epoch
 
-### Processing Guidelines
-
 DTLS uses an explicit sequence number, rather than an implicit one,
 carried in the sequence_number field of the record.  Sequence numbers
 are maintained separately for each epoch, with each sequence_number
@@ -444,6 +442,8 @@ initially being 0 for each epoch.
 The epoch number is initially zero and is incremented each time
 keying material changes and a sender aims to rekey. More details
 are provided in {{dtls-epoch}}.
+
+### Processing Guidelines
 
 Because DTLS records may be reordered, a record from epoch
 1 may be received after epoch 2 has begun.  In general,
