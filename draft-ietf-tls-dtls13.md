@@ -1597,8 +1597,8 @@ immediately follows the flight. Each NewSessionTicket
 or KeyUpdate is an individual flight; in particular, a KeyUpdate
 sent in response to a KeyUpdate with update_requested does not
 implicitly acknowledge that message. Implementations MAY
-ACK the records corresponding to each transmission of
-that flight or simply ACK the most recent one.
+acknowledge the records corresponding to each transmission of
+that flight or simply acknowledge the most recent one.
 
 ACKs MUST NOT be sent for other records of any content type
 other than handshake or for records which cannot be unprotected.
@@ -1607,7 +1607,7 @@ Note that in some cases it may be necessary to send an ACK which
 does not contain any record numbers. For instance, a client
 might receive an EncryptedExtensions message prior to receiving
 a ServerHello. Because it cannot decrypt the EncryptedExtensions,
-it cannot safely ACK it (as it might be damaged). If the client
+it cannot safely acknowledge it (as it might be damaged). If the client
 does not send an ACK, the server will eventually retransmit
 its first flight, but this might take far longer than the
 actual round trip time between client and server. Having
@@ -1625,7 +1625,7 @@ messages or fragments. Note that this requires implementations to
 track which messages appear in which records. Once all the messages in a flight have been
 acknowledged, the implementation MUST cancel all retransmissions
 of that flight. As noted above, the receipt of any packet responding
-to a given flight MUST be taken as an implicit ACK for the entire
+to a given flight MUST be taken as an implicit acknowledgement for the entire
 flight.
 
 
@@ -1647,7 +1647,7 @@ with that epoch (see {{reconstructing}} for information
 on determining the correct epoch), but MAY opt to discard
 such out-of-epoch records.
 
-Although KeyUpdate MUST be ACKed, it is possible for the ACK to be
+Although KeyUpdate MUST be acknowledged, it is possible for the ACK to be
 lost, in which case the sender of the KeyUpdate will retransmit it.
 Implementations MUST retain the ability to ACK the KeyUpdate for
 up to 2MSL. It is RECOMMENDED that they do so by retaining the
@@ -1705,7 +1705,7 @@ possible.  Endpoints MUST NOT send a RequestConnectionId message
 when an existing request is still unfulfilled; this implies that
 endpoints needs to request new CIDs well in advance.  An endpoint MAY
 ignore requests, which it considers excessive (though they MUST be
-ACKed as usual).
+acknowledged as usual).
 
 Endpoints MUST NOT send either of these messages if they did not negotiate a
 connection ID. If an implementation receives these messages when connection IDs
