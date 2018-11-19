@@ -469,8 +469,8 @@ packets as if they were sent in the right order.  In particular, it is
 still impermissible to send data prior to completion of the first
 handshake.
 
-Note that some care needs to be taken during the handshake to ensure
-that retransmitted messages use the right epoch and keying material.
+Implementations MUST send retransmissions of lost messages using the same
+epoch and keying material as the original transmission.
 
 Implementations MUST either abandon an association or re-key prior to
 allowing the sequence number to wrap.
