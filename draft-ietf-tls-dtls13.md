@@ -1540,9 +1540,9 @@ Client                                             Server
 The ACK message is used by an endpoint to indicate handshake-containing
 the TLS records it has received from the other side. ACK is not
 a handshake message but is rather a separate content type,
-with code point TBD (proposed, 25). This avoids it consuming space in the
-handshake message sequence. Note that ACKs can still be
-piggybacked on the same UDP datagram as handshake records.
+with code point TBD (proposed, 25). This avoids having ACK being added
+to the handshake transcript. Note that ACKs can still be
+sent in the same UDP datagram as handshake records.
 
 %%% ACKs
     struct {
