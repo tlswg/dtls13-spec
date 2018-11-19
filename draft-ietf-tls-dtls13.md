@@ -50,7 +50,6 @@ normative:
   RFC0793:
   RFC6298:
   RFC8174:
-  TLS13: RFC8446
 
 informative:
   RFC7296:
@@ -102,11 +101,11 @@ DTLS 1.0 {{RFC4347}} was originally defined as a delta from TLS 1.1 {{RFC4346}} 
 DTLS 1.2 {{RFC6347}} was defined as a series of deltas to TLS 1.2 {{RFC5246}}.  There
 is no DTLS 1.1; that version number was skipped in order to harmonize version numbers
 with TLS.  This specification describes the most current version of the DTLS protocol
-based on TLS 1.3 {{TLS13}}.
+based on TLS 1.3 {{!TLS13}}.
 
 Implementations that speak both DTLS 1.2 and DTLS 1.3 can interoperate with those
 that speak only DTLS 1.2 (using DTLS 1.2 of course), just as TLS 1.3 implementations
-can interoperate with TLS 1.2 (see Appendix D of {{TLS13}} for details).
+can interoperate with TLS 1.2 (see Appendix D of {{!TLS13}} for details).
 While backwards compatibility with DTLS 1.0 is possible the use of DTLS 1.0 is not
 recommended as explained in Section 3.1.2 of RFC 7525 {{RFC7525}}.
 
@@ -531,7 +530,7 @@ The sn_key is computed as follows:
 ~~~~
 
 [sender] denotes the sending side. The Secret value to be used is described
-in Section 7.3 of {{TLS13}}.
+in Section 7.3 of {{!TLS13}}.
 
 The encrypted sequence number is computed by XORing the leading
 bytes of the Mask with the sequence number. Decryption is
@@ -743,7 +742,7 @@ to amplification attacks than a connection-oriented transport like TCP
 that performs return-routability checks as part of the connection establishment.
 
 DTLS implementations do not use the TLS 1.3 "compatibility mode" described in
-Section D.4 of {{TLS13}}.  DTLS servers MUST NOT echo the
+Section D.4 of {{!TLS13}}.  DTLS servers MUST NOT echo the
 "session_id" value from the client and endpoints MUST NOT send ChangeCipherSpec
 messages. Note however that implementations MUST ignore ChangeCipherSpec
 messages received in unprotected records.
@@ -1367,7 +1366,7 @@ a new handshake, it may not be possible to tell which connection
 a given protected record is for. In these cases, trial decryption
 MAY be necessary, though implementations could also use some sort
 of connection identifier, such as the one specified in
-{{?I-D.rescorla-tls-dtls-connection-id}}.
+{{?I-D.ietf-tls-dtls-connection-id}}.
 
 
 # Example of Handshake with Timeout and Retransmission
