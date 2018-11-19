@@ -400,7 +400,7 @@ underlying transport datagram.
 ~~~~
 {: #hdr_examples title="Header Examples"}
 
-The length field may be omitted and therefore the
+The length field MAY be omitted by clearing the L bit, which means that the
 record consumes the entire rest of the datagram in the lower
 level transport. In this case it is not possible to have multiple
 DTLSCiphertext format records without length fields in the same datagram.
