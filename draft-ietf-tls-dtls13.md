@@ -92,7 +92,7 @@ between two communicating peers. The TLS protocol is composed of two layers:
 the TLS Record Protocol and the TLS Handshake Protocol. However, TLS must
 run over a reliable transport channel -- typically TCP {{RFC0793}}.
 
-There are applications that utilize UDP {{RFC0768}} as a transport and to offer communication
+There are applications that use UDP {{RFC0768}} as a transport and to offer communication
 security protection for those applications the Datagram Transport Layer
 Security (DTLS) protocol has been designed. DTLS is deliberately designed to be
 as similar to TLS as possible, both to minimize new security invention and to
