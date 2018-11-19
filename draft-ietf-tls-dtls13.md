@@ -162,35 +162,34 @@ Applications such as media streaming, Internet telephony, and online gaming use
 datagram transport for communication due to the delay-sensitive nature
 of transported data.  The behavior of such applications is unchanged when the
 DTLS protocol is used to secure communication, since the DTLS protocol
-does not compensate for lost or re-ordered data traffic.
+does not compensate for lost or reordered data traffic.
 
 TLS cannot be used directly in datagram environments for the following five reasons:
 
-1. TLS does not allow independent decryption of individual records.
-   Because the integrity check indirectly depends on a sequence number,
-   if record N is not received, then the integrity check
-   on record N+1 will be based on the wrong sequence number and
-   thus will fail. DTLS solves this problem by adding explicit
-   sequence numbers.
+1. TLS relies on an implicit sequence number on records.  If a record is not
+   received, then the recipient will use the wrong sequence number when
+   attempting to remove record protection from subsequent records. DTLS solves
+   this problem by adding explicit sequence numbers.
 
-2. The TLS handshake is a lock-step cryptographic handshake.
-   Messages must be transmitted and received in a defined order;
-   any other order is an error.
-   This is incompatible with reordering and message loss.
+2. The TLS handshake is a lock-step cryptographic handshake.  Messages must be
+   transmitted and received in a defined order; any other order is an error.
+   DTLS handshake messages are also assigned sequence numbers to enable
+   reassembly in the correct order in case datagrams are lost or reordered.
 
-3. Not all TLS 1.3 handshake messages (such as the NewSessionTicket message)
-   are acknowledged. Hence, a new acknowledgment message has to be added
-   to detect message loss.
+3. During the handshake, messages are implicitly acknowledged by other handshake
+   messages, but the last flight of messages and post-handshake messages (such
+   as the NewSessionTicket message) do not result in any direct response that
+   would allow the sender to detect loss. DTLS adds an acknowledgment message to
+   enable better loss recovery.
 
-4. Handshake messages are potentially larger than any given datagram,
-   thus creating the problem of IP fragmentation.
+4. Handshake messages are potentially larger than can be contained in a single
+   datagram.  DTLS adds fields to handshake messages to support fragmentation
+   and reassembly.
 
 5. Datagram transport protocols, like UDP, are susceptible to abusive behavior
-   effecting denial of
-   service attacks against nonparticipants,
-   and require a return-routability check with the help of
-   cookies to be integrated into the handshake. A detailed discussion of
-   countermeasures can be found in {{dos}}.
+   effecting denial of service attacks against nonparticipants.  DTLS adds a
+   return-routability check that uses the TLS HelloRetryRequest message (see
+   {{dos}} for details).
 
 ###  Packet Loss
 
