@@ -1317,8 +1317,7 @@ Implementations SHOULD retain the current timer value until a
 transmission without loss occurs, at which time the value may be
 reset to the initial value.  After a long period of idleness, no less
 than 10 times the current timer value, implementations may reset the
-timer to the initial value.  One situation where this might occur is
-when a rehandshake is used after substantial data transfer.
+timer to the initial value.
 
 
 ##  CertificateVerify and Finished Messages
