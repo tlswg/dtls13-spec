@@ -407,7 +407,7 @@ DTLSCiphertext format records without length fields in the same datagram.
 
 Omitting the length field MUST only be used for data which is protected with
 one of the application_traffic_secret values, and not for messages
-protected with either [sender]_handshake_traffic_sercret or
+protected with either [sender]_handshake_traffic_secret or
 [sender]_early_traffic_secret values. When using an
 [sender]_application_traffic_secret for message protection,
 Implementations MAY include the length field at their discretion.
