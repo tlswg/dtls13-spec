@@ -445,7 +445,7 @@ are provided in {{dtls-epoch}}.
 
 ### Processing Guidelines
 
-Because DTLS records may be reordered, a record from epoch
+Because DTLS records could be reordered, a record from epoch
 1 may be received after epoch 2 has begun.  In general,
 implementations SHOULD discard packets from earlier epochs, but if
 packet loss causes noticeable problems implementations MAY choose to
