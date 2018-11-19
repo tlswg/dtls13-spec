@@ -552,7 +552,7 @@ sequence number.
 
 ##  Transport Layer Mapping
 
-DTLS messages MAY be fragmentmented into multiple DTLS records.
+DTLS messages MAY be fragmented into multiple DTLS records.
 Each DTLS record MUST fit within a single datagram.  In order to
 avoid IP fragmentation, clients of the DTLS record layer SHOULD
 attempt to size records so that they fit within any PMTU estimates
