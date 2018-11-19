@@ -743,7 +743,7 @@ to amplification attacks than a connection-oriented transport like TCP
 that performs return-routability checks as part of the connection establishment.
 
 DTLS implementations do not use the TLS 1.3 "compatibility mode" described in
-{{TLS13}}, Section D.4.  DTLS servers MUST NOT echo the
+Section D.4 of {{TLS13}}.  DTLS servers MUST NOT echo the
 "session_id" value from the client and endpoints MUST NOT send ChangeCipherSpec
 messages. Note however that implementations MUST ignore ChangeCipherSpec
 messages received in unprotected records.
