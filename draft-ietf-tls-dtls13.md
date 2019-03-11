@@ -170,7 +170,7 @@ TLS cannot be used directly in datagram environments for the following five reas
    Because the integrity check indirectly depends on a sequence number,
    if record N is not received, then the integrity check
    on record N+1 will be based on the wrong sequence number and
-   thus will fail. DTLS solves this problem by adding explicit
+   thus will fail. DTLS solves this problem by adding
    sequence numbers.
 
 2. The TLS handshake is a lock-step cryptographic handshake.
@@ -269,7 +269,7 @@ The DTLS record layer is different from the TLS 1.3 record layer.
 1. The DTLSCiphertext structure omits the superfluous version number and
    type fields.
 
-2. DTLS adds an explicit epoch and sequence number to the TLS record header.
+2. DTLS adds an epoch and sequence number to the TLS record header.
 This sequence number allows the recipient to correctly verify the DTLS MAC.
 However, the number of bits used for the epoch and sequence number fields
 in the DTLSCiphertext structure have been reduced.
@@ -432,7 +432,7 @@ deprotection, as described in {{handling-invalid-records}}.
 
 ### Processing Guidelines
 
-DTLS uses an explicit sequence number, rather than an implicit one,
+DTLS uses an explicit or partly explicit sequence number, rather than an implicit one,
 carried in the sequence_number field of the record.  Sequence numbers
 are maintained separately for each epoch, with each sequence_number
 initially being 0 for each epoch.
