@@ -104,7 +104,7 @@ based on TLS 1.3 {{!TLS13}}.
 
 Implementations that speak both DTLS 1.2 and DTLS 1.3 can interoperate with those
 that speak only DTLS 1.2 (using DTLS 1.2 of course), just as TLS 1.3 implementations
-can interoperate with TLS 1.2 (see Appendix D of {{!TLS13}} for details).
+can interoperate with TLS 1.2 (see Appendix D of {{!TLS13=RFC8446}} for details).
 While backwards compatibility with DTLS 1.0 is possible the use of DTLS 1.0 is not
 recommended as explained in Section 3.1.2 of RFC 7525 {{RFC7525}}.
 
