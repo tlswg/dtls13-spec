@@ -613,6 +613,11 @@ protocols. In particular:
   reassemble datagrams, there is no PMTU limitation.  However, the
   upper layer protocol MUST NOT write any record that exceeds the
   maximum record size of 2^14 bytes.
+  
+Note that DTLS does not defend against spoofed ICMP messages;
+implementations SHOULD ignore any such messages that indicate
+PMTUs below the IPv4 and IPv6 minimums of 576 and 1280 bytes
+respectively
 
 The DTLS record layer SHOULD allow the upper layer protocol to
 discover the amount of record expansion expected by the DTLS
