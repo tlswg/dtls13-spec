@@ -192,7 +192,7 @@ TLS cannot be used directly in datagram environments for the following five reas
    cookies to be integrated into the handshake. A detailed discussion of
    countermeasures can be found in {{dos}}.
 
-###  Packet Loss
+##  Packet Loss
 
 DTLS uses a simple retransmission timer to handle packet loss.
 {{dtls-retransmission}} demonstrates the basic concept, using the first
@@ -228,7 +228,7 @@ server.  The HelloRetryRequest is designed to be small enough that
 it will not itself be fragmented, thus avoiding concerns about
 interleaving multiple HelloRetryRequests.
 
-###  Reordering
+##  Reordering
 
 In DTLS, each handshake message is assigned a specific sequence
 number within that handshake.  When a peer receives a handshake
@@ -237,7 +237,7 @@ message it expects.  If it is, then it processes it.  If not, it
 queues it for future handling once all previous messages have been
 received.
 
-###  Message Size
+##  Message Size
 
 TLS and DTLS handshake messages can be quite large (in theory up to
 2^24-1 bytes, in practice many kilobytes).  By contrast, UDP
