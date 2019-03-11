@@ -676,10 +676,9 @@ serve as a timing channel for the sequence number.
 Duplicates are rejected through the use of a sliding receive window.
 (How the window is implemented is a local matter, but the following
 text describes the functionality that the implementation must
-exhibit.)  A minimum window size of 32 MUST be supported, but a
-window size of 64 is preferred and SHOULD be employed as the default.
-Another window size (larger than the minimum) MAY be chosen by the
-receiver.  (The receiver does not notify the sender of the window
+exhibit.) The receiver SHOULD pick a window large enough to handle
+any plausible reordering, which depends on the data rate.
+(The receiver does not notify the sender of the window
 size.)
 
 The "right" edge of the window represents the highest validated
