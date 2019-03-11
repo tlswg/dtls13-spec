@@ -321,7 +321,7 @@ The DTLSCiphertext header is tightly bit-packed, as shown below:
     +-+-+-+-+-+-+-+-+
     | Connection ID |   Legend:
     | (if any,      |
-    /  length as    /   C   - CID present
+    /  length as    /   C   - Connection ID (CID) present
     |  negotiated)  |   S   - Sequence number length
     +-+-+-+-+-+-+-+-+   L   - Length present
     |  8 or 16 bit  |   E   - Epoch
