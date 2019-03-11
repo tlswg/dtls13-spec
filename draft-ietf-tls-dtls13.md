@@ -72,8 +72,7 @@ Internet in a way that is designed to prevent eavesdropping, tampering, and mess
 forgery.
 
 The DTLS 1.3 protocol is intentionally based on the Transport Layer Security (TLS)
-1.3 protocol and provides equivalent security guarantees.  Datagram semantics of
-the underlying transport are preserved by the DTLS protocol.
+1.3 protocol and provides equivalent security guarantees with the exception of order protection/non-replayability.  Datagram semantics of the underlying transport are preserved by the DTLS protocol.
 
 --- middle
 
@@ -1783,6 +1782,11 @@ experiencing DoS.  Therefore, DTLS servers SHOULD use the cookie
 exchange unless there is good reason to believe that amplification is
 not a threat in their environment.  Clients MUST be prepared to do a
 cookie exchange with every handshake.
+
+With the exception of order protection and non-replayability, the security
+guarantees for DTLS 1.3 are the same as TLS 1.3. While TLS always provides
+order protection and non-replayability, DTLS does not provide order protection
+and may not provide replay protection.
 
 Unlike TLS implementations, DTLS implementations SHOULD NOT respond
 to invalid records by terminating the connection.
