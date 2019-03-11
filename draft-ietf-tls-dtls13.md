@@ -149,8 +149,8 @@ Figures in this document illustrate various combinations of the DTLS protocol ex
 
   * '+'  indicates noteworthy extensions sent in the previously noted message.
   * '*'  indicates optional or situation-dependent messages/extensions that are not always sent.
-  * '{}' indicates messages protected using keys derived from a [sender]_handshake_traffic_secret.
-  * '[]' indicates messages protected using keys derived from traffic_secret_N.
+  * '{}' indicates messages protected using keys derived from a \[sender]_handshake_traffic_secret.
+  * '\[]' indicates messages protected using keys derived from traffic_secret_N.
 
 
 # DTLS Design Rationale and Overview {#dtls-rational}
@@ -403,9 +403,9 @@ DTLSCiphertext format records without length fields in the same datagram.
 
 Omitting the length field MUST only be used for data which is protected with
 one of the application_traffic_secret values, and not for messages
-protected with either [sender]_handshake_traffic_sercret or
-[sender]_early_traffic_secret values. When using an
-[sender]_application_traffic_secret for message protection,
+protected with either \[sender]_handshake_traffic_sercret or
+\[sender]_early_traffic_secret values. When using an
+\[sender]_application_traffic_secret for message protection,
 Implementations MAY include the length field at their discretion.
 
 The entire header value shown above is used as it appears on the
@@ -1444,7 +1444,7 @@ protocol exchange to allow identification of the correct cipher state:
      from client_early_traffic_secret. This includes early data sent by the
      client and the EndOfEarlyData message.
    * epoch value (2) is used for messages protected using keys derived
-     from [sender]_handshake_traffic_secret. Messages transmitted during
+     from \[sender]_handshake_traffic_secret. Messages transmitted during
      the initial handshake, such as EncryptedExtensions,
      CertificateRequest, Certificate, CertificateVerify, and Finished
      belong to this category. Note, however, post-handshake are
