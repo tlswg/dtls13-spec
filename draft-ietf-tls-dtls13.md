@@ -1878,6 +1878,17 @@ This section provides the normative protocol types and constants definitions.
 RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
 IETF Drafts
+
+draft-31: 
+- Editorial improvements in text and figures. 
+- Added normative reference to ChaCha20 and Poly1305.
+
+draft-30:
+- Changed record format
+- Added text about end of early data 
+- Changed format of the Connection ID Update message
+- Added Appendix A "Protocol Data Structures and Constant Values"
+
 draft-29:
 - Added support for sequence number encryption
 - Update to new record format
