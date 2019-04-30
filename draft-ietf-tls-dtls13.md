@@ -1353,14 +1353,20 @@ This will appear to the server as a new handshake with epoch=0.  In
 cases where a server believes it has an existing association on a
 given host/port quartet and it receives an epoch=0 ClientHello, it
 SHOULD proceed with a new handshake but MUST NOT destroy the existing
-association until the client has demonstrated reachability either by
-completing a cookie exchange or by completing a complete handshake
-including delivering a verifiable Finished message.  After a correct
-Finished message is received, the server MUST abandon the previous
-association to avoid confusion between two valid associations with
-overlapping epochs.  The reachability requirement prevents
-off-path/blind attackers from destroying associations merely by
-sending forged ClientHellos.
+association just because of the new ClientHello until the client has
+demonstrated reachability either by completing a cookie exchange or
+by completing a complete handshake including delivering a verifiable
+Finished message.  After a correct Finished message is received, the
+server MUST abandon the previous association to avoid confusion
+between two valid associations with overlapping epochs.  The
+reachability requirement prevents off-path/blind attackers from
+destroying associations merely by sending forged ClientHellos.
+
+The server MAY destroy the existing association after receiving a new
+handshake with epoch=0 and before completing the handshake if and
+only if there is a severe external condition which requires the
+server to do so, such as a server side reboot, running out of memory,
+et cetera.
 
 Note: it is not always possible to distinguish which association
 a given packet is from. For instance, if the client performs
