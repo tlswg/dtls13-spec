@@ -993,6 +993,8 @@ legacy_session_id:
 
 legacy_cookie:
 : A DTLS 1.3-only client MUST set the legacy_cookie field to zero length.
+If a DTLS 1.3 ClientHello is received with any other value in this field, 
+the server MUST abort the handshake with an "illegal_parameter" alert.
 
 cipher_suites:
 : Same as for TLS 1.3.
@@ -1003,9 +1005,7 @@ legacy_compression_methods:
 extensions:
 : Same as for TLS 1.3.
 {:br }
-
-
-
+      
 ##  Handshake Message Fragmentation and Reassembly
 
 Each DTLS message MUST fit within a single
