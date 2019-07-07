@@ -1879,6 +1879,9 @@ RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
 IETF Drafts
 
+draft-32: 
+- Editorial improvements and clarifications.
+
 draft-31: 
 - Editorial improvements in text and figures. 
 - Added normative reference to ChaCha20 and Poly1305.
