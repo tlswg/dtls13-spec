@@ -868,10 +868,11 @@ choose not to do a cookie exchange when a session is resumed.
 Clients MUST be prepared to do a cookie exchange with every
 handshake.
 
-If a server receives a ClientHello with an invalid cookie, it
-MUST NOT respond with a HelloRetryRequest. Restarting the handshake from
-scratch, without a cookie, allows the client to recover from a situation
-where it obtained a cookie that cannot be verified by the server.
+If a server receives a ClientHello with an invalid cookie, it SHOULD
+treat it the same as a ClientHello with no cookie.  This avoids
+race/deadlock conditions if the client somehow gets a bad cookie
+(e.g., because the server changes its cookie signing key).
+
 As described in Section 4.1.4 of {{!TLS13}}, clients SHOULD
 also abort the handshake with an "unexpected_message" alert in response
 to any second HelloRetryRequest which was sent in the same connection
