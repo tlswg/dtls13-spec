@@ -57,7 +57,7 @@ informative:
   RFC4303:
   RFC4340:
   RFC4346:
-  RFC4347:
+  RFC4347:'
   RFC5238:
   RFC5246:
   RFC6347:
@@ -412,7 +412,7 @@ Implementations MAY include the length field at their discretion.
 
 The entire header value shown above is used as it appears on the
 wire as the additional data value for the AEAD function. Note that this design 
-is different to the additional data calculation for DTLS 1.2 and for DTLS 1.2
+is different from the additional data calculation for DTLS 1.2 and for DTLS 1.2
 with Connection ID.
 
 ## Determining the Header Format
