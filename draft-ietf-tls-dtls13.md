@@ -1788,6 +1788,12 @@ exchange unless there is good reason to believe that amplification is
 not a threat in their environment.  Clients MUST be prepared to do a
 cookie exchange with every handshake.
 
+An on-path adversary can also black-hole traffic or create a reflection attack
+against third parties because a DTLS peer has no means to distinguish a 
+genuine address update event (for example, due to a NAT rebinding) from one 
+that is malicious. This attack is of concern when there is a large asymmetry 
+of request/response message sizes. 
+
 With the exception of order protection and non-replayability, the security
 guarantees for DTLS 1.3 are the same as TLS 1.3. While TLS always provides
 order protection and non-replayability, DTLS does not provide order protection
@@ -1818,17 +1824,17 @@ protection.
 interaction over the two paths, which adds further privacy concerns. In order
 to prevent this, implementations SHOULD attempt to use fresh connection IDs
 whenever they change local addresses or ports (though this is not always
-possible to detect). The RequestConnectionId message can be used
-to ask for new IDs in order to ensure that you have a pool of suitable IDs.
+possible to detect). The RequestConnectionId message can be used by a peer
+to ask for new CIDs to ensure that a pool of suitable CIDs is available.
 
-  * Switching connection ID based on certain events, or even regularly, helps against
-tracking by onpath adversaries but the sequence numbers can still allow
+  * Switching CIDs based on certain events, or even regularly, helps against
+tracking by on-path adversaries but the sequence numbers can still allow
 linkability. For this reason this specification defines an algorithm for encrypting
 sequence numbers, see {{sne}}.
 
-  * Since the DTLS 1.3 exchange encrypts handshake messages much earlier than in previous
-DTLS versions information identifying the DTLS client, such as the client certificate, less
-information is available to an on-path adversary.
+  * DTLS 1.3 encrypts handshake messages much earlier than in previous
+DTLS versions. Therefore, less information identifying the DTLS client, such as 
+the client certificate, is available to an on-path adversary.
 
 #  Changes to DTLS 1.2
 
