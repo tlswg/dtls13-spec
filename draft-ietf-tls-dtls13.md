@@ -872,8 +872,9 @@ If a server receives a ClientHello with an invalid cookie, it
 MUST NOT respond with a HelloRetryRequest. Restarting the handshake from
 scratch, without a cookie, allows the client to recover from a situation
 where it obtained a cookie that cannot be verified by the server.
-As described in Section 4.1.4 of {{!TLS13}}, clients SHOULD
-also abort the handshake with an "unexpected_message" alert in response
+
+As described in Section 4.1.4 of {{!TLS13}}, clients MUST
+abort the handshake with an "unexpected_message" alert in response
 to any second HelloRetryRequest which was sent in the same connection
 (i.e., where the ClientHello was itself in response to a HelloRetryRequest).
 
