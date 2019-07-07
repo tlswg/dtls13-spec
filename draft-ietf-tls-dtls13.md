@@ -421,7 +421,7 @@ the first byte:
 * If the first byte is alert(21), handshake(22), or ack(proposed, 25),
 the record MUST be interpreted as a DTLSPlaintext record.
 
-* If the first byte is any other other value, then receivers
+* If the first byte is any other value, then receivers
 MUST check to see if the leading bits of the first byte are
 001. If so, the implementation MUST process the record as
 DTLSCiphertext; the true content type will be inside the
@@ -533,14 +533,14 @@ The encrypted sequence number is computed by XORing the leading
 bytes of the Mask with the sequence number. Decryption is
 accomplished by the same process.
 
-In some (rare) cases the ciphertext may be less than 16 bytes.
-This cannot happen with most of the DTLS AEAD algorithms because
-the authentication tag itself is 16 bytes, however some algorithms
-such as TLS_AES_128_CCM_8_SHA256 have a shorter authentication tag,
-and in combination with a short plaintext, the result might be
-less than 16 bytes. In this case, implementations MUST pad the
-plaintext out (using the conventional record padding mechanism)
-in order to make a suitable-length ciphertext.
+This procedure requires the ciphertext length be at least 16 bytes. Receivers
+MUST reject shorter records as if they had failed deprotection, as described in
+{{handling-invalid-records}}. Senders MUST pad short plaintexts out (using the
+conventional record padding mechanism) in order to make a suitable-length
+ciphertext. Note most of the DTLS AEAD algorithms have a 16-byte authentication
+tag and need no padding. However, some algorithms such as
+TLS_AES_128_CCM_8_SHA256 have a shorter authentication tag and may require padding
+for short inputs.
 
 Note that sequence number encryption is only applied to the DTLSCiphertext
 structure and not to the DTLSPlaintext structure, which also contains a
@@ -765,7 +765,7 @@ DoS attacks.  Two attacks are of particular concern:
    connection initiation messages with a forged source of the
    victim.  The server then sends its response to the victim
    machine, thus flooding it. Depending on the selected
-   ciphersuite this response message can be quite large, as it
+   parameters this response message can be quite large, as it
    is the case for a Certificate message.
 
 In order to counter both of these attacks, DTLS borrows the stateless
@@ -788,7 +788,7 @@ receiving the cookie uses the same extension to place
 the cookie subsequently into a ClientHello message.
 DTLS 1.2 on the other hand used a separate message, namely the HelloVerifyRequest,
 to pass a cookie to the client and did not utilize the extension mechanism.
-For backwards compatibility reason the cookie field in the ClientHello
+For backwards compatibility reasons, the cookie field in the ClientHello
 is present in DTLS 1.3 but is ignored by a DTLS 1.3 compliant server
 implementation.
 
@@ -1048,7 +1048,7 @@ attackers can trivially mount the deletion attacks that EndOfEarlyData
 prevents in TLS. Servers SHOULD aggressively
 age out the epoch 1 keys upon receiving the first epoch 2 record
 and SHOULD NOT accept epoch 1 data after the first epoch 3 record
-is received.
+is received. (See {{dtls-epoch}} for the definitions of each epoch.)
 
 
 ##  DTLS Handshake Flights
@@ -1140,9 +1140,9 @@ Client                                            Server
 
 
                                                           +----------+
- (EndOfEarlyData)                                         | Flight 3 |
- {Finished}            -------->                          +----------+
- [Application Data*]
+ {Finished}            -------->                          | Flight 3 |
+ [Application Data*]                                      +----------+
+
                                                           +----------+
                        <--------                   [ACK]  | Flight 4 |
                                      [Application Data*]  +----------+
@@ -1252,7 +1252,7 @@ There are four ways to exit the WAITING state:
    the SENDING state, where it retransmits the flight, resets the
    retransmit timer, and returns to the WAITING state.
 
-2. The implementation reads a ACK from the peer: upon receiving
+2. The implementation reads an ACK from the peer: upon receiving
    an ACK for a partial flight (as mentioned in {{sending-acks}}),
    the implementation transitions
    to the SENDING state, where it retransmits the unacked portion
@@ -1307,7 +1307,7 @@ of 100 msec (the minimum defined in RFC 6298 {{RFC6298}}) and double
 the value at each retransmission, up to no less than the RFC 6298
 maximum of 60 seconds. Application specific profiles, such as those
 used for the Internet of Things environment, may recommend longer
-timer values. Note that a 100 msec timer is recommend
+timer values. Note that a 100 msec timer is recommended
 rather than the 3-second RFC 6298 default in order to improve latency
 for time-sensitive applications.  Because DTLS only uses
 retransmission for handshake and not dataflow, the effect on
@@ -1445,8 +1445,8 @@ protocol exchange to allow identification of the correct cipher state:
      three unencrypted messages in DTLS, namely ClientHello, ServerHello,
      and HelloRetryRequest.
    * epoch value (1) is used for messages protected using keys derived
-     from client_early_traffic_secret. This includes early data sent by the
-     client and the EndOfEarlyData message.
+     from client_early_traffic_secret. Note this epoch is skipped if
+     the client does not offer early data.
    * epoch value (2) is used for messages protected using keys derived
      from \[sender]_handshake_traffic_secret. Messages transmitted during
      the initial handshake, such as EncryptedExtensions,
@@ -1454,10 +1454,11 @@ protocol exchange to allow identification of the correct cipher state:
      belong to this category. Note, however, post-handshake are
      protected under the appropriate application traffic key and are not included in this category.
    * epoch value (3) is used for payloads protected using keys derived
-     from the initial traffic_secret_0. This may include handshake
-     messages, such as post-handshake messages (e.g., a
+     from the initial \[sender\]_application_traffic_secret_0. This may include
+     handshake messages, such as post-handshake messages (e.g., a
      NewSessionTicket message).
-   * epoch value (4 to 2^16-1) is used for payloads protected using keys from the traffic_secret_N (N>0).
+   * epoch value (4 to 2^16-1) is used for payloads protected using keys from
+     the \[sender\]_application_traffic_secret_N (N>0).
 
 Using these reserved epoch values a receiver knows what cipher state
 has been used to encrypt and integrity protect a
