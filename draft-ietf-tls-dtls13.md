@@ -463,9 +463,7 @@ or discard such packets, though when DTLS is used over reliable
 transports (e.g., SCTP {{?RFC4960}}), they SHOULD be buffered and
 processed once the handshake completes.  Note that TLS's restrictions
 on when packets may be sent still apply, and the receiver treats the
-packets as if they were sent in the right order.  In particular, it is
-still impermissible to send data prior to completion of the first
-handshake.
+packets as if they were sent in the right order.
 
 Implementations MUST send retransmissions of lost messages using the same
 epoch and keying material as the original transmission.
