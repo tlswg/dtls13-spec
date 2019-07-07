@@ -454,8 +454,7 @@ specified for TCP {{RFC0793}} to allow for packet reordering.  (Note that
 the intention here is that implementers use the current guidance from
 the IETF for MSL, as specified in {{RFC0793}} or successors
 not that they attempt to interrogate the MSL that
-the system TCP stack is using.)  Until the handshake has completed,
-implementations MUST accept packets from the old epoch.
+the system TCP stack is using.)
 
 Conversely, it is possible for records that are protected with the
 new epoch to be received prior to the completion of a
