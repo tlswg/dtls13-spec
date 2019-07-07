@@ -541,7 +541,7 @@ MUST reject shorter records as if they had failed deprotection, as described in
 conventional record padding mechanism) in order to make a suitable-length
 ciphertext. Note most of the DTLS AEAD algorithms have a 16-byte authentication
 tag and need no padding. However, some algorithms such as
-TLS_AES_128_CCM_8_SHA256 have a shorter authentication tag and require padding
+TLS_AES_128_CCM_8_SHA256 have a shorter authentication tag and may require padding
 for short inputs.
 
 Note that sequence number encryption is only applied to the DTLSCiphertext
