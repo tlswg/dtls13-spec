@@ -1720,7 +1720,7 @@ alert.
 ## Connection ID Example {#connection-id-example}
 
 Below is an example exchange for DTLS 1.3 using a single
-connection ID in each direction.
+connection id in each direction.
 
 Note: The connection_id extension is defined in
 {{?DTLS-CID}}, which is used
