@@ -137,6 +137,8 @@ The following terms are used:
   - session: An association between a client and a server resulting from a handshake.
 
   - server: The endpoint which did not initiate the DTLS connection.
+  
+  - CID: Connection ID
 
 The reader is assumed to be familiar with the TLS 1.3 specification since this
 document is defined as a delta from TLS 1.3. As in TLS 1.3 the HelloRetryRequest has
@@ -336,7 +338,7 @@ Fixed Bits:
   001.
 
 C:
-: The C bit (0x10) is set if the connection ID is present.
+: The C bit (0x10) is set if the Connection ID is present.
 
 S:
 : The S bit (0x08) indicates the size of the sequence number.
@@ -349,7 +351,7 @@ E:
 : The two low bits (0x03) include the low order two bits of the epoch.
 
 Connection ID:
-: Variable length connection ID. The connection ID concept
+: Variable length CID. The CID concept
 is described in {{?DTLS-CID=I-D.ietf-tls-dtls-connection-id}}. An example
 can be found in {{connection-id-example}}.
 
@@ -564,7 +566,7 @@ be the beginning of a record.  Records MUST NOT span datagrams.
 DTLS records, as defined in this document, do not contain any association
 identifiers and applications must arrange to multiplex between associations.
 With UDP, the host/port number is used to look up the appropriate security
-association for incoming records. However, the Connection ID extension
+association for incoming records. However, the CID extension
 defined in {{?DTLS-CID}} adds an association identifier
 to DTLS records.
 
@@ -1368,7 +1370,7 @@ a handshake, abandons the connection, and then immediately starts
 a new handshake, it may not be possible to tell which connection
 a given protected record is for. In these cases, trial decryption
 MAY be necessary, though implementations could also use some sort
-of connection identifier, such as the one specified in
+of CID, such as the one specified in
 {{?I-D.ietf-tls-dtls-connection-id}}.
 
 
@@ -1664,7 +1666,7 @@ often they send such ACKs.
 
 If the client and server have negotiated the "connection_id"
 extension {{?DTLS-CID}}, either side
-can send a new connection ID which it wishes the other side to use
+can send a new CID which it wishes the other side to use
 in a NewConnectionId message.
 
 %%% Connection ID Management
@@ -1712,7 +1714,7 @@ ignore requests, which it considers excessive (though they MUST be
 acknowledged as usual).
 
 Endpoints MUST NOT send either of these messages if they did not negotiate a
-connection ID. If an implementation receives these messages when connection IDs
+CID. If an implementation receives these messages when CIDs
 were not negotiated, it MUST abort the connection with an unexpected_message
 alert.
 
@@ -1720,7 +1722,7 @@ alert.
 ## Connection ID Example {#connection-id-example}
 
 Below is an example exchange for DTLS 1.3 using a single
-connection id in each direction.
+CID in each direction.
 
 Note: The connection_id extension is defined in
 {{?DTLS-CID}}, which is used
@@ -1767,7 +1769,7 @@ Application Data           ========>
                            <========         Application Data
                                                       (cid=5)
 ~~~~
-{: #dtls-example title="Example DTLS 1.3 Exchange with Connection IDs"}
+{: #dtls-example title="Example DTLS 1.3 Exchange with CIDs"}
 
 
 #  Application Data Protocol
@@ -1809,25 +1811,26 @@ attack is small since the HKDF-Expand-Label only performs symmetric
 key hashing operations. Implementations which are concerned about
 this form of attack can discard out-of-epoch records.
 
-The security and privacy properties of the connection ID for DTLS 1.3 builds
+The security and privacy properties of the CID for DTLS 1.3 builds
 on top of what is described in {{?DTLS-CID}}. There are,
 however, several improvements:
 
   * The use of the Post-Handshake message allows the client and the server
-to update their connection IDs and those values are exchanged with confidentiality
+to update their CIDs and those values are exchanged with confidentiality
 protection.
 
   * With multi-homing, an adversary is able to correlate the communication
 interaction over the two paths, which adds further privacy concerns. In order
-to prevent this, implementations SHOULD attempt to use fresh connection IDs
+to prevent this, implementations SHOULD attempt to use fresh CIDs
 whenever they change local addresses or ports (though this is not always
 possible to detect). The RequestConnectionId message can be used
 to ask for new IDs in order to ensure that you have a pool of suitable IDs.
 
-  * Switching connection ID based on certain events, or even regularly, helps against
+  * Switching CID based on certain events, or even regularly, helps against
 tracking by onpath adversaries but the sequence numbers can still allow
 linkability. For this reason this specification defines an algorithm for encrypting
-sequence numbers, see {{sne}}.
+sequence numbers, see {{sne}}. Note that sequence number encryption is used for 
+all encrypted DTLS 1.3 records irrespectively of the use of a CID.  
 
   * Since the DTLS 1.3 exchange encrypts handshake messages much earlier than in previous
 DTLS versions information identifying the DTLS client, such as the client certificate, less
@@ -1840,16 +1843,16 @@ of changes from DTLS 1.2 to DTLS 1.3 is equally large. For this reason
 this section focuses on the most important changes only.
 
   * New handshake pattern, which leads to a shorter message exchange
-  * Support for AEAD-only ciphers
+  * Only AEAD ciphers are supported. Additional data calculation has been simplified. 
+  * Removed support for weaker and older cryptographic algorithms
   * HelloRetryRequest of TLS 1.3 used instead of HelloVerifyRequest
   * More flexible ciphersuite negotiation
   * New session resumption mechanism
   * PSK authentication redefined
   * New key derivation hierarchy utilizing a new key derivation construct
-  * Removed support for weaker and older cryptographic algorithms
   * Improved version negotiation
   * Optimized record layer encoding and thereby its size
-  * Added connection ID functionality
+  * Added CID functionality
   * Sequence numbers are encrypted.
 
 #  IANA Considerations
@@ -1904,7 +1907,7 @@ draft-28:
 
 draft-27:
 - Incorporated unified header format.
-- Added support for connection IDs.
+- Added support for CIDs.
 
 draft-04 - 26:
 - Submissions to align with TLS 1.3 draft versions
