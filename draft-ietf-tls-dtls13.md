@@ -57,7 +57,7 @@ informative:
   RFC4303:
   RFC4340:
   RFC4346:
-  RFC4347:
+  RFC4347:'
   RFC5238:
   RFC5246:
   RFC6347:
@@ -137,6 +137,8 @@ The following terms are used:
   - session: An association between a client and a server resulting from a handshake.
 
   - server: The endpoint which did not initiate the DTLS connection.
+  
+  - CID: Connection ID
 
 The reader is assumed to be familiar with the TLS 1.3 specification since this
 document is defined as a delta from TLS 1.3. As in TLS 1.3 the HelloRetryRequest has
@@ -336,7 +338,7 @@ Fixed Bits:
   001.
 
 C:
-: The C bit (0x10) is set if the connection ID is present.
+: The C bit (0x10) is set if the Connection ID is present.
 
 S:
 : The S bit (0x08) indicates the size of the sequence number.
@@ -349,7 +351,7 @@ E:
 : The two low bits (0x03) include the low order two bits of the epoch.
 
 Connection ID:
-: Variable length connection ID. The connection ID concept
+: Variable length CID. The CID concept
 is described in {{?DTLS-CID=I-D.ietf-tls-dtls-connection-id}}. An example
 can be found in {{connection-id-example}}.
 
@@ -411,7 +413,9 @@ protected with either \[sender]_handshake_traffic_sercret or
 Implementations MAY include the length field at their discretion.
 
 The entire header value shown above is used as it appears on the
-wire as the additional data value for the AEAD function.
+wire as the additional data value for the AEAD function. Note that this design 
+is different from the additional data calculation for DTLS 1.2 and for DTLS 1.2
+with Connection ID.
 
 ## Determining the Header Format
 
@@ -421,7 +425,7 @@ the first byte:
 * If the first byte is alert(21), handshake(22), or ack(proposed, 25),
 the record MUST be interpreted as a DTLSPlaintext record.
 
-* If the first byte is any other other value, then receivers
+* If the first byte is any other value, then receivers
 MUST check to see if the leading bits of the first byte are
 001. If so, the implementation MUST process the record as
 DTLSCiphertext; the true content type will be inside the
@@ -452,8 +456,7 @@ specified for TCP {{RFC0793}} to allow for packet reordering.  (Note that
 the intention here is that implementers use the current guidance from
 the IETF for MSL, as specified in {{RFC0793}} or successors
 not that they attempt to interrogate the MSL that
-the system TCP stack is using.)  Until the handshake has completed,
-implementations MUST accept packets from the old epoch.
+the system TCP stack is using.)
 
 Conversely, it is possible for records that are protected with the
 new epoch to be received prior to the completion of a
@@ -463,9 +466,7 @@ or discard such packets, though when DTLS is used over reliable
 transports (e.g., SCTP {{?RFC4960}}), they SHOULD be buffered and
 processed once the handshake completes.  Note that TLS's restrictions
 on when packets may be sent still apply, and the receiver treats the
-packets as if they were sent in the right order.  In particular, it is
-still impermissible to send data prior to completion of the first
-handshake.
+packets as if they were sent in the right order.
 
 Implementations MUST send retransmissions of lost messages using the same
 epoch and keying material as the original transmission.
@@ -535,14 +536,14 @@ The encrypted sequence number is computed by XORing the leading
 bytes of the Mask with the sequence number. Decryption is
 accomplished by the same process.
 
-In some (rare) cases the ciphertext may be less than 16 bytes.
-This cannot happen with most of the DTLS AEAD algorithms because
-the authentication tag itself is 16 bytes, however some algorithms
-such as TLS_AES_128_CCM_8_SHA256 have a shorter authentication tag,
-and in combination with a short plaintext, the result might be
-less than 16 bytes. In this case, implementations MUST pad the
-plaintext out (using the conventional record padding mechanism)
-in order to make a suitable-length ciphertext.
+This procedure requires the ciphertext length be at least 16 bytes. Receivers
+MUST reject shorter records as if they had failed deprotection, as described in
+{{handling-invalid-records}}. Senders MUST pad short plaintexts out (using the
+conventional record padding mechanism) in order to make a suitable-length
+ciphertext. Note most of the DTLS AEAD algorithms have a 16-byte authentication
+tag and need no padding. However, some algorithms such as
+TLS_AES_128_CCM_8_SHA256 have a shorter authentication tag and may require padding
+for short inputs.
 
 Note that sequence number encryption is only applied to the DTLSCiphertext
 structure and not to the DTLSPlaintext structure, which also contains a
@@ -565,7 +566,7 @@ be the beginning of a record.  Records MUST NOT span datagrams.
 DTLS records, as defined in this document, do not contain any association
 identifiers and applications must arrange to multiplex between associations.
 With UDP, the host/port number is used to look up the appropriate security
-association for incoming records. However, the Connection ID extension
+association for incoming records. However, the CID extension
 defined in {{?DTLS-CID}} adds an association identifier
 to DTLS records.
 
@@ -767,7 +768,7 @@ DoS attacks.  Two attacks are of particular concern:
    connection initiation messages with a forged source of the
    victim.  The server then sends its response to the victim
    machine, thus flooding it. Depending on the selected
-   ciphersuite this response message can be quite large, as it
+   parameters this response message can be quite large, as it
    is the case for a Certificate message.
 
 In order to counter both of these attacks, DTLS borrows the stateless
@@ -790,7 +791,7 @@ receiving the cookie uses the same extension to place
 the cookie subsequently into a ClientHello message.
 DTLS 1.2 on the other hand used a separate message, namely the HelloVerifyRequest,
 to pass a cookie to the client and did not utilize the extension mechanism.
-For backwards compatibility reason the cookie field in the ClientHello
+For backwards compatibility reasons, the cookie field in the ClientHello
 is present in DTLS 1.3 but is ignored by a DTLS 1.3 compliant server
 implementation.
 
@@ -873,8 +874,8 @@ treat it the same as a ClientHello with no cookie.  This avoids
 race/deadlock conditions if the client somehow gets a bad cookie
 (e.g., because the server changes its cookie signing key).
 
-As described in Section 4.1.4 of {{!TLS13}}, clients SHOULD
-also abort the handshake with an "unexpected_message" alert in response
+As described in Section 4.1.4 of {{!TLS13}}, clients MUST
+abort the handshake with an "unexpected_message" alert in response
 to any second HelloRetryRequest which was sent in the same connection
 (i.e., where the ClientHello was itself in response to a HelloRetryRequest).
 
@@ -994,6 +995,8 @@ legacy_session_id:
 
 legacy_cookie:
 : A DTLS 1.3-only client MUST set the legacy_cookie field to zero length.
+If a DTLS 1.3 ClientHello is received with any other value in this field, 
+the server MUST abort the handshake with an "illegal_parameter" alert.
 
 cipher_suites:
 : Same as for TLS 1.3.
@@ -1004,9 +1007,7 @@ legacy_compression_methods:
 extensions:
 : Same as for TLS 1.3.
 {:br }
-
-
-
+      
 ##  Handshake Message Fragmentation and Reassembly
 
 Each DTLS message MUST fit within a single
@@ -1051,7 +1052,7 @@ attackers can trivially mount the deletion attacks that EndOfEarlyData
 prevents in TLS. Servers SHOULD aggressively
 age out the epoch 1 keys upon receiving the first epoch 2 record
 and SHOULD NOT accept epoch 1 data after the first epoch 3 record
-is received.
+is received. (See {{dtls-epoch}} for the definitions of each epoch.)
 
 
 ##  DTLS Handshake Flights
@@ -1143,9 +1144,9 @@ Client                                            Server
 
 
                                                           +----------+
- (EndOfEarlyData)                                         | Flight 3 |
- {Finished}            -------->                          +----------+
- [Application Data*]
+ {Finished}            -------->                          | Flight 3 |
+ [Application Data*]                                      +----------+
+
                                                           +----------+
                        <--------                   [ACK]  | Flight 4 |
                                      [Application Data*]  +----------+
@@ -1255,7 +1256,7 @@ There are four ways to exit the WAITING state:
    the SENDING state, where it retransmits the flight, resets the
    retransmit timer, and returns to the WAITING state.
 
-2. The implementation reads a ACK from the peer: upon receiving
+2. The implementation reads an ACK from the peer: upon receiving
    an ACK for a partial flight (as mentioned in {{sending-acks}}),
    the implementation transitions
    to the SENDING state, where it retransmits the unacked portion
@@ -1310,7 +1311,7 @@ of 100 msec (the minimum defined in RFC 6298 {{RFC6298}}) and double
 the value at each retransmission, up to no less than the RFC 6298
 maximum of 60 seconds. Application specific profiles, such as those
 used for the Internet of Things environment, may recommend longer
-timer values. Note that a 100 msec timer is recommend
+timer values. Note that a 100 msec timer is recommended
 rather than the 3-second RFC 6298 default in order to improve latency
 for time-sensitive applications.  Because DTLS only uses
 retransmission for handshake and not dataflow, the effect on
@@ -1369,7 +1370,7 @@ a handshake, abandons the connection, and then immediately starts
 a new handshake, it may not be possible to tell which connection
 a given protected record is for. In these cases, trial decryption
 MAY be necessary, though implementations could also use some sort
-of connection identifier, such as the one specified in
+of CID, such as the one specified in
 {{?I-D.ietf-tls-dtls-connection-id}}.
 
 
@@ -1448,8 +1449,8 @@ protocol exchange to allow identification of the correct cipher state:
      three unencrypted messages in DTLS, namely ClientHello, ServerHello,
      and HelloRetryRequest.
    * epoch value (1) is used for messages protected using keys derived
-     from client_early_traffic_secret. This includes early data sent by the
-     client and the EndOfEarlyData message.
+     from client_early_traffic_secret. Note this epoch is skipped if
+     the client does not offer early data.
    * epoch value (2) is used for messages protected using keys derived
      from \[sender]_handshake_traffic_secret. Messages transmitted during
      the initial handshake, such as EncryptedExtensions,
@@ -1457,10 +1458,11 @@ protocol exchange to allow identification of the correct cipher state:
      belong to this category. Note, however, post-handshake are
      protected under the appropriate application traffic key and are not included in this category.
    * epoch value (3) is used for payloads protected using keys derived
-     from the initial traffic_secret_0. This may include handshake
-     messages, such as post-handshake messages (e.g., a
+     from the initial \[sender\]_application_traffic_secret_0. This may include
+     handshake messages, such as post-handshake messages (e.g., a
      NewSessionTicket message).
-   * epoch value (4 to 2^16-1) is used for payloads protected using keys from the traffic_secret_N (N>0).
+   * epoch value (4 to 2^16-1) is used for payloads protected using keys from
+     the \[sender\]_application_traffic_secret_N (N>0).
 
 Using these reserved epoch values a receiver knows what cipher state
 has been used to encrypt and integrity protect a
@@ -1664,7 +1666,7 @@ often they send such ACKs.
 
 If the client and server have negotiated the "connection_id"
 extension {{?DTLS-CID}}, either side
-can send a new connection ID which it wishes the other side to use
+can send a new CID which it wishes the other side to use
 in a NewConnectionId message.
 
 %%% Connection ID Management
@@ -1712,7 +1714,7 @@ ignore requests, which it considers excessive (though they MUST be
 acknowledged as usual).
 
 Endpoints MUST NOT send either of these messages if they did not negotiate a
-connection ID. If an implementation receives these messages when connection IDs
+CID. If an implementation receives these messages when CIDs
 were not negotiated, it MUST abort the connection with an unexpected_message
 alert.
 
@@ -1720,7 +1722,7 @@ alert.
 ## Connection ID Example {#connection-id-example}
 
 Below is an example exchange for DTLS 1.3 using a single
-connection id in each direction.
+CID in each direction.
 
 Note: The connection_id extension is defined in
 {{?DTLS-CID}}, which is used
@@ -1767,7 +1769,7 @@ Application Data           ========>
                            <========         Application Data
                                                       (cid=5)
 ~~~~
-{: #dtls-example title="Example DTLS 1.3 Exchange with Connection IDs"}
+{: #dtls-example title="Example DTLS 1.3 Exchange with CIDs"}
 
 
 #  Application Data Protocol
@@ -1791,6 +1793,16 @@ exchange unless there is good reason to believe that amplification is
 not a threat in their environment.  Clients MUST be prepared to do a
 cookie exchange with every handshake.
 
+DTLS implementations MUST NOT update their sending address in response
+to packets from a different address unless they first perform some
+reachability test; no such test is defined in this specification. Even
+with such a test, An on-path adversary can also black-hole traffic or
+create a reflection attack against third parties because a DTLS peer
+has no means to distinguish a genuine address update event (for
+example, due to a NAT rebinding) from one that is malicious. This
+attack is of concern when there is a large asymmetry of
+request/response message sizes.
+
 With the exception of order protection and non-replayability, the security
 guarantees for DTLS 1.3 are the same as TLS 1.3. While TLS always provides
 order protection and non-replayability, DTLS does not provide order protection
@@ -1809,29 +1821,30 @@ attack is small since the HKDF-Expand-Label only performs symmetric
 key hashing operations. Implementations which are concerned about
 this form of attack can discard out-of-epoch records.
 
-The security and privacy properties of the connection ID for DTLS 1.3 builds
+The security and privacy properties of the CID for DTLS 1.3 builds
 on top of what is described in {{?DTLS-CID}}. There are,
 however, several improvements:
 
   * The use of the Post-Handshake message allows the client and the server
-to update their connection IDs and those values are exchanged with confidentiality
+to update their CIDs and those values are exchanged with confidentiality
 protection.
 
   * With multi-homing, an adversary is able to correlate the communication
 interaction over the two paths, which adds further privacy concerns. In order
-to prevent this, implementations SHOULD attempt to use fresh connection IDs
+to prevent this, implementations SHOULD attempt to use fresh CIDs
 whenever they change local addresses or ports (though this is not always
-possible to detect). The RequestConnectionId message can be used
-to ask for new IDs in order to ensure that you have a pool of suitable IDs.
+possible to detect). The RequestConnectionId message can be used by a peer
+to ask for new CIDs to ensure that a pool of suitable CIDs is available.
 
-  * Switching connection ID based on certain events, or even regularly, helps against
-tracking by onpath adversaries but the sequence numbers can still allow
+  * Switching CID based on certain events, or even regularly, helps against
+tracking by on-path adversaries but the sequence numbers can still allow
 linkability. For this reason this specification defines an algorithm for encrypting
-sequence numbers, see {{sne}}.
+sequence numbers, see {{sne}}. Note that sequence number encryption is used for 
+all encrypted DTLS 1.3 records irrespectively of the use of a CID.  
 
-  * Since the DTLS 1.3 exchange encrypts handshake messages much earlier than in previous
-DTLS versions information identifying the DTLS client, such as the client certificate, less
-information is available to an on-path adversary.
+  * DTLS 1.3 encrypts handshake messages much earlier than in previous
+DTLS versions. Therefore, less information identifying the DTLS client, such as 
+the client certificate, is available to an on-path adversary.
 
 #  Changes to DTLS 1.2
 
@@ -1840,16 +1853,16 @@ of changes from DTLS 1.2 to DTLS 1.3 is equally large. For this reason
 this section focuses on the most important changes only.
 
   * New handshake pattern, which leads to a shorter message exchange
-  * Support for AEAD-only ciphers
+  * Only AEAD ciphers are supported. Additional data calculation has been simplified. 
+  * Removed support for weaker and older cryptographic algorithms
   * HelloRetryRequest of TLS 1.3 used instead of HelloVerifyRequest
   * More flexible ciphersuite negotiation
   * New session resumption mechanism
   * PSK authentication redefined
   * New key derivation hierarchy utilizing a new key derivation construct
-  * Removed support for weaker and older cryptographic algorithms
   * Improved version negotiation
   * Optimized record layer encoding and thereby its size
-  * Added connection ID functionality
+  * Added CID functionality
   * Sequence numbers are encrypted.
 
 #  IANA Considerations
@@ -1879,6 +1892,20 @@ This section provides the normative protocol types and constants definitions.
 RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
 IETF Drafts
+
+draft-32: 
+- Editorial improvements and clarifications.
+
+draft-31: 
+- Editorial improvements in text and figures. 
+- Added normative reference to ChaCha20 and Poly1305.
+
+draft-30:
+- Changed record format
+- Added text about end of early data 
+- Changed format of the Connection ID Update message
+- Added Appendix A "Protocol Data Structures and Constant Values"
+
 draft-29:
 - Added support for sequence number encryption
 - Update to new record format
@@ -1890,7 +1917,7 @@ draft-28:
 
 draft-27:
 - Incorporated unified header format.
-- Added support for connection IDs.
+- Added support for CIDs.
 
 draft-04 - 26:
 - Submissions to align with TLS 1.3 draft versions
