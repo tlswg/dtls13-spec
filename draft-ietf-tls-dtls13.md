@@ -461,7 +461,7 @@ are provided in {{dtls-epoch}}.
 ### Processing Guidelines
 
 Because DTLS records could be reordered, a record from epoch
-M may be received after epoch N > M has begun.  In general,
+M may be received after epoch N (where N > M) has begun.  In general,
 implementations SHOULD discard packets from earlier epochs, but if
 packet loss causes noticeable problems implementations MAY choose to
 retain keying material from previous epochs for up to the default MSL
