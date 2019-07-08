@@ -422,7 +422,7 @@ unpacked RecordNumber structure, as shown below:
     } RecordNumber;
 ~~~
 
-This value is used in the ACK message as well as in the "record_sequence_number"
+This 64-bit value is used in the ACK message as well as in the "record_sequence_number"
 input to the AEAD function.
 
 The entire header value shown above is used as it appears on the
