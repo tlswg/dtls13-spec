@@ -57,7 +57,7 @@ informative:
   RFC4303:
   RFC4340:
   RFC4346:
-  RFC4347:'
+  RFC4347:
   RFC5238:
   RFC5246:
   RFC6347:
@@ -412,6 +412,19 @@ protected with either \[sender]_handshake_traffic_sercret or
 \[sender]_application_traffic_secret for message protection,
 Implementations MAY include the length field at their discretion.
 
+When expanded, the epoch and sequence number can be combined into an
+unpacked RecordNumber structure, as shown below:
+
+~~~
+    struct {
+        uint16 epoch;
+        uint48 sequence_number;
+    } RecordNumber;
+~~~
+
+This 64-bit value is used in the ACK message as well as in the "record_sequence_number"
+input to the AEAD function.
+
 The entire header value shown above is used as it appears on the
 wire as the additional data value for the AEAD function. Note that this design 
 is different from the additional data calculation for DTLS 1.2 and for DTLS 1.2
@@ -448,7 +461,7 @@ are provided in {{dtls-epoch}}.
 ### Processing Guidelines
 
 Because DTLS records could be reordered, a record from epoch
-1 may be received after epoch 2 has begun.  In general,
+M may be received after epoch N (where N > M) has begun.  In general,
 implementations SHOULD discard packets from earlier epochs, but if
 packet loss causes noticeable problems implementations MAY choose to
 retain keying material from previous epochs for up to the default MSL
@@ -681,7 +694,9 @@ receiver MUST verify that the record contains a sequence number that
 does not duplicate the sequence number of any other record received
 during the lifetime of the session. This check SHOULD happen after
 deprotecting the packet; otherwise the packet discard might itself
-serve as a timing channel for the sequence number.
+serve as a timing channel for the record number. Note that decompressing
+the records number is still a potential timing channel for the record
+number, though a less powerful one than whether it was deprotected.
 
 Duplicates are rejected through the use of a sliding receive window.
 (How the window is implemented is a local matter, but the following
@@ -748,8 +763,7 @@ that performs return-routability checks as part of the connection establishment.
 DTLS implementations do not use the TLS 1.3 "compatibility mode" described in
 Section D.4 of {{!TLS13}}.  DTLS servers MUST NOT echo the
 "session_id" value from the client and endpoints MUST NOT send ChangeCipherSpec
-messages. Note however that implementations MUST ignore ChangeCipherSpec
-messages received in unprotected records.
+messages.
 
 With these exceptions, the DTLS message formats, flows, and logic are
 the same as those of TLS 1.3.
@@ -985,7 +999,9 @@ legacy_version:
   indicates its version preferences in the "supported_versions"
   extension (see Section 4.2.1 of {{!TLS13}}) and the
   legacy_version field MUST be set to {254, 253}, which was the version
-  number for DTLS 1.2.
+  number for DTLS 1.2. The version fields for DTLS 1.0 and DTLS 1.2 are
+  0xfeff and 0xfefd (to match the wire versions) but the version field
+  for DTLS 1.3 is 0x0304.
 
 random:
 : Same as for TLS 1.3.
@@ -1018,9 +1034,7 @@ number of records, each of which can be transmitted separately, thus
 avoiding IP fragmentation.
 
 When transmitting the handshake message, the sender divides the
-message into a series of N contiguous data ranges.  These ranges MUST
-NOT be larger than the maximum handshake fragment size and MUST
-jointly contain the entire handshake message.  The ranges MUST NOT
+message into a series of N contiguous data ranges. The ranges MUST NOT
 overlap.  The sender then creates N handshake messages, all with the
 same message_seq value as the original handshake message.  Each new
 message is labeled with the fragment_offset (the number of bytes
@@ -1028,6 +1042,7 @@ contained in previous fragments) and the fragment_length (the length
 of this fragment).  The length field in all messages is the same as
 the length field of the original message.  An unfragmented message is
 a degenerate case with fragment_offset=0 and fragment_length=length.
+Each range MUST be delivered in a single packet.
 
 When a DTLS implementation receives a handshake message fragment, it
 MUST buffer it until it has the entire handshake message.  DTLS
@@ -1552,7 +1567,7 @@ sent in the same UDP datagram as handshake records.
 
 %%% ACKs
     struct {
-        uint64 record_numbers<0..2^16-1>;
+        RecordNumber record_numbers<0..2^16-1>;
     } ACK;
 
 record_numbers:
@@ -1771,6 +1786,8 @@ Application Data           ========>
 ~~~~
 {: #dtls-example title="Example DTLS 1.3 Exchange with CIDs"}
 
+If no CID is negotiated, then the receiver MUST reject any
+records it receives that contain a CID.
 
 #  Application Data Protocol
 
