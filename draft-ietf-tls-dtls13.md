@@ -1989,21 +1989,9 @@ like to thank the authors of the QUIC specification for their work.
 In addition, we would like to thank:
 
 ~~~
-* Ilari Liusvaara
-  Independent
-  ilariliusvaara@welho.com
-~~~
-
-~~~
-* Martin Thomson
-  Mozilla
-  martin.thomson@gmail.com
-~~~
-
-~~~
-* Yin Xinxing
-  Huawei
-  yinxinxing@huawei.com
+* David Benjamin
+  Google
+  davidben@google.com
 ~~~
 
 ~~~
@@ -2017,3 +2005,29 @@ In addition, we would like to thank:
   Huawei
   tobias.gondrom@gondrom.org
 ~~~
+
+~~~
+* Ilari Liusvaara
+  Independent
+  ilariliusvaara@welho.com
+~~~
+
+~~~
+* Martin Thomson
+  Mozilla
+  martin.thomson@gmail.com
+~~~
+
+~~~
+* Christopher A. Wood
+  Apple Inc.
+  cawood@apple.com
+~~~
+
+~~~
+* Yin Xinxing
+  Huawei
+  yinxinxing@huawei.com
+~~~
+
+
