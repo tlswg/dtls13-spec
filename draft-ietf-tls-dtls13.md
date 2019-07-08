@@ -884,9 +884,9 @@ Clients MUST be prepared to do a cookie exchange with every
 handshake.
 
 If a server receives a ClientHello with an invalid cookie, it
-MUST NOT respond with a HelloRetryRequest. Restarting the handshake from
-scratch, without a cookie, allows the client to recover from a situation
-where it obtained a cookie that cannot be verified by the server.
+MUST NOT terminate the handshake with an "illegal_parameter" alert.
+This allows the client to restart the connection from
+scratch without a cookie.
 
 As described in Section 4.1.4 of {{!TLS13}}, clients MUST
 abort the handshake with an "unexpected_message" alert in response
