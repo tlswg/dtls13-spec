@@ -694,9 +694,9 @@ receiver MUST verify that the record contains a sequence number that
 does not duplicate the sequence number of any other record received
 during the lifetime of the session. This check SHOULD happen after
 deprotecting the packet; otherwise the packet discard might itself
-serve as a timing channel for the sequence number. Note that decompressing
-the record number is still a potential timing channel, though a weaker
-one.
+serve as a timing channel for the record number. Note that decompressing
+the records number is still a potential timing channel for the record
+number, though a less powerful one than whether it was deprotected.
 
 Duplicates are rejected through the use of a sliding receive window.
 (How the window is implemented is a local matter, but the following
