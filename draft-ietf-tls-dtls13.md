@@ -1353,7 +1353,7 @@ the algorithm described in Section 4.4.3 and Section 4.4.4 of {{!TLS13}}, respec
 ##  Cryptographic Label Prefix
 
 Section 7.1 of {{RFC8446}} specifies that HKDR-Expand-Label uses
-a label prefix of "tls13 ". For DTLS 1.3, that label shall be
+a label prefix of "tls13 ". For DTLS 1.3, that label SHALL be
 "dtls13".  This ensures key separation between DTLS 1.3 and
 TLS 1.3. Note that there is no trailing space; this is necessary
 in order to keep the overall label size inside of one hash
