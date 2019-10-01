@@ -1357,7 +1357,7 @@ a label prefix of "tls13 ". For DTLS 1.3, that label shall be
 "dtls13".  This ensures key separation between DTLS 1.3 and
 TLS 1.3. Note that there is no trailing space; this is necessary
 in order to keep the overall label size inside of one hash
-iteration, because "DTLS" is one letter longer than "TLS".
+iteration because "DTLS" is one letter longer than "TLS".
 
 ##  Alert Messages
 
