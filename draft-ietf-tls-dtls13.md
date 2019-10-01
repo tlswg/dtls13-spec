@@ -1350,6 +1350,15 @@ if each handshake message had been sent as a single fragment following
 the algorithm described in Section 4.4.3 and Section 4.4.4 of {{!TLS13}}, respectively.
 
 
+##  Cryptographic Label Prefix
+
+Section 7.1 of {{RFC8446}} specifies that HKDR-Expand-Label uses
+a label prefix of "tls13 ". For DTLS 1.3, that label shall be
+"dtls13".  This ensures key separation between DTLS 1.3 and
+TLS 1.3. Note that there is no trailing space; this is necessary
+in order to keep the overall label size inside of one hash
+iteration, because "DTLS" is one letter longer than "TLS".
+
 ##  Alert Messages
 
 Note that Alert messages are not retransmitted at all, even when they
@@ -1909,6 +1918,9 @@ This section provides the normative protocol types and constants definitions.
 RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
 IETF Drafts
+
+draft-33:
+- Key separation between TLS and DTLS. Issue #72.
 
 draft-32: 
 - Editorial improvements and clarifications.
