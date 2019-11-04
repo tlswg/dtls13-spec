@@ -1902,7 +1902,7 @@ allocated.
 IANA is requested to allocate two values in the "TLS Handshake Type"
 registry, defined in {{!TLS13}}, for RequestConnectionId (TBD), and
 NewConnectionId (TBD), as defined in this document.  The value for the
-"DTLS-OK" column is "Y".
+"DTLS-OK" columns are "Y".
 
 --- back
 
