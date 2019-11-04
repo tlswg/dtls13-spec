@@ -1894,13 +1894,15 @@ this section focuses on the most important changes only.
 #  IANA Considerations
 
 IANA is requested to allocate a new value in the "TLS ContentType"
-registry for the ACK message, defined in {{ack-msg}}, with content type 26.
-IANA is requested to reserve the content type range 32-63 so that
-content types in this range are not allocated.
+registry for the ACK message, defined in {{ack-msg}}, with content type 25.
+The value for the "DTLS-OK" column is "Y".  IANA is requested to reserve
+the content type range 32-63 so that content types in this range are not
+allocated.
 
 IANA is requested to allocate two values in the "TLS Handshake Type"
 registry, defined in {{!TLS13}}, for RequestConnectionId (TBD), and
-NewConnectionId (TBD), as defined in this document.
+NewConnectionId (TBD), as defined in this document.  The value for the
+"DTLS-OK" column is "Y".
 
 --- back
 
