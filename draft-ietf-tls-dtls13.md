@@ -243,7 +243,7 @@ TLS and DTLS handshake messages can be quite large (in theory up to
 datagrams are often limited to less than 1500 bytes if IP fragmentation is not
 desired.  In order to compensate for this limitation, each DTLS
 handshake message may be fragmented over several DTLS records, each
-of which is intended to fit in a single IP packet.  Each DTLS
+of which is intended to fit in a single UDP datagram.  Each DTLS
 handshake message contains both a fragment offset and a fragment
 length.  Thus, a recipient in possession of all bytes of a handshake
 message can reassemble the original unfragmented message.
@@ -462,7 +462,7 @@ are provided in {{dtls-epoch}}.
 
 Because DTLS records could be reordered, a record from epoch
 M may be received after epoch N (where N > M) has begun.  In general,
-implementations SHOULD discard packets from earlier epochs, but if
+implementations SHOULD discard records from earlier epochs, but if
 packet loss causes noticeable problems implementations MAY choose to
 retain keying material from previous epochs for up to the default MSL
 specified for TCP {{RFC0793}} to allow for packet reordering.  (Note that
@@ -475,11 +475,11 @@ Conversely, it is possible for records that are protected with the
 new epoch to be received prior to the completion of a
 handshake.  For instance, the server may send its Finished message
 and then start transmitting data.  Implementations MAY either buffer
-or discard such packets, though when DTLS is used over reliable
+or discard such records, though when DTLS is used over reliable
 transports (e.g., SCTP {{?RFC4960}}), they SHOULD be buffered and
 processed once the handshake completes.  Note that TLS's restrictions
-on when packets may be sent still apply, and the receiver treats the
-packets as if they were sent in the right order.
+on when records may be sent still apply, and the receiver treats the
+records as if they were sent in the right order.
 
 Implementations MUST send retransmissions of lost messages using the same
 epoch and keying material as the original transmission.
@@ -688,12 +688,12 @@ Each DTLS record contains a sequence number to provide replay protection.
 Sequence number verification SHOULD be performed using the following
 sliding window procedure, borrowed from Section 3.4.3 of {{RFC4303}}.
 
-The received packet counter for a session MUST be initialized to
+The received record counter for a session MUST be initialized to
 zero when that session is established. For each received record, the
 receiver MUST verify that the record contains a sequence number that
 does not duplicate the sequence number of any other record received
 during the lifetime of the session. This check SHOULD happen after
-deprotecting the packet; otherwise the packet discard might itself
+deprotecting the record; otherwise the record discard might itself
 serve as a timing channel for the record number. Note that decompressing
 the records number is still a potential timing channel for the record
 number, though a less powerful one than whether it was deprotected.
@@ -709,14 +709,14 @@ size.)
 The "right" edge of the window represents the highest validated
 sequence number value received on the session.  Records that contain
 sequence numbers lower than the "left" edge of the window are
-rejected.  Packets falling within the window are checked against a
-list of received packets within the window.  An efficient means for
+rejected.  Records falling within the window are checked against a
+list of received records within the window.  An efficient means for
 performing this check, based on the use of a bit mask, is described in
 Section 3.4.3 of {{RFC4303}}. If the received record falls within the
-window and is new, or if the packet is to the right of the window,
-then the packet is new.
+window and is new, or if the record is to the right of the window,
+then the record is new.
 
-The window MUST NOT be updated until the packet has been deprotected
+The window MUST NOT be updated until the record has been deprotected
 successfully.
 
 
@@ -1042,7 +1042,7 @@ contained in previous fragments) and the fragment_length (the length
 of this fragment).  The length field in all messages is the same as
 the length field of the original message.  An unfragmented message is
 a degenerate case with fragment_offset=0 and fragment_length=length.
-Each range MUST be delivered in a single packet.
+Each range MUST be delivered in a single UDP datagram.
 
 When a DTLS implementation receives a handshake message fragment, it
 MUST buffer it until it has the entire handshake message.  DTLS
@@ -1309,7 +1309,7 @@ a retransmit of its ACK.
 Note that because of packet loss, it is possible for one side to be
 sending application data even though the other side has not received
 the first side's Finished message.  Implementations MUST either
-discard or buffer all application data packets for the new epoch
+discard or buffer all application data records for the new epoch
 until they have received the Finished message for that epoch.
 Implementations MAY treat receipt of application data with a new
 epoch prior to receipt of the corresponding Finished message as
@@ -1389,7 +1389,7 @@ off-path/blind attackers from destroying associations merely by
 sending forged ClientHellos.
 
 Note: it is not always possible to distinguish which association
-a given packet is from. For instance, if the client performs
+a given record is from. For instance, if the client performs
 a handshake, abandons the connection, and then immediately starts
 a new handshake, it may not be possible to tell which connection
 a given protected record is for. In these cases, trial decryption
@@ -1654,7 +1654,7 @@ from a flight, an implementation SHOULD retransmit the remaining
 messages or fragments. Note that this requires implementations to
 track which messages appear in which records. Once all the messages in a flight have been
 acknowledged, the implementation MUST cancel all retransmissions
-of that flight. As noted above, the receipt of any packet responding
+of that flight. As noted above, the receipt of any record responding
 to a given flight MUST be taken as an implicit acknowledgement for the entire
 flight.
 
@@ -1839,7 +1839,7 @@ to invalid records by terminating the connection.
 
 If implementations process out-of-epoch records as recommended in
 {{key-updates}}, then this creates a denial of service risk since an adversary could
-inject packets with fake epoch values, forcing the recipient
+inject records with fake epoch values, forcing the recipient
 to compute the next-generation application_traffic_secret using the
 HKDF-Expand-Label construct to only find out that the message was
 does not pass the AEAD cipher processing. The impact of this
@@ -1963,7 +1963,7 @@ draft-02
 - Clarify the ACK rules.
 
 draft-01
-- Restructured the ACK to contain a list of packets and also
+- Restructured the ACK to contain a list of records and also
   be a record rather than a handshake message.
 
 draft-00
