@@ -408,11 +408,13 @@ Omitting the length field MUST only be used for the last record in a
 datagram.
 
 Implementations which send multiple records in the same datagram
-SHOULD omit the connection id from all but the first record. Sending
+SHOULD omit the connection id from all but the first record; receiving
+implementations MUST assume that any subsequent records without
+connection IDs belong to the same assocatiation.  Sending
 implementations MUST NOT mix records from multiple DTLS associations
 in the same datagram. If the second or later record has a connection
-ID which does not match the connection used for previous records,
-the rest of the datagram MUST be discarded.
+ID which does not match that used for previous records, the rest of
+the datagram MUST be discarded.
 
 When expanded, the epoch and sequence number can be combined into an
 unpacked RecordNumber structure, as shown below:
