@@ -243,7 +243,7 @@ TLS and DTLS handshake messages can be quite large (in theory up to
 datagrams are often limited to less than 1500 bytes if IP fragmentation is not
 desired.  In order to compensate for this limitation, each DTLS
 handshake message may be fragmented over several DTLS records, each
-of which is intended to fit in a single IP packet.  Each DTLS
+of which is intended to fit in a single IP datagram.  Each DTLS
 handshake message contains both a fragment offset and a fragment
 length.  Thus, a recipient in possession of all bytes of a handshake
 message can reassemble the original unfragmented message.
@@ -255,9 +255,9 @@ DTLS optionally supports record replay detection.  The technique used
 is the same as in IPsec AH/ESP, by maintaining a bitmap window of
 received records.  Records that are too old to fit in the window and
 records that have previously been received are silently discarded.
-The replay detection feature is optional, since packet duplication is
+The replay detection feature is optional, since datagram duplication is
 not always malicious, but can also occur due to routing errors.
-Applications may conceivably detect duplicate packets and accordingly
+Applications may conceivably detect duplicate datagrams and accordingly
 modify their data transmission strategy.
 
 
@@ -404,13 +404,15 @@ The length field MAY be omitted by clearing the L bit, which means that the
 record consumes the entire rest of the datagram in the lower
 level transport. In this case it is not possible to have multiple
 DTLSCiphertext format records without length fields in the same datagram.
+Omitting the length field MUST only be used for the last record in a
+datagram.
 
-Omitting the length field MUST only be used for data which is protected with
-one of the application_traffic_secret values, and not for messages
-protected with either \[sender]_handshake_traffic_secret or
-\[sender]_early_traffic_secret values. When using keys derived from
-\[sender]_application_traffic_secret for message protection,
-implementations MAY include the length field at their discretion.
+Implementations which send multiple records in the same datagram
+SHOULD omit the connection id from all but the first record. Sending
+implementations MUST NOT mix records from multiple DTLS associations
+in the same datagram. If the second or later record has a connection
+ID which does not match the connection used for previous records,
+the rest of the datagram MUST be discarded.
 
 When expanded, the epoch and sequence number can be combined into an
 unpacked RecordNumber structure, as shown below:
@@ -462,10 +464,10 @@ are provided in {{dtls-epoch}}.
 
 Because DTLS records could be reordered, a record from epoch
 M may be received after epoch N (where N > M) has begun.  In general,
-implementations SHOULD discard packets from earlier epochs, but if
-packet loss causes noticeable problems implementations MAY choose to
+implementations SHOULD discard datagrams from earlier epochs, but if
+datagram loss causes noticeable problems implementations MAY choose to
 retain keying material from previous epochs for up to the default MSL
-specified for TCP {{RFC0793}} to allow for packet reordering.  (Note that
+specified for TCP {{RFC0793}} to allow for datagram reordering.  (Note that
 the intention here is that implementers use the current guidance from
 the IETF for MSL, as specified in {{RFC0793}} or successors
 not that they attempt to interrogate the MSL that
@@ -475,11 +477,11 @@ Conversely, it is possible for records that are protected with the
 new epoch to be received prior to the completion of a
 handshake.  For instance, the server may send its Finished message
 and then start transmitting data.  Implementations MAY either buffer
-or discard such packets, though when DTLS is used over reliable
+or discard such datagrams, though when DTLS is used over reliable
 transports (e.g., SCTP {{?RFC4960}}), they SHOULD be buffered and
 processed once the handshake completes.  Note that TLS's restrictions
-on when packets may be sent still apply, and the receiver treats the
-packets as if they were sent in the right order.
+on when datagrams may be sent still apply, and the receiver treats the
+datagrams as if they were sent in the right order.
 
 Implementations MUST send retransmissions of lost messages using the same
 epoch and keying material as the original transmission.
