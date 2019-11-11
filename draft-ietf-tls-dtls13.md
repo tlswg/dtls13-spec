@@ -413,8 +413,8 @@ implementations MUST assume that any subsequent records without
 connection IDs belong to the same assocatiation.  Sending
 implementations MUST NOT mix records from multiple DTLS associations
 in the same datagram. If the second or later record has a connection
-ID which does not match that used for previous records, the rest of
-the datagram MUST be discarded.
+ID which does not correspond to the same association used
+for previous records, the rest of the datagram MUST be discarded.
 
 When expanded, the epoch and sequence number can be combined into an
 unpacked RecordNumber structure, as shown below:
