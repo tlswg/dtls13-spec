@@ -404,13 +404,15 @@ The length field MAY be omitted by clearing the L bit, which means that the
 record consumes the entire rest of the datagram in the lower
 level transport. In this case it is not possible to have multiple
 DTLSCiphertext format records without length fields in the same datagram.
+Omitting the length field MUST only be used for the last record in a
+datagram.
 
-Omitting the length field MUST only be used for data which is protected with
-one of the application_traffic_secret values, and not for messages
-protected with either \[sender]_handshake_traffic_secret or
-\[sender]_early_traffic_secret values. When using keys derived from
-\[sender]_application_traffic_secret for message protection,
-implementations MAY include the length field at their discretion.
+Implementations which send multiple records in the same datagram
+SHOULD omit the connection id from all but the first record. Sending
+implementations MUST NOT mix records from multiple DTLS associations
+in the same datagram. If the second or later record has a connection
+ID which does not match the connection used for previous records,
+the rest of the datagram MUST be discarded.
 
 When expanded, the epoch and sequence number can be combined into an
 unpacked RecordNumber structure, as shown below:
