@@ -953,6 +953,13 @@ incremented. From the perspective of the DTLS record layer, the retransmission i
 a new record.  This record will have a new
 DTLSPlaintext.sequence_number value.
 
+Note: In DTLS 1.2 the message_seq was reset to zero in case of a 
+rehandshake (i.e., renegotiation). On the surface, a rehandshake in DTLS 1.2 
+shares similarities with a post-handshake message exchange in DTLS 1.3. However, 
+in DTLS 1.3 the message_seq is not reset to allow distinguishing a 
+retransmission from a previously sent post-handshake message from a newly 
+sent post-handshake message.
+
 DTLS implementations maintain (at least notionally) a
 next_receive_seq counter.  This counter is initially set to zero.
 When a handshake message is received, if its message_seq value matches
@@ -2014,8 +2021,8 @@ In addition, we would like to thank:
 
 ~~~
 * Thomas Fossati
-  Nokia
-  thomas.fossati@nokia.com
+  Arm Limited
+  Thomas.Fossati@arm.com
 ~~~
 
 ~~~
@@ -2048,4 +2055,9 @@ In addition, we would like to thank:
   yinxinxing@huawei.com
 ~~~
 
+~~~
+* Hanno Becker
+  Arm Limited
+  Hanno.Becker@arm.com
+~~~
 
