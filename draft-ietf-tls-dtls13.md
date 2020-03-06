@@ -836,8 +836,7 @@ are omitted.
 The cookie extension is defined in Section 4.2.2 of {{!TLS13}}. When sending the
 initial ClientHello, the client does not have a cookie yet. In this case,
 the cookie extension is omitted and the legacy_cookie field in the ClientHello
-message SHOULD be set to a zero length vector (i.e., a single zero byte length field)
-and MUST be ignored by a server negotiating DTLS 1.3.
+message MUST be set to a zero length vector (i.e., a single zero byte length field).
 
 When responding to a HelloRetryRequest, the client MUST create a new
 ClientHello message following the description in Section 4.1.2 of {{!TLS13}}.
