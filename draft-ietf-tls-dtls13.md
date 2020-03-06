@@ -51,7 +51,7 @@ normative:
   RFC6298:
   RFC8174:
   I-D.ietf-tls-dtls-connection-id:
-  
+
 informative:
   RFC7296:
   RFC2522:
@@ -138,7 +138,7 @@ The following terms are used:
   - session: An association between a client and a server resulting from a handshake.
 
   - server: The endpoint which did not initiate the DTLS connection.
-  
+
   - CID: Connection ID
 
 The reader is assumed to be familiar with the TLS 1.3 specification since this
@@ -637,7 +637,7 @@ protocols. In particular:
   reassemble datagrams, there is no PMTU limitation.  However, the
   upper layer protocol MUST NOT write any record that exceeds the
   maximum record size of 2^14 bytes.
-  
+
 Note that DTLS does not defend against spoofed ICMP messages;
 implementations SHOULD ignore any such messages that indicate
 PMTUs below the IPv4 and IPv6 minimums of 576 and 1280 bytes
@@ -954,11 +954,11 @@ incremented. From the perspective of the DTLS record layer, the retransmission i
 a new record.  This record will have a new
 DTLSPlaintext.sequence_number value.
 
-Note: In DTLS 1.2 the message_seq was reset to zero in case of a 
-rehandshake (i.e., renegotiation). On the surface, a rehandshake in DTLS 1.2 
-shares similarities with a post-handshake message exchange in DTLS 1.3. However, 
-in DTLS 1.3 the message_seq is not reset to allow distinguishing a 
-retransmission from a previously sent post-handshake message from a newly 
+Note: In DTLS 1.2 the message_seq was reset to zero in case of a
+rehandshake (i.e., renegotiation). On the surface, a rehandshake in DTLS 1.2
+shares similarities with a post-handshake message exchange in DTLS 1.3. However,
+in DTLS 1.3 the message_seq is not reset to allow distinguishing a
+retransmission from a previously sent post-handshake message from a newly
 sent post-handshake message.
 
 DTLS implementations maintain (at least notionally) a
@@ -1023,7 +1023,7 @@ legacy_session_id:
 
 legacy_cookie:
 : A DTLS 1.3-only client MUST set the legacy_cookie field to zero length.
-If a DTLS 1.3 ClientHello is received with any other value in this field, 
+If a DTLS 1.3 ClientHello is received with any other value in this field,
 the server MUST abort the handshake with an "illegal_parameter" alert.
 
 cipher_suites:
@@ -1035,7 +1035,7 @@ legacy_compression_methods:
 extensions:
 : Same as for TLS 1.3.
 {:br }
-      
+
 ##  Handshake Message Fragmentation and Reassembly
 
 Each DTLS message MUST fit within a single
@@ -1592,12 +1592,23 @@ sent in the same UDP datagram as handshake records.
 
 record_numbers:
 : a list of the records containing handshake messages in the current
-  flight which the endpoint has received, in numerically increasing
-  order. ACKs only cover the current outstanding flight (this is
-  possible because DTLS is generally a lockstep protocol). Thus, an ACK
-  from the server would not cover both the ClientHello and the client's
-  Certificate. Implementations can accomplish this by clearing their ACK
-  list upon receiving the start of the next flight.
+  flight which the endpoint has received and either processed or buffered,
+  in numerically increasing
+  order.
+
+Implementations MUST NOT acknowledge records containing
+non-duplicative handshake messages or fragments which have not been
+processed or buffered. Otherwise, deadlock can ensue.
+
+During the handshake, ACKs only cover the current outstanding flight (this is
+possible because DTLS is generally a lockstep protocol). Thus, an ACK
+from the server would not cover both the ClientHello and the client's
+Certificate. Implementations can accomplish this by clearing their ACK
+list upon receiving the start of the next flight.
+
+After the handshake, ACKs SHOULD be sent once for each received
+and processed record (potentially subject to some delay) and MAY
+cover more than one flight.
 
 ACK records MUST be sent with an epoch that is equal to or higher
 than the record which is being acknowledged. Implementations SHOULD
@@ -1876,11 +1887,11 @@ to ask for new CIDs to ensure that a pool of suitable CIDs is available.
   * Switching CID based on certain events, or even regularly, helps against
 tracking by on-path adversaries but the sequence numbers can still allow
 linkability. For this reason this specification defines an algorithm for encrypting
-sequence numbers, see {{sne}}. Note that sequence number encryption is used for 
-all encrypted DTLS 1.3 records irrespectively of the use of a CID.  
+sequence numbers, see {{sne}}. Note that sequence number encryption is used for
+all encrypted DTLS 1.3 records irrespectively of the use of a CID.
 
   * DTLS 1.3 encrypts handshake messages much earlier than in previous
-DTLS versions. Therefore, less information identifying the DTLS client, such as 
+DTLS versions. Therefore, less information identifying the DTLS client, such as
 the client certificate, is available to an on-path adversary.
 
 #  Changes to DTLS 1.2
@@ -1890,7 +1901,7 @@ of changes from DTLS 1.2 to DTLS 1.3 is equally large. For this reason
 this section focuses on the most important changes only.
 
   * New handshake pattern, which leads to a shorter message exchange
-  * Only AEAD ciphers are supported. Additional data calculation has been simplified. 
+  * Only AEAD ciphers are supported. Additional data calculation has been simplified.
   * Removed support for weaker and older cryptographic algorithms
   * HelloRetryRequest of TLS 1.3 used instead of HelloVerifyRequest
   * More flexible ciphersuite negotiation
@@ -1932,23 +1943,23 @@ RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
 IETF Drafts
 
-draft-34: 
+draft-34:
 - I-D.ietf-tls-dtls-connection-id became a normative reference
-- Removed duplicate reference to I-D.ietf-tls-dtls-connection-id. 
+- Removed duplicate reference to I-D.ietf-tls-dtls-connection-id.
 
 draft-33:
 - Key separation between TLS and DTLS. Issue #72.
 
-draft-32: 
+draft-32:
 - Editorial improvements and clarifications.
 
-draft-31: 
-- Editorial improvements in text and figures. 
+draft-31:
+- Editorial improvements in text and figures.
 - Added normative reference to ChaCha20 and Poly1305.
 
 draft-30:
 - Changed record format
-- Added text about end of early data 
+- Added text about end of early data
 - Changed format of the Connection ID Update message
 - Added Appendix A "Protocol Data Structures and Constant Values"
 
@@ -2064,4 +2075,3 @@ In addition, we would like to thank:
   Arm Limited
   Hanno.Becker@arm.com
 ~~~
-
