@@ -1601,7 +1601,7 @@ Implementations MUST NOT acknowledge records containing
 non-duplicative handshake messages or fragments which have not been
 processed or buffered. Otherwise, deadlock can ensue.
 
-During the handshake. ACKs only cover the current outstanding flight (this is
+During the handshake, ACKs only cover the current outstanding flight (this is
 possible because DTLS is generally a lockstep protocol). Thus, an ACK
 from the server would not cover both the ClientHello and the client's
 Certificate. Implementations can accomplish this by clearing their ACK
@@ -2076,4 +2076,3 @@ In addition, we would like to thank:
   Arm Limited
   Hanno.Becker@arm.com
 ~~~
-
