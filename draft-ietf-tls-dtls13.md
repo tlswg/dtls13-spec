@@ -50,7 +50,8 @@ normative:
   RFC0793:
   RFC6298:
   RFC8174:
-
+  I-D.ietf-tls-dtls-connection-id:
+  
 informative:
   RFC7296:
   RFC2522:
@@ -352,7 +353,7 @@ E:
 
 Connection ID:
 : Variable length CID. The CID concept
-is described in {{?DTLS-CID=I-D.ietf-tls-dtls-connection-id}}. An example
+is described in {{I-D.ietf-tls-dtls-connection-id}}. An example
 can be found in {{connection-id-example}}.
 
 Sequence Number:
@@ -584,7 +585,7 @@ DTLS records, as defined in this document, do not contain any association
 identifiers and applications must arrange to multiplex between associations.
 With UDP, the host/port number is used to look up the appropriate security
 association for incoming records. However, the CID extension
-defined in {{?DTLS-CID}} adds an association identifier
+defined in {{I-D.ietf-tls-dtls-connection-id}} adds an association identifier
 to DTLS records.
 
 Some transports, such as DCCP {{RFC4340}}, provide their own sequence
@@ -1399,7 +1400,7 @@ a new handshake, it may not be possible to tell which connection
 a given protected record is for. In these cases, trial decryption
 MAY be necessary, though implementations could also use some sort
 of CID, such as the one specified in
-{{?I-D.ietf-tls-dtls-connection-id}}.
+{{I-D.ietf-tls-dtls-connection-id}}.
 
 
 # Example of Handshake with Timeout and Retransmission
@@ -1693,7 +1694,7 @@ often they send such ACKs.
 # Connection ID Updates
 
 If the client and server have negotiated the "connection_id"
-extension {{?DTLS-CID}}, either side
+extension {{I-D.ietf-tls-dtls-connection-id}}, either side
 can send a new CID which it wishes the other side to use
 in a NewConnectionId message.
 
@@ -1753,7 +1754,7 @@ Below is an example exchange for DTLS 1.3 using a single
 CID in each direction.
 
 Note: The connection_id extension is defined in
-{{?DTLS-CID}}, which is used
+{{I-D.ietf-tls-dtls-connection-id}}, which is used
 in ClientHello and ServerHello messages.
 
 ~~~~
@@ -1852,7 +1853,7 @@ key hashing operations. Implementations which are concerned about
 this form of attack can discard out-of-epoch records.
 
 The security and privacy properties of the CID for DTLS 1.3 builds
-on top of what is described in {{?DTLS-CID}}. There are,
+on top of what is described in {{I-D.ietf-tls-dtls-connection-id}}. There are,
 however, several improvements:
 
   * The use of the Post-Handshake message allows the client and the server
@@ -1924,6 +1925,10 @@ This section provides the normative protocol types and constants definitions.
 RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
 IETF Drafts
+
+draft-34: 
+- I-D.ietf-tls-dtls-connection-id became a normative reference
+- Removed duplicate reference to I-D.ietf-tls-dtls-connection-id. 
 
 draft-33:
 - Key separation between TLS and DTLS. Issue #72.
