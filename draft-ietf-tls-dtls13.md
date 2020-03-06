@@ -1946,6 +1946,9 @@ IETF Drafts
 draft-34:
 - I-D.ietf-tls-dtls-connection-id became a normative reference
 - Removed duplicate reference to I-D.ietf-tls-dtls-connection-id.
+- Fix figure 11 to have the right numbers andno cookie in message 1.
+- Clarify when you can ACK.
+- Clarify additional data computation.
 
 draft-33:
 - Key separation between TLS and DTLS. Issue #72.
