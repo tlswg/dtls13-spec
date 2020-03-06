@@ -430,9 +430,10 @@ unpacked RecordNumber structure, as shown below:
 This 64-bit value is used in the ACK message as well as in the "record_sequence_number"
 input to the AEAD function.
 
-The entire header value shown above (but prior to record number
+The entire header value shown in {{hdr-examples}} (but prior to record number
 encryption) is used as as the additional data value for the AEAD
-function. Note that this design is different from the additional data
+function. For instance, if the minimal variant is used,
+the AAD is 2 octets long. Note that this design is different from the additional data
 calculation for DTLS 1.2 and for DTLS 1.2 with Connection ID.
 
 ## Determining the Header Format
