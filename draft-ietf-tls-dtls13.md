@@ -1422,7 +1422,6 @@ Client                                                Server
  Record 0                  -------->
  ClientHello
  (message_seq=0)
-  +cookie
 
                              X<-----                 Record 0
                              (lost)               ServerHello
@@ -1453,11 +1452,11 @@ Client                                                Server
 
  Record 2                  -------->
  Certificate
- (message_seq=2)
+ (message_seq=1)
  CertificateVerify
- (message_seq=3)
+ (message_seq=2)
  Finished
- (message_seq=4)
+ (message_seq=3)
 
                            <--------               Record 3
                                                     ACK [2]
