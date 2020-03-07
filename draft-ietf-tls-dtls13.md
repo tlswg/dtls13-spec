@@ -1943,7 +1943,7 @@ RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
 IETF Drafts
 
-draft-34:
+draft-35:
 - I-D.ietf-tls-dtls-connection-id became a normative reference
 - Removed duplicate reference to I-D.ietf-tls-dtls-connection-id.
 - Fix figure 11 to have the right numbers andno cookie in message 1.
