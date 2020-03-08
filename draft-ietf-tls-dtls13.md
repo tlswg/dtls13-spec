@@ -582,12 +582,10 @@ used to determine the boundaries between records.  The final record in a
 datagram can omit the length field.  The first byte of the datagram payload MUST
 be the beginning of a record.  Records MUST NOT span datagrams.
 
-DTLS records, as defined in this document, do not contain any association
+DTLS records without CIDs do not contain any association
 identifiers and applications must arrange to multiplex between associations.
 With UDP, the host/port number is used to look up the appropriate security
-association for incoming records. However, the CID extension
-defined in {{I-D.ietf-tls-dtls-connection-id}} adds an association identifier
-to DTLS records.
+association for incoming records.
 
 Some transports, such as DCCP {{RFC4340}}, provide their own sequence
 numbers.  When carried over those transports, both the DTLS and the
