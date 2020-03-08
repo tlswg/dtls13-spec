@@ -264,7 +264,8 @@ modify their data transmission strategy.
 
 # The DTLS Record Layer
 
-The DTLS record layer is different from the TLS 1.3 record layer.
+The DTLS 1.3 record layer is different from the TLS 1.3 record layer and 
+also different from the DTLS 1.2 record layer.
 
 1. The DTLSCiphertext structure omits the superfluous version number and
    type fields.
@@ -277,8 +278,6 @@ The DTLS record layer is different from the TLS 1.3 record layer.
 
 3. The DTLSCiphertext structure has a variable length header.
 
-Note that the DTLS 1.3 record layer is different from the DTLS 1.2 record layer.
-
 DTLSPlaintext records are used to send unprotected records and DTLSCiphertext
 records are used to send protected records.
 
@@ -289,8 +288,8 @@ meaning of the fields is unchanged from previous TLS / DTLS versions.
     struct {
         ContentType type;
         ProtocolVersion legacy_record_version;
-        uint16 epoch = 0                                 // DTLS field
-        uint48 sequence_number;                          // DTLS field
+        uint16 epoch = 0                                 
+        uint48 sequence_number;                         
         uint16 length;
         opaque fragment[DTLSPlaintext.length];
     } DTLSPlaintext;
