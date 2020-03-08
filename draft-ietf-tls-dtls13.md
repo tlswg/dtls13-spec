@@ -1405,9 +1405,7 @@ a given record is from. For instance, if the client performs
 a handshake, abandons the connection, and then immediately starts
 a new handshake, it may not be possible to tell which connection
 a given protected record is for. In these cases, trial decryption
-MAY be necessary, though implementations could also use some sort
-of CID, such as the one specified in
-{{I-D.ietf-tls-dtls-connection-id}}.
+MAY be necessary, though implementations could use the CID concept.
 
 
 # Example of Handshake with Timeout and Retransmission
