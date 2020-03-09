@@ -885,7 +885,8 @@ handshake is being performed.  If the server is being operated in an
 environment where amplification is not a problem, the server MAY be
 configured not to perform a cookie exchange.  The default SHOULD be
 that the exchange is performed, however.  In addition, the server MAY
-choose not to do a cookie exchange when a session is resumed.
+choose not to do a cookie exchange when a session is resumed or, more 
+generically, when the DTLS handshake uses a PSK-based key exchange.
 Clients MUST be prepared to do a cookie exchange with every
 handshake.
 
