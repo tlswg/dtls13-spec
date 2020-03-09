@@ -1940,6 +1940,11 @@ RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
 IETF Drafts
 
+
+draft-36:
+- Some editorial changes.
+- Changed the content type to not conflict with existing allocations (*)
+
 draft-35:
 - I-D.ietf-tls-dtls-connection-id became a normative reference
 - Removed duplicate reference to I-D.ietf-tls-dtls-connection-id.
