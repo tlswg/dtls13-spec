@@ -86,14 +86,15 @@ should be submitted as pull requests at https://github.com/tlswg/dtls13-spec.
 Instructions are on that page as well. Editorial changes can be managed in GitHub,
 but any substantive change should be discussed on the TLS mailing list.
 
-The primary goal of the TLS protocol is to provide privacy and data integrity
-between two communicating peers. The TLS protocol is composed of two layers:
+The primary goal of the TLS protocol is to establish an authenticated, 
+confidentiality and integrity protected channel between two communicating peers. 
+The TLS protocol is composed of two layers:
 the TLS Record Protocol and the TLS Handshake Protocol. However, TLS must
 run over a reliable transport channel -- typically TCP {{RFC0793}}.
 
 There are applications that use UDP {{RFC0768}} as a transport and to offer communication
 security protection for those applications the Datagram Transport Layer
-Security (DTLS) protocol has been designed. DTLS is deliberately designed to be
+Security (DTLS) protocol has been developed. DTLS is deliberately designed to be
 as similar to TLS as possible, both to minimize new security invention and to
 maximize the amount of code and infrastructure reuse.
 
