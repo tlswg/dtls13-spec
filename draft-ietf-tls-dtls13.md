@@ -583,12 +583,10 @@ used to determine the boundaries between records.  The final record in a
 datagram can omit the length field.  The first byte of the datagram payload MUST
 be the beginning of a record.  Records MUST NOT span datagrams.
 
-DTLS records, as defined in this document, do not contain any association
+DTLS records without CIDs do not contain any association
 identifiers and applications must arrange to multiplex between associations.
 With UDP, the host/port number is used to look up the appropriate security
-association for incoming records. However, the CID extension
-defined in {{I-D.ietf-tls-dtls-connection-id}} adds an association identifier
-to DTLS records.
+association for incoming records.
 
 Some transports, such as DCCP {{RFC4340}}, provide their own sequence
 numbers.  When carried over those transports, both the DTLS and the
@@ -1407,9 +1405,7 @@ a given record is from. For instance, if the client performs
 a handshake, abandons the connection, and then immediately starts
 a new handshake, it may not be possible to tell which connection
 a given protected record is for. In these cases, trial decryption
-MAY be necessary, though implementations could also use some sort
-of CID, such as the one specified in
-{{I-D.ietf-tls-dtls-connection-id}}.
+MAY be necessary, though implementations could use the CID concept.
 
 
 # Example of Handshake with Timeout and Retransmission
