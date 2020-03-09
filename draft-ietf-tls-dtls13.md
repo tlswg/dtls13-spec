@@ -441,7 +441,7 @@ calculation for DTLS 1.2 and for DTLS 1.2 with Connection ID.
 Implementations can distinguish the two header formats by examining
 the first byte:
 
-* If the first byte is alert(21), handshake(22), or ack(proposed, 25),
+* If the first byte is alert(21), handshake(22), or ack(proposed, 26),
 the record MUST be interpreted as a DTLSPlaintext record.
 
 * If the first byte is any other value, then receivers
