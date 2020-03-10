@@ -1604,7 +1604,7 @@ Certificate. Implementations can accomplish this by clearing their ACK
 list upon receiving the start of the next flight.
 
 After the handshake, ACKs SHOULD be sent once for each received
-and processed record (potentially subject to some delay) and MAY
+and processed handshake record (potentially subject to some delay) and MAY
 cover more than one flight.
 
 ACK records MUST be sent with an epoch that is equal to or higher
