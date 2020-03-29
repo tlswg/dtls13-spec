@@ -2016,6 +2016,8 @@ draft-00
 
 # Working Group Information
 
+RFC EDITOR: PLEASE REMOVE THIS SECTION.
+
 The discussion list for the IETF TLS working group is located at the e-mail
 address <tls@ietf.org>. Information on the group and information on how to
 subscribe to the list is at <https://www1.ietf.org/mailman/listinfo/tls>
