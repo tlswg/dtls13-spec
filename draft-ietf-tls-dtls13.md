@@ -204,7 +204,7 @@ phase of the DTLS handshake:
          ------                                   ------
          ClientHello           ------>
 
-                                 X<-- HelloRetryRequest
+                                 X<----       ServerHello
                                                   (lost)
 
          [Timer Expires]
