@@ -450,8 +450,8 @@ MUST check to see if the leading bits of the first byte are
 DTLSCiphertext; the true content type will be inside the
 protected portion.
 
-* Otherwise, the record MUST be rejected as if it had failed
-deprotection, as described in {{handling-invalid-records}}.
+* Otherwise, the record MUST be rejected and the processing 
+procedure described in {{handling-invalid-records}} applies.
 
 ## Sequence Number and Epoch
 
@@ -556,8 +556,8 @@ bytes of the Mask with the sequence number. Decryption is
 accomplished by the same process.
 
 This procedure requires the ciphertext length be at least 16 bytes. Receivers
-MUST reject shorter records as if they had failed deprotection, as described in
-{{handling-invalid-records}}. Senders MUST pad short plaintexts out (using the
+MUST reject shorter records and the processing procedure described in 
+{{handling-invalid-records}} applies. Senders MUST pad short plaintexts out (using the
 conventional record padding mechanism) in order to make a suitable-length
 ciphertext. Note most of the DTLS AEAD algorithms have a 16-byte authentication
 tag and need no padding. However, some algorithms such as
