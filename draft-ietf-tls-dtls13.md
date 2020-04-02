@@ -1364,7 +1364,7 @@ DTLS 1.3 makes use of the following categories of post-handshake messages:
 5. Post-handshake client authentication
 
 Messages of each category can be sent independently, and reliability is established
-via independent state machines each of which behaves as described in {state-machine}.
+via independent state machines each of which behaves as described in {{state-machine}}.
 For example, if a server sends a NewSessionTicket and a CertificateRequest message,
 two independent state machines will be created.
 
