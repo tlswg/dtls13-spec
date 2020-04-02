@@ -1639,10 +1639,18 @@ all of any flight which they do not respond to with their
 own messages. Specifically, this means the client's final
 flight of the main handshake, the server's transmission
 of the NewSessionTicket, and KeyUpdate messages.
-ACKs SHOULD NOT be sent for other
-complete flights because they are implicitly acknowledged
-by the receipt of the next flight, which generally
-immediately follows the flight. Each NewSessionTicket
+ACKs SHOULD NOT be sent for other complete flights because they
+are implicitly acknowledged by the receipt of the next flight,
+which generally immediately follows the flight, unless generating
+the responding flight takes significant time. In this case,
+implementations MAY send explicit ACKs for the complete received
+flight even though it will eventually also be implicitly acknowledged
+through the responding flight. A notable example for this is
+the case of post-handshake client authentication in constrained
+environments, where generating the CertificateVerify message can
+take considerable time on the client.
+
+Each NewSessionTicket
 or KeyUpdate is an individual flight; in particular, a KeyUpdate
 sent in response to a KeyUpdate with update_requested does not
 implicitly acknowledge that message. Implementations MAY
