@@ -1616,11 +1616,12 @@ simply use the current key.
 
 ## Sending ACKs
 
-When an implementation receives a partial flight, it SHOULD generate
-an ACK that covers the messages from that flight which it has
-received so far. Implementations have some discretion about when
-to generate ACKs, but it is RECOMMENDED that they do so under
-two circumstances:
+When an implementation detects a disruption in the receipt of the
+current incoming flight, it SHOULD generate an ACK that covers the
+messages from that flight which it has received and processed so far.
+Implementations have some discretion about which events to treat
+as signs of disruption, but it is RECOMMENDED that they generate
+ACKs under two circumstances:
 
 - When they receive a message or fragment which is out of order,
   either because it is not the next expected message or because
