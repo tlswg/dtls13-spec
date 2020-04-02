@@ -1575,8 +1575,8 @@ Client                                             Server
 
 # ACK Message {#ack-msg}
 
-The ACK message is used by an endpoint to indicate handshake-containing
-the TLS records it has received from the other side. ACK is not
+The ACK message is used by an endpoint to indicate which handshake records
+it has received and processed from the other side. ACK is not
 a handshake message but is rather a separate content type,
 with code point TBD (proposed, 25). This avoids having ACK being added
 to the handshake transcript. Note that ACKs can still be
