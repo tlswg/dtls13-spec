@@ -1696,13 +1696,10 @@ with that epoch (see {{reconstructing}} for information
 on determining the correct epoch), but MAY opt to discard
 such out-of-epoch records.
 
-Although KeyUpdates MUST be acknowledged, it is possible for the ACK to be
-lost, in which case the sender of the KeyUpdate will retransmit it.
-The receiver of the KeyUpdate MUST retain the ability to ACK the KeyUpdate for
-up to 2MSL. It is RECOMMENDED that they do so by retaining the
-pre-update keying material, but they MAY remove the pre-update 
-keying material only upon receipt and successful decryption of a message 
-using the new keys.
+Due to the possibility of an ACK message for a KeyUpdate being lost and thereby
+preventing the sender of the KeyUpdate from updating its keying material, 
+receivers MUST retain the pre-update keying material until receipt and successful 
+decryption of a message using the new keys. 
 
 # Connection ID Updates
 
