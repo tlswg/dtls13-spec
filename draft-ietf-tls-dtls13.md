@@ -1675,7 +1675,7 @@ ACKs SHOULD NOT be sent for other
 complete flights because they are implicitly acknowledged
 by the receipt of the next flight, which generally
 immediately follows the flight. As explained in {{state-machine-duplication}},
-each category of post-handshake messages (e.g. NewSessionTicket or KeyUpdate)
+each category of post-handshake messages (e.g., NewSessionTicket or KeyUpdate)
 is treated as an individual handshake. For example, a KeyUpdate sent in response
 to a KeyUpdate with update_requested does not implicitly acknowledge that message.
 Implementations MAY acknowledge the records corresponding to each transmission of
