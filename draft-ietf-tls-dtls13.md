@@ -1594,8 +1594,10 @@ record_numbers:
   order.
 
 Implementations MUST NOT acknowledge records containing
-non-duplicative handshake messages or fragments which have not been
+handshake messages or fragments which have not been
 processed or buffered. Otherwise, deadlock can ensue.
+As an example, implementations MUST NOT send ACKs for
+handshake messages which they discard as out-of-order.
 
 During the handshake, ACKs only cover the current outstanding flight (this is
 possible because DTLS is generally a lockstep protocol). Thus, an ACK
@@ -1622,10 +1624,7 @@ two circumstances:
 
 - When they receive a message or fragment which is out of order,
   either because it is not the next expected message or because
-  it is not the next piece of the current message. Implementations
-  MUST NOT send ACKs for handshake messages which they discard
-  as out-of-order, because otherwise those messages will not be
-  retransmitted.
+  it is not the next piece of the current message.
 
 - When they have received part of a flight and do not immediately
   receive the rest of the flight (which may be in the same UDP
