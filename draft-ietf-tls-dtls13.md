@@ -1226,23 +1226,23 @@ in the WAITING state, but with empty buffers and no retransmit timer.
         Receive |                  |                         |
            next |                  | Send flight or partial  |
          flight |                  | flight                  |
-                |  +---------------+                         |
-                |  |               | Set retransmit timer    |
-                |  |              \|/                        |
-                |  |         +-----------+                   |
-                |  |         |           |                   |
-                +--)---------|  WAITING  |-------------------+
-                |  |  +----->|           |   Timer expires   |
-                |  |  |      +-----------+                   |
-                |  |  |          |  |   |                    |
-                |  |  |          |  |   |                    |
-                |  |  +----------+  |   +--------------------+
-                |  | Receive record |   Read retransmit or ACK
-        Receive |  |  Send ACK      |
-           last |  |                |
-         flight |  |                | Receive ACK
-                |  |                | for last flight
-               \|/\|/               |
+                |                  |                         |
+                |                  | Set retransmit timer    |
+                |                 \|/                        |
+                |            +-----------+                   |
+                |            |           |                   |
+                +------------|  WAITING  |-------------------+
+                |     +----->|           |   Timer expires   |
+                |     |      +-----------+                   |
+                |     |          |  |   |                    |
+                |     |          |  |   |                    |
+                |     +----------+  |   +--------------------+
+                |    Receive record |   Read retransmit or ACK
+        Receive |     Send ACK      |
+           last |                   |
+         flight |                   | Receive ACK
+                |                   | for last flight
+               \|/                  |
                                     |
             +-----------+           |
             |           | <---------+
@@ -1271,10 +1271,8 @@ In the SENDING state, the implementation transmits the buffered
 flight of messages. If the implementation has received one or more
 ACKs (see {{ack-msg}}) from the peer, then it SHOULD omit any messages or
 message fragments which have already been ACKed. Once the messages
-have been sent, the implementation then enters the FINISHED state
-if this is the last flight in the handshake.  Or, if the
-implementation expects to receive more messages, it sets a
-retransmit timer and then enters the WAITING state.
+have been sent, the implementation then sets a retransmit timer
+and enters the WAITING state.
 
 There are four ways to exit the WAITING state:
 
