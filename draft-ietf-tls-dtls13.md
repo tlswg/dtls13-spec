@@ -1380,7 +1380,9 @@ of the same type has not yet been acknowledged.
 Note: Except for post-handshake client authentication, which involves handshake messages
 in both directions, post-handshake messages are single-flight, and their respective state
 machines on the sender side reduce to waiting for an ACK and retransmitting the original
-message.
+message. In particular, note that a RequestConnectionId message does not force the receiver
+to send a NewConnectionId message in reply, and both messages are therefore treated
+independently.
 
 Creating and correctly updating multiple state machines requires feedback from the handshake
 logic to the state machine layer, indicating which message belongs to which state machine.
