@@ -1686,8 +1686,11 @@ ACK messages are used in two circumstances, namely
 
 In the first case the use of the ACK message is optional because it 
 merely presents an optimization technique to allow the selective retransmission 
-of parts of the flight. For use of loss networks, such as low-power, long range radio 
-networks and mesh networks, the use of this ACK message is recommended.  
+of records that are part of the flight. The approach for retransmitting entire 
+flights in case of lost messages via timeouts and implicit acknowledgements has 
+been used already in earlier versions of DTLS. When DTLS 1.3 is used in deployments
+with lossly networks, such as low-power, long range radio networks as well as 
+low-power mesh networks, the use of ACKs is recommended.  
 
 The use of the ACK for the second case it mandatory for the proper functioning of the 
 protocol. 
