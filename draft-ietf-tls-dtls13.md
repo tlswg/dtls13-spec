@@ -1677,6 +1677,28 @@ of that flight. As noted above, the receipt of any record responding
 to a given flight MUST be taken as an implicit acknowledgement for the entire
 flight.
 
+## Design Rational
+
+ACK messages are used in two circumstances, namely 
+
+- on signs of disruption, or lack of progress, and 
+- to indicate complete receipt of the last flight in a handshake.
+
+In the first case the use of the ACK message is optional because it 
+merely presents an optimization technique to allow the selective retransmission 
+of parts of the flight. For use of loss networks, such as low-power, long range radio 
+networks and mesh networks, the use of this ACK message is recommended.  
+
+The use of the ACK for the second case it mandatory for the proper functioning of the 
+protocol. 
+
+Consider Figure 11 and imagine the client does not send the ACK message when it 
+received and processed record 1 indicating loss of record 0. As a consequence, 
+the entire flight would be retransmitted. 
+
+On the other hand, the ACK message sent by the client in Figure 12, which  
+acknowledges receipt and processing of record 2 (containing the NewSessionTicket
+message) transmitted by the server must be provided. 
 
 # Key Updates
 
