@@ -1359,7 +1359,7 @@ DTLS 1.3 makes use of the following categories of post-handshake messages:
 
 3. NewConnectionId
 
-4. RequestionConnectionId
+4. RequestConnectionId
 
 5. Post-handshake client authentication
 
@@ -1374,7 +1374,7 @@ machines on the sender side reduce to waiting for an ACK and retransmitting the 
 message.
 
 Creating and correctly updating multiple state machines requires feedback from the handshake
-logic to the state machine layer, indicating which message belong to which state machine.
+logic to the state machine layer, indicating which message belongs to which state machine.
 For example, if a server sends multiple CertificateRequest messages and receives a Certificate
 message in response, the corresponding state machine can only be determined after inspecting the
 certificate_request_context field. Similarly, a server sending a single CertificateRequest
