@@ -1368,6 +1368,15 @@ via independent state machines each of which behaves as described in {{state-mac
 For example, if a server sends a NewSessionTicket and a CertificateRequest message,
 two independent state machines will be created.
 
+As explained in the corresponding sections, sending multiple instances of messages of
+a given category without having completed earlier transmissions is allowed for some
+categories, but not for others. Specifically, a server MAY send multiple NewSessionTicket
+messages at once without awaiting ACKs for earlier NewSessionTicket first. Likewise, a
+server MAY send multiple CertificateRequest messages at once without having completed
+earlier client authentication requests before. In contrast, implementations MUST NOT
+have send KeyUpdate, NewConnectionId or RequestConnectionId message if an earlier message
+of the same type has not yet been acknowledged.
+
 Note: Except for post-handshake client authentication, which involves handshake messages
 in both directions, post-handshake messages are single-flight, and their respective state
 machines on the sender side reduce to waiting for an ACK and retransmitting the original
