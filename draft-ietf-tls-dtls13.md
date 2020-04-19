@@ -141,11 +141,16 @@ The following terms are used:
   - server: The endpoint which did not initiate the DTLS connection.
 
   - CID: Connection ID
+  
+  - MSL: Maximum Segment Lifetime
 
 The reader is assumed to be familiar with the TLS 1.3 specification since this
 document is defined as a delta from TLS 1.3. As in TLS 1.3 the HelloRetryRequest has
 the same format as a ServerHello message but for convenience we use the term
 HelloRetryRequest throughout this document as if it were a distinct message.
+
+The reader is also as to be familiar with {{I-D.ietf-tls-dtls-connection-id}}
+as this document applies the CID functionality to DTLS 1.3. 
 
 Figures in this document illustrate various combinations of the DTLS protocol exchanges and the symbols have the following meaning:
 
@@ -179,10 +184,9 @@ TLS cannot be used directly in datagram environments for the following five reas
    reassembly in the correct order in case datagrams are lost or reordered.
 
 3. During the handshake, messages are implicitly acknowledged by other handshake
-   messages, but the last flight of messages and post-handshake messages (such
-   as the NewSessionTicket message) do not result in any direct response that
-   would allow the sender to detect loss. DTLS adds an acknowledgment message to
-   enable better loss recovery.
+   messages. Some handshake messages, such as the NewSessionTicket message, do 
+   not result in any direct response that would allow the sender to detect loss. 
+   DTLS adds an acknowledgment message to enable better loss recovery.
 
 4. Handshake messages are potentially larger than can be contained in a single
    datagram.  DTLS adds fields to handshake messages to support fragmentation
@@ -352,7 +356,7 @@ E:
 : The two low bits (0x03) include the low order two bits of the epoch.
 
 Connection ID:
-: Variable length CID. The CID concept
+: Variable length CID. The CID functionality 
 is described in {{I-D.ietf-tls-dtls-connection-id}}. An example
 can be found in {{connection-id-example}}.
 
@@ -411,7 +415,7 @@ datagram.
 Implementations which send multiple records in the same datagram
 SHOULD omit the connection id from all but the first record; receiving
 implementations MUST assume that any subsequent records without
-connection IDs belong to the same assocatiation.  Sending
+connection IDs belong to the same association.  Sending
 implementations MUST NOT mix records from multiple DTLS associations
 in the same datagram. If the second or later record has a connection
 ID which does not correspond to the same association used
@@ -802,7 +806,7 @@ the attacker/client to be able to receive the cookie, which makes DoS attacks
 with spoofed IP addresses difficult.  This mechanism does not provide any defense
 against DoS attacks mounted from valid IP addresses.
 
-The DTLS 1.3 specification changes the way how cookies are exchanged
+The DTLS 1.3 specification changes how cookies are exchanged
 compared to DTLS 1.2. DTLS 1.3 re-uses the HelloRetryRequest message
 and conveys the cookie to the client via an extension. The client
 receiving the cookie uses the same extension to place
@@ -1310,10 +1314,9 @@ Because DTLS clients send the first message (ClientHello), they start
 in the PREPARING state.  DTLS servers start in the WAITING state, but
 with empty buffers and no retransmit timer.
 
-In addition, for at least twice the default Maximum Segment Lifetime
-(MSL) defined for {{RFC0793}}, when in the FINISHED state, the server
-MUST respond to retransmission of the client's second flight with
-a retransmit of its ACK.
+In addition, for at least twice the default MSL defined for {{RFC0793}}, 
+when in the FINISHED state, the server MUST respond to retransmission 
+of the client's second flight with a retransmit of its ACK.
 
 Note that because of packet loss, it is possible for one side to be
 sending application data even though the other side has not received
@@ -1402,7 +1405,7 @@ a given record is from. For instance, if the client performs
 a handshake, abandons the connection, and then immediately starts
 a new handshake, it may not be possible to tell which connection
 a given protected record is for. In these cases, trial decryption
-MAY be necessary, though implementations could use the CID concept.
+MAY be necessary, though implementations could use CIDs.
 
 
 # Example of Handshake with Timeout and Retransmission
@@ -1464,12 +1467,11 @@ Client                                                Server
 
 A recipient of a DTLS message needs to select the correct keying material
 in order to process an incoming message. With the possibility of message
- loss and re-order an identifier is needed to determine which cipher state
+ loss and re-ordering, an identifier is needed to determine which cipher state
 has been used to protect the record payload. The epoch value fulfills this
-role in DTLS. In addition to the key derivation steps described in
-Section 7 of {{!TLS13}} triggered by the states during the handshake
-a sender may want to rekey at any time during
-the lifetime of the connection and has to have a way to indicate that it is
+role in DTLS. In addition to the TLS 1.3-defined key derivation steps, see 
+Section 7 of {{!TLS13}}, a sender may want to rekey at any time during
+the lifetime of the connection. It therefore needs to indicate that it is
 updating its sending cryptographic keys.
 
 This version of DTLS assigns dedicated epoch values to messages in the
@@ -1498,7 +1500,7 @@ Using these reserved epoch values a receiver knows what cipher state
 has been used to encrypt and integrity protect a
 message. Implementations that receive a payload with an epoch value
 for which no corresponding cipher state can be determined MUST
-generate a "unexpected_message" alert. For example, client incorrectly
+generate a "unexpected_message" alert. For example, if a client incorrectly
 uses epoch value 5 when sending early application data in a 0-RTT
 exchange. A server will not be able to compute the appropriate keys
 and will therefore have to respond with an alert.
@@ -1608,7 +1610,7 @@ cover more than one flight.
 
 ACK records MUST be sent with an epoch that is equal to or higher
 than the record which is being acknowledged. Implementations SHOULD
-simply use the current key.
+use the key material of the current epoch.
 
 
 ## Sending ACKs
@@ -1866,7 +1868,7 @@ cookie exchange with every handshake.
 DTLS implementations MUST NOT update their sending address in response
 to packets from a different address unless they first perform some
 reachability test; no such test is defined in this specification. Even
-with such a test, An on-path adversary can also black-hole traffic or
+with such a test, an on-path adversary can also black-hole traffic or
 create a reflection attack against third parties because a DTLS peer
 has no means to distinguish a genuine address update event (for
 example, due to a NAT rebinding) from one that is malicious. This
@@ -1910,7 +1912,7 @@ to ask for new CIDs to ensure that a pool of suitable CIDs is available.
 tracking by on-path adversaries but the sequence numbers can still allow
 linkability. For this reason this specification defines an algorithm for encrypting
 sequence numbers, see {{sne}}. Note that sequence number encryption is used for
-all encrypted DTLS 1.3 records irrespectively of the use of a CID.
+all encrypted DTLS 1.3 records irrespective of whether a CID is used or not.
 
   * DTLS 1.3 encrypts handshake messages much earlier than in previous
 DTLS versions. Therefore, less information identifying the DTLS client, such as
