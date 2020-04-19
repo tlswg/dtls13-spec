@@ -1608,11 +1608,6 @@ After the handshake, ACKs SHOULD be sent once for each received
 and processed handshake record (potentially subject to some delay) and MAY
 cover more than one flight.
 
-<<<<<<< HEAD
-ACK records MUST be sent with an epoch that is equal to or higher
-than the record which is being acknowledged. Implementations SHOULD
-use the key material of the current epoch.
-=======
 During the handshake, ACK records MUST be sent with an epoch that is
 equal to or higher than the record which is being acknowledged.
 Note that some care is required when processing flights spanning
@@ -1622,8 +1617,8 @@ it must do so in epoch 2, as it is required to use an epoch
 greater than or equal to 2 and cannot yet send with any greater
 epoch. Implementations SHOULD simply use the highest 
 current sending epoch, which will generally be the highest available.
-
->>>>>>> Clarify epoch text.
+After the handshake, implementations MUST use the highest available
+sending epoch.
 
 
 ## Sending ACKs
