@@ -2083,3 +2083,8 @@ In addition, we would like to thank:
   Arm Limited
   Hanno.Becker@arm.com
 ~~~
+
+# Acknowledgements
+
+We would like to thank Jonathan Hammell for his review comments.
+
