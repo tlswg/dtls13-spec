@@ -1686,29 +1686,26 @@ flight.
 
 ## Design Rational
 
-ACK messages are used in two circumstances, namely 
+ACK messages are used in two circumstances, namely :
 
-- on signs of disruption, or lack of progress, and 
+- on sign of disruption, or lack of progress, and 
 - to indicate complete receipt of the last flight in a handshake.
 
-In the first case the use of the ACK message is optional because it 
-merely presents an optimization technique to allow the selective retransmission 
-of records that are part of the flight. The approach for retransmitting entire 
-flights in case of lost messages via timeouts and implicit acknowledgements has 
-been used already in earlier versions of DTLS. When DTLS 1.3 is used in deployments
-with lossly networks, such as low-power, long range radio networks as well as 
-low-power mesh networks, the use of ACKs is recommended.  
+In the first case the use of the ACK message is optional because
+the peer will retransmit in any case and therefore the ACK just
+allows for selective retransmission, as opposed to the whole
+flight retransmission in previous versions of DTLS. For instance
+in the flow shown in Figure 11 if the client does not send the ACK message when it 
+received and processed record 1 indicating loss of record 0,
+the entire flight would be retransmitted. When DTLS 1.3 is used in deployments
+with loss networks, such as low-power, long range radio networks as well as 
+low-power mesh networks, the use of ACKs is recommended.
 
-The use of the ACK for the second case it mandatory for the proper functioning of the 
-protocol. 
-
-Consider Figure 11 and imagine the client does not send the ACK message when it 
-received and processed record 1 indicating loss of record 0. As a consequence, 
-the entire flight would be retransmitted. 
-
-On the other hand, the ACK message sent by the client in Figure 12, which  
+The use of the ACK for the second case is mandatory for the proper functioning of the 
+protocol. For instance, the ACK message sent by the client in Figure 12,
 acknowledges receipt and processing of record 2 (containing the NewSessionTicket
-message) transmitted by the server must be provided. 
+message) and if it is not sent the server will continue retransmission
+of the NewSessionTicket indefinitely.
 
 # Key Updates
 
