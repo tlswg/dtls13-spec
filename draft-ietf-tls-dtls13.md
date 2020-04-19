@@ -149,8 +149,8 @@ document is defined as a delta from TLS 1.3. As in TLS 1.3 the HelloRetryRequest
 the same format as a ServerHello message but for convenience we use the term
 HelloRetryRequest throughout this document as if it were a distinct message.
 
-The reader is also used to be familiar with {{I-D.ietf-tls-dtls-connection-id}}
-since this document applies the CID functionality to DTLS 1.3. 
+The reader is also as to be familiar with {{I-D.ietf-tls-dtls-connection-id}}
+as this document applies the CID functionality to DTLS 1.3. 
 
 Figures in this document illustrate various combinations of the DTLS protocol exchanges and the symbols have the following meaning:
 
