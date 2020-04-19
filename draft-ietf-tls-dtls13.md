@@ -1607,9 +1607,16 @@ After the handshake, ACKs SHOULD be sent once for each received
 and processed handshake record (potentially subject to some delay) and MAY
 cover more than one flight.
 
-ACK records MUST be sent with an epoch that is equal to or higher
-than the record which is being acknowledged. Implementations SHOULD
-simply use the current key.
+During the handshake, ACK records MUST be sent with an epoch that is
+equal to or higher than the record which is being acknowledged.
+Note that some care is required when processing flights spanning
+multiple epochs. For instance, if the client receives only the Server Hello
+and Certificate and wishes to ACK them in a single record, 
+it must do so in epoch 2, as it is required to use an epoch
+greater than or equal to 2 and cannot yet send with any greater
+epoch. Implementations SHOULD simply use the highest 
+current sending epoch, which will generally be the highest available.
+
 
 
 ## Sending ACKs
