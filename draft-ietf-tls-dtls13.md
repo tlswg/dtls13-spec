@@ -1469,7 +1469,7 @@ Client                                                Server
 
 A recipient of a DTLS message needs to select the correct keying material
 in order to process an incoming message. With the possibility of message
- loss and re-order, an identifier is needed to determine which cipher state
+ loss and re-ordering, an identifier is needed to determine which cipher state
 has been used to protect the record payload. The epoch value fulfills this
 role in DTLS. In addition to the TLS 1.3-defined key derivation steps, see 
 Section 7 of {{!TLS13}}, a sender may want to rekey at any time during
