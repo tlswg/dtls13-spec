@@ -1437,7 +1437,7 @@ Client                                                Server
                                               (message_seq=5)
 
  Record 1                  -------->
- ACK [1]
+ ACK []
 
 
                            <--------                 Record 2
