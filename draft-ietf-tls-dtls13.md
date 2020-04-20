@@ -1616,8 +1616,8 @@ it must do so in epoch 2, as it is required to use an epoch
 greater than or equal to 2 and cannot yet send with any greater
 epoch. Implementations SHOULD simply use the highest 
 current sending epoch, which will generally be the highest available.
-After the handshake, implementations MUST use the highest available
-sending epoch.
+After the handshake, implementations MUST use the current sending epoch
+for sending ACKs.
 
 
 ## Sending ACKs
