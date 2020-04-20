@@ -1608,7 +1608,7 @@ and processed handshake record (potentially subject to some delay) and MAY
 cover more than one flight.
 
 During the handshake, ACK records MUST be sent with an epoch that is
-equal to or higher than the record which is being acknowledged.
+equal to or higher than the record which is being acknowledged (with the exception of epoch 1, which MUST NOT be used for sending ACKs).
 Note that some care is required when processing flights spanning
 multiple epochs. For instance, if the client receives only the ServerHello
 and Certificate and wishes to ACK them in a single record, 
