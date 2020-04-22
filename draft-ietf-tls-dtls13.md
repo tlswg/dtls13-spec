@@ -1204,7 +1204,7 @@ timeout and retransmission calculation.
 
 ## Timeout and Retransmission
 
-### State Machine
+### State Machine {#state-machine}
 
 DTLS uses a simple timeout and retransmission scheme with the
 state machine shown in {{dtls-timeout-state-machine}}.
@@ -1350,6 +1350,49 @@ reset to the initial value.  After a long period of idleness, no less
 than 10 times the current timer value, implementations may reset the
 timer to the initial value.
 
+### State machine duplication for post-handshake messages {#state-machine-duplication}
+
+DTLS 1.3 makes use of the following categories of post-handshake messages:
+
+1. NewSessionTicket
+
+2. KeyUpdate
+
+3. NewConnectionId
+
+4. RequestConnectionId
+
+5. Post-handshake client authentication
+
+Messages of each category can be sent independently, and reliability is established
+via independent state machines each of which behaves as described in {{state-machine}}.
+For example, if a server sends a NewSessionTicket and a CertificateRequest message,
+two independent state machines will be created.
+
+As explained in the corresponding sections, sending multiple instances of messages of
+a given category without having completed earlier transmissions is allowed for some
+categories, but not for others. Specifically, a server MAY send multiple NewSessionTicket
+messages at once without awaiting ACKs for earlier NewSessionTicket first. Likewise, a
+server MAY send multiple CertificateRequest messages at once without having completed
+earlier client authentication requests before. In contrast, implementations MUST NOT
+have send KeyUpdate, NewConnectionId or RequestConnectionId message if an earlier message
+of the same type has not yet been acknowledged.
+
+Note: Except for post-handshake client authentication, which involves handshake messages
+in both directions, post-handshake messages are single-flight, and their respective state
+machines on the sender side reduce to waiting for an ACK and retransmitting the original
+message. In particular, note that a RequestConnectionId message does not force the receiver
+to send a NewConnectionId message in reply, and both messages are therefore treated
+independently.
+
+Creating and correctly updating multiple state machines requires feedback from the handshake
+logic to the state machine layer, indicating which message belongs to which state machine.
+For example, if a server sends multiple CertificateRequest messages and receives a Certificate
+message in response, the corresponding state machine can only be determined after inspecting the
+certificate_request_context field. Similarly, a server sending a single CertificateRequest
+and receiving a NewConnectionId message in response can only decide that the NewConnectionId
+message should be treated through an independent state machine after inspecting the handshake
+message type.
 
 ##  CertificateVerify and Finished Messages
 
@@ -1643,28 +1686,30 @@ two circumstances:
   the first record in the flight is received and then send an
   ACK when that timer expires.
 
-In addition, implementations MUST send ACKs upon receiving
-all of any flight which they do not respond to with their
-own messages. Specifically, this means the client's final
-flight of the main handshake, the server's transmission
-of the NewSessionTicket, and KeyUpdate messages.
-ACKs SHOULD NOT be sent for other complete flights because they
-are implicitly acknowledged by the receipt of the next flight,
-which generally immediately follows the flight, unless generating
+
+In general, flights MUST be ACKed unless they are implicitly
+acknowledged. In the present specification the following flights are implicitly acknowledged
+by the receipt of the next flight, which generally immediately follows the flight,
+
+1. Handshake flights other than the client's final flight
+2. The server's post-handshake CertificateRequest.
+
+ACKs SHOULD NOT be sent for these flights unless generating
 the responding flight takes significant time. In this case,
 implementations MAY send explicit ACKs for the complete received
 flight even though it will eventually also be implicitly acknowledged
 through the responding flight. A notable example for this is
 the case of post-handshake client authentication in constrained
 environments, where generating the CertificateVerify message can
-take considerable time on the client.
+take considerable time on the client. All other flights MUST be ACKed.
+Implementations MAY acknowledge the records corresponding to each transmission of
+each flight or simply acknowledge the most recent one.
 
-Each NewSessionTicket
-or KeyUpdate is an individual flight; in particular, a KeyUpdate
-sent in response to a KeyUpdate with update_requested does not
-implicitly acknowledge that message. Implementations MAY
-acknowledge the records corresponding to each transmission of
-that flight or simply acknowledge the most recent one.
+Note: While some post-handshake messages follow a request/response
+pattern, this does not necessarily imply receipt.
+For example, a KeyUpdate sent in response to a KeyUpdate with update_requested does
+not implicitly acknowledge that message because the KeyUpdates might have
+crossed in flight.
 
 ACKs MUST NOT be sent for other records of any content type
 other than handshake or for records which cannot be unprotected.
