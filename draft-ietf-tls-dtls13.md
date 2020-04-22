@@ -1619,8 +1619,8 @@ Client                                             Server
 
 # ACK Message {#ack-msg}
 
-The ACK message is used by an endpoint to indicate handshake-containing
-the TLS records it has received from the other side. ACK is not
+The ACK message is used by an endpoint to indicate which handshake records
+it has received and processed from the other side. ACK is not
 a handshake message but is rather a separate content type,
 with code point TBD (proposed, 25). This avoids having ACK being added
 to the handshake transcript. Note that ACKs can still be
@@ -1638,8 +1638,10 @@ record_numbers:
   order.
 
 Implementations MUST NOT acknowledge records containing
-non-duplicative handshake messages or fragments which have not been
+handshake messages or fragments which have not been
 processed or buffered. Otherwise, deadlock can ensue.
+As an example, implementations MUST NOT send ACKs for
+handshake messages which they discard as out-of-order.
 
 During the handshake, ACKs only cover the current outstanding flight (this is
 possible because DTLS is generally a lockstep protocol). Thus, an ACK
@@ -1666,18 +1668,16 @@ sending epoch.
 
 ## Sending ACKs
 
-When an implementation receives a partial flight, it SHOULD generate
-an ACK that covers the messages from that flight which it has
-received so far. Implementations have some discretion about when
-to generate ACKs, but it is RECOMMENDED that they do so under
-two circumstances:
+When an implementation detects a disruption in the receipt of the
+current incoming flight, it SHOULD generate an ACK that covers the
+messages from that flight which it has received and processed so far.
+Implementations have some discretion about which events to treat
+as signs of disruption, but it is RECOMMENDED that they generate
+ACKs under two circumstances:
 
 - When they receive a message or fragment which is out of order,
   either because it is not the next expected message or because
-  it is not the next piece of the current message. Implementations
-  MUST NOT send ACKs for handshake messages which they discard
-  as out-of-order, because otherwise those messages will not be
-  retransmitted.
+  it is not the next piece of the current message.
 
 - When they have received part of a flight and do not immediately
   receive the rest of the flight (which may be in the same UDP
