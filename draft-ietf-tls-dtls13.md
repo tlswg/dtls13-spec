@@ -434,11 +434,25 @@ unpacked RecordNumber structure, as shown below:
 This 64-bit value is used in the ACK message as well as in the "record_sequence_number"
 input to the AEAD function.
 
-The entire header value shown in {{hdr_examples}} (but prior to record number
-encryption) is used as as the additional data value for the AEAD
-function. For instance, if the minimal variant is used,
-the AAD is 2 octets long. Note that this design is different from the additional data
-calculation for DTLS 1.2 and for DTLS 1.2 with Connection ID.
+The additional data input to the AEAD function is formed as follows:
+
+~~~
+    struct {
+        opaque cid<255>;
+        opaque header[header_length];
+    } AdditionalData;
+~~~~
+
+The cid field is the connection ID. The header value is the entire
+header value shown in {{hdr_examples}} (but
+prior to record number encryption) to the connection ID value.  For
+instance, if the minimal variant is used and the CID is 4 bytes, the
+AAD is 7 octets long. The reason to have the CID explicitly present
+is to provide integrity for the CID even if the CID has been omitted
+on multiple records in the same datagram. 
+
+Note that this design is different from the additional data
+calculation for DTLS 1.2 and for DTLS 1.2
 
 ## Determining the Header Format
 
