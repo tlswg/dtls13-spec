@@ -1374,7 +1374,7 @@ categories, but not for others. Specifically, a server MAY send multiple NewSess
 messages at once without awaiting ACKs for earlier NewSessionTicket first. Likewise, a
 server MAY send multiple CertificateRequest messages at once without having completed
 earlier client authentication requests before. In contrast, implementations MUST NOT
-have send KeyUpdate, NewConnectionId or RequestConnectionId message if an earlier message
+send KeyUpdate, NewConnectionId or RequestConnectionId message if an earlier message
 of the same type has not yet been acknowledged.
 
 Note: Except for post-handshake client authentication, which involves handshake messages
