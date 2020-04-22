@@ -1641,7 +1641,8 @@ Implementations MUST NOT acknowledge records containing
 handshake messages or fragments which have not been
 processed or buffered. Otherwise, deadlock can ensue.
 As an example, implementations MUST NOT send ACKs for
-handshake messages which they discard as out-of-order.
+handshake messages which they discard because they are
+not the next expected message.
 
 During the handshake, ACKs only cover the current outstanding flight (this is
 possible because DTLS is generally a lockstep protocol). Thus, an ACK
@@ -1651,7 +1652,8 @@ list upon receiving the start of the next flight.
 
 After the handshake, ACKs SHOULD be sent once for each received
 and processed handshake record (potentially subject to some delay) and MAY
-cover more than one flight.
+cover more than one flight. This includes messages which are
+discarded because a previous copy has been received.
 
 During the handshake, ACK records MUST be sent with an epoch that is
 equal to or higher than the record which is being acknowledged.
