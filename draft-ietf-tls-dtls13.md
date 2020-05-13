@@ -2132,7 +2132,7 @@ this is simplified to a value of twice the maximum length of a record in blocks
 being limited to one block.
 
 
-## Confidentiality Limits
+## Confidentiality Limits {#ccm-confidentiality}
 
 For confidentiality, Theorem 2 in {{?CCM-ANALYSIS}} establishes that an attacker
 gains a distinguishing advantage over an ideal pseudorandom permutation (PRP) of
@@ -2182,6 +2182,10 @@ an attacker to gain an larger advantage than the target of 2^-57.
 
 The TLS_AES_128_CCM_8_SHA256 cipher suite uses the AEAD_AES_128_CCM_8 function,
 which uses a short authentication tag (that is, t=64).
+
+The confidentiality limits of AEAD_AES_128_CCM_8 are the same as those for
+AEAD_AES_128_CCM, as this does not depend on the tag length; see
+{{ccm-confidentiality}}.
 
 The shorter tag length of 64 bits means that the simplification used in
 {{ccm-integrity}} does not apply to AEAD_AES_128_CCM_8. If the goal is to
