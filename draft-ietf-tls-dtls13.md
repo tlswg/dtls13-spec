@@ -63,6 +63,21 @@ informative:
   RFC5246:
   RFC6347:
   RFC7525:
+  AEBounds:
+    title: "Limits on Authenticated Encryption Use in TLS"
+    author:
+      - ins: A. Luykx
+      - ins: K. Paterson
+    date: 2016-03-08
+    target: "http://www.isg.rhul.ac.uk/~kp/TLS-AEbounds.pdf"
+  ROBUST:
+    title: "Robust Channels: Handling Unreliable Networks in the Record Layers of QUIC and DTLS"
+    author:
+      - ins: M. Fischlin
+      - ins: F. Günther
+      - ins: C. Janson
+    date: 2020-02-21
+    target: "https://www.felixguenther.info/docs/QUIPS2020_RobustChannels.pdf"
 
 --- abstract
 
@@ -748,6 +763,55 @@ If DTLS is being carried over a transport that is resistant to
 forgery (e.g., SCTP with SCTP-AUTH), then it is safer to send alerts
 because an attacker will have difficulty forging a datagram that will
 not be rejected by the transport layer.
+
+
+### AEAD Limits
+
+Section 5.5 of TLS {{!TLS13}} defines limits on the number of records that can
+be protected using the same keys. These limits are specific to an AEAD
+algorithm, and apply equally to DTLS. Implementations SHOULD NOT protect more
+records than allowed by the limit specified for the negotiated AEAD.
+
+{{!TLS13}} does not specify a limit for AEAD_AES_128_CCM, but the analysis in
+{{ccm-bounds}} shows that a limit of 2^23 packets can be used to obtain the
+same confidentiality protection as the limits specified in TLS.
+
+The usage limits defined in TLS 1.3 exist for protection against attacks
+on confidentiality and apply to successful applications of AEAD protection. The
+integrity protections in authenticated encryption also depend on limiting the
+number of attempts to forge packets. TLS achieves this by closing connections
+after any record fails an authentication check. In comparison, DTLS ignores any
+packet that cannot be authenticated, allowing multiple forgery attempts.
+
+Implementations MUST count the number of received packets that fail
+authentication. If the number of packets that fail authentication exceeds a
+limit that is specific to the AEAD in use, an implementation MUST immediately
+close the connection. Implementations SHOULD initiate a key update before
+reaching this limit. Applying a limit reduces the probability that an attacker
+is able to successfully forge a packet; see {{AEBounds}} and {{ROBUST}}.
+
+For AEAD_AES_128_GCM, AEAD_AES_256_GCM, and AEAD_CHACHA20_POLY1305, the limit
+on the number of records that fail authentication is 2^36. Note that the
+analysis in {{AEBounds}} supports a higher limit for the AEAD_AES_128_GCM and
+AEAD_AES_256_GCM, but this specification recommends a lower limit. For
+AEAD_AES_128_CCM, the limit on the number of records that fail authentication
+is 2^23.5; see {{ccm-bounds}}.
+
+The AEAD_AES_128_CCM_8 AEAD, as used in TLS_AES_128_CCM_SHA256, does not have a
+limit on the number of records that fail authentication that both limits the
+probability of forgery by the same amount and does not expose implementations
+to the risk of denial of service; see {{ccm-short}}. Therefore,
+TLS_AES_128_CCM_SHA256 MUST NOT used in DTLS without additional safeguards
+against forgery. Implementations MUST set usage limits for AEAD_AES_128_CCM_8
+based on an understanding of any additional forgery protections that are used.
+
+Any TLS cipher suite that is specified for use with DTLS MUST define limits on
+the use of the associated AEAD function that preserves margins for both
+confidentiality and integrity. That is, limits MUST be specified for the number
+of packets that can be authenticated and for the number packets that can fail
+authentication. Providing a reference to any analysis upon which values are
+based - and any assumptions used in that analysis - allows limits to be adapted
+to varying usage conditions.
 
 
 # The DTLS Handshake Protocol {#dtls}
@@ -2015,6 +2079,132 @@ This section provides the normative protocol types and constants definitions.
 %%## Handshake Protocol
 %%## ACKs
 %%## Connection ID Management
+
+# Analysis of Limits on CCM Usage {#ccm-bounds}
+
+TLS {{?TLS13}} and {{AEBounds}} do not specify limits on usage for
+AEAD_AES_128_CCM. However, any AEAD that is used with DTLS requires limits on
+use that ensure that both confidentiality and integrity are preserved. This
+section documents that analysis for AEAD_AES_128_CCM.
+
+{{?CCM-ANALYSIS=DOI.10.1007/3-540-36492-7_7}} is used as the basis of this
+analysis. The results of that analysis are used to derive usage limits that are
+based on those chosen in {{?TLS13}}.
+
+This analysis uses symbols for multiplication (*), division (/), and
+exponentiation (^), plus parentheses for establishing precedence. The following
+symbols are also used:
+
+t:
+
+: The size of the authentication tag in bits. For this cipher, t is 128.
+
+n:
+
+: The size of the block function in bits. For this cipher, n is 128.
+
+l:
+
+: The number of blocks in each packet (see below).
+
+q:
+
+: The number of genuine packets created and protected by endpoints. This value
+  is the bound on the number of packets that can be protected before updating
+  keys.
+
+v:
+
+: The number of forged packets that endpoints will accept. This value is the
+  bound on the number of forged packets that an endpoint can reject before
+  updating keys.
+
+The analysis of AEAD_AES_128_CCM relies on a count of the number of block
+operations involved in producing each message. For simplicity, and to match the
+analysis of other AEAD functions in {{AEBounds}}, this analysis assumes a
+packet length of 2^10 blocks and a packet size limit of 2^14.
+
+For AEAD_AES_128_CCM, the total number of block cipher operations is the sum
+of: the length of the associated data in blocks, the length of the ciphertext
+in blocks, the length of the plaintext in blocks, plus 1. In this analysis,
+this is simplified to a value of twice the maximum length of a record in blocks
+(that is, `2l = 2^11`). This simplification is based on the associated data
+being limited to one block.
+
+
+## Confidentiality Limits
+
+For confidentiality, Theorem 2 in {{?CCM-ANALYSIS}} establishes that an attacker
+gains a distinguishing advantage over an ideal pseudorandom permutation (PRP) of
+no more than:
+
+~~~
+(2l * q)^2 / 2^n
+~~~
+
+For a target advantage of 2^-60, which matches that used by {{!TLS13}}, this
+results in the relation:
+
+~~~
+q <= 2^23
+~~~
+
+That is, endpoints cannot protect more than 2^23 packets with the same set of
+keys without causing an attacker to gain an larger advantage than the target of
+2^-60.
+
+
+## Integrity Limits {#ccm-integrity}
+
+For integrity, Theorem 1 in {{?CCM-ANALYSIS}} establishes that an attacker
+gains an advantage over an ideal PRP of no more than:
+
+~~~
+v / 2^t + (2l * (v + q))^2 / 2^n
+~~~
+
+The goal is to limit this advantage to 2^-57, to match the target in
+{{?TLS13}}. As `t` and `n` are both 128, the first term is negligible relative
+to the second, so that term can be removed without a significant effect on the
+result. This produces the relation:
+
+~~~
+v + q <= 2^24.5
+~~~
+
+Using the previously-established value of 2^23 for `q` and rounding, this leads
+to an upper limit on `v` of 2^23.5. That is, endpoints cannot attempt to
+authenticate more than 2^23.5 packets with the same set of keys without causing
+an attacker to gain an larger advantage than the target of 2^-57.
+
+
+## Limits for AEAD_AES_128_CCM_8 {#ccm-short}
+
+The TLS_AES_128_CCM_8_SHA256 cipher suite uses the AEAD_AES_128_CCM_8 function,
+which uses a short authentication tag (that is, t=64).
+
+The shorter tag length of 64 bits means that the simplification used in
+{{ccm-integrity}} does not apply to AEAD_AES_128_CCM_8. If the goal is to
+preserve the same margins as other cipher suites, then the limit on forgeries
+is largely dictated by the first term of the advantage formula:
+
+~~~
+v <= 2^7
+~~~
+
+As this represents attempts to fail authentication, applying this limit might
+be feasible in some environments. However, applying this limit in an
+implementation intended for general use exposes connections to an inexpensive
+denial of service attack.
+
+This analysis supports the view that TLS_AES_128_CCM_8_SHA256 is not suitable
+for general use. Specifically, TLS_AES_128_CCM_8_SHA256 cannot be used without
+additional measures to prevent forgery of records, or to mitigate the effect of
+forgeries. This might require understanding the constraints that exist in a
+particular deployment or application. For instance, it might be possible to set
+a different target for the advantage an attacker gains based on an
+understanding of the constraints imposed on a specific usage of DTLS.
+
 
 # History
 
