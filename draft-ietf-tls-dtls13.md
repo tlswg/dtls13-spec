@@ -784,11 +784,14 @@ after any record fails an authentication check. In comparison, DTLS ignores any
 packet that cannot be authenticated, allowing multiple forgery attempts.
 
 Implementations MUST count the number of received packets that fail
-authentication. If the number of packets that fail authentication exceeds a
-limit that is specific to the AEAD in use, an implementation MUST immediately
-close the connection. Implementations SHOULD initiate a key update before
-reaching this limit. Applying a limit reduces the probability that an attacker
-is able to successfully forge a packet; see {{AEBounds}} and {{ROBUST}}.
+authentication. If the number of packets that fail authentication with a single
+key exceeds a limit that is specific to the AEAD in use, an implementation MUST
+immediately close the connection. Implementations SHOULD initiate a key update
+with update_requested before reaching this limit. Once a key update has been
+initiated, the previous keys can be dropped when the limit is reached rather
+than closing the connection. Applying a limit reduces the probability that an
+attacker is able to successfully forge a packet; see {{AEBounds}} and
+{{ROBUST}}.
 
 For AEAD_AES_128_GCM, AEAD_AES_256_GCM, and AEAD_CHACHA20_POLY1305, the limit
 on the number of records that fail authentication is 2^36. Note that the
