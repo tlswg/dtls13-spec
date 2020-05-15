@@ -771,6 +771,7 @@ Section 5.5 of TLS {{!TLS13}} defines limits on the number of records that can
 be protected using the same keys. These limits are specific to an AEAD
 algorithm, and apply equally to DTLS. Implementations SHOULD NOT protect more
 records than allowed by the limit specified for the negotiated AEAD.
+Implementations SHOULD initiate a key update before reaching this limit.
 
 {{!TLS13}} does not specify a limit for AEAD_AES_128_CCM, but the analysis in
 {{ccm-bounds}} shows that a limit of 2^23 packets can be used to obtain the
@@ -784,8 +785,8 @@ after any record fails an authentication check. In comparison, DTLS ignores any
 packet that cannot be authenticated, allowing multiple forgery attempts.
 
 Implementations MUST count the number of received packets that fail
-authentication. If the number of packets that fail authentication with a single
-key exceeds a limit that is specific to the AEAD in use, an implementation MUST
+authentication with each key. If the number of packets that fail authentication
+exceed a limit that is specific to the AEAD in use, an implementation SHOULD
 immediately close the connection. Implementations SHOULD initiate a key update
 with update_requested before reaching this limit. Once a key update has been
 initiated, the previous keys can be dropped when the limit is reached rather
