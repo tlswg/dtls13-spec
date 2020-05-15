@@ -2086,7 +2086,7 @@ This section provides the normative protocol types and constants definitions.
 
 # Analysis of Limits on CCM Usage {#ccm-bounds}
 
-TLS {{?TLS13}} and {{AEBounds}} do not specify limits on usage for
+TLS {{?TLS13}} and {{AEBounds}} do not specify limits on key usage for
 AEAD_AES_128_CCM. However, any AEAD that is used with DTLS requires limits on
 use that ensure that both confidentiality and integrity are preserved. This
 section documents that analysis for AEAD_AES_128_CCM.
