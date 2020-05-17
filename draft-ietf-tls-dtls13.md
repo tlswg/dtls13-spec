@@ -412,11 +412,8 @@ DTLSCiphertext format records without length fields in the same datagram.
 Omitting the length field MUST only be used for the last record in a
 datagram.
 
-Implementations which send multiple records in the same datagram
-SHOULD omit the connection id from all but the first record; receiving
-implementations MUST assume that any subsequent records without
-connection IDs belong to the same association.  Sending
-implementations MUST NOT mix records from multiple DTLS associations
+If a connection ID is negotiated, then it MUST be contained in all
+datagrams. Sending implementations MUST NOT mix records from multiple DTLS associations
 in the same datagram. If the second or later record has a connection
 ID which does not correspond to the same association used
 for previous records, the rest of the datagram MUST be discarded.
@@ -2022,6 +2019,8 @@ RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
 IETF Drafts
 
+draft-38
+- Ban implicit connection IDs (*)
 
 draft-37:
 - Fix the other place where we have ACK.
