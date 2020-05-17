@@ -2036,6 +2036,9 @@ RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 IETF Drafts
 
 
+draft-38:
+- ACKs are processed as the union.
+
 draft-37:
 - Fix the other place where we have ACK.
 
