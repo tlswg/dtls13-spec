@@ -86,8 +86,8 @@ should be submitted as pull requests at https://github.com/tlswg/dtls13-spec.
 Instructions are on that page as well. Editorial changes can be managed in GitHub,
 but any substantive change should be discussed on the TLS mailing list.
 
-The primary goal of the TLS protocol is to establish an authenticated, 
-confidentiality and integrity protected channel between two communicating peers. 
+The primary goal of the TLS protocol is to establish an authenticated,
+confidentiality and integrity protected channel between two communicating peers.
 The TLS protocol is composed of two layers:
 the TLS Record Protocol and the TLS Handshake Protocol. However, TLS must
 run over a reliable transport channel -- typically TCP {{RFC0793}}.
@@ -141,7 +141,7 @@ The following terms are used:
   - server: The endpoint which did not initiate the DTLS connection.
 
   - CID: Connection ID
-  
+
   - MSL: Maximum Segment Lifetime
 
 The reader is assumed to be familiar with the TLS 1.3 specification since this
@@ -150,7 +150,7 @@ the same format as a ServerHello message but for convenience we use the term
 HelloRetryRequest throughout this document as if it were a distinct message.
 
 The reader is also as to be familiar with {{I-D.ietf-tls-dtls-connection-id}}
-as this document applies the CID functionality to DTLS 1.3. 
+as this document applies the CID functionality to DTLS 1.3.
 
 Figures in this document illustrate various combinations of the DTLS protocol exchanges and the symbols have the following meaning:
 
@@ -184,8 +184,8 @@ TLS cannot be used directly in datagram environments for the following five reas
    reassembly in the correct order in case datagrams are lost or reordered.
 
 3. During the handshake, messages are implicitly acknowledged by other handshake
-   messages. Some handshake messages, such as the NewSessionTicket message, do 
-   not result in any direct response that would allow the sender to detect loss. 
+   messages. Some handshake messages, such as the NewSessionTicket message, do
+   not result in any direct response that would allow the sender to detect loss.
    DTLS adds an acknowledgment message to enable better loss recovery.
 
 4. Handshake messages are potentially larger than can be contained in a single
@@ -269,7 +269,7 @@ modify their data transmission strategy.
 
 # The DTLS Record Layer
 
-The DTLS 1.3 record layer is different from the TLS 1.3 record layer and 
+The DTLS 1.3 record layer is different from the TLS 1.3 record layer and
 also different from the DTLS 1.2 record layer.
 
 1. The DTLSCiphertext structure omits the superfluous version number and
@@ -293,8 +293,8 @@ meaning of the fields is unchanged from previous TLS / DTLS versions.
     struct {
         ContentType type;
         ProtocolVersion legacy_record_version;
-        uint16 epoch = 0                                 
-        uint48 sequence_number;                         
+        uint16 epoch = 0
+        uint48 sequence_number;
         uint16 length;
         opaque fragment[DTLSPlaintext.length];
     } DTLSPlaintext;
@@ -356,7 +356,7 @@ E:
 : The two low bits (0x03) include the low order two bits of the epoch.
 
 Connection ID:
-: Variable length CID. The CID functionality 
+: Variable length CID. The CID functionality
 is described in {{I-D.ietf-tls-dtls-connection-id}}. An example
 can be found in {{connection-id-example}}.
 
@@ -886,7 +886,7 @@ handshake is being performed.  If the server is being operated in an
 environment where amplification is not a problem, the server MAY be
 configured not to perform a cookie exchange.  The default SHOULD be
 that the exchange is performed, however.  In addition, the server MAY
-choose not to do a cookie exchange when a session is resumed or, more 
+choose not to do a cookie exchange when a session is resumed or, more
 generically, when the DTLS handshake uses a PSK-based key exchange.
 Clients MUST be prepared to do a cookie exchange with every
 handshake.
@@ -1314,8 +1314,8 @@ Because DTLS clients send the first message (ClientHello), they start
 in the PREPARING state.  DTLS servers start in the WAITING state, but
 with empty buffers and no retransmit timer.
 
-In addition, for at least twice the default MSL defined for {{RFC0793}}, 
-when in the FINISHED state, the server MUST respond to retransmission 
+In addition, for at least twice the default MSL defined for {{RFC0793}},
+when in the FINISHED state, the server MUST respond to retransmission
 of the client's second flight with a retransmit of its ACK.
 
 Note that because of packet loss, it is possible for one side to be
@@ -1512,7 +1512,7 @@ A recipient of a DTLS message needs to select the correct keying material
 in order to process an incoming message. With the possibility of message
  loss and re-ordering, an identifier is needed to determine which cipher state
 has been used to protect the record payload. The epoch value fulfills this
-role in DTLS. In addition to the TLS 1.3-defined key derivation steps, see 
+role in DTLS. In addition to the TLS 1.3-defined key derivation steps, see
 Section 7 of {{!TLS13}}, a sender may want to rekey at any time during
 the lifetime of the connection. It therefore needs to indicate that it is
 updating its sending cryptographic keys.
@@ -1564,7 +1564,7 @@ Client                                             Server
                             -------->
 
                             <--------             ServerHello
-                                          [HelloRetryRequest]       
+                                          [HelloRetryRequest]
                                                     (epoch=0)
 
  ClientHello                -------->
@@ -1659,10 +1659,10 @@ During the handshake, ACK records MUST be sent with an epoch that is
 equal to or higher than the record which is being acknowledged.
 Note that some care is required when processing flights spanning
 multiple epochs. For instance, if the client receives only the Server Hello
-and Certificate and wishes to ACK them in a single record, 
+and Certificate and wishes to ACK them in a single record,
 it must do so in epoch 2, as it is required to use an epoch
 greater than or equal to 2 and cannot yet send with any greater
-epoch. Implementations SHOULD simply use the highest 
+epoch. Implementations SHOULD simply use the highest
 current sending epoch, which will generally be the highest available.
 After the handshake, implementations MUST use the highest available
 sending epoch.
@@ -1745,20 +1745,20 @@ flight.
 
 ACK messages are used in two circumstances, namely :
 
-- on sign of disruption, or lack of progress, and 
+- on sign of disruption, or lack of progress, and
 - to indicate complete receipt of the last flight in a handshake.
 
 In the first case the use of the ACK message is optional because
 the peer will retransmit in any case and therefore the ACK just
 allows for selective retransmission, as opposed to the whole
 flight retransmission in previous versions of DTLS. For instance
-in the flow shown in Figure 11 if the client does not send the ACK message when it 
+in the flow shown in Figure 11 if the client does not send the ACK message when it
 received and processed record 1 indicating loss of record 0,
 the entire flight would be retransmitted. When DTLS 1.3 is used in deployments
-with loss networks, such as low-power, long range radio networks as well as 
+with loss networks, such as low-power, long range radio networks as well as
 low-power mesh networks, the use of ACKs is recommended.
 
-The use of the ACK for the second case is mandatory for the proper functioning of the 
+The use of the ACK for the second case is mandatory for the proper functioning of the
 protocol. For instance, the ACK message sent by the client in Figure 12,
 acknowledges receipt and processing of record 2 (containing the NewSessionTicket
 message) and if it is not sent the server will continue retransmission
@@ -1783,9 +1783,9 @@ on determining the correct epoch), but MAY opt to discard
 such out-of-epoch records.
 
 Due to the possibility of an ACK message for a KeyUpdate being lost and thereby
-preventing the sender of the KeyUpdate from updating its keying material, 
-receivers MUST retain the pre-update keying material until receipt and successful 
-decryption of a message using the new keys. 
+preventing the sender of the KeyUpdate from updating its keying material,
+receivers MUST retain the pre-update keying material until receipt and successful
+decryption of a message using the new keys.
 
 # Connection ID Updates
 
