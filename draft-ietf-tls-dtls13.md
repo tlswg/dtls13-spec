@@ -2314,7 +2314,8 @@ Archives of the list can be found at:
 Many people have contributed to previous DTLS versions and they are acknowledged
 in prior versions of DTLS specifications or in the referenced specifications. The
 sequence number encryption concept is taken from the QUIC specification. We would
-like to thank the authors of the QUIC specification for their work.
+like to thank the authors of the QUIC specification for their work. Felix
+Guenther and Martin Thomson contributed the analysis in {{ccm-bounds}}.
 
 In addition, we would like to thank:
 
@@ -2334,6 +2335,12 @@ In addition, we would like to thank:
 * Tobias Gondrom
   Huawei
   tobias.gondrom@gondrom.org
+~~~
+
+~~~
+* Felix Guenther
+  TU Darmstadt
+  mail@felixguenther.info
 ~~~
 
 ~~~
@@ -2365,6 +2372,7 @@ In addition, we would like to thank:
   Arm Limited
   Hanno.Becker@arm.com
 ~~~
+
 
 # Acknowledgements
 
