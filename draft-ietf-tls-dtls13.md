@@ -1773,7 +1773,12 @@ the case of post-handshake client authentication in constrained
 environments, where generating the CertificateVerify message can
 take considerable time on the client. All other flights MUST be ACKed.
 Implementations MAY acknowledge the records corresponding to each transmission of
-each flight or simply acknowledge the most recent one.
+each flight or simply acknowledge the most recent one. In general,
+implementations SHOULD ACK as many received packets as can fit
+into the ACK record, as this provides the most complete information
+and thus reduces the chance of spurious retransmission; if space
+is limited, implementations SHOULD favor including records which
+have not yet been acknowledged.
 
 Note: While some post-handshake messages follow a request/response
 pattern, this does not necessarily imply receipt.
@@ -1795,17 +1800,25 @@ actual round trip time between client and server. Having
 the client send an empty ACK shortcuts this process.
 
 
+
 ## Receiving ACKs
 
 When an implementation receives an ACK, it SHOULD record that the
 messages or message fragments sent in the records being
 ACKed were received and omit them from any future
-retransmissions. Upon receipt of an ACK for only some messages
-from a flight, an implementation SHOULD retransmit the remaining
+retransmissions. Upon receipt of an ACK that leaves it with
+only some messages from a flight having been acknowledged
+an implementation SHOULD retransmit the unacknowledged
 messages or fragments. Note that this requires implementations to
 track which messages appear in which records. Once all the messages in a flight have been
 acknowledged, the implementation MUST cancel all retransmissions
-of that flight. As noted above, the receipt of any record responding
+of that flight.
+Implementations MUST treat a record
+as having been acknowledged if it appears in any ACK; this
+prevents spurious retransmission in cases where a flight is
+very large and the receiver is forced to elide acknowledgements
+for records which have already been ACKed.
+As noted above, the receipt of any record responding
 to a given flight MUST be taken as an implicit acknowledgement for the entire
 flight.
 
@@ -2220,6 +2233,9 @@ RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
 IETF Drafts
 
+
+draft-38:
+- ACKs are processed as the union.
 
 draft-37:
 - Fix the other place where we have ACK.
