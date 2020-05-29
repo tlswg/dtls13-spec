@@ -2234,8 +2234,6 @@ IETF Drafts
 
 draft-38
 - Ban implicit connection IDs (*)
-
-draft-38:
 - ACKs are processed as the union.
 
 draft-37:
