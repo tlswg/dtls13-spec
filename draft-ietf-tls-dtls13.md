@@ -2046,6 +2046,8 @@ tracking by on-path adversaries but the sequence numbers can still allow
 linkability. For this reason this specification defines an algorithm for encrypting
 sequence numbers, see {{sne}}. Note that sequence number encryption is used for
 all encrypted DTLS 1.3 records irrespective of whether a CID is used or not.
+Unlike the sequence number, the epoch is not encrypted. This may improve
+correlation of packets from a single connection across different network paths.
 
   * DTLS 1.3 encrypts handshake messages much earlier than in previous
 DTLS versions. Therefore, less information identifying the DTLS client, such as
