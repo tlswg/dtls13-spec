@@ -71,13 +71,13 @@ informative:
     date: 2016-03-08
     target: "http://www.isg.rhul.ac.uk/~kp/TLS-AEbounds.pdf"
   ROBUST:
-    title: "Robust Channels: Handling Unreliable Networks in the Record Layers of QUIC and DTLS"
+    title: "Robust Channels: Handling Unreliable Networks in the Record Layers of QUIC and DTLS 1.3"
     author:
       - ins: M. Fischlin
       - ins: F. Günther
       - ins: C. Janson
-    date: 2020-02-21
-    target: "https://www.felixguenther.info/docs/QUIPS2020_RobustChannels.pdf"
+    date: 2020-06-15
+    target: "https://eprint.iacr.org/2020/718"
 
 --- abstract
 
@@ -2330,7 +2330,7 @@ Many people have contributed to previous DTLS versions and they are acknowledged
 in prior versions of DTLS specifications or in the referenced specifications. The
 sequence number encryption concept is taken from the QUIC specification. We would
 like to thank the authors of the QUIC specification for their work. Felix
-Guenther and Martin Thomson contributed the analysis in {{ccm-bounds}}.
+Günther and Martin Thomson contributed the analysis in {{ccm-bounds}}.
 
 In addition, we would like to thank:
 
@@ -2353,8 +2353,8 @@ In addition, we would like to thank:
 ~~~
 
 ~~~
-* Felix Guenther
-  TU Darmstadt
+* Felix Günther
+  ETH Zurich
   mail@felixguenther.info
 ~~~
 
