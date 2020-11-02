@@ -393,12 +393,12 @@ underlying transport datagram.
 +-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+
 | Content Type  |     |0|0|1|1|1|1|E E|     |0|0|1|0|0|0|E E|
 +-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+
-|   16 bit      |     |    16 bit     |     |8-bit Seq. No. |
-|   Version     |     |Sequence Number|     +-+-+-+-+-+-+-+-+
-+-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+     |               |
-|   16 bit      |     |               |     |   Encrypted   |
-|    Epoch      |     / Connection ID /     /   Record      /
+|   16 bit      |     |               |     |8-bit Seq. No. |
+|   Version     |     / Connection ID /     +-+-+-+-+-+-+-+-+
 +-+-+-+-+-+-+-+-+     |               |     |               |
+|   16 bit      |     +-+-+-+-+-+-+-+-+     |   Encrypted   |
+|    Epoch      |     |    16 bit     |     /   Record      /
++-+-+-+-+-+-+-+-+     |Sequence Number|     |               |
 |               |     +-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+
 |               |     |   16 bit      |
 |   48 bit      |     |   Length      |       DTLSCiphertext
