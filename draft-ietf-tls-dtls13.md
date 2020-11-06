@@ -331,7 +331,7 @@ unified_hdr:
 : The unified_hdr is a field of variable length, as shown in {{cid_hdr}}.
 
 encrypted_record:
-: Identical to the encrypted_record field in a TLS 1.3 record.
+: The AEAD-encrypted form of the serialized DTLSInnerPlaintext structure.
 {:br}
 
 The DTLSCiphertext header is tightly bit-packed, as shown below:
@@ -2235,6 +2235,9 @@ RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
 IETF Drafts
 
+draft-40
+- Clarified encrypted_record structure in DTLS 1.3 record layer 
+
 draft-39
 - Updated Figure 4 due to misalignment with Figure 3 content
 
@@ -2397,5 +2400,5 @@ In addition, we would like to thank:
 
 # Acknowledgements
 
-We would like to thank Jonathan Hammell for his review comments.
+We would like to thank Jonathan Hammell and Andy Cunningham for their review comments.
 
