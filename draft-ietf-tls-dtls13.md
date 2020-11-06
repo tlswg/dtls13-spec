@@ -5,7 +5,7 @@ docname: draft-ietf-tls-dtls13-latest
 category: std
 obsoletes: 6347
 
-ipr: pre5378Trust200902
+ipr: trust200902
 area: Security
 workgroup: TLS
 keyword: Internet-Draft
