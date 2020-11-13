@@ -491,7 +491,7 @@ packet loss causes noticeable problems implementations MAY choose to
 retain keying material from previous epochs for up to the default MSL
 specified for TCP {{RFC0793}} to allow for packet reordering.  (Note that
 the intention here is that implementers use the current guidance from
-the IETF for MSL, as specified in {{RFC0793}} or successors
+the IETF for MSL, as specified in {{RFC0793}} or successors,
 not that they attempt to interrogate the MSL that
 the system TCP stack is using.)
 
@@ -516,8 +516,8 @@ establish a new association, terminating the old association.
 
 ### Reconstructing the Sequence Number and Epoch {#reconstructing}
 
-When receiving protected DTLS records message, the recipient does not
-have a full epoch or sequence number value and so there is some
+When receiving protected DTLS records, the recipient does not
+have a full epoch or sequence number value in the record and so there is some
 opportunity for ambiguity.  Because the full epoch and sequence number
 are used to compute the per-record nonce, failure to reconstruct these
 values leads to failure to deprotect the record, and so implementations
@@ -528,14 +528,15 @@ and which implementations are RECOMMENDED to follow.
 If the epoch bits match those of the current epoch, then
 implementations SHOULD reconstruct the sequence number by computing
 the full sequence number which is numerically closest to one plus the
-sequence number of the highest successfully deprotected record.
+sequence number of the highest successfully deprotected record in the
+current epoch.
 
 During the handshake phase, the epoch bits unambiguously indicate the
 correct key to use. After the
 handshake is complete, if the epoch bits do not match those from the
 current epoch implementations SHOULD use the most recent past epoch
-which has matching bits, and then reconstruct the sequence number as
-described above.
+which has matching bits, and then reconstruct the sequence number for
+that epoch as described above.
 
 ### Sequence Number Encryption {#sne}
 
@@ -603,7 +604,7 @@ be the beginning of a record.  Records MUST NOT span datagrams.
 DTLS records without CIDs do not contain any association
 identifiers and applications must arrange to multiplex between associations.
 With UDP, the host/port number is used to look up the appropriate security
-association for incoming records.
+association for incoming records without CIDs.
 
 Some transports, such as DCCP {{RFC4340}}, provide their own sequence
 numbers.  When carried over those transports, both the DTLS and the
@@ -694,7 +695,7 @@ DTLS implementations SHOULD follow the following rules:
 - If repeated retransmissions do not result in a response, and the
   PMTU is unknown, subsequent retransmissions SHOULD back off to a
   smaller record size, fragmenting the handshake message as
-  appropriate.  This standard does not specify an exact number of
+  appropriate.  This specification does not specify an exact number of
   retransmits to attempt before backing off, but 2-3 seems
   appropriate.
 
@@ -800,19 +801,19 @@ AEAD_AES_256_GCM, but this specification recommends a lower limit. For
 AEAD_AES_128_CCM, the limit on the number of records that fail authentication
 is 2^23.5; see {{ccm-bounds}}.
 
-The AEAD_AES_128_CCM_8 AEAD, as used in TLS_AES_128_CCM_SHA256, does not have a
+The AEAD_AES_128_CCM_8 AEAD, as used in TLS_AES_128_CCM_8_SHA256, does not have a
 limit on the number of records that fail authentication that both limits the
 probability of forgery by the same amount and does not expose implementations
 to the risk of denial of service; see {{ccm-short}}. Therefore,
-TLS_AES_128_CCM_SHA256 MUST NOT used in DTLS without additional safeguards
+TLS_AES_128_CCM_8_SHA256 MUST NOT used in DTLS without additional safeguards
 against forgery. Implementations MUST set usage limits for AEAD_AES_128_CCM_8
 based on an understanding of any additional forgery protections that are used.
 
 Any TLS cipher suite that is specified for use with DTLS MUST define limits on
 the use of the associated AEAD function that preserves margins for both
 confidentiality and integrity. That is, limits MUST be specified for the number
-of packets that can be authenticated and for the number packets that can fail
-authentication. Providing a reference to any analysis upon which values are
+of packets that can be authenticated and for the number of packets that can fail
+authentication before a key update is required. Providing a reference to any analysis upon which values are
 based - and any assumptions used in that analysis - allows limits to be adapted
 to varying usage conditions.
 
@@ -837,7 +838,7 @@ that performs return-routability checks as part of the connection establishment.
 
 DTLS implementations do not use the TLS 1.3 "compatibility mode" described in
 Section D.4 of {{!TLS13}}.  DTLS servers MUST NOT echo the
-"session_id" value from the client and endpoints MUST NOT send ChangeCipherSpec
+"legacy_session_id" value from the client and endpoints MUST NOT send ChangeCipherSpec
 messages.
 
 With these exceptions, the DTLS message formats, flows, and logic are
@@ -854,10 +855,10 @@ DoS attacks.  Two attacks are of particular concern:
    expensive cryptographic operations.
 
 2. An attacker can use the server as an amplifier by sending
-   connection initiation messages with a forged source of the
+   connection initiation messages with a forged source address that belongs to a
    victim.  The server then sends its response to the victim
    machine, thus flooding it. Depending on the selected
-   parameters this response message can be quite large, as it
+   parameters this response message can be quite large, as
    is the case for a Certificate message.
 
 In order to counter both of these attacks, DTLS borrows the stateless
@@ -918,10 +919,11 @@ message hash for the HelloRetryRequest is done according to the description
 in Section 4.4.1 of {{!TLS13}}.
 
 The handshake transcript is not reset with the second ClientHello
-and a stateless server-cookie implementation requires the transcript
-of the HelloRetryRequest to be stored in the cookie or the internal state
-of the hash algorithm, since only the hash of the transcript is required
-for the handshake to complete.
+and a stateless server-cookie implementation requires the transcript or hash
+of the HelloRetryRequest
+to be stored in the cookie, since the initial ClientHello is included in the
+handshake transcript as a synthetic "message_hash" message, so only the hash
+value is needed for the handshake to complete.
 
 When the second ClientHello is received, the server can verify that
 the cookie is valid and that the client can receive packets at the
@@ -959,7 +961,7 @@ Clients MUST be prepared to do a cookie exchange with every
 handshake.
 
 If a server receives a ClientHello with an invalid cookie, it
-MUST NOT terminate the handshake with an "illegal_parameter" alert.
+MUST terminate the handshake with an "illegal_parameter" alert.
 This allows the client to restart the connection from
 scratch without a cookie.
 
@@ -991,6 +993,9 @@ fragmentation, DTLS modifies the TLS 1.3 handshake header:
         certificate_verify(15),
         client_key_exchange_RESERVED(16),
         finished(20),
+        certificate_url_RESERVED(21),
+        certificate_status_RESERVED(22),
+        supplemental_data_RESERVED(23),
         key_update(24),
         message_hash(254),
         (255)
@@ -1082,7 +1087,7 @@ legacy_version:
   indicates its version preferences in the "supported_versions"
   extension (see Section 4.2.1 of {{!TLS13}}) and the
   legacy_version field MUST be set to {254, 253}, which was the version
-  number for DTLS 1.2. The version fields for DTLS 1.0 and DTLS 1.2 are
+  number for DTLS 1.2. The supported_versions entries for DTLS 1.0 and DTLS 1.2 are
   0xfeff and 0xfefd (to match the wire versions) but the version field
   for DTLS 1.3 is 0x0304.
 
@@ -1109,7 +1114,7 @@ extensions:
 
 ##  Handshake Message Fragmentation and Reassembly
 
-Each DTLS message MUST fit within a single
+Each DTLS record MUST fit within a single
 transport layer datagram.  However, handshake messages are
 potentially bigger than the maximum record size.  Therefore, DTLS
 provides a mechanism for fragmenting a handshake message over a
@@ -1370,7 +1375,7 @@ There are four ways to exit the WAITING state:
    and therefore suggests that part of one's previous flight was
    lost.
 
-4. The implementation receives some or all next flight of messages: if
+4. The implementation receives some or all of the next flight of messages: if
    this is the final flight of messages, the implementation
    transitions to FINISHED.  If the implementation needs to send a new
    flight, it transitions to the PREPARING state. Partial reads
@@ -1399,7 +1404,7 @@ flight immediately, shortcutting the retransmission timer.
 ### Timer Values
 
 Though timer values are the choice of the implementation, mishandling
-of the timer can lead to serious congestion problems; for example, if
+of the timer can lead to serious congestion problems, for example if
 many instances of a DTLS time out early and retransmit too quickly on
 a congested link.  Implementations SHOULD use an initial timer value
 of 100 msec (the minimum defined in RFC 6298 {{RFC6298}}) and double
@@ -1516,7 +1521,8 @@ a given record is from. For instance, if the client performs
 a handshake, abandons the connection, and then immediately starts
 a new handshake, it may not be possible to tell which connection
 a given protected record is for. In these cases, trial decryption
-MAY be necessary, though implementations could use CIDs.
+MAY be necessary, though implementations could use CIDs to avoid
+the 5-tuple-based ambiguity.
 
 
 # Example of Handshake with Timeout and Retransmission
@@ -1721,7 +1727,7 @@ list upon receiving the start of the next flight.
 
 After the handshake, ACKs SHOULD be sent once for each received
 and processed handshake record (potentially subject to some delay) and MAY
-cover more than one flight. This includes messages which are
+cover more than one flight. This includes records containing messages which are
 discarded because a previous copy has been received.
 
 During the handshake, ACK records MUST be sent with an epoch that is
@@ -1820,7 +1826,7 @@ As noted above, the receipt of any record responding
 to a given flight MUST be taken as an implicit acknowledgement for the entire
 flight.
 
-## Design Rational
+## Design Rationale
 
 ACK messages are used in two circumstances, namely :
 
@@ -1834,7 +1840,7 @@ flight retransmission in previous versions of DTLS. For instance
 in the flow shown in Figure 11 if the client does not send the ACK message when it
 received and processed record 1 indicating loss of record 0,
 the entire flight would be retransmitted. When DTLS 1.3 is used in deployments
-with loss networks, such as low-power, long range radio networks as well as
+with lossy networks, such as low-power, long range radio networks as well as
 low-power mesh networks, the use of ACKs is recommended.
 
 The use of the ACK for the second case is mandatory for the proper functioning of the
@@ -1982,7 +1988,8 @@ records it receives that contain a CID.
 
 #  Application Data Protocol
 
-Application data messages are carried by the record layer and are fragmented
+Application data messages are carried by the record layer and are split
+into records
 and encrypted based on the current connection state. The messages
 are treated as transparent data to the record layer.
 
@@ -1991,7 +1998,7 @@ are treated as transparent data to the record layer.
 Security issues are discussed primarily in {{!TLS13}}.
 
 The primary additional security consideration raised by DTLS is that
-of denial of service.  DTLS includes a cookie exchange designed to
+of denial of service by excessive resource consumption.  DTLS includes a cookie exchange designed to
 protect against denial of service.  However, implementations that do
 not use this cookie exchange are still vulnerable to DoS.  In
 particular, DTLS servers that do not use the cookie exchange may be
@@ -2001,10 +2008,10 @@ exchange unless there is good reason to believe that amplification is
 not a threat in their environment.  Clients MUST be prepared to do a
 cookie exchange with every handshake.
 
-DTLS implementations MUST NOT update their sending address in response
+DTLS implementations MUST NOT update the address they send to in response
 to packets from a different address unless they first perform some
 reachability test; no such test is defined in this specification. Even
-with such a test, an on-path adversary can also black-hole traffic or
+with such a test, an active on-path adversary can also black-hole traffic or
 create a reflection attack against third parties because a DTLS peer
 has no means to distinguish a genuine address update event (for
 example, due to a NAT rebinding) from one that is malicious. This
@@ -2056,9 +2063,9 @@ correlation of packets from a single connection across different network paths.
 DTLS versions. Therefore, less information identifying the DTLS client, such as
 the client certificate, is available to an on-path adversary.
 
-#  Changes to DTLS 1.2
+#  Changes since DTLS 1.2
 
-Since TLS 1.3 introduces a large number of changes to TLS 1.2, the list
+Since TLS 1.3 introduces a large number of changes with respect to TLS 1.2, the list
 of changes from DTLS 1.2 to DTLS 1.3 is equally large. For this reason
 this section focuses on the most important changes only.
 
@@ -2141,11 +2148,11 @@ v:
 The analysis of AEAD_AES_128_CCM relies on a count of the number of block
 operations involved in producing each message. For simplicity, and to match the
 analysis of other AEAD functions in {{AEBounds}}, this analysis assumes a
-packet length of 2^10 blocks and a packet size limit of 2^14.
+packet length of 2^10 blocks and a packet size limit of 2^14 bytes.
 
 For AEAD_AES_128_CCM, the total number of block cipher operations is the sum
 of: the length of the associated data in blocks, the length of the ciphertext
-in blocks, the length of the plaintext in blocks, plus 1. In this analysis,
+in blocks, and the length of the plaintext in blocks, plus 1. In this analysis,
 this is simplified to a value of twice the maximum length of a record in blocks
 (that is, `2l = 2^11`). This simplification is based on the associated data
 being limited to one block.
