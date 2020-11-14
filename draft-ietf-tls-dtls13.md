@@ -800,11 +800,11 @@ AEAD_AES_256_GCM, but this specification recommends a lower limit. For
 AEAD_AES_128_CCM, the limit on the number of records that fail authentication
 is 2^23.5; see {{ccm-bounds}}.
 
-The AEAD_AES_128_CCM_8 AEAD, as used in TLS_AES_128_CCM_SHA256, does not have a
+The AEAD_AES_128_CCM_8 AEAD, as used in TLS_AES_128_CCM_8_SHA256, does not have a
 limit on the number of records that fail authentication that both limits the
 probability of forgery by the same amount and does not expose implementations
 to the risk of denial of service; see {{ccm-short}}. Therefore,
-TLS_AES_128_CCM_SHA256 MUST NOT used in DTLS without additional safeguards
+TLS_AES_128_CCM_8_SHA256 MUST NOT used in DTLS without additional safeguards
 against forgery. Implementations MUST set usage limits for AEAD_AES_128_CCM_8
 based on an understanding of any additional forgery protections that are used.
 
