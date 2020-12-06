@@ -868,7 +868,7 @@ MAY respond with a HelloRetryRequest message. The HelloRetryRequest message,
 as well as the cookie extension, is defined in TLS 1.3.
 The HelloRetryRequest message contains a stateless cookie (see
 {{RFC8446}}; Section 4.2.2.).
-The client MUST retransmit the ClientHello
+The client MUST send a new ClientHello
 with the cookie added as an extension.  The server then verifies the cookie
 and proceeds with the handshake only if it is valid.  This mechanism forces
 the attacker/client to be able to receive the cookie, which makes DoS attacks
