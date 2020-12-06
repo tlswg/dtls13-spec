@@ -582,6 +582,10 @@ tag and need no padding. However, some algorithms such as
 TLS_AES_128_CCM_8_SHA256 have a shorter authentication tag and may require padding
 for short inputs.
 
+Future cipher suites which are not based on AES or ChaCha20 MUST define
+their own record sequence number encryption in order to be used with
+DTLS.
+
 Note that sequence number encryption is only applied to the DTLSCiphertext
 structure and not to the DTLSPlaintext structure, which also contains a
 sequence number.
@@ -2087,6 +2091,9 @@ IANA is requested to allocate two values in the "TLS Handshake Type"
 registry, defined in {{!TLS13}}, for RequestConnectionId (TBD), and
 NewConnectionId (TBD), as defined in this document.  The value for the
 "DTLS-OK" columns are "Y".
+
+IANA [SHALL mark/has marked] the cipher suites TLS_SHA256_SHA256 and
+TLS_SHA384_SHA_384 DTLS=N.
 
 --- back
 
