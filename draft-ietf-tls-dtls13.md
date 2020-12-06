@@ -137,12 +137,15 @@ The following terms are used:
 
   - client: The endpoint initiating the DTLS connection.
 
-  - connection: A transport-layer connection between two endpoints.
+  - association: Shared state between two endpoints established with
+    a DTLS handshake.
+  
+  - connection: Synonym for association.
 
   - endpoint: Either the client or server of the connection.
 
   - handshake: An initial negotiation between client and server that establishes
-    the parameters of their transactions.
+    the parameters of the connection.
 
   - peer: An endpoint. When discussing a particular endpoint, "peer" refers to
     the endpoint that is remote to the primary subject of discussion.
@@ -150,8 +153,6 @@ The following terms are used:
   - receiver: An endpoint that is receiving records.
 
   - sender: An endpoint that is transmitting records.
-
-  - session: An association between a client and a server resulting from a handshake.
 
   - server: The endpoint which did not initiate the DTLS connection.
 
@@ -710,11 +711,11 @@ Each DTLS record contains a sequence number to provide replay protection.
 Sequence number verification SHOULD be performed using the following
 sliding window procedure, borrowed from Section 3.4.3 of {{RFC4303}}.
 
-The received record counter for a session MUST be initialized to
-zero when that session is established. For each received record, the
+The received record counter for an association MUST be initialized to
+zero when that association is established. For each received record, the
 receiver MUST verify that the record contains a sequence number that
 does not duplicate the sequence number of any other record received
-during the lifetime of the session. This check SHOULD happen after
+during the lifetime of the association. This check SHOULD happen after
 deprotecting the record; otherwise the record discard might itself
 serve as a timing channel for the record number. Note that decompressing
 the records number is still a potential timing channel for the record
@@ -729,7 +730,7 @@ any plausible reordering, which depends on the data rate.
 size.)
 
 The "right" edge of the window represents the highest validated
-sequence number value received on the session.  Records that contain
+sequence number value received on the association.  Records that contain
 sequence numbers lower than the "left" edge of the window are
 rejected.  Records falling within the window are checked against a
 list of received records within the window.  An efficient means for
