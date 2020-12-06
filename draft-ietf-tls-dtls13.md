@@ -327,6 +327,13 @@ meaning of the fields is unchanged from previous TLS / DTLS versions.
 ~~~
 {: #dtls-record title="DTLS 1.3 Record Format"}
 
+legacy_record_version
+: This value MUST be set to {254, 253} for all records other
+  than the initial ClientHello (i.e., one not generated after a HelloRetryRequest),
+  where it may also be {254, 254} for compatibility purposes.
+  It MUST be ignored for all purposes. See {{RFC8446}}; Appendix D.1
+  for the rationale for this.
+
 unified_hdr:
 : The unified_hdr is a field of variable length, as shown in {{cid_hdr}}.
 
@@ -357,7 +364,8 @@ The DTLSCiphertext header is tightly bit-packed, as shown below:
 
 Fixed Bits:
 : The three high bits of the first byte of the DTLSCiphertext header are set to
-  001.
+  001. This ensures that the value will fit within the DTLS region when
+  multiplexing is performed as described in {{?RFC7983}}.
 
 C:
 : The C bit (0x10) is set if the Connection ID is present.
