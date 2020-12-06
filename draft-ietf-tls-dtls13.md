@@ -449,7 +449,7 @@ This 64-bit value is used in the ACK message as well as in the "record_sequence_
 input to the AEAD function.
 
 The entire header value shown in {{hdr_examples}} (but prior to record number
-encryption) is used as as the additional data value for the AEAD
+encryption (see {{rne}}) is used as as the additional data value for the AEAD
 function. For instance, if the minimal variant is used,
 the AAD is 2 octets long. Note that this design is different from the additional data
 calculation for DTLS 1.2 and for DTLS 1.2 with Connection ID.
@@ -537,7 +537,7 @@ current epoch implementations SHOULD use the most recent past epoch
 which has matching bits, and then reconstruct the sequence number as
 described above.
 
-### Sequence Number Encryption {#sne}
+### Record Number Encryption {#rne}
 
 In DTLS 1.3, when records are encrypted, record sequence numbers are
 also encrypted. The basic pattern is that the underlying encryption
@@ -2047,7 +2047,7 @@ to ask for new CIDs to ensure that a pool of suitable CIDs is available.
   * Switching CID based on certain events, or even regularly, helps against
 tracking by on-path adversaries but the sequence numbers can still allow
 linkability. For this reason this specification defines an algorithm for encrypting
-sequence numbers, see {{sne}}. Note that sequence number encryption is used for
+sequence numbers, see {{rne}}. Note that sequence number encryption is used for
 all encrypted DTLS 1.3 records irrespective of whether a CID is used or not.
 Unlike the sequence number, the epoch is not encrypted. This may improve
 correlation of packets from a single connection across different network paths.
