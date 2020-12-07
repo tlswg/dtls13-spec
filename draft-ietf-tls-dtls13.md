@@ -1136,7 +1136,7 @@ This allows senders to retransmit handshake messages with smaller
 fragment sizes if the PMTU estimate changes. Handshake message bytes
 MUST NOT change upon retransmissions. Implementations MAY check
 that retransmitted bytes are identical and SHOULD abort the handshake
-with an "illegal_parameter" alert.
+with an "illegal_parameter" alert if the value of a byte changes.
 
 Note that as with TLS, multiple handshake messages may be placed in
 the same DTLS record, provided that there is room and that they are
@@ -2403,4 +2403,3 @@ In addition, we would like to thank:
 # Acknowledgements
 
 We would like to thank Jonathan Hammell for his review comments.
-
