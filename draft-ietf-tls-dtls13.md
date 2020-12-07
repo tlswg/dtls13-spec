@@ -1762,7 +1762,8 @@ In general, flights MUST be ACKed unless they are implicitly
 acknowledged. In the present specification the following flights are implicitly acknowledged
 by the receipt of the next flight, which generally immediately follows the flight,
 
-1. Handshake flights other than the client's final flight
+1. Handshake flights other than the client's final flight of the
+   main handshake.
 2. The server's post-handshake CertificateRequest.
 
 ACKs SHOULD NOT be sent for these flights unless generating
@@ -1770,7 +1771,7 @@ the responding flight takes significant time. In this case,
 implementations MAY send explicit ACKs for the complete received
 flight even though it will eventually also be implicitly acknowledged
 through the responding flight. A notable example for this is
-the case of post-handshake client authentication in constrained
+the case of client authentication in constrained
 environments, where generating the CertificateVerify message can
 take considerable time on the client. All other flights MUST be ACKed.
 Implementations MAY acknowledge the records corresponding to each transmission of
