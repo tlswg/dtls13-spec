@@ -1099,7 +1099,7 @@ If a DTLS 1.3 ClientHello is received with any other value in this field,
 the server MUST abort the handshake with an "illegal_parameter" alert.
 
 cipher_suites:
-: Same as for TLS 1.3.
+: Same as for TLS 1.3; only suites with DTLS-OK=Y may be used.
 
 legacy_compression_methods:
 : Same as for TLS 1.3.
