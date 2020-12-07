@@ -1416,7 +1416,7 @@ congestion should be minimal.
 Implementations SHOULD retain the current timer value until a
 transmission without loss occurs, at which time the value may be
 reset to the initial value.  After a long period of idleness, no less
-than 10 times the current timer value, implementations may reset the
+than 10 times the current timer value, implementations MAY reset the
 timer to the initial value.
 
 ### State machine duplication for post-handshake messages {#state-machine-duplication}
