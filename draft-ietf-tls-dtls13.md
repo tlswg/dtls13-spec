@@ -665,7 +665,7 @@ implementations SHOULD ignore any such messages that indicate
 PMTUs below the IPv4 and IPv6 minimums of 576 and 1280 bytes
 respectively
 
-If there is a transport protocol indication of a exceeding the PMTU
+If there is a transport protocol indication that the PMTU was exceeded
 (either via ICMP or via a
 refusal to send the datagram as in Section 14 of {{RFC4340}}), then the
 DTLS record layer MUST inform the upper layer protocol of the error.
@@ -2401,4 +2401,3 @@ In addition, we would like to thank:
 # Acknowledgements
 
 We would like to thank Jonathan Hammell for his review comments.
-
