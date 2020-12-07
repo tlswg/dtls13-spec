@@ -1148,9 +1148,7 @@ from the wire and the handshake transcript: because DTLS
 records have epochs, EndOfEarlyData is not necessary to determine
 when the early data is complete, and because DTLS is lossy,
 attackers can trivially mount the deletion attacks that EndOfEarlyData
-prevents in TLS. Servers SHOULD aggressively
-age out the epoch 1 keys upon receiving the first epoch 2 record
-and SHOULD NOT accept epoch 1 data after the first epoch 3 record
+prevents in TLS. Servers SHOULD NOT accept epoch 1 data after the first epoch 3 record
 is received. (See {{dtls-epoch}} for the definitions of each epoch.)
 
 
