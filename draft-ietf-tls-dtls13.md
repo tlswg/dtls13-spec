@@ -1390,9 +1390,9 @@ of the client's final flight with a retransmit of its ACK.
 Note that because of packet loss, it is possible for one side to be
 sending application data even though the other side has not received
 the first side's Finished message.  Implementations MUST either
-discard or buffer all application data records for the new epoch
-until they have received the Finished message for that epoch.
-Implementations MAY treat receipt of application data with a new
+discard or buffer all application data records for epoch 3 and
+above until they have received the Finished message from the
+client. Implementations MAY treat receipt of application data with a new
 epoch prior to receipt of the corresponding Finished message as
 evidence of reordering or packet loss and retransmit their final
 flight immediately, shortcutting the retransmission timer.
