@@ -1517,7 +1517,7 @@ a given record is from. For instance, if the client performs
 a handshake, abandons the connection, and then immediately starts
 a new handshake, it may not be possible to tell which connection
 a given protected record is for. In these cases, trial decryption
-MAY be necessary, though implementations could use CIDs.
+may be necessary, though implementations could use CIDs.
 
 
 # Example of Handshake with Timeout and Retransmission
