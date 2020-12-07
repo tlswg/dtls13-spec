@@ -1917,8 +1917,9 @@ NewConnectionId with usage "cid_spare" containing num_cid CIDs soon as
 possible.  Endpoints MUST NOT send a RequestConnectionId message
 when an existing request is still unfulfilled; this implies that
 endpoints needs to request new CIDs well in advance.  An endpoint MAY
-ignore requests, which it considers excessive (though they MUST be
-acknowledged as usual).
+handle requests which it considers excessive by responding with
+a NewConnectionId message containing fewer than num_cid CIDs,
+including no CIDs at all.
 
 Endpoints MUST NOT send either of these messages if they did not negotiate a
 CID. If an implementation receives these messages when CIDs
