@@ -959,7 +959,7 @@ choose not to do a cookie exchange when a session is resumed or, more
 generically, when the DTLS handshake uses a PSK-based key exchange.
 Servers which process 0-RTT requests and send 0.5-RTT responses
 without a cookie exchange should
-store the client's IP in the cookie and limit the size of their
+store the client's IP in the session ticket and limit the size of their
 responses in order to avoid amplification attacks.
 Clients MUST be prepared to do a cookie exchange with every
 handshake.
