@@ -1633,8 +1633,7 @@ Client                                             Server
  (epoch=0)
                             -------->
 
-                            <--------             ServerHello
-                                          [HelloRetryRequest]
+                            <--------       HelloRetryRequest
                                                     (epoch=0)
 
  ClientHello                -------->
