@@ -1919,7 +1919,8 @@ when an existing request is still unfulfilled; this implies that
 endpoints needs to request new CIDs well in advance.  An endpoint MAY
 handle requests which it considers excessive by responding with
 a NewConnectionId message containing fewer than num_cid CIDs,
-including no CIDs at all.
+including no CIDs at all. Endpoints MAY handle an excessive number
+of RequestConnectionId messages by terminating the connection.
 
 Endpoints MUST NOT send either of these messages if they did not negotiate a
 CID. If an implementation receives these messages when CIDs
