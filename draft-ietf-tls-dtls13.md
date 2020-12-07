@@ -1821,7 +1821,7 @@ As noted above, the receipt of any record responding
 to a given flight MUST be taken as an implicit acknowledgement for the entire
 flight.
 
-## Design Rational
+## Design Rationale
 
 ACK messages are used in two circumstances, namely :
 
@@ -1833,7 +1833,7 @@ the peer will retransmit in any case and therefore the ACK just
 allows for selective retransmission, as opposed to the whole
 flight retransmission in previous versions of DTLS. For instance
 in the flow shown in Figure 11 if the client does not send the ACK message when it
-received and processed record 1 indicating loss of record 0,
+received record 1 indicating loss of record 0,
 the entire flight would be retransmitted. When DTLS 1.3 is used in deployments
 with loss networks, such as low-power, long range radio networks as well as
 low-power mesh networks, the use of ACKs is recommended.
