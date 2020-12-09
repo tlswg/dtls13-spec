@@ -123,8 +123,7 @@ Implementations that speak both DTLS 1.2 and DTLS 1.3 can interoperate with thos
 that speak only DTLS 1.2 (using DTLS 1.2 of course), just as TLS 1.3 implementations
 can interoperate with TLS 1.2 (see Appendix D of {{!TLS13=RFC8446}} for details).
 While backwards compatibility with DTLS 1.0 is possible the use of DTLS 1.0 is not
-recommended as explained in Section 3.1.2 of RFC 7525 {{RFC7525}}.
-
+recommended as explained in Section 3.1.2 of RFC 7525 {{RFC7525}} and {{?DEPRECATE=I-D.ietf-tls-oldversions-deprecate}}.
 
 #  Conventions and Terminology
 
@@ -2406,4 +2405,3 @@ In addition, we would like to thank:
 # Acknowledgements
 
 We would like to thank Jonathan Hammell for his review comments.
-
