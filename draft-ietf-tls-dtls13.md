@@ -305,6 +305,7 @@ The DTLS record formats are shown below. Unless explicitly stated the
 meaning of the fields is unchanged from previous TLS / DTLS versions.
 
 ~~~
+%%% Record Layer
     struct {
         ContentType type;
         ProtocolVersion legacy_record_version;
@@ -331,7 +332,7 @@ legacy_record_version
 : This value MUST be set to {254, 253} for all records other
   than the initial ClientHello (i.e., one not generated after a HelloRetryRequest),
   where it may also be {254, 254} for compatibility purposes.
-  It MUST be ignored for all purposes. See {{RFC8446}}; Appendix D.1
+  It MUST be ignored for all purposes. See {{TLS13}}; Appendix D.1
   for the rationale for this.
 
 unified_hdr:
@@ -344,6 +345,7 @@ encrypted_record:
 The DTLSCiphertext header is tightly bit-packed, as shown below:
 
 ~~~
+%%% Record Layer
     0 1 2 3 4 5 6 7
     +-+-+-+-+-+-+-+-+
     |0|0|1|C|S|L|E E|
@@ -447,6 +449,7 @@ When expanded, the epoch and sequence number can be combined into an
 unpacked RecordNumber structure, as shown below:
 
 ~~~
+%%% Record Layer
     struct {
         uint16 epoch;
         uint48 sequence_number;
@@ -876,7 +879,7 @@ the client sends its ClientHello message to the server, the server
 MAY respond with a HelloRetryRequest message. The HelloRetryRequest message,
 as well as the cookie extension, is defined in TLS 1.3.
 The HelloRetryRequest message contains a stateless cookie
-(see {{RFC8446}}; section 4.2.2).
+(see {{TLS13}}; section 4.2.2).
 The client MUST retransmit the ClientHello
 with the cookie added as an extension.  The server then verifies the cookie
 and proceeds with the handshake only if it is valid.  This mechanism forces
@@ -987,6 +990,7 @@ In order to support message loss, reordering, and message
 fragmentation, DTLS modifies the TLS 1.3 handshake header:
 
 ~~~
+%%% Handshake Protocol
     enum {
         hello_request_RESERVED(0),
         client_hello(1),
@@ -1069,8 +1073,8 @@ interact with a DTLS 1.2 server.
 The format of the ClientHello used by a DTLS 1.3 client differs from the
 TLS 1.3 ClientHello format as shown below.
 
-
 ~~~
+%%% Handshake Protocol
     uint16 ProtocolVersion;
     opaque Random[32];
 
@@ -1711,6 +1715,7 @@ to the handshake transcript. Note that ACKs can still be
 sent in the same UDP datagram as handshake records.
 
 ~~~
+%%% ACKs
     struct {
         RecordNumber record_numbers<0..2^16-1>;
     } ACK;
@@ -1891,6 +1896,7 @@ can send a new CID which it wishes the other side to use
 in a NewConnectionId message.
 
 ~~~
+%%% Connection ID Management
     enum {
         cid_immediate(0), cid_spare(1), (255)
     } ConnectionIdUsage;
@@ -1920,6 +1926,7 @@ If the client and server have negotiated the "connection_id" extension,
 either side can request a new CID using the RequestConnectionId message.
 
 ~~~
+%%% Connection ID Management
     struct {
       uint8 num_cids;
     } RequestConnectionId;
