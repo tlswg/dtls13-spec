@@ -1129,7 +1129,7 @@ a degenerate case with fragment_offset=0 and fragment_length=length.
 Each range MUST be delivered in a single UDP datagram.
 
 When a DTLS implementation receives a handshake message fragment corresponding
-to the next expected handshake message sequence, it
+to the next expected handshake message sequence number, it
 MUST buffer it until it has the entire handshake message. DTLS
 implementations MUST be able to handle overlapping fragment ranges.
 This allows senders to retransmit handshake messages with smaller
