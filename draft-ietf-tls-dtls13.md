@@ -1428,7 +1428,8 @@ retransmission for handshake and not dataflow, the effect on
 congestion should be minimal.
 
 Implementations SHOULD retain the current timer value until a
-transmission without loss occurs, at which time the value may be
+message is transmitted and acknowledged without having to
+be retransmitted, at which time the value may be
 reset to the initial value.  After a long period of idleness, no less
 than 10 times the current timer value, implementations MAY reset the
 timer to the initial value.
