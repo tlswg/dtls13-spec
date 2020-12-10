@@ -1133,8 +1133,8 @@ to the next expected handshake message sequence number, it
 MUST buffer it until it has the entire handshake message. DTLS
 implementations MUST be able to handle overlapping fragment ranges.
 This allows senders to retransmit handshake messages with smaller
-fragment sizes if the PMTU estimate changes. Handshake message bytes
-MUST NOT change upon retransmissions. Implementations MAY check
+fragment sizes if the PMTU estimate changes. Senders MUST NOT change 
+handshake message bytes upon retransmission. Receivers MAY check
 that retransmitted bytes are identical and SHOULD abort the handshake
 with an "illegal_parameter" alert if the value of a byte changes.
 
