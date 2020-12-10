@@ -1858,7 +1858,7 @@ The use of the ACK for the second case is mandatory for the proper functioning o
 protocol. For instance, the ACK message sent by the client in Figure 12,
 acknowledges receipt and processing of record 2 (containing the NewSessionTicket
 message) and if it is not sent the server will continue retransmission
-of the NewSessionTicket indefinitely.
+of the NewSessionTicket indefinitely until its transmission cap is reached.
 
 # Key Updates
 
