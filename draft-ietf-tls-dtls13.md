@@ -1611,10 +1611,9 @@ protocol exchange to allow identification of the correct cipher state:
 
 Using these reserved epoch values a receiver knows what cipher state
 has been used to encrypt and integrity protect a
-message. Implementations that receive a records with an epoch value
+message. Implementations that receive a record with an epoch value
 for which no corresponding cipher state can be determined SHOULD
-handle it in the same fashion as it handles records which
-cannot be deprotected.
+handle it as a record which fails deprotection.
 
 Note that epoch values do not wrap. If a DTLS implementation would
 need to wrap the epoch value, it MUST terminate the connection.
@@ -2398,4 +2397,3 @@ In addition, we would like to thank:
 # Acknowledgements
 
 We would like to thank Jonathan Hammell for his review comments.
-
