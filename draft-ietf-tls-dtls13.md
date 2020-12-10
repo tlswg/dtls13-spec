@@ -958,9 +958,13 @@ that the exchange is performed, however.  In addition, the server MAY
 choose not to do a cookie exchange when a session is resumed or, more
 generically, when the DTLS handshake uses a PSK-based key exchange.
 Servers which process 0-RTT requests and send 0.5-RTT responses
-without a cookie exchange should
-store the client's IP in the session ticket and limit the size of their
-responses in order to avoid amplification attacks.
+without a cookie exchange risk being used in an amplification attack
+if the size of outgoing greatly exceeds the size of those that are received.
+A server SHOULD limit the amount of data it sends toward a client address
+before it verifies that the client is able to receive data at that address.
+A client address is valid after a cookie exchange or handshake completion.
+A server MAY apply a higher limit based on heuristics, such as if the client
+uses the same IP address as a recent connection.
 Clients MUST be prepared to do a cookie exchange with every
 handshake.
 
