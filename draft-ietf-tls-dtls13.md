@@ -2040,7 +2040,7 @@ protection.
 
   * The ability to use multiple CIDs allows for improved privacy properties
 in multi-homed scenarios. When only a single CID in use on multiple
-paths from such a host, an adversary is able to correlate the communication
+paths from such a host, an adversary can correlate the communication
 interaction over the two paths, which adds further privacy concerns. In order
 to prevent this, implementations SHOULD attempt to use fresh CIDs
 whenever they change local addresses or ports (though this is not always
@@ -2405,4 +2405,3 @@ In addition, we would like to thank:
 # Acknowledgements
 
 We would like to thank Jonathan Hammell for his review comments.
-
