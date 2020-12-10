@@ -1148,7 +1148,7 @@ from the wire and the handshake transcript: because DTLS
 records have epochs, EndOfEarlyData is not necessary to determine
 when the early data is complete, and because DTLS is lossy,
 attackers can trivially mount the deletion attacks that EndOfEarlyData
-prevents in TLS. Servers SHOULD NOT accept epoch 1 data after the first epoch 3 record
+prevents in TLS. Servers SHOULD NOT accept records from epoch 1 indefinitely once they are able to process records from epoch 3. Though reordering of IP packets can result in records from epoch 1 arriving after records from epoch 3, this is not likely to persist for very long relative to the round trip time. Servers could discard epoch 1  keys after the first epoch 3 data arrives, or retain keys for processing epoch 1 data for a short period.
 is received. (See {{dtls-epoch}} for the definitions of each epoch.)
 
 
@@ -2397,4 +2397,3 @@ In addition, we would like to thank:
 # Acknowledgements
 
 We would like to thank Jonathan Hammell for his review comments.
-
