@@ -1902,8 +1902,8 @@ Endpoints MUST NOT have more than one NewConnectionId message outstanding.
 
 If the client and server have negotiated using the "connection_id" extension,
 either side can request a new CID using the RequestConnectionId message. In
-general, implementations SHOULD use a new CID whenever sending on a new
-path and thus attempt to have enough spare CIDs available to do so.
+general, implementations SHOULD use a new CID whenever sending on a new path,
+and SHOULD request new CIDs for this purpose if path changes are anticipated.
 
 ~~~
     struct {
@@ -2401,4 +2401,3 @@ In addition, we would like to thank:
 # Acknowledgements
 
 We would like to thank Jonathan Hammell for his review comments.
-
