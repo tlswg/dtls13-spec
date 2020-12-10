@@ -2037,16 +2037,6 @@ and may not provide replay protection.
 Unlike TLS implementations, DTLS implementations SHOULD NOT respond
 to invalid records by terminating the connection.
 
-If implementations process out-of-epoch records as recommended in
-{{key-updates}}, then this creates a denial of service risk since an adversary could
-inject records with fake epoch values, forcing the recipient
-to compute the next-generation application_traffic_secret using the
-HKDF-Expand-Label construct to only find out that the message was
-does not pass the AEAD cipher processing. The impact of this
-attack is small since the HKDF-Expand-Label only performs symmetric
-key hashing operations. Implementations which are concerned about
-this form of attack can discard out-of-epoch records.
-
 The security and privacy properties of the CID for DTLS 1.3 builds
 on top of what is described in {{I-D.ietf-tls-dtls-connection-id}}. There are,
 however, several improvements:
