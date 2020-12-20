@@ -1239,24 +1239,24 @@ ClientHello                                                 | Flight |
 {: #dtls-full title="Message flights for a full DTLS Handshake (with cookie exchange)"}
 
 ~~~
- ClientHello                                              +----------+
-  + pre_shared_key                                        | Flight 1 |
-  + key_share*         -------->                          +----------+
+ ClientHello                                              +--------+
+  + pre_shared_key                                        | Flight |
+  + key_share*         -------->                          +--------+
 
 
                                              ServerHello
-                                        + pre_shared_key  +----------+
-                                            + key_share*  | Flight 2 |
-                                   {EncryptedExtensions}  +----------+
+                                        + pre_shared_key  +--------+
+                                            + key_share*  | Flight |
+                                   {EncryptedExtensions}  +--------+
                        <--------              {Finished}
                                      [Application Data*]
-                                                          +----------+
- {Finished}            -------->                          | Flight 3 |
- [Application Data*]                                      +----------+
+                                                          +--------+
+ {Finished}            -------->                          | Flight |
+ [Application Data*]                                      +--------+
 
-                                                          +----------+
-                       <--------                   [ACK]  | Flight 4 |
-                                     [Application Data*]  +----------+
+                                                          +--------+
+                       <--------                   [ACK]  | Flight |
+                                     [Application Data*]  +--------+
 
  [Application Data]    <------->      [Application Data]
 ~~~
@@ -1267,26 +1267,26 @@ Client                                            Server
 
  ClientHello
   + early_data
-  + psk_key_exchange_modes                                +----------+
-  + key_share*                                            | Flight 1 |
-  + pre_shared_key                                        +----------+
+  + psk_key_exchange_modes                                +--------+
+  + key_share*                                            | Flight |
+  + pre_shared_key                                        +--------+
  (Application Data*)     -------->
 
                                              ServerHello
                                         + pre_shared_key
-                                            + key_share*  +----------+
-                                   {EncryptedExtensions}  | Flight 2 |
-                                              {Finished}  +----------+
+                                            + key_share*  +--------+
+                                   {EncryptedExtensions}  | Flight |
+                                              {Finished}  +--------+
                        <--------     [Application Data*]
 
 
-                                                          +----------+
- {Finished}            -------->                          | Flight 3 |
- [Application Data*]                                      +----------+
+                                                          +--------+
+ {Finished}            -------->                          | Flight |
+ [Application Data*]                                      +--------+
 
-                                                          +----------+
-                       <--------                   [ACK]  | Flight 4 |
-                                     [Application Data*]  +----------+
+                                                          +--------+
+                       <--------                   [ACK]  | Flight |
+                                     [Application Data*]  +--------+
 
  [Application Data]    <------->      [Application Data]
 ~~~
@@ -1295,13 +1295,13 @@ Client                                            Server
 ~~~
 Client                                            Server
 
-                                                          +----------+
-                       <--------       [NewSessionTicket] | Flight 1 |
-                                                          +----------+
+                                                          +--------+
+                       <--------       [NewSessionTicket] | Flight |
+                                                          +--------+
 
-                                                          +----------+
-[ACK]                  -------->                          | Flight 2 |
-                                                          +----------+
+                                                          +--------+
+[ACK]                  -------->                          | Flight |
+                                                          +--------+
 ~~~
 {: #dtls-post-handshake-ticket title="Message flights for the NewSessionTicket message"}
 
