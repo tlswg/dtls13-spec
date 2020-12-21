@@ -1555,18 +1555,18 @@ Client                                                Server
 
                              X<-----                 Record 0
                              (lost)               ServerHello
-                                              (message_seq=1)
+                                              (message_seq=0)
                                           EncryptedExtensions
-                                              (message_seq=2)
+                                              (message_seq=1)
                                                   Certificate
-                                              (message_seq=3)
+                                              (message_seq=2)
 
 
                            <--------                 Record 1
                                             CertificateVerify
-                                              (message_seq=4)
+                                              (message_seq=3)
                                                      Finished
-                                              (message_seq=5)
+                                              (message_seq=4)
 
  Record 1                  -------->
  ACK []
@@ -1574,11 +1574,11 @@ Client                                                Server
 
                            <--------                 Record 2
                                                   ServerHello
-                                              (message_seq=1)
+                                              (message_seq=0)
                                           EncryptedExtensions
-                                              (message_seq=2)
+                                              (message_seq=1)
                                                   Certificate
-                                              (message_seq=3)
+                                              (message_seq=2)
 
  Record 2                  -------->
  Certificate
