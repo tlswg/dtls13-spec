@@ -1239,7 +1239,8 @@ ClientHello                                                 | Flight |
 ~~~
  ClientHello                                              +--------+
   + pre_shared_key                                        | Flight |
-  + key_share*         -------->                          +--------+
+  + psk_key_exchange_modes                                +--------+
+  + key_share*         -------->                          
 
 
                                              ServerHello
