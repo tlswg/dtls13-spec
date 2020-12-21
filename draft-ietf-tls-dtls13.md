@@ -1193,8 +1193,6 @@ Remarks:
 - The HelloRetryRequest shown in (1) is an optional message sent by the server. 
 - The ACK message is sent by a client in response to a NewSessionTicket message from the server (as noted in (3)) or sent by a server in response to receipt of flight (2). In those cases it represent a flight on its own. 
 
-Note: The application data is not included in the timeout and retransmission calculation. 
-
 Below are several example message exchange illustrating the flight concept. 
 
 ~~~
