@@ -1648,16 +1648,17 @@ The traffic key calculation is described in Section 7.3 of {{!TLS13}}.
 Client                                             Server
 ------                                             ------
 
+ Record 0
  ClientHello
  (epoch=0)
                             -------->
-
+                                                     Record 0
                             <--------       HelloRetryRequest
                                                     (epoch=0)
-
+ Record 1
  ClientHello                -------->
  (epoch=0)
-
+                                                     Record 1
                             <--------             ServerHello
                                                     (epoch=0)
                                         {EncryptedExtensions}
@@ -1668,37 +1669,38 @@ Client                                             Server
                                                     (epoch=2)
                                                    {Finished}
                                                     (epoch=2)
-
+ Record 2
  {Certificate}              -------->
  (epoch=2)
  {CertificateVerify}
  (epoch=2)
  {Finished}
  (epoch=2)
-
+                                                     Record 2
                             <--------                   [ACK]
                                                     (epoch=3)
-
+ Record 3
  [Application Data]         -------->
  (epoch=3)
-
+                                                     Record 3
                             <--------      [Application Data]
                                                     (epoch=3)
 
                          Some time later ...
                  (Post-Handshake Message Exchange)
-
+                                                     Record 4
                             <--------      [NewSessionTicket]
                                                     (epoch=3)
-
+ Record 4
  [ACK]                      -------->
  (epoch=3)
 
                          Some time later ...
                            (Rekeying)
-
+                                                     Record 5
                             <--------      [Application Data]
                                                     (epoch=4)
+ Record 5                                                  
  [Application Data]         -------->
  (epoch=4)
 ~~~
@@ -1861,7 +1863,7 @@ low-power mesh networks, the use of ACKs is recommended.
 
 The use of the ACK for the second case is mandatory for the proper functioning of the
 protocol. For instance, the ACK message sent by the client in Figure 12,
-acknowledges receipt and processing of record 2 (containing the NewSessionTicket
+acknowledges receipt and processing of record 4 (containing the NewSessionTicket
 message) and if it is not sent the server will continue retransmission
 of the NewSessionTicket indefinitely until its transmission cap is reached.
 
