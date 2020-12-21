@@ -1917,7 +1917,7 @@ NewConnectionId with usage "cid_spare" containing num_cid CIDs soon as
 possible.  Endpoints MUST NOT send a RequestConnectionId message
 when an existing request is still unfulfilled; this implies that
 endpoints needs to request new CIDs well in advance.  An endpoint MAY
-handle requests which it considers excessive by responding with
+handle requests, which it considers excessive, by responding with
 a NewConnectionId message containing fewer than num_cid CIDs,
 including no CIDs at all. Endpoints MAY handle an excessive number
 of RequestConnectionId messages by terminating the connection.
@@ -2401,4 +2401,3 @@ In addition, we would like to thank:
 # Acknowledgements
 
 We would like to thank Jonathan Hammell for his review comments.
-
