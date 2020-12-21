@@ -2051,7 +2051,7 @@ to ask for new CIDs to ensure that a pool of suitable CIDs is available.
 trivial tracking by on-path adversaries that attempt to correlate the
 pattern of sequence numbers received on different paths; such tracking
 could occur even when different CIDs are used on each path, in the
-absence of sequence number encryption. Switching CID based on certain
+absence of sequence number encryption. Switching CIDs based on certain
 events, or even regularly, helps against tracking by on-path
 adversaries.  Note that sequence number encryption is used for all
 encrypted DTLS 1.3 records irrespective of whether a CID is used or
