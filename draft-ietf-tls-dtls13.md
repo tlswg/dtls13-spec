@@ -2055,7 +2055,7 @@ absence of sequence number encryption. Switching CIDs based on certain
 events, or even regularly, helps against tracking by on-path
 adversaries.  Note that sequence number encryption is used for all
 encrypted DTLS 1.3 records irrespective of whether a CID is used or
-not.  Unlike the sequence number, the epoch is not encrypted, which
+not.  Unlike the sequence number, the epoch is not encrypted because it acts as a key identifier, which
 may improve correlation of packets from a single connection across
 different network paths.
 
