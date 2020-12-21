@@ -1543,7 +1543,11 @@ the 5-tuple-based ambiguity.
 # Example of Handshake with Timeout and Retransmission
 
 The following is an example of a handshake with lost packets and
-retransmissions.
+retransmissions. Note that the client sends an empty ACK message  
+because it can only acknowledge Record 1 sent by the server once it has 
+processed messages in Record 0 needed to establish epoch 2 keys, which 
+are needed to encrypt to decrypt messages found in Record 1.  {{ack-msg}} 
+provides the necessary background details for this interaction. 
 
 ~~~
 Client                                                Server
@@ -1590,7 +1594,6 @@ Client                                                Server
 
                            <--------               Record 3
                                                     ACK [2]
-
 ~~~
 {: #dtls-msg-loss title="Example DTLS exchange illustrating message loss"}
 
