@@ -2039,7 +2039,7 @@ to update their CIDs and those values are exchanged with confidentiality
 protection.
 
   * The ability to use multiple CIDs allows for improved privacy properties
-in multi-homed scenarios. When only a single CID in use on multiple
+in multi-homed scenarios. When only a single CID is in use on multiple
 paths from such a host, an adversary can correlate the communication
 interaction across paths, which adds further privacy concerns. In order
 to prevent this, implementations SHOULD attempt to use fresh CIDs
