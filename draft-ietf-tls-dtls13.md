@@ -1809,9 +1809,10 @@ have not yet been acknowledged.
 
 Note: While some post-handshake messages follow a request/response
 pattern, this does not necessarily imply receipt.
-For example, a KeyUpdate sent in response to a KeyUpdate with update_requested does
-not implicitly acknowledge that message because the KeyUpdates might have
-crossed in flight.
+For example, a KeyUpdate sent in response to a KeyUpdate with 
+request_update set to 'update_requested' does not implicitly 
+acknowledge the earlier KeyUpdate message because the two KeyUpdate 
+messages might have crossed in flight.
 
 ACKs MUST NOT be sent for other records of any content type
 other than handshake or for records which cannot be unprotected.
@@ -1876,7 +1877,7 @@ As with TLS 1.3, DTLS 1.3 implementations send a KeyUpdate message to
 indicate that they are updating their sending keys.  As with other
 handshake messages with no built-in response, KeyUpdates MUST be
 acknowledged.  In order to facilitate epoch reconstruction
-{{reconstructing}} implementations MUST NOT send with the new keys or
+{{reconstructing}} implementations MUST NOT send records with the new keys or
 send a new KeyUpdate until the previous KeyUpdate has been
 acknowledged (this avoids having too many epochs in active use).
 
@@ -1892,6 +1893,67 @@ Due to the possibility of an ACK message for a KeyUpdate being lost and thereby
 preventing the sender of the KeyUpdate from updating its keying material,
 receivers MUST retain the pre-update keying material until receipt and successful
 decryption of a message using the new keys.
+
+{{dtls-key-update}} shows an example exchange illustrating that a successful 
+ACK processing updates the keys of the KeyUpdate message sender, which is 
+reflected in the change of epoch values. 
+
+~~~
+Client                                             Server
+
+      /-------------------------------------------\
+     |                                             |
+     |             Initial Handshake               |
+      \-------------------------------------------/
+
+
+ [Application Data]         -------->
+ (epoch=3)
+
+                            <--------      [Application Data]
+                                                    (epoch=3)
+
+      /-------------------------------------------\
+     |                                             |
+     |              Some time later ...            |
+      \-------------------------------------------/
+
+
+ [Application Data]         -------->
+ (epoch=3)
+
+
+ [KeyUpdate]
+ (+ update_requested        -------->
+ (epoch 3)
+
+
+                            <--------      [Application Data]
+                                                    (epoch=3)
+
+
+                                                        [Ack]
+                            <--------               (epoch=3)
+
+
+ [Application Data]
+ (epoch=4)                  -------->
+
+
+
+                            <--------             [KeyUpdate]
+                                                    (epoch=3)
+
+
+ [Ack]                      -------->
+ (epoch=4)
+
+
+                            <--------      [Application Data]
+                                                    (epoch=4)
+~~~
+{: #dtls-key-update title="Example DTLS Key Update"}
+
 
 # Connection ID Updates
 
