@@ -138,7 +138,7 @@ The following terms are used:
 
   - association: Shared state between two endpoints established with
     a DTLS handshake.
-  
+
   - connection: Synonym for association.
 
   - endpoint: Either the client or server of the connection.
@@ -1174,26 +1174,27 @@ is received. (See {{dtls-epoch}} for the definitions of each epoch.)
 
 ##  DTLS Handshake Flights
 
-DTLS handshake messages are grouped into a series of message flights. A flight starts with the 
-handshake message transmission of one peer and ends with the expected response from the 
-other peer. Table {{tab-flights}} contains a complete list of message combinations that consitute flights. 
+DTLS handshake messages are grouped into a series of message flights. A flight starts with the
+handshake message transmission of one peer and ends with the expected response from the
+other peer. Table {{tab-flights}} contains a complete list of message combinations that consitute flights.
 
 | Note | Client | Server | Handshake Messages |
 |-----+--------+--------+------------------ |
 |     |    x   |        | ClientHello |
-| (1) |        |    x   | HelloRetryRequest |
-|     |        |    x   | ServerHello, EncryptedExtensions, CertificateRequest*, Certificate*, CertificateVerify*, Finished | 
-| (2) |    x   |        | Certificate*, CertificateVerify*, Finished |
-|     |        |    x   | ACK | 
-| (3) |        |    x   | NewSessionTicket | 
+| *   |        |    x   | HelloRetryRequest |
+|     |        |    x   | ServerHello, EncryptedExtensions, CertificateRequest*, Certificate*, CertificateVerify*, Finished |
+| ** |    x   |        | Certificate*, CertificateVerify*, Finished |
+|     |        |    x   | ACK |
+| ** |        |    x   | NewSessionTicket |
 {: #tab-flights title="Flight Handshake Message Combinations."}
 
-Remarks: 
+Remarks:
+* The HelloRetryRequest shown in is an optional message sent by the server.
+** When a handshake flight is sent without any expected response as with
+   the client's final flight or NewSessionTicket, the peer must
+   acknowledge the peer's flight.
 
-- The HelloRetryRequest shown in (1) is an optional message sent by the server. 
-- The ACK message is sent by a client in response to a NewSessionTicket message from the server (as noted in (3)) or sent by a server in response to receipt of flight (2). In those cases it represent a flight on its own. 
-
-Below are several example message exchange illustrating the flight concept. 
+Below are several example message exchange illustrating the flight concept.
 
 ~~~
 Client                                             Server
@@ -1240,7 +1241,7 @@ ClientHello                                                 | Flight |
  ClientHello                                              +--------+
   + pre_shared_key                                        | Flight |
   + psk_key_exchange_modes                                +--------+
-  + key_share*         -------->                          
+  + key_share*         -------->
 
 
                                              ServerHello
@@ -1558,11 +1559,11 @@ the 5-tuple-based ambiguity.
 # Example of Handshake with Timeout and Retransmission
 
 The following is an example of a handshake with lost packets and
-retransmissions. Note that the client sends an empty ACK message  
-because it can only acknowledge Record 1 sent by the server once it has 
-processed messages in Record 0 needed to establish epoch 2 keys, which 
-are needed to encrypt to decrypt messages found in Record 1.  {{ack-msg}} 
-provides the necessary background details for this interaction. 
+retransmissions. Note that the client sends an empty ACK message
+because it can only acknowledge Record 1 sent by the server once it has
+processed messages in Record 0 needed to establish epoch 2 keys, which
+are needed to encrypt to decrypt messages found in Record 1.  {{ack-msg}}
+provides the necessary background details for this interaction.
 
 ~~~
 Client                                                Server
@@ -1718,7 +1719,7 @@ Client                                             Server
                                                      Record 5
                             <--------      [Application Data]
                                                     (epoch=4)
- Record 5                                                  
+ Record 5
  [Application Data]         -------->
  (epoch=4)
 ~~~
@@ -1824,9 +1825,9 @@ have not yet been acknowledged.
 
 Note: While some post-handshake messages follow a request/response
 pattern, this does not necessarily imply receipt.
-For example, a KeyUpdate sent in response to a KeyUpdate with 
-request_update set to 'update_requested' does not implicitly 
-acknowledge the earlier KeyUpdate message because the two KeyUpdate 
+For example, a KeyUpdate sent in response to a KeyUpdate with
+request_update set to 'update_requested' does not implicitly
+acknowledge the earlier KeyUpdate message because the two KeyUpdate
 messages might have crossed in flight.
 
 ACKs MUST NOT be sent for other records of any content type
@@ -1909,9 +1910,9 @@ preventing the sender of the KeyUpdate from updating its keying material,
 receivers MUST retain the pre-update keying material until receipt and successful
 decryption of a message using the new keys.
 
-{{dtls-key-update}} shows an example exchange illustrating that a successful 
-ACK processing updates the keys of the KeyUpdate message sender, which is 
-reflected in the change of epoch values. 
+{{dtls-key-update}} shows an example exchange illustrating that a successful
+ACK processing updates the keys of the KeyUpdate message sender, which is
+reflected in the change of epoch values.
 
 ~~~
 Client                                             Server
