@@ -375,6 +375,8 @@ C:
 S:
 : The S bit (0x08) indicates the size of the sequence number.
   0 means an 8-bit sequence number, 1 means 16-bit.
+   Implementations MAY mix sequence numbers of different lengths
+   on the same connection.
 
 L:
 : The L bit (0x04) is set if the length is present.
@@ -437,7 +439,8 @@ record consumes the entire rest of the datagram in the lower
 level transport. In this case it is not possible to have multiple
 DTLSCiphertext format records without length fields in the same datagram.
 Omitting the length field MUST only be used for the last record in a
-datagram.
+datagram. Implementations MAY mix records with and without length
+fields on the same connection.
 
 If a connection ID is negotiated, then it MUST be contained in all
 datagrams. Sending implementations MUST NOT mix records from multiple DTLS associations
