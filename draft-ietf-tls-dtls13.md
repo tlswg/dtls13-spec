@@ -1976,7 +1976,7 @@ Client                                             Server
 If the client and server have negotiated the "connection_id"
 extension {{I-D.ietf-tls-dtls-connection-id}}, either side
 can send a new CID which it wishes the other side to use
-in a NewConnectionId message.
+in a NewConnectionId message. 
 
 ~~~
 %%% Connection ID Management
@@ -2005,8 +2005,13 @@ MUST be used immediately for all future records. If it is set to
 Endpoints SHOULD use receiver-provided CIDs in the order they were provided.
 Endpoints MUST NOT have more than one NewConnectionId message outstanding.
 
-If the client and server have negotiated the "connection_id" extension,
-either side can request a new CID using the RequestConnectionId message.
+Implementations which either not negotiated the "connection_id" extension
+or which have negotiated receiving an empty CID MUST NOT
+send NewConnectionId. Implementations MUST NOT send RequestConnectionId
+when sending an empty connection ID. Implementations which detect a violation
+of these rules MUST abort the connection with an "unexpected_message"
+alert.
+
 
 ~~~
 %%% Connection ID Management
