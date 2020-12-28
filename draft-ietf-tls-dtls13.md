@@ -2009,7 +2009,7 @@ Implementations which either not negotiated the "connection_id" extension
 or which have negotiated receiving an empty CID MUST NOT
 send NewConnectionId. Implementations MUST NOT send RequestConnectionId
 when sending an empty connection ID. Implementations which detect a violation
-of these rules MUST abort the connection with an "unexpected_message"
+of these rules MUST terminate the connection with an "unexpected_message"
 alert.
 
 
