@@ -1174,69 +1174,88 @@ is received. (See {{dtls-epoch}} for the definitions of each epoch.)
 
 ##  DTLS Handshake Flights
 
-DTLS messages are grouped into a series of message flights, according
-to the diagrams below.
+DTLS handshake messages are grouped into a series of message flights. A flight starts with the 
+handshake message transmission of one peer and ends with the expected response from the 
+other peer. Table {{tab-flights}} contains a complete list of message combinations that consitute flights. 
+
+| Note | Client | Server | Handshake Messages |
+|-----+--------+--------+------------------ |
+|     |    x   |        | ClientHello |
+| (1) |        |    x   | HelloRetryRequest |
+|     |        |    x   | ServerHello, EncryptedExtensions, CertificateRequest*, Certificate*, CertificateVerify*, Finished | 
+| (2) |    x   |        | Certificate*, CertificateVerify*, Finished |
+|     |        |    x   | ACK | 
+| (3) |        |    x   | NewSessionTicket | 
+{: #tab-flights title="Flight Handshake Message Combinations."}
+
+Remarks: 
+
+- The HelloRetryRequest shown in (1) is an optional message sent by the server. 
+- The ACK message is sent by a client in response to a NewSessionTicket message from the server (as noted in (3)) or sent by a server in response to receipt of flight (2). In those cases it represent a flight on its own. 
+
+Below are several example message exchange illustrating the flight concept. 
 
 ~~~
 Client                                             Server
 
-ClientHello                                                 +----------+
- + key_share*                                               | Flight 1 |
- + pre_shared_key*      -------->                           +----------+
+                                                            +--------+
+ ClientHello                                                | Flight |
+                        -------->                           +--------+
 
-                                                            +----------+
-                        <--------        HelloRetryRequest  | Flight 2 |
-                                          + cookie          +----------+
+                                                            +--------+
+                        <--------        HelloRetryRequest  | Flight |
+                                          + cookie          +--------+
 
 
-ClientHello                                                 +----------+
- + key_share*                                               | Flight 3 |
- + pre_shared_key*      -------->                           +----------+
- + cookie
+                                                            +--------+
+ClientHello                                                 | Flight |
+ + cookie               -------->                           +--------+
+
+
 
                                                ServerHello
-                                              + key_share*
-                                         + pre_shared_key*  +----------+
-                                     {EncryptedExtensions}  | Flight 4 |
-                                     {CertificateRequest*}  +----------+
-                                            {Certificate*}
+                                     {EncryptedExtensions}  +--------+
+                                     {CertificateRequest*}  | Flight |
+                                            {Certificate*}  +--------+
                                       {CertificateVerify*}
-                        <--------               {Finished}
-                                       [Application Data*]
+                                                {Finished}
+                        <--------      [Application Data*]
 
 
- {Certificate*}                                             +----------+
- {CertificateVerify*}                                       | Flight 5 |
- {Finished}             -------->                           +----------+
+
+ {Certificate*}                                             +--------+
+ {CertificateVerify*}                                       | Flight |
+ {Finished}             -------->                           +--------+
  [Application Data]
 
-                                                            +----------+
-                        <--------                    [ACK]  | Flight 6 |
-                                       [Application Data*]  +----------+
+                                                            +--------+
+                        <--------                    [ACK]  | Flight |
+                                       [Application Data*]  +--------+
 
  [Application Data]     <------->      [Application Data]
 ~~~
 {: #dtls-full title="Message flights for a full DTLS Handshake (with cookie exchange)"}
 
 ~~~
- ClientHello                                              +----------+
-  + pre_shared_key                                        | Flight 1 |
-  + key_share*         -------->                          +----------+
+ ClientHello                                              +--------+
+  + pre_shared_key                                        | Flight |
+  + psk_key_exchange_modes                                +--------+
+  + key_share*         -------->                          
 
 
                                              ServerHello
-                                        + pre_shared_key  +----------+
-                                            + key_share*  | Flight 2 |
-                                   {EncryptedExtensions}  +----------+
+                                        + pre_shared_key  +--------+
+                                            + key_share*  | Flight |
+                                   {EncryptedExtensions}  +--------+
                        <--------              {Finished}
                                      [Application Data*]
-                                                          +----------+
- {Finished}            -------->                          | Flight 3 |
- [Application Data*]                                      +----------+
+                                                          +--------+
+ {Finished}            -------->                          | Flight |
+ [Application Data*]                                      +--------+
 
-                                                          +----------+
-                       <--------                   [ACK]  | Flight 4 |
-                                     [Application Data*]  +----------+
+                                                          +--------+
+                       <--------                   [ACK]  | Flight |
+                                     [Application Data*]  +--------+
 
  [Application Data]    <------->      [Application Data]
 ~~~
@@ -1247,26 +1266,26 @@ Client                                            Server
 
  ClientHello
   + early_data
-  + psk_key_exchange_modes                                +----------+
-  + key_share*                                            | Flight 1 |
-  + pre_shared_key                                        +----------+
+  + psk_key_exchange_modes                                +--------+
+  + key_share*                                            | Flight |
+  + pre_shared_key                                        +--------+
  (Application Data*)     -------->
 
                                              ServerHello
                                         + pre_shared_key
-                                            + key_share*  +----------+
-                                   {EncryptedExtensions}  | Flight 2 |
-                                              {Finished}  +----------+
+                                            + key_share*  +--------+
+                                   {EncryptedExtensions}  | Flight |
+                                              {Finished}  +--------+
                        <--------     [Application Data*]
 
 
-                                                          +----------+
- {Finished}            -------->                          | Flight 3 |
- [Application Data*]                                      +----------+
+                                                          +--------+
+ {Finished}            -------->                          | Flight |
+ [Application Data*]                                      +--------+
 
-                                                          +----------+
-                       <--------                   [ACK]  | Flight 4 |
-                                     [Application Data*]  +----------+
+                                                          +--------+
+                       <--------                   [ACK]  | Flight |
+                                     [Application Data*]  +--------+
 
  [Application Data]    <------->      [Application Data]
 ~~~
@@ -1275,19 +1294,15 @@ Client                                            Server
 ~~~
 Client                                            Server
 
-                                                          +----------+
-                       <--------       [NewSessionTicket] | Flight 1 |
-                                                          +----------+
+                                                          +--------+
+                       <--------       [NewSessionTicket] | Flight |
+                                                          +--------+
 
-                                                          +----------+
-[ACK]                  -------->                          | Flight 2 |
-                                                          +----------+
+                                                          +--------+
+[ACK]                  -------->                          | Flight |
+                                                          +--------+
 ~~~
-{: #dtls-post-handshake-ticket title="Message flights for the new session ticket message"}
-
-Note: The application data sent by the client is not included in the
-timeout and retransmission calculation.
-
+{: #dtls-post-handshake-ticket title="Message flights for the NewSessionTicket message"}
 
 ## Timeout and Retransmission
 
