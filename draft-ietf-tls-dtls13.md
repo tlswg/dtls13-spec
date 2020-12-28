@@ -1454,6 +1454,19 @@ reset to the initial value.  After a long period of idleness, no less
 than 10 times the current timer value, implementations MAY reset the
 timer to the initial value.
 
+### Large Flight Sizes
+
+DTLS does not have any built-in congestion control or rate control;
+in general this is not an issue because messages tend to be small.
+However, in principle, some messages -- especially Certificate -- can
+be quite large. If all the messages in a large flight are sent
+at once, this can result in network congestion. A better strategy
+is to send out only part of the flight, sending more when
+messages are acknowledged. DTLS offers a number of mechanisms
+for minimizing the size of the certificate message, including
+the cached information extension {{?RFC7924}} and certificate
+compression {{?RFC8879}}.
+
 ### State machine duplication for post-handshake messages {#state-machine-duplication}
 
 DTLS 1.3 makes use of the following categories of post-handshake messages:
