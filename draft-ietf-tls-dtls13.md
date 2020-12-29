@@ -959,7 +959,7 @@ choose not to do a cookie exchange when a session is resumed or, more
 generically, when the DTLS handshake uses a PSK-based key exchange.
 Servers which process 0-RTT requests and send 0.5-RTT responses
 without a cookie exchange risk being used in an amplification attack
-if the size of outgoing greatly exceeds the size of those that are received.
+if the size of outgoing messages greatly exceeds the size of those that are received.
 A server SHOULD limit the amount of data it sends toward a client address
 before it verifies that the client is able to receive data at that address.
 A client address is valid after a cookie exchange or handshake completion.
