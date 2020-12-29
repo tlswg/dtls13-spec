@@ -964,7 +964,7 @@ A server SHOULD limit the amount of data it sends toward a client address
 before it verifies that the client is able to receive data at that address.
 A client address is valid after a cookie exchange or handshake completion.
 A server MAY apply a higher limit based on heuristics, such as if the client
-uses the same IP address as a recent connection.
+uses the same IP address as the connection on which the cookie was created.
 Clients MUST be prepared to do a cookie exchange with every
 handshake.
 
