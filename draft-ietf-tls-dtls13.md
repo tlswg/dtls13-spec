@@ -1102,8 +1102,8 @@ legacy_version:
   extension (see Section 4.2.1 of {{!TLS13}}) and the
   legacy_version field MUST be set to {254, 253}, which was the version
   number for DTLS 1.2. The supported_versions entries for DTLS 1.0 and DTLS 1.2 are
-  0xfeff and 0xfefd (to match the wire versions) but the version field
-  for DTLS 1.3 is 0x0304.
+  0xfeff and 0xfefd (to match the wire versions). The value 0xfefc is used
+  to indicate DTLS 1.3.
 
 random:
 : Same as for TLS 1.3.
@@ -1125,6 +1125,12 @@ legacy_compression_methods:
 extensions:
 : Same as for TLS 1.3.
 {:br }
+
+## ServerHello Message
+
+The DTLS 1.3 ServerHello message is the same as the TLS 1.3
+ServerHello message, except that the legacy_version field
+is set to 0xfefd, indicating DTLS 1.2.
 
 ##  Handshake Message Fragmentation and Reassembly
 
