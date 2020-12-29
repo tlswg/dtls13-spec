@@ -1305,7 +1305,7 @@ Client                                            Server
 ~~~
 {: #dtls-post-handshake-ticket title="Message flights for the NewSessionTicket message"}
 
-KeyUpdate, NewConnectionID and RequestConnectionID follow a similar
+KeyUpdate, NewConnectionId and RequestConnectionId follow a similar
 pattern to NewSessionTicket: a single message sent by one side
 followed by an ACK by the other.
 
