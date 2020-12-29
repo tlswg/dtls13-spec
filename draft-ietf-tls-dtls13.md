@@ -370,7 +370,7 @@ Fixed Bits:
   multiplexing is performed as described in {{?RFC7983}}. It also ensures
   that it is possible to distinguish encrypted DTLS 1.3 records from
   encrypted DTLS 1.2 records when they are carried on the same host/port quartet;
-  such multiplexing is only possible when connection IDs {{I-D.ietf-dtls-connection-id}}
+  such multiplexing is only possible when connection IDs {{I-D.ietf-tls-dtls-connection-id}}
   are in use, in which case DTLS 1.2 records will have the content type tls12_cid (25).
 
 C:
