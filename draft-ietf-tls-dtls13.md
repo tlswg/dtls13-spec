@@ -1345,7 +1345,7 @@ in the WAITING state, but with empty buffers and no retransmit timer.
                 |     |          |  |   |                    |
                 |     +----------+  |   +--------------------+
                 |    Receive record |   Read retransmit or ACK
-        Receive |     Send ACK      |
+        Receive |  (Maybe Send ACK) |
            last |                   |
          flight |                   | Receive ACK
                 |                   | for last flight
