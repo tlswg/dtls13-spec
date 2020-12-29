@@ -2005,7 +2005,7 @@ MUST be used immediately for all future records. If it is set to
 Endpoints SHOULD use receiver-provided CIDs in the order they were provided.
 Endpoints MUST NOT have more than one NewConnectionId message outstanding.
 
-Implementations which either not negotiated the "connection_id" extension
+Implementations which either did not negotiate the "connection_id" extension
 or which have negotiated receiving an empty CID MUST NOT
 send NewConnectionId. Implementations MUST NOT send RequestConnectionId
 when sending an empty connection ID. Implementations which detect a violation
