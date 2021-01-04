@@ -367,7 +367,11 @@ The DTLSCiphertext header is tightly bit-packed, as shown below:
 Fixed Bits:
 : The three high bits of the first byte of the DTLSCiphertext header are set to
   001. This ensures that the value will fit within the DTLS region when
-  multiplexing is performed as described in {{?RFC7983}}.
+  multiplexing is performed as described in {{?RFC7983}}. It also ensures
+  that distinguishing encrypted DTLS 1.3 records from encrypted DTLS 1.2 
+  records is possible when they are carried on the same host/port quartet;
+  such multiplexing is only possible when connection IDs {{I-D.ietf-tls-dtls-connection-id}}
+  are in use, in which case DTLS 1.2 records will have the content type tls12_cid (25).
 
 C:
 : The C bit (0x10) is set if the Connection ID is present.
