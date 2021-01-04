@@ -2143,20 +2143,26 @@ however, several improvements:
 to update their CIDs and those values are exchanged with confidentiality
 protection.
 
-  * With multi-homing, an adversary is able to correlate the communication
-interaction over the two paths, which adds further privacy concerns. In order
+  * The ability to use multiple CIDs allows for improved privacy properties
+in multi-homed scenarios. When only a single CID is in use on multiple
+paths from such a host, an adversary can correlate the communication
+interaction across paths, which adds further privacy concerns. In order
 to prevent this, implementations SHOULD attempt to use fresh CIDs
 whenever they change local addresses or ports (though this is not always
 possible to detect). The RequestConnectionId message can be used by a peer
 to ask for new CIDs to ensure that a pool of suitable CIDs is available.
 
-  * Switching CID based on certain events, or even regularly, helps against
-tracking by on-path adversaries but the sequence numbers can still allow
-linkability. For this reason this specification defines an algorithm for encrypting
-sequence numbers, see {{rne}}. Note that sequence number encryption is used for
-all encrypted DTLS 1.3 records irrespective of whether a CID is used or not.
-Unlike the sequence number, the epoch is not encrypted. This may improve
-correlation of packets from a single connection across different network paths.
+  * The mechanism for encrypting sequence numbers ({{rne}}) prevents
+trivial tracking by on-path adversaries that attempt to correlate the
+pattern of sequence numbers received on different paths; such tracking
+could occur even when different CIDs are used on each path, in the
+absence of sequence number encryption. Switching CIDs based on certain
+events, or even regularly, helps against tracking by on-path
+adversaries.  Note that sequence number encryption is used for all
+encrypted DTLS 1.3 records irrespective of whether a CID is used or
+not.  Unlike the sequence number, the epoch is not encrypted because it acts as a key identifier, which
+may improve correlation of packets from a single connection across
+different network paths.
 
   * DTLS 1.3 encrypts handshake messages much earlier than in previous
 DTLS versions. Therefore, less information identifying the DTLS client, such as
