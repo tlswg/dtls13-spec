@@ -1976,7 +1976,7 @@ Client                                             Server
 If the client and server have negotiated the "connection_id"
 extension {{I-D.ietf-tls-dtls-connection-id}}, either side
 can send a new CID which it wishes the other side to use
-in a NewConnectionId message. 
+in a NewConnectionId message.
 
 ~~~
 %%% Connection ID Management
