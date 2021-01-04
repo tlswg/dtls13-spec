@@ -2093,8 +2093,8 @@ NewConnectionId (TBD), as defined in this document.  The value for the
 "DTLS-OK" columns are "Y".
 
 IANA is requested to add this RFC as a reference to the TLS Cipher Suite Registry.
-IANA [SHALL mark/has marked] the cipher suites TLS_SHA256_SHA256 and
-TLS_SHA384_SHA_384 DTLS=N.
+IANA [SHALL set] the "DTLS-OK" column value for cipher suites TLS_SHA256_SHA256 and
+TLS_SHA384_SHA_384 to "N".
 
 --- back
 
