@@ -1920,7 +1920,8 @@ endpoints needs to request new CIDs well in advance.  An endpoint MAY
 handle requests, which it considers excessive, by responding with
 a NewConnectionId message containing fewer than num_cid CIDs,
 including no CIDs at all. Endpoints MAY handle an excessive number
-of RequestConnectionId messages by terminating the connection.
+of RequestConnectionId messages by terminating the connection
+using a "too_many_cids_requested" (alert number 52) alert.
 
 Endpoints MUST NOT send either of these messages if they did not negotiate a
 CID. If an implementation receives these messages when CIDs
@@ -2085,6 +2086,9 @@ registry for the ACK message, defined in {{ack-msg}}, with content type 26.
 The value for the "DTLS-OK" column is "Y".  IANA is requested to reserve
 the content type range 32-63 so that content types in this range are not
 allocated.
+
+IANA is requested to allocate "the too_many_cids_requested" alert in
+the "TLS Alerts" registry with value 52.
 
 IANA is requested to allocate two values in the "TLS Handshake Type"
 registry, defined in {{!TLS13}}, for RequestConnectionId (TBD), and
