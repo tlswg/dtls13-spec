@@ -469,10 +469,12 @@ function. For instance, if the minimal variant is used,
 the AAD is 2 octets long. Note that this design is different from the additional data
 calculation for DTLS 1.2 and for DTLS 1.2 with Connection ID.
 
-## Determining the Header Format
+## Demultiplexing DTLS Records
 
-Implementations can distinguish the two header formats by examining
-the first byte:
+DTLS 1.3 uses a variable length record format and hence the 
+demultiplexing process is more complex since more header formats
+need to be distinguished. Implementations can demultiplex records 
+by examining the first byte:
 
 * If the first byte is alert(21), handshake(22), or ack(proposed, 26),
 the record MUST be interpreted as a DTLSPlaintext record.
@@ -485,6 +487,46 @@ protected portion.
 
 * Otherwise, the record MUST be rejected as if it had failed
 deprotection, as described in {{handling-invalid-records}}.
+
+{{demux}} shows this demultiplexing procedure graphically 
+taking DTLS 1.3 and earlier versions of DTLS into account. 
+~~~
+             +----------------+
+             | Decrypted      |
+             | Content Type   |
+             | (DCT)          |
+             |                |			 
+             |     DCT == 21 -+--> Alert
+       +---> |     DCT == 22 -+--> Handshake
+       |     |     DCT == 23 -+--> Application Data
+       |     |     DCT == 24 -+--> Heartbeat   
+       |     |     DCT == 26 -+--> ACK
+       |     |                |
+       |     +----------------+
+       |
+       |
+       |       Decryption
+       +-----------------------------------+
+                                           | 
+             +----------------+            |
+             | Outer Content  |            |
+             | Type (OCT)     |            |
+             |                |    /+------+-----+\
+packet  -->  | 31 < OCT < 64 -+--> DTLS Ciphertext
+             |                |    (header bits 
+             |                |     start with 001)
+             |                |			 
+             |   OCT == 20   -+--> ChangeCipherSpec (DTLS <1.3)
+             |   OCT == 21   -+--> (Plaintext) Alert
+             |   OCT == 22   -+--> (Plaintext) Handshake
+             |   OCT == 23   -+--> Application Data (DTLS <1.3)
+             |   OCT == 24   -+--> Heartbeat (DTLS <1.3)
+             |   OCT == 25   -+--> CID (DTLS 1.2)
+             |   OCT == 26   -+--> (Plaintext) ACK (DTLS 1.3)
+             +----------------+
+~~~
+{: #demux title="Demultiplexing of DTLS 1.2 and DTLS 1.3 Records"}
+
 
 ## Sequence Number and Epoch
 
