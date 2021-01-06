@@ -521,7 +521,7 @@ packet  -->  | 31 < OCT < 64 -+--> DTLS Ciphertext
              |   OCT == 22   -+--> (Plaintext) Handshake
              |   OCT == 23   -+--> Application Data (DTLS <1.3)
              |   OCT == 24   -+--> Heartbeat (DTLS <1.3)
-             |   OCT == 25   -+--> CID (DTLS 1.2)
+             |   OCT == 25   -+--> DTLSCipherText with CID (DTLS 1.2)
              |   OCT == 26   -+--> (Plaintext) ACK (DTLS 1.3)
              +----------------+
 ~~~
