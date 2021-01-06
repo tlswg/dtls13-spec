@@ -191,11 +191,11 @@ TLS cannot be used directly in datagram environments for the following five reas
 1. TLS relies on an implicit sequence number on records.  If a record is not
    received, then the recipient will use the wrong sequence number when
    attempting to remove record protection from subsequent records. DTLS solves
-   this problem by adding sequence numbers.
+   this problem by adding sequence numbers to records.
 
-2. The TLS handshake is a lock-step cryptographic handshake.  Messages must be
+2. The TLS handshake is a lock-step cryptographic protocol.  Messages must be
    transmitted and received in a defined order; any other order is an error.
-   DTLS handshake messages are also assigned sequence numbers to enable
+   Message sequence numbers were added to the DTLS handshake to enable
    reassembly in the correct order in case datagrams are lost or reordered.
 
 3. During the handshake, messages are implicitly acknowledged by other handshake
@@ -204,13 +204,13 @@ TLS cannot be used directly in datagram environments for the following five reas
    DTLS adds an acknowledgment message to enable better loss recovery.
 
 4. Handshake messages are potentially larger than can be contained in a single
-   datagram.  DTLS adds fields to handshake messages to support fragmentation
+   datagram.  DTLS added fields to handshake messages to support fragmentation
    and reassembly.
 
 5. Datagram transport protocols, like UDP, are susceptible to abusive behavior
-   effecting denial of service attacks against nonparticipants.  DTLS adds a
-   return-routability check that uses the TLS HelloRetryRequest message (see
-   {{dos}} for details).
+   effecting denial of service attacks against nonparticipants.  DTLS added a
+   return-routability check and DTLS 1.3 uses the TLS 1.3 HelloRetryRequest message 
+   (see {{dos}} for details).
 
 ##  Packet Loss
 
@@ -257,7 +257,7 @@ message it expects.  If it is, then it processes it.  If not, it
 queues it for future handling once all previous messages have been
 received.
 
-##  Message Size
+##  Fragmentation
 
 TLS and DTLS handshake messages can be quite large (in theory up to
 2^24-1 bytes, in practice many kilobytes).  By contrast, UDP
@@ -326,7 +326,7 @@ meaning of the fields is unchanged from previous TLS / DTLS versions.
         opaque encrypted_record[length];
     } DTLSCiphertext;
 ~~~
-{: #dtls-record title="DTLS 1.3 Record Format"}
+{: #dtls-record title="DTLS 1.3 Record Formats"}
 
 legacy_record_version
 : This value MUST be set to {254, 253} for all records other
@@ -336,13 +336,11 @@ legacy_record_version
   for the rationale for this.
 
 unified_hdr:
-: The unified_hdr is a field of variable length, as shown in {{cid_hdr}}.
+: The unified header (unified_hdr) is a structure of variable length, as shown in {{cid_hdr}}.
 
 encrypted_record:
 : The AEAD-encrypted form of the serialized DTLSInnerPlaintext structure.
 {:br}
-
-The DTLSCiphertext header is tightly bit-packed, as shown below:
 
 ~~~
 %%% Record Layer
@@ -362,10 +360,10 @@ The DTLSCiphertext header is tightly bit-packed, as shown below:
     | (if present)  |
     +-+-+-+-+-+-+-+-+
 ~~~
-{: #cid_hdr title="DTLS 1.3 CipherText Header"}
+{: #cid_hdr title="DTLS 1.3 Unified Header"}
 
 Fixed Bits:
-: The three high bits of the first byte of the DTLSCiphertext header are set to
+: The three high bits of the first byte of the unified header are set to
   001. This ensures that the value will fit within the DTLS region when
   multiplexing is performed as described in {{?RFC7983}}. It also ensures
   that distinguishing encrypted DTLS 1.3 records from encrypted DTLS 1.2 
@@ -402,7 +400,7 @@ As with previous versions of DTLS, multiple DTLSPlaintext
 and DTLSCiphertext records can be included in the same
 underlying transport datagram.
 
-{{hdr_examples}} illustrates different record layer header types.
+{{hdr_examples}} illustrates different record headers.
 
 ~~~
  0 1 2 3 4 5 6 7       0 1 2 3 4 5 6 7       0 1 2 3 4 5 6 7
@@ -434,7 +432,7 @@ underlying transport datagram.
  DTLSPlaintext
    Structure
 ~~~
-{: #hdr_examples title="Header Examples"}
+{: #hdr_examples title="DTLS 1.3 Header Examples"}
 
 The length field MAY be omitted by clearing the L bit, which means that the
 record consumes the entire rest of the datagram in the lower
