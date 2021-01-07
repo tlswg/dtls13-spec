@@ -489,7 +489,8 @@ protected portion.
 deprotection, as described in {{handling-invalid-records}}.
 
 {{demux}} shows this demultiplexing procedure graphically 
-taking DTLS 1.3 and earlier versions of DTLS into account. 
+taking DTLS 1.3 and earlier versions of DTLS into account.
+
 ~~~
              +----------------+
              | Outer Content  |
@@ -527,7 +528,7 @@ packet  -->  |   OCT == 25   -+--> DTLSCipherText with CID (DTLS 1.2)
                             |                |
                             +----------------+
 ~~~
-{: #demux title="Demultiplexing of DTLS 1.2 and DTLS 1.3 Records"}
+{: #demux title="Demultiplexing DTLS 1.2 and DTLS 1.3 Records"}
 
 
 ## Sequence Number and Epoch
