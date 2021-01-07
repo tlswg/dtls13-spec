@@ -659,7 +659,7 @@ Multiple DTLS records MAY be placed in a single datagram.  Records are encoded
 consecutively.  The length field from DTLS records containing that field can be
 used to determine the boundaries between records.  The final record in a
 datagram can omit the length field.  The first byte of the datagram payload MUST
-be the beginning of a record.  Records MUST NOT span datagrams.
+be the beginning of a record.
 
 DTLS records without CIDs do not contain any association
 identifiers and applications must arrange to multiplex between associations.
