@@ -204,7 +204,7 @@ TLS cannot be used directly in datagram environments for the following five reas
    DTLS adds an acknowledgment message to enable better loss recovery.
 
 4. Handshake messages are potentially larger than can be contained in a single
-   datagram.  DTLS added fields to handshake messages to support fragmentation
+   datagram.  DTLS adds fields to handshake messages to support fragmentation
    and reassembly.
 
 5. Datagram transport protocols, like UDP, are susceptible to abusive behavior
