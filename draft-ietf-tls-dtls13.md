@@ -1139,8 +1139,7 @@ DTLS provides a mechanism for fragmenting a handshake message over a
 number of records, each of which can be transmitted in separate datagrams, thus
 avoiding IP fragmentation.
 
-In case where a handshake message has to be fragmented the following procedure 
-is used. When transmitting the handshake message, the sender divides the
+When transmitting the handshake message, the sender divides the
 message into a series of N contiguous data ranges. The ranges MUST NOT
 overlap.  The sender then creates N handshake messages, all with the
 same message_seq value as the original handshake message.  Each new
