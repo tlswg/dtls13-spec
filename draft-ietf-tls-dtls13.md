@@ -1132,7 +1132,7 @@ extensions:
 
 ##  Handshake Message Fragmentation and Reassembly
 
-As described in {{transport-layer-mapping}} a one or more handshake
+As described in {{transport-layer-mapping}} one or more handshake
 messages may be carried in a single datagram. However, handshake messages are
 potentially bigger than the size allowed by the underlying datagram transport. 
 Therefore, DTLS provides a mechanism for fragmenting a handshake message over a
