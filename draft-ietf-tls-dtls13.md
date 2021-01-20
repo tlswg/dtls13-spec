@@ -1564,7 +1564,9 @@ which would ordinarily issue an alert SHOULD generate a new alert
 message if the offending record is received again (e.g., as a
 retransmitted handshake message).  Implementations SHOULD detect when
 a peer is persistently sending bad messages and terminate the local
-connection state after such misbehavior is detected.
+connection state after such misbehavior is detected. Note that alerts
+are not reliably transmitted; implementation SHOULD NOT depend on
+receiving alerts in order to signal errors or connection closure.
 
 ##  Establishing New Associations with Existing Parameters
 
