@@ -641,7 +641,7 @@ tag and need no padding. However, some algorithms such as
 TLS_AES_128_CCM_8_SHA256 have a shorter authentication tag and may require padding
 for short inputs.
 
-Future cipher suites which are not based on AES or ChaCha20 MUST define
+Future cipher suites, which are not based on AES or ChaCha20, MUST define
 their own record sequence number encryption in order to be used with
 DTLS.
 
