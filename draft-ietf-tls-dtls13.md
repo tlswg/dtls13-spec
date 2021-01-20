@@ -2154,8 +2154,7 @@ however, several differences:
 
   * In both versions of DTLS extension negotiation is used to agree on the use of the CID 
 feature and the CID values. In both versions the CID is carried in the DTLS record header (if negotiated).
-However, the way the CID is included in the record header differs between the two versions, which 
-changes how the record payload protection is used.
+However, the way the CID is included in the record header differs between the two versions.
   
   * The use of the Post-Handshake message allows the client and the server
 to update their CIDs and those values are exchanged with confidentiality
