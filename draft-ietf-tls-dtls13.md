@@ -1131,7 +1131,11 @@ random:
 : Same as for TLS 1.3.
 
 legacy_session_id:
-: Same as for TLS 1.3.
+: Versions of TLS and DTLS before version 1.3 supported a "session resumption" 
+feature which has been merged with pre-shared keys in version 1.3.  A client 
+which has a cached session ID set by a pre-DTLS 1.3 server SHOULD set this
+field to that value. Otherwise, it MUST be set as a zero-length vector
+(i.e., a zero-valued single byte length field).
 
 legacy_cookie:
 : A DTLS 1.3-only client MUST set the legacy_cookie field to zero length.
