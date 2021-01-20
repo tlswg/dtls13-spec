@@ -465,7 +465,7 @@ This 64-bit value is used in the ACK message as well as in the "record_sequence_
 input to the AEAD function.
 
 The entire header value shown in {{hdr_examples}} (but prior to record number
-encryption (see {{rne}}) is used as as the additional data value for the AEAD
+encryption, see {{rne}}) is used as as the additional data value for the AEAD
 function. For instance, if the minimal variant is used,
 the AAD is 2 octets long. Note that this design is different from the additional data
 calculation for DTLS 1.2 and for DTLS 1.2 with Connection ID.
@@ -644,7 +644,7 @@ tag and need no padding. However, some algorithms such as
 TLS_AES_128_CCM_8_SHA256 have a shorter authentication tag and may require padding
 for short inputs.
 
-Future cipher suites which are not based on AES or ChaCha20 MUST define
+Future cipher suites, which are not based on AES or ChaCha20, MUST define
 their own record sequence number encryption in order to be used with
 DTLS.
 
@@ -1254,23 +1254,25 @@ is received. (See {{dtls-epoch}} for the definitions of each epoch.)
 
 DTLS handshake messages are grouped into a series of message flights. A flight starts with the
 handshake message transmission of one peer and ends with the expected response from the
-other peer. Table {{tab-flights}} contains a complete list of message combinations that consitute flights.
+other peer. {{tab-flights}} contains a complete list of message combinations that consitute flights.
 
 | Note | Client | Server | Handshake Messages |
 |-----+--------+--------+------------------ |
 |     |    x   |        | ClientHello |
-| *   |        |    x   | HelloRetryRequest |
-|     |        |    x   | ServerHello, EncryptedExtensions, CertificateRequest*, Certificate*, CertificateVerify*, Finished |
-| ** |    x   |        | Certificate*, CertificateVerify*, Finished |
+|     |        |    x   | HelloRetryRequest |
+|     |        |    x   | ServerHello, EncryptedExtensions, CertificateRequest, Certificate, CertificateVerify, Finished |
+| 1 |    x   |        | Certificate, CertificateVerify, Finished |
 |     |        |    x   | ACK |
-| ** |        |    x   | NewSessionTicket |
+| 1 |        |    x   | NewSessionTicket |
 {: #tab-flights title="Flight Handshake Message Combinations."}
 
-Remarks:
-* The HelloRetryRequest shown in is an optional message sent by the server.
-** When a handshake flight is sent without any expected response as with
-   the client's final flight or NewSessionTicket, the peer must
-   acknowledge the peer's flight.
+Remarks: 
+
+- {{tab-flights}} does not highlight any of the optional messages. 
+
+- Regarding note (1): When a handshake flight is sent without any expected response, as it is the case with
+   the client's final flight or with the NewSessionTicket message, the flight must be
+   acknowledged with an ACK message.
 
 Below are several example message exchange illustrating the flight concept.
 
@@ -2453,6 +2455,24 @@ IETF Drafts
 
 draft-40
 - Clarified encrypted_record structure in DTLS 1.3 record layer 
+- Added description of the demultiplexing process
+- Added text about the DTLS 1.2 and DTLS 1.3 CID mechanism
+- Forbid going from an empty CID to a non-empty CID
+- Add warning about certificates and congestion
+- Use DTLS style version values, even for DTLS 1.3
+- Describe how to distinguish DTLS 1.2 and DTLS 1.3 connections
+- Updated examples
+- Included editorial improvements from Ben Kaduk
+- Removed stale text about out-of-epoch records
+- Added clarifications around when ACKs are sent
+- Noted that alerts are unreliable
+- Clarify when you can reset the timer
+- Indicated that records with bogus epochs should be discarded
+- Relax age out text
+- Updates to cookie text 
+- Require that cipher suites define a record number encryption algorithm
+- Clean up use of connection and association
+- Reference tls-old-versions-deprecate
 
 draft-39
 - Updated Figure 4 due to misalignment with Figure 3 content
