@@ -2451,7 +2451,7 @@ understanding of the constraints imposed on a specific usage of DTLS.
 
 RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
-(*) indicates aw ire format change.
+(*) indicates a change that may affect interoperability.
 
 IETF Drafts
 
