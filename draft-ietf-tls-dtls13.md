@@ -208,7 +208,7 @@ TLS cannot be used directly in datagram environments for the following five reas
    and reassembly.
 
 5. Datagram transport protocols, like UDP, are susceptible to abusive behavior
-   effecting denial of service attacks against nonparticipants.  DTLS added a
+   effecting denial of service attacks against nonparticipants.  DTLS adds a
    return-routability check and DTLS 1.3 uses the TLS 1.3 HelloRetryRequest message 
    (see {{dos}} for details).
 
