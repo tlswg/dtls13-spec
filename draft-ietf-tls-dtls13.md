@@ -305,7 +305,6 @@ The DTLS record formats are shown below. Unless explicitly stated the
 meaning of the fields is unchanged from previous TLS / DTLS versions.
 
 ~~~
-%%% Record Layer
     struct {
         ContentType type;
         ProtocolVersion legacy_record_version;
@@ -343,7 +342,6 @@ encrypted_record:
 {:br}
 
 ~~~
-%%% Record Layer
     0 1 2 3 4 5 6 7
     +-+-+-+-+-+-+-+-+
     |0|0|1|C|S|L|E E|
@@ -454,7 +452,6 @@ When expanded, the epoch and sequence number can be combined into an
 unpacked RecordNumber structure, as shown below:
 
 ~~~
-%%% Record Layer
     struct {
         uint16 epoch;
         uint48 sequence_number;
@@ -1055,7 +1052,6 @@ In order to support message loss, reordering, and message
 fragmentation, DTLS modifies the TLS 1.3 handshake header:
 
 ~~~
-%%% Handshake Protocol
     enum {
         hello_request_RESERVED(0),
         client_hello(1),
@@ -1139,7 +1135,6 @@ The format of the ClientHello used by a DTLS 1.3 client differs from the
 TLS 1.3 ClientHello format as shown below.
 
 ~~~
-%%% Handshake Protocol
     uint16 ProtocolVersion;
     opaque Random[32];
 
@@ -1254,23 +1249,25 @@ is received. (See {{dtls-epoch}} for the definitions of each epoch.)
 
 DTLS handshake messages are grouped into a series of message flights. A flight starts with the
 handshake message transmission of one peer and ends with the expected response from the
-other peer. Table {{tab-flights}} contains a complete list of message combinations that consitute flights.
+other peer. {{tab-flights}} contains a complete list of message combinations that consitute flights.
 
 | Note | Client | Server | Handshake Messages |
 |-----+--------+--------+------------------ |
 |     |    x   |        | ClientHello |
-| *   |        |    x   | HelloRetryRequest |
-|     |        |    x   | ServerHello, EncryptedExtensions, CertificateRequest*, Certificate*, CertificateVerify*, Finished |
-| ** |    x   |        | Certificate*, CertificateVerify*, Finished |
+|     |        |    x   | HelloRetryRequest |
+|     |        |    x   | ServerHello, EncryptedExtensions, CertificateRequest, Certificate, CertificateVerify, Finished |
+| 1 |    x   |        | Certificate, CertificateVerify, Finished |
 |     |        |    x   | ACK |
-| ** |        |    x   | NewSessionTicket |
+| 1 |        |    x   | NewSessionTicket |
 {: #tab-flights title="Flight Handshake Message Combinations."}
 
-Remarks:
-* The HelloRetryRequest shown in is an optional message sent by the server.
-** When a handshake flight is sent without any expected response as with
-   the client's final flight or NewSessionTicket, the peer must
-   acknowledge the peer's flight.
+Remarks: 
+
+- {{tab-flights}} does not highlight any of the optional messages. 
+
+- Regarding note (1): When a handshake flight is sent without any expected response, as it is the case with
+   the client's final flight or with the NewSessionTicket message, the flight must be
+   acknowledged with an ACK message.
 
 Below are several example message exchange illustrating the flight concept.
 
@@ -1830,7 +1827,6 @@ to the handshake transcript. Note that ACKs can still be
 sent in the same UDP datagram as handshake records.
 
 ~~~
-%%% ACKs
     struct {
         RecordNumber record_numbers<0..2^16-1>;
     } ACK;
@@ -2073,7 +2069,6 @@ can send a new CID which it wishes the other side to use
 in a NewConnectionId message.
 
 ~~~
-%%% Connection ID Management
     enum {
         cid_immediate(0), cid_spare(1), (255)
     } ConnectionIdUsage;
@@ -2110,7 +2105,6 @@ Implementations SHOULD use a new CID whenever sending on a new path,
 and SHOULD request new CIDs for this purpose if path changes are anticipated.
 
 ~~~
-%%% Connection ID Management
     struct {
       uint8 num_cids;
     } RequestConnectionId;
