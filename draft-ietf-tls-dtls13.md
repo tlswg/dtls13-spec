@@ -195,7 +195,7 @@ TLS cannot be used directly in datagram environments for the following five reas
 
 2. The TLS handshake is a lock-step cryptographic protocol.  Messages must be
    transmitted and received in a defined order; any other order is an error.
-   Message sequence numbers were added to the DTLS handshake to enable
+   The DTLS handshake includes message sequence numbers to enable
    reassembly in the correct order in case datagrams are lost or reordered.
 
 3. During the handshake, messages are implicitly acknowledged by other handshake
