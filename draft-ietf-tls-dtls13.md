@@ -472,10 +472,12 @@ function. For instance, if the minimal variant is used,
 the AAD is 2 octets long. Note that this design is different from the additional data
 calculation for DTLS 1.2 and for DTLS 1.2 with Connection ID.
 
-## Determining the Header Format
+## Demultiplexing DTLS Records
 
-Implementations can distinguish the two header formats by examining
-the first byte:
+DTLS 1.3 uses a variable length record format and hence the 
+demultiplexing process is more complex since more header formats
+need to be distinguished. Implementations can demultiplex DTLS 1.3 records 
+by examining the first byte as follows:
 
 * If the first byte is alert(21), handshake(22), or ack(proposed, 26),
 the record MUST be interpreted as a DTLSPlaintext record.
@@ -488,6 +490,49 @@ protected portion.
 
 * Otherwise, the record MUST be rejected as if it had failed
 deprotection, as described in {{handling-invalid-records}}.
+
+{{demux}} shows this demultiplexing procedure graphically 
+taking DTLS 1.3 and earlier versions of DTLS into account.
+
+~~~
+             +----------------+
+             | Outer Content  |
+             |   Type (OCT)   |
+             |                |
+             |   OCT == 20   -+--> ChangeCipherSpec (DTLS <1.3)
+             |   OCT == 21   -+--> Alert (Plaintext)
+             |   OCT == 22   -+--> Handshake (Plaintext)
+             |   OCT == 23   -+--> Application Data (DTLS <1.3)
+             |   OCT == 24   -+--> Heartbeat (DTLS <1.3)
+packet  -->  |   OCT == 25   -+--> DTLSCipherText with CID (DTLS 1.2)
+             |   OCT == 26   -+--> ACK (DTLS 1.3, Plaintext)
+             |                |
+             |                |   /+----------------+\
+             | 31 < OCT < 64 -+--> |DTLS Ciphertext |
+             |                |    |(header bits    |
+             |      else      |    | start with 001)|
+             |       |        |   /+-------+--------+\
+             +-------+--------+            |
+                     |                     |
+                     v          Decryption |
+               +---------+          +------+
+               |  Reject |          |
+               +---------+          v
+                            +----------------+
+                            | Decrypted      |
+                            | Content Type   |
+                            | (DCT)          |
+                            |                |
+                            |     DCT == 21 -+--> Alert
+                            |     DCT == 22 -+--> Handshake
+                            |     DCT == 23 -+--> Application Data
+                            |     DCT == 24 -+--> Heartbeat
+                            |     DCT == 26 -+--> ACK
+                            |                |
+                            +----------------+
+~~~
+{: #demux title="Demultiplexing DTLS 1.2 and DTLS 1.3 Records"}
+
 
 ## Sequence Number and Epoch
 
