@@ -1687,12 +1687,9 @@ protocol exchange to allow identification of the correct cipher state:
 
 Using these reserved epoch values a receiver knows what cipher state
 has been used to encrypt and integrity protect a
-message. Implementations that receive a payload with an epoch value
-for which no corresponding cipher state can be determined MUST
-generate a "unexpected_message" alert. For example, if a client incorrectly
-uses epoch value 5 when sending early application data in a 0-RTT
-exchange. A server will not be able to compute the appropriate keys
-and will therefore have to respond with an alert.
+message. Implementations that receive a record with an epoch value
+for which no corresponding cipher state can be determined SHOULD
+handle it as a record which fails deprotection.
 
 Note that epoch values do not wrap. If a DTLS implementation would
 need to wrap the epoch value, it MUST terminate the connection.
