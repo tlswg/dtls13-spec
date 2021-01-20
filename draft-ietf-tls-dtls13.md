@@ -370,7 +370,7 @@ Fixed Bits:
   multiplexing is performed as described in {{?RFC7983}}. It also ensures
   that distinguishing encrypted DTLS 1.3 records from encrypted DTLS 1.2 
   records is possible when they are carried on the same host/port quartet;
-  such multiplexing is only possible when connection IDs {{I-D.ietf-tls-dtls-connection-id}}
+  such multiplexing is only possible when CIDs {{I-D.ietf-tls-dtls-connection-id}}
   are in use, in which case DTLS 1.2 records will have the content type tls12_cid (25).
 
 C:
@@ -2233,9 +2233,13 @@ Unlike TLS implementations, DTLS implementations SHOULD NOT respond
 to invalid records by terminating the connection.
 
 The security and privacy properties of the CID for DTLS 1.3 builds
-on top of what is described in {{I-D.ietf-tls-dtls-connection-id}}. There are,
-however, several improvements:
+on top of what is described for DTLS 1.2 in {{I-D.ietf-tls-dtls-connection-id}}. There are,
+however, several differences:
 
+  * In both versions of DTLS extension negotiation is used to agree on the use of the CID 
+feature and the CID values. In both versions the CID is carried in the DTLS record header (if negotiated).
+However, the way the CID is included in the record header differs between the two versions.
+  
   * The use of the Post-Handshake message allows the client and the server
 to update their CIDs and those values are exchanged with confidentiality
 protection.
