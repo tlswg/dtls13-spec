@@ -1135,7 +1135,7 @@ extensions:
 As described in {{transport-layer-mapping}} one or more handshake
 messages may be carried in a single datagram. However, handshake messages are
 potentially bigger than the size allowed by the underlying datagram transport. 
-Therefore, DTLS provides a mechanism for fragmenting a handshake message over a
+DTLS provides a mechanism for fragmenting a handshake message over a
 number of records, each of which can be transmitted in separate datagrams, thus
 avoiding IP fragmentation.
 
