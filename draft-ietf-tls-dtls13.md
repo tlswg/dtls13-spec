@@ -674,16 +674,19 @@ protocols. In particular:
   upper layer protocol MUST NOT write any record that exceeds the
   maximum record size of 2^14 bytes.
 
+The DTLS record layer SHOULD also allow the upper layer protocol to
+discover the amount of record expansion expected by the DTLS
+processing; alternately it MAY report PMTU estimates minus the
+estimated expansion from the transport layer and DTLS record
+framing.
+
 Note that DTLS does not defend against spoofed ICMP messages;
 implementations SHOULD ignore any such messages that indicate
 PMTUs below the IPv4 and IPv6 minimums of 576 and 1280 bytes
 respectively
 
-The DTLS record layer SHOULD allow the upper layer protocol to
-discover the amount of record expansion expected by the DTLS
-processing.
-
-If there is a transport protocol indication (either via ICMP or via a
+If there is a transport protocol indication that the PMTU was exceeded
+(either via ICMP or via a
 refusal to send the datagram as in Section 14 of {{RFC4340}}), then the
 DTLS record layer MUST inform the upper layer protocol of the error.
 
@@ -708,8 +711,8 @@ discovery.  In order to allow connections under these circumstances,
 DTLS implementations SHOULD follow the following rules:
 
 - If the DTLS record layer informs the DTLS handshake layer that a
-  message is too big, it SHOULD immediately attempt to fragment it,
-  using any existing information about the PMTU.
+  message is too big, the handshake layer SHOULD immediately attempt to fragment
+  the message, using any existing information about the PMTU.
 
 - If repeated retransmissions do not result in a response, and the
   PMTU is unknown, subsequent retransmissions SHOULD back off to a
