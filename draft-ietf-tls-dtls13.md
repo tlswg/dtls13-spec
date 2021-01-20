@@ -652,7 +652,7 @@ Note that sequence number encryption is only applied to the DTLSCiphertext
 structure and not to the DTLSPlaintext structure, which also contains a
 sequence number.
 
-##  Transport Layer Mapping
+##  Transport Layer Mapping {#transport-layer-mapping}
 
 DTLS messages MAY be fragmented into multiple DTLS records.
 Each DTLS record MUST fit within a single datagram.  In order to
@@ -1203,11 +1203,11 @@ is set to 0xfefd, indicating DTLS 1.2.
 
 ##  Handshake Message Fragmentation and Reassembly
 
-Each DTLS record MUST fit within a single
-transport layer datagram.  However, handshake messages are
-potentially bigger than the maximum record size.  Therefore, DTLS
-provides a mechanism for fragmenting a handshake message over a
-number of records, each of which can be transmitted separately, thus
+As described in {{transport-layer-mapping}} one or more handshake
+messages may be carried in a single datagram. However, handshake messages are
+potentially bigger than the size allowed by the underlying datagram transport. 
+DTLS provides a mechanism for fragmenting a handshake message over a
+number of records, each of which can be transmitted in separate datagrams, thus
 avoiding IP fragmentation.
 
 When transmitting the handshake message, the sender divides the
@@ -1219,7 +1219,8 @@ contained in previous fragments) and the fragment_length (the length
 of this fragment).  The length field in all messages is the same as
 the length field of the original message.  An unfragmented message is
 a degenerate case with fragment_offset=0 and fragment_length=length.
-Each range MUST be delivered in a single UDP datagram.
+Each handshake message fragment that is placed into a record 
+MUST be delivered in a single UDP datagram.
 
 When a DTLS implementation receives a handshake message fragment corresponding
 to the next expected handshake message sequence number, it
@@ -1234,7 +1235,7 @@ with an "illegal_parameter" alert if the value of a byte changes.
 Note that as with TLS, multiple handshake messages may be placed in
 the same DTLS record, provided that there is room and that they are
 part of the same flight.  Thus, there are two acceptable ways to pack
-two DTLS messages into the same datagram: in the same record or in
+two DTLS handshake messages into the same datagram: in the same record or in
 separate records.
 
 ##  End Of Early Data
