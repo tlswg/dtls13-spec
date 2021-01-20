@@ -2451,15 +2451,17 @@ understanding of the constraints imposed on a specific usage of DTLS.
 
 RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 
+(*) indicates a change that may affect interoperability.
+
 IETF Drafts
 
 draft-40
 - Clarified encrypted_record structure in DTLS 1.3 record layer 
 - Added description of the demultiplexing process
 - Added text about the DTLS 1.2 and DTLS 1.3 CID mechanism
-- Forbid going from an empty CID to a non-empty CID
+- Forbid going from an empty CID to a non-empty CID (*)
 - Add warning about certificates and congestion
-- Use DTLS style version values, even for DTLS 1.3
+- Use DTLS style version values, even for DTLS 1.3 (*)
 - Describe how to distinguish DTLS 1.2 and DTLS 1.3 connections
 - Updated examples
 - Included editorial improvements from Ben Kaduk
