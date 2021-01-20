@@ -1165,11 +1165,15 @@ the length field of the original message.  An unfragmented message is
 a degenerate case with fragment_offset=0 and fragment_length=length.
 Each range MUST be delivered in a single UDP datagram.
 
-When a DTLS implementation receives a handshake message fragment, it
-MUST buffer it until it has the entire handshake message.  DTLS
+When a DTLS implementation receives a handshake message fragment corresponding
+to the next expected handshake message sequence number, it
+MUST buffer it until it has the entire handshake message. DTLS
 implementations MUST be able to handle overlapping fragment ranges.
 This allows senders to retransmit handshake messages with smaller
-fragment sizes if the PMTU estimate changes.
+fragment sizes if the PMTU estimate changes. Senders MUST NOT change 
+handshake message bytes upon retransmission. Receivers MAY check
+that retransmitted bytes are identical and SHOULD abort the handshake
+with an "illegal_parameter" alert if the value of a byte changes.
 
 Note that as with TLS, multiple handshake messages may be placed in
 the same DTLS record, provided that there is room and that they are
