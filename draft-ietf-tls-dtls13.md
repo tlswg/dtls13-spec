@@ -889,9 +889,9 @@ cookie technique used by Photuris {{RFC2522}} and IKE {{RFC7296}}.  When
 the client sends its ClientHello message to the server, the server
 MAY respond with a HelloRetryRequest message. The HelloRetryRequest message,
 as well as the cookie extension, is defined in TLS 1.3.
-The HelloRetryRequest message contains a stateless cookie
-(see {{TLS13}}; section 4.2.2).
-The client MUST retransmit the ClientHello
+The HelloRetryRequest message contains a stateless cookie (see
+{{!TLS13}}; Section 4.2.2).
+The client MUST send a new ClientHello
 with the cookie added as an extension.  The server then verifies the cookie
 and proceeds with the handshake only if it is valid.  This mechanism forces
 the attacker/client to be able to receive the cookie, which makes DoS attacks
@@ -981,6 +981,14 @@ configured not to perform a cookie exchange.  The default SHOULD be
 that the exchange is performed, however.  In addition, the server MAY
 choose not to do a cookie exchange when a session is resumed or, more
 generically, when the DTLS handshake uses a PSK-based key exchange.
+Servers which process 0-RTT requests and send 0.5-RTT responses
+without a cookie exchange risk being used in an amplification attack
+if the size of outgoing messages greatly exceeds the size of those that are received.
+A server SHOULD limit the amount of data it sends toward a client address
+before it verifies that the client is able to receive data at that address.
+A client address is valid after a cookie exchange or handshake completion.
+A server MAY apply a higher limit based on heuristics, such as if the client
+uses the same IP address as the connection on which the cookie was created.
 Clients MUST be prepared to do a cookie exchange with every
 handshake.
 
