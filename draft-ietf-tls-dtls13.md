@@ -2042,9 +2042,14 @@ MUST be used immediately for all future records. If it is set to
 Endpoints SHOULD use receiver-provided CIDs in the order they were provided.
 Endpoints MUST NOT have more than one NewConnectionId message outstanding.
 
-If the client and server have negotiated use of the "connection_id" extension,
-either side can request a new CID using the RequestConnectionId message. In
-general, implementations SHOULD use a new CID whenever sending on a new path,
+Implementations which either did not negotiate the "connection_id" extension
+or which have negotiated receiving an empty CID MUST NOT
+send NewConnectionId. Implementations MUST NOT send RequestConnectionId
+when sending an empty connection ID. Implementations which detect a violation
+of these rules MUST terminate the connection with an "unexpected_message"
+alert.
+
+Implementations SHOULD use a new CID whenever sending on a new path,
 and SHOULD request new CIDs for this purpose if path changes are anticipated.
 
 ~~~
