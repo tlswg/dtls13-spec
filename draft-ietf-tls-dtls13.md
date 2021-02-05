@@ -331,7 +331,7 @@ meaning of the fields is unchanged from previous TLS / DTLS versions.
 legacy_record_version
 : This value MUST be set to {254, 253} for all records other
   than the initial ClientHello (i.e., one not generated after a HelloRetryRequest),
-  where it may also be {254, 254} for compatibility purposes.
+  where it may also be {254, 255} for compatibility purposes.
   It MUST be ignored for all purposes. See {{TLS13}}; Appendix D.1
   for the rationale for this.
 
@@ -989,11 +989,12 @@ message hash for the HelloRetryRequest is done according to the description
 in Section 4.4.1 of {{!TLS13}}.
 
 The handshake transcript is not reset with the second ClientHello
-and a stateless server-cookie implementation requires the transcript or hash
-of the HelloRetryRequest
-to be stored in the cookie, since the initial ClientHello is included in the
+and a stateless server-cookie implementation requires the content or hash
+of the initial ClientHello (and HelloRetryRequest)
+to be stored in the cookie. The initial ClientHello is included in the
 handshake transcript as a synthetic "message_hash" message, so only the hash
-value is needed for the handshake to complete.
+value is needed for the handshake to complete, though the complete
+HelloRetryRequest contents are needed.
 
 When the second ClientHello is received, the server can verify that
 the cookie is valid and that the client can receive packets at the
@@ -1247,7 +1248,7 @@ records have epochs, EndOfEarlyData is not necessary to determine
 when the early data is complete, and because DTLS is lossy,
 attackers can trivially mount the deletion attacks that EndOfEarlyData
 prevents in TLS. Servers SHOULD NOT accept records from epoch 1 indefinitely once they are able to process records from epoch 3. Though reordering of IP packets can result in records from epoch 1 arriving after records from epoch 3, this is not likely to persist for very long relative to the round trip time. Servers could discard epoch 1  keys after the first epoch 3 data arrives, or retain keys for processing epoch 1 data for a short period.
-is received. (See {{dtls-epoch}} for the definitions of each epoch.)
+(See {{dtls-epoch}} for the definitions of each epoch.)
 
 
 ##  DTLS Handshake Flights
@@ -1275,6 +1276,7 @@ Remarks:
    acknowledged with an ACK message.
 
 Below are several example message exchange illustrating the flight concept.
+The notational conventions from {{!RFC8446}} are used.
 
 ~~~
 Client                                             Server
@@ -1978,7 +1980,7 @@ with lossy networks, such as low-power, long range radio networks as well as
 low-power mesh networks, the use of ACKs is recommended.
 
 The use of the ACK for the second case is mandatory for the proper functioning of the
-protocol. For instance, the ACK message sent by the client in Figure 12,
+protocol. For instance, the ACK message sent by the client in Figure 13,
 acknowledges receipt and processing of record 4 (containing the NewSessionTicket
 message) and if it is not sent the server will continue retransmission
 of the NewSessionTicket indefinitely until its transmission cap is reached.
