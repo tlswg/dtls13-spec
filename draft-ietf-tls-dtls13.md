@@ -1852,9 +1852,12 @@ handshake messages which they discard because they are
 not the next expected message.
 
 During the handshake, ACKs only cover the current outstanding flight (this is
-possible because DTLS is generally a lockstep protocol). Thus, an ACK
+possible because DTLS is generally a lockstep protocol). In particular,
+receiving a message from a handshake flight implicitly acknowledges all
+messages from the previous flight(s).  Accordingly, an ACK
 from the server would not cover both the ClientHello and the client's
-Certificate. Implementations can accomplish this by clearing their ACK
+Certificate, because the ClientHello and client Certificate are in different
+flights. Implementations can accomplish this by clearing their ACK
 list upon receiving the start of the next flight.
 
 After the handshake, ACKs SHOULD be sent once for each received
