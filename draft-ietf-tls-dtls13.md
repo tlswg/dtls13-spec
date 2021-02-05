@@ -2447,6 +2447,29 @@ a different target for the advantage an attacker gains based on an
 understanding of the constraints imposed on a specific usage of DTLS.
 
 
+# Implementation Pitfalls
+
+In addition to the aspects of TLS that have been a source of interoperability
+and security problems (Section C.3 of {{TLS13}}), DTLS presents a few new
+potential sources of issues, noted here.
+
+- Do you correctly handle messages received from multiple epochs during a key
+  transition?  This includes locating the correct key as well as performing
+  replay detection, if enabled.
+
+- Do you retransmit handshake messages that are not (implicitly or explicitly)
+  acknowledged ({{timeout-and-retransmission}})?
+
+- Do you correctly handle handshake message fragments received out of order,
+  including receiving fragments of subsequent handshake messages?
+
+- Do you limit how much data you send to a peer before its address is
+  validated?
+
+- Do you verify that the explicit record length is contained within the
+  datagram in which it is contained?
+
+
 # History
 
 RFC EDITOR: PLEASE REMOVE THE THIS SECTION
