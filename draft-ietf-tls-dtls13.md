@@ -2468,8 +2468,11 @@ potential sources of issues, noted here.
 - Do you retransmit handshake messages that are not (implicitly or explicitly)
   acknowledged ({{timeout-and-retransmission}})?
 
-- Do you correctly handle handshake message fragments received out of order,
-  including receiving fragments of subsequent handshake messages?
+- Do you correctly handle handshake message fragments received, including
+  when they are out of order? 
+
+- Do you correctly handle handshake messages received out of order?
+  This may include either buffering or discarding them.
 
 - Do you limit how much data you send to a peer before its address is
   validated?
