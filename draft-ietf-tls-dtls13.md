@@ -2215,6 +2215,31 @@ exchange unless there is good reason to believe that amplification is
 not a threat in their environment.  Clients MUST be prepared to do a
 cookie exchange with every handshake.
 
+Some key properties required of the cookie for the cookie-exchange mechanism
+to be functional are described in Section 3.3 of {{?RFC2522}}:
+
+- the cookie MUST depend on the specific parties (i.e., 5-tuple)
+
+- it MUST NOT be possible for anyone other than the issuing entity to generate
+  cookies that are accepted as valid by that entity.  This typically entails
+  the use of a keyed MAC and secret key.
+
+- cookie generation and verification are triggered by unauthenticated parties,
+  and as such their resource consumption needs to be restrained in order to
+  avoid having the cookie-exchange mechanism itself serve as a DoS vector.
+
+When cookies are generated using a keyed MAC (such as HMAC with a
+cryptographic hash function), it should be possible to rotate the associated
+secret key, so that temporary compromise of the key does not permanently
+compromise the integrity of the cookie-exchange mechanism.  Though this secret
+is not as high-value as, e.g., a session-ticket-encryption key, rotating the
+cookie-generation key on a similar timescale would ensure that the
+key-rotation functionality is exercised regularly and thus in working order.
+
+The cookie exchange provides address validation during the initial handshake.
+DTLS with connection IDs allow for endpoint addresses to change during the
+association; any such updated addresses are not covered by the cookie exchange
+during the handshake.
 DTLS implementations MUST NOT update the address they send to in response
 to packets from a different address unless they first perform some
 reachability test; no such test is defined in this specification. Even
@@ -2232,6 +2257,13 @@ and may not provide replay protection.
 
 Unlike TLS implementations, DTLS implementations SHOULD NOT respond
 to invalid records by terminating the connection.
+
+TLS 1.3 requires replay protection for 0-RTT data (or rather, for connections
+that use 0-RTT data; see Section 8 of {{TLS13}}).  DTLS provides an optional
+per-record replay-protection mechanism, since datagram protocols are
+inherently subject to message reordering and replay.  These two
+replay-protection mechanisms are orthogonal, and neither mechanism meets the
+requirements for the other.
 
 The security and privacy properties of the CID for DTLS 1.3 builds
 on top of what is described for DTLS 1.2 in {{I-D.ietf-tls-dtls-connection-id}}. There are,
