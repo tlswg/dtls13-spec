@@ -778,12 +778,15 @@ rest of this section describes the details of that format.
 Each DTLS record contains a sequence number to provide replay protection.
 Sequence number verification SHOULD be performed using the following
 sliding window procedure, borrowed from Section 3.4.3 of {{RFC4303}}.
+Because each epoch resets the sequence number space, a separate sliding
+window is needed for each epoch.
 
-The received record counter for an association MUST be initialized to
-zero when that association is established. For each received record, the
+The received record counter for an epoch MUST be initialized to
+zero when that epoch is first used. For each received record, the
 receiver MUST verify that the record contains a sequence number that
 does not duplicate the sequence number of any other record received
-during the lifetime of the association. This check SHOULD happen after
+in that epoch during the lifetime of the association.
+This check SHOULD happen after
 deprotecting the record; otherwise the record discard might itself
 serve as a timing channel for the record number. Note that computing
 the full record number from the partial is still a potential timing
@@ -799,7 +802,7 @@ any plausible reordering, which depends on the data rate.
 size.)
 
 The "right" edge of the window represents the highest validated
-sequence number value received on the association.  Records that contain
+sequence number value received in the epoch.  Records that contain
 sequence numbers lower than the "left" edge of the window are
 rejected.  Records falling within the window are checked against a
 list of received records within the window.  An efficient means for
