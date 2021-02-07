@@ -2226,18 +2226,23 @@ cookie exchange with every handshake.
 Some key properties required of the cookie for the cookie-exchange mechanism
 to be functional are described in Section 3.3 of {{?RFC2522}}:
 
-- the cookie MUST depend on the specific parties (i.e., 5-tuple)
+- the cookie MUST depend on the client's address.
 
 - it MUST NOT be possible for anyone other than the issuing entity to generate
   cookies that are accepted as valid by that entity.  This typically entails
-  the use of a keyed MAC and secret key.
+  an integrity check based on a secret key.
 
 - cookie generation and verification are triggered by unauthenticated parties,
   and as such their resource consumption needs to be restrained in order to
   avoid having the cookie-exchange mechanism itself serve as a DoS vector.
 
-When cookies are generated using a keyed MAC (such as HMAC with a
-cryptographic hash function), it should be possible to rotate the associated
+Although the cookie must allow the server to produce the right handshake
+transcript, they SHOULD be constructed so that knowledge of the cookie
+is insufficient to reproduce the ClientHello contents. Otherwise,
+this may create problems with future extensions such as {{?I-D.ietf-tls-esni}}.
+
+When cookies are generated using a keyed authentication mechanism
+it should be possible to rotate the associated
 secret key, so that temporary compromise of the key does not permanently
 compromise the integrity of the cookie-exchange mechanism.  Though this secret
 is not as high-value as, e.g., a session-ticket-encryption key, rotating the
