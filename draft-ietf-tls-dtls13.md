@@ -2336,6 +2336,21 @@ this section focuses on the most important changes only.
   * Added CID functionality
   * Sequence numbers are encrypted.
 
+#  Updates affecting DTLS 1.2
+
+This document defines several changes that optionally affect
+implementations of DTLS 1.2, including those which do not also support
+DTLS 1.3.
+
+  * A version downgrade protection mechanism as described
+    in {{RFC8446}}; Section 4.1.3 and applying to DTLS as
+    described in {{clienthello-message}}.
+
+  * The updates described in {{RFC8446}}; Section 3.
+
+  * The new compliance requirements described in {{RFC8446}}; Section 9.3.
+
+
 #  IANA Considerations
 
 IANA is requested to allocate a new value in the "TLS ContentType"
