@@ -1176,7 +1176,7 @@ legacy_version:
 
 random:
 : Same as for TLS 1.3, except that the downgrade sentinels described
-  in Section 4.1.3 when TLS 1.2 and TLS 1.1 and below are negotiated
+  in Section 4.1.3 of {{RFC8446}} when TLS 1.2 and TLS 1.1 and below are negotiated
   apply to DTLS 1.2 and DTLS 1.0 respectively.
 
 legacy_session_id:
