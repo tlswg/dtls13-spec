@@ -1527,8 +1527,8 @@ of the timer can lead to serious congestion problems, for example if
 many instances of a DTLS time out early and retransmit too quickly on
 a congested link.  Implementations SHOULD use an initial timer value
 of 100 msec (the minimum defined in RFC 6298 {{RFC6298}}) and double
-the value at each retransmission, up to no less than the RFC 6298
-maximum of 60 seconds. Application specific profiles, such as those
+the value at each retransmission, up to no less than 60 seconds
+(the RFC 6298 maximum). Application specific profiles, such as those
 used for the Internet of Things environment, may recommend longer
 timer values. Note that a 100 msec timer is recommended
 rather than the 3-second RFC 6298 default in order to improve latency
