@@ -209,7 +209,7 @@ TLS cannot be used directly in datagram environments for the following five reas
 
 5. Datagram transport protocols, like UDP, are susceptible to abusive behavior
    effecting denial of service attacks against nonparticipants.  DTLS adds a
-   return-routability check and DTLS 1.3 uses the TLS 1.3 HelloRetryRequest message 
+   return-routability check and DTLS 1.3 uses the TLS 1.3 HelloRetryRequest message
    (see {{dos}} for details).
 
 ##  Packet Loss
@@ -366,7 +366,7 @@ Fixed Bits:
 : The three high bits of the first byte of the unified header are set to
   001. This ensures that the value will fit within the DTLS region when
   multiplexing is performed as described in {{?RFC7983}}. It also ensures
-  that distinguishing encrypted DTLS 1.3 records from encrypted DTLS 1.2 
+  that distinguishing encrypted DTLS 1.3 records from encrypted DTLS 1.2
   records is possible when they are carried on the same host/port quartet;
   such multiplexing is only possible when CIDs {{I-D.ietf-tls-dtls-connection-id}}
   are in use, in which case DTLS 1.2 records will have the content type tls12_cid (25).
@@ -472,9 +472,9 @@ calculation for DTLS 1.2 and for DTLS 1.2 with Connection ID.
 
 ## Demultiplexing DTLS Records
 
-DTLS 1.3 uses a variable length record format and hence the 
+DTLS 1.3 uses a variable length record format and hence the
 demultiplexing process is more complex since more header formats
-need to be distinguished. Implementations can demultiplex DTLS 1.3 records 
+need to be distinguished. Implementations can demultiplex DTLS 1.3 records
 by examining the first byte as follows:
 
 * If the first byte is alert(21), handshake(22), or ack(proposed, 26),
@@ -489,7 +489,7 @@ protected portion.
 * Otherwise, the record MUST be rejected as if it had failed
 deprotection, as described in {{handling-invalid-records}}.
 
-{{demux}} shows this demultiplexing procedure graphically 
+{{demux}} shows this demultiplexing procedure graphically
 taking DTLS 1.3 and earlier versions of DTLS into account.
 
 ~~~
@@ -1180,8 +1180,8 @@ random:
   apply to DTLS 1.2 and DTLS 1.0 respectively.
 
 legacy_session_id:
-: Versions of TLS and DTLS before version 1.3 supported a "session resumption" 
-feature which has been merged with pre-shared keys in version 1.3.  A client 
+: Versions of TLS and DTLS before version 1.3 supported a "session resumption"
+feature which has been merged with pre-shared keys in version 1.3.  A client
 which has a cached session ID set by a pre-DTLS 1.3 server SHOULD set this
 field to that value. Otherwise, it MUST be set as a zero-length vector
 (i.e., a zero-valued single byte length field).
@@ -1211,7 +1211,7 @@ is set to 0xfefd, indicating DTLS 1.2.
 
 As described in {{transport-layer-mapping}} one or more handshake
 messages may be carried in a single datagram. However, handshake messages are
-potentially bigger than the size allowed by the underlying datagram transport. 
+potentially bigger than the size allowed by the underlying datagram transport.
 DTLS provides a mechanism for fragmenting a handshake message over a
 number of records, each of which can be transmitted in separate datagrams, thus
 avoiding IP fragmentation.
@@ -1225,7 +1225,7 @@ contained in previous fragments) and the fragment_length (the length
 of this fragment).  The length field in all messages is the same as
 the length field of the original message.  An unfragmented message is
 a degenerate case with fragment_offset=0 and fragment_length=length.
-Each handshake message fragment that is placed into a record 
+Each handshake message fragment that is placed into a record
 MUST be delivered in a single UDP datagram.
 
 When a DTLS implementation receives a handshake message fragment corresponding
@@ -1233,7 +1233,7 @@ to the next expected handshake message sequence number, it
 MUST buffer it until it has the entire handshake message. DTLS
 implementations MUST be able to handle overlapping fragment ranges.
 This allows senders to retransmit handshake messages with smaller
-fragment sizes if the PMTU estimate changes. Senders MUST NOT change 
+fragment sizes if the PMTU estimate changes. Senders MUST NOT change
 handshake message bytes upon retransmission. Receivers MAY check
 that retransmitted bytes are identical and SHOULD abort the handshake
 with an "illegal_parameter" alert if the value of a byte changes.
@@ -1272,9 +1272,9 @@ other peer. {{tab-flights}} contains a complete list of message combinations tha
 | 1 |        |    x   | NewSessionTicket |
 {: #tab-flights title="Flight Handshake Message Combinations."}
 
-Remarks: 
+Remarks:
 
-- {{tab-flights}} does not highlight any of the optional messages. 
+- {{tab-flights}} does not highlight any of the optional messages.
 
 - Regarding note (1): When a handshake flight is sent without any expected response, as it is the case with
    the client's final flight or with the NewSessionTicket message, the flight must be
@@ -2284,10 +2284,10 @@ The security and privacy properties of the CID for DTLS 1.3 builds
 on top of what is described for DTLS 1.2 in {{I-D.ietf-tls-dtls-connection-id}}. There are,
 however, several differences:
 
-  * In both versions of DTLS extension negotiation is used to agree on the use of the CID 
+  * In both versions of DTLS extension negotiation is used to agree on the use of the CID
 feature and the CID values. In both versions the CID is carried in the DTLS record header (if negotiated).
 However, the way the CID is included in the record header differs between the two versions.
-  
+
   * The use of the Post-Handshake message allows the client and the server
 to update their CIDs and those values are exchanged with confidentiality
 protection.
@@ -2335,6 +2335,21 @@ this section focuses on the most important changes only.
   * Optimized record layer encoding and thereby its size
   * Added CID functionality
   * Sequence numbers are encrypted.
+
+#  Updates affecting DTLS 1.2
+
+This document defines several changes that optionally affect
+implementations of DTLS 1.2, including those which do not also support
+DTLS 1.3.
+
+  * A version downgrade protection mechanism as described
+    in {{RFC8446}}; Section 4.1.3 and applying to DTLS as
+    described in {{clienthello-message}}.
+
+  * The updates described in {{RFC8446}}; Section 3.
+
+  * The new compliance requirements described in {{RFC8446}}; Section 9.3.
+
 
 #  IANA Considerations
 
@@ -2508,7 +2523,7 @@ potential sources of issues, noted here.
   acknowledged ({{timeout-and-retransmission}})?
 
 - Do you correctly handle handshake message fragments received, including
-  when they are out of order? 
+  when they are out of order?
 
 - Do you correctly handle handshake messages received out of order?
   This may include either buffering or discarding them.
@@ -2531,7 +2546,7 @@ IETF Drafts
 draft-40
 
 ~~~~
-   - Clarified encrypted_record structure in DTLS 1.3 record layer 
+   - Clarified encrypted_record structure in DTLS 1.3 record layer
    - Added description of the demultiplexing process
    - Added text about the DTLS 1.2 and DTLS 1.3 CID mechanism
    - Forbid going from an empty CID to a non-empty CID (*)
@@ -2546,7 +2561,7 @@ draft-40
    - Clarify when you can reset the timer
    - Indicated that records with bogus epochs should be discarded
    - Relax age out text
-   - Updates to cookie text 
+   - Updates to cookie text
    - Require that cipher suites define a record number encryption algorithm
    - Clean up use of connection and association
    - Reference tls-old-versions-deprecate
