@@ -1460,8 +1460,8 @@ and FINISHED.
 
 In the PREPARING state, the implementation does whatever computations
 are necessary to prepare the next flight of messages.  It then
-buffers them up for transmission (emptying the buffer first) and
-enters the SENDING state.
+buffers them up for transmission (emptying the transmission
+buffer first) and enters the SENDING state.
 
 In the SENDING state, the implementation transmits the buffered
 flight of messages. If the implementation has received one or more
