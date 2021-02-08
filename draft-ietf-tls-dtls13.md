@@ -117,11 +117,11 @@ DTLS 1.0 {{RFC4347}} was originally defined as a delta from TLS 1.1 {{RFC4346}} 
 DTLS 1.2 {{RFC6347}} was defined as a series of deltas to TLS 1.2 {{RFC5246}}.  There
 is no DTLS 1.1; that version number was skipped in order to harmonize version numbers
 with TLS.  This specification describes the most current version of the DTLS protocol
-based on TLS 1.3 {{!TLS13}}.
+based on TLS 1.3 {{!TLS13=RFC8446}}.
 
 Implementations that speak both DTLS 1.2 and DTLS 1.3 can interoperate with those
 that speak only DTLS 1.2 (using DTLS 1.2 of course), just as TLS 1.3 implementations
-can interoperate with TLS 1.2 (see Appendix D of {{!TLS13=RFC8446}} for details).
+can interoperate with TLS 1.2 (see Appendix D of {{!TLS13}} for details).
 While backwards compatibility with DTLS 1.0 is possible the use of DTLS 1.0 is not
 recommended as explained in Section 3.1.2 of RFC 7525 {{RFC7525}} and {{?DEPRECATE=I-D.ietf-tls-oldversions-deprecate}}.
 
@@ -1176,7 +1176,7 @@ legacy_version:
 
 random:
 : Same as for TLS 1.3, except that the downgrade sentinels described
-  in Section 4.1.3 of {{RFC8446}} when TLS 1.2 and TLS 1.1 and below are negotiated
+  in Section 4.1.3 of {{TLS13}} when TLS 1.2 and TLS 1.1 and below are negotiated
   apply to DTLS 1.2 and DTLS 1.0 respectively.
 
 legacy_session_id:
@@ -2343,12 +2343,12 @@ implementations of DTLS 1.2, including those which do not also support
 DTLS 1.3.
 
   * A version downgrade protection mechanism as described
-    in {{RFC8446}}; Section 4.1.3 and applying to DTLS as
+    in {{TLS13}}; Section 4.1.3 and applying to DTLS as
     described in {{clienthello-message}}.
 
-  * The updates described in {{RFC8446}}; Section 3.
+  * The updates described in {{TLS13}}; Section 3.
 
-  * The new compliance requirements described in {{RFC8446}}; Section 9.3.
+  * The new compliance requirements described in {{TLS13}}; Section 9.3.
 
 
 #  IANA Considerations
