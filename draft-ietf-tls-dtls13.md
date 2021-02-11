@@ -2697,6 +2697,12 @@ In addition, we would like to thank:
 ~~~
 
 ~~~
+* Benjamin Kaduk
+  Akamai Technologies
+  kaduk@mit.edu
+~~~
+
+~~~
 * Ilari Liusvaara
   Independent
   ilariliusvaara@welho.com
