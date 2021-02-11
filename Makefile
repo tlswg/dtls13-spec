@@ -1,4 +1,4 @@
-MD_PREPROCESSOR := python mk-appendix.py
+MD_PREPROCESSOR := python3 mk-appendix.py
 include lib/main.mk
 
 lib/main.mk:
