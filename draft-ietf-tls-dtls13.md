@@ -822,7 +822,7 @@ invalid formatting, length, MAC, etc.).  In general, invalid records
 SHOULD be silently discarded, thus preserving the association;
 however, an error MAY be logged for diagnostic purposes.
 Implementations which choose to generate an alert instead, MUST
-generate error alerts to avoid attacks where the attacker
+generate fatal alerts to avoid attacks where the attacker
 repeatedly probes the implementation to see how it responds to
 various types of error.  Note that if DTLS is run over UDP, then any
 implementation which does this will be extremely susceptible to
