@@ -235,11 +235,13 @@ phase of the DTLS handshake:
 
 Once the client has transmitted the ClientHello message, it expects
 to see a HelloRetryRequest or a ServerHello from the server. However, if the
-server's message is lost, the client knows that either the
-ClientHello or the response from the server has been lost and retransmits.
-When the server receives the retransmission, it knows to retransmit.
+timer expires, the client knows that either the
+ClientHello or the response from the server has been lost. The client then 
+retransmits the ClientHello message. When the server receives the retransmission, 
+it knows to retransmit its HelloRetryRequest or ServerHello. 
 
-The server also maintains a retransmission timer and retransmits when
+In addition the client maintaining a retransmission timer, the server 
+also maintains a retransmission timer and retransmits when
 that timer expires.
 
 Note that timeout and retransmission do not apply to the
@@ -269,6 +271,8 @@ handshake message contains both a fragment offset and a fragment
 length.  Thus, a recipient in possession of all bytes of a handshake
 message can reassemble the original unfragmented message.
 
+Relevant to fragmentation is the computation of the path MTU, which is 
+discussed in {{pmtu-issues}}.
 
 ##  Replay Detection
 
@@ -687,7 +691,7 @@ be taken not to overrun the likely congestion window. {{RFC5238}}
 defines a mapping of DTLS to DCCP that takes these issues into account.
 
 
-##  PMTU Issues
+##  PMTU Issues {#pmtu-issues}
 
 In general, DTLS's philosophy is to leave PMTU discovery to the application.
 However, DTLS cannot completely ignore PMTU for three reasons:
@@ -1402,9 +1406,6 @@ followed by an ACK by the other.
 
 DTLS uses a simple timeout and retransmission scheme with the
 state machine shown in {{dtls-timeout-state-machine}}.
-Because DTLS clients send the first message
-(ClientHello), they start in the PREPARING state.  DTLS servers start
-in the WAITING state, but with empty buffers and no retransmit timer.
 
 ~~~
                              +-----------+
