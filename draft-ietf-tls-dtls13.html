@@ -16,12 +16,12 @@ forgery.
        The DTLS 1.3 protocol is intentionally based on the Transport Layer Security (TLS)
 1.3 protocol and provides equivalent security guarantees with the exception of order protection/non-replayability.  Datagram semantics of the underlying transport are preserved by the DTLS protocol. 
     " name="description">
-<meta content="xml2rfc 3.5.0" name="generator">
+<meta content="xml2rfc 3.6.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-tls-dtls13-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.5.0
-    Python 3.8.7
+  xml2rfc 3.6.0
+    Python 3.8.8
     appdirs 1.4.4
     ConfigArgParse 1.2.3
     google-i18n-address 2.4.0
@@ -29,7 +29,7 @@ forgery.
     intervaltree 3.1.0
     Jinja2 2.11.2
     kitchen 1.2.6
-    lxml 4.6.2
+    lxml 4.6.3
     pycountry 20.7.3
     pyflakes 2.2.0
     PyYAML 5.4.1
@@ -825,11 +825,11 @@ address div.right {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">DTLS 1.3</td>
-<td class="right">February 2021</td>
+<td class="right">April 2021</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Rescorla, et al.</td>
-<td class="center">Expires 15 August 2021</td>
+<td class="center">Expires 7 October 2021</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -845,12 +845,12 @@ address div.right {
 <a href="https://www.rfc-editor.org/rfc/rfc6347" class="eref">6347</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2021-02-11" class="published">11 February 2021</time>
+<time datetime="2021-04-05" class="published">5 April 2021</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2021-08-15">15 August 2021</time></dd>
+<dd class="expires"><time datetime="2021-10-07">7 October 2021</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -897,7 +897,7 @@ forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 15 August 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 October 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -937,234 +937,234 @@ forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
 <a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
         </h2>
-<nav class="toc"><ul class="compact toc ulEmpty">
-<li class="compact toc ulEmpty" id="section-toc.1-1.1">
-            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a><a href="#section-toc.1-1.1.1" class="pilcrow">¶</a></p>
+<nav class="toc"><ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a></p>
 </li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-conventions-and-terminology" class="xref">Conventions and Terminology</a><a href="#section-toc.1-1.2.1" class="pilcrow">¶</a></p>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-conventions-and-terminology" class="xref">Conventions and Terminology</a></p>
 </li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-dtls-design-rationale-and-o" class="xref">DTLS Design Rationale and Overview</a><a href="#section-toc.1-1.3.1" class="pilcrow">¶</a></p>
-<ul class="compact toc ulEmpty">
-<li class="compact toc ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-packet-loss" class="xref">Packet Loss</a><a href="#section-toc.1-1.3.2.1.1" class="pilcrow">¶</a></p>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-dtls-design-rationale-and-o" class="xref">DTLS Design Rationale and Overview</a></p>
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-packet-loss" class="xref">Packet Loss</a></p>
 </li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="xref">3.2</a>.  <a href="#name-reordering" class="xref">Reordering</a><a href="#section-toc.1-1.3.2.2.1" class="pilcrow">¶</a></p>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="xref">3.2</a>.  <a href="#name-reordering" class="xref">Reordering</a></p>
 </li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="xref">3.3</a>.  <a href="#name-fragmentation" class="xref">Fragmentation</a><a href="#section-toc.1-1.3.2.3.1" class="pilcrow">¶</a></p>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.3.2.3">
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="xref">3.3</a>.  <a href="#name-fragmentation" class="xref">Fragmentation</a></p>
 </li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.3.2.4">
-                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="xref">3.4</a>.  <a href="#name-replay-detection" class="xref">Replay Detection</a><a href="#section-toc.1-1.3.2.4.1" class="pilcrow">¶</a></p>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.3.2.4">
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="xref">3.4</a>.  <a href="#name-replay-detection" class="xref">Replay Detection</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-the-dtls-record-layer" class="xref">The DTLS Record Layer</a><a href="#section-toc.1-1.4.1" class="pilcrow">¶</a></p>
-<ul class="compact toc ulEmpty">
-<li class="compact toc ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-demultiplexing-dtls-records" class="xref">Demultiplexing DTLS Records</a><a href="#section-toc.1-1.4.2.1.1" class="pilcrow">¶</a></p>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-the-dtls-record-layer" class="xref">The DTLS Record Layer</a></p>
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-demultiplexing-dtls-records" class="xref">Demultiplexing DTLS Records</a></p>
 </li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-sequence-number-and-epoch" class="xref">Sequence Number and Epoch</a><a href="#section-toc.1-1.4.2.2.1" class="pilcrow">¶</a></p>
-<ul class="compact toc ulEmpty">
-<li class="compact toc ulEmpty" id="section-toc.1-1.4.2.2.2.1">
-                    <p id="section-toc.1-1.4.2.2.2.1.1"><a href="#section-4.2.1" class="xref">4.2.1</a>.  <a href="#name-processing-guidelines" class="xref">Processing Guidelines</a><a href="#section-toc.1-1.4.2.2.2.1.1" class="pilcrow">¶</a></p>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-sequence-number-and-epoch" class="xref">Sequence Number and Epoch</a></p>
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.4.2.2.2.1">
+                    <p id="section-toc.1-1.4.2.2.2.1.1"><a href="#section-4.2.1" class="xref">4.2.1</a>.  <a href="#name-processing-guidelines" class="xref">Processing Guidelines</a></p>
 </li>
-                  <li class="compact toc ulEmpty" id="section-toc.1-1.4.2.2.2.2">
-                    <p id="section-toc.1-1.4.2.2.2.2.1"><a href="#section-4.2.2" class="xref">4.2.2</a>.  <a href="#name-reconstructing-the-sequence" class="xref">Reconstructing the Sequence Number and Epoch</a><a href="#section-toc.1-1.4.2.2.2.2.1" class="pilcrow">¶</a></p>
+                  <li class="ulEmpty toc compact" id="section-toc.1-1.4.2.2.2.2">
+                    <p id="section-toc.1-1.4.2.2.2.2.1"><a href="#section-4.2.2" class="xref">4.2.2</a>.  <a href="#name-reconstructing-the-sequence" class="xref">Reconstructing the Sequence Number and Epoch</a></p>
 </li>
-                  <li class="compact toc ulEmpty" id="section-toc.1-1.4.2.2.2.3">
-                    <p id="section-toc.1-1.4.2.2.2.3.1"><a href="#section-4.2.3" class="xref">4.2.3</a>.  <a href="#name-record-number-encryption" class="xref">Record Number Encryption</a><a href="#section-toc.1-1.4.2.2.2.3.1" class="pilcrow">¶</a></p>
+                  <li class="ulEmpty toc compact" id="section-toc.1-1.4.2.2.2.3">
+                    <p id="section-toc.1-1.4.2.2.2.3.1"><a href="#section-4.2.3" class="xref">4.2.3</a>.  <a href="#name-record-number-encryption" class="xref">Record Number Encryption</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-transport-layer-mapping" class="xref">Transport Layer Mapping</a><a href="#section-toc.1-1.4.2.3.1" class="pilcrow">¶</a></p>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.4.2.3">
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-transport-layer-mapping" class="xref">Transport Layer Mapping</a></p>
 </li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.4.2.4">
-                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="xref">4.4</a>.  <a href="#name-pmtu-issues" class="xref">PMTU Issues</a><a href="#section-toc.1-1.4.2.4.1" class="pilcrow">¶</a></p>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.4.2.4">
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="xref">4.4</a>.  <a href="#name-pmtu-issues" class="xref">PMTU Issues</a></p>
 </li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.4.2.5">
-                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="xref">4.5</a>.  <a href="#name-record-payload-protection" class="xref">Record Payload Protection</a><a href="#section-toc.1-1.4.2.5.1" class="pilcrow">¶</a></p>
-<ul class="compact toc ulEmpty">
-<li class="compact toc ulEmpty" id="section-toc.1-1.4.2.5.2.1">
-                    <p id="section-toc.1-1.4.2.5.2.1.1"><a href="#section-4.5.1" class="xref">4.5.1</a>.  <a href="#name-anti-replay" class="xref">Anti-Replay</a><a href="#section-toc.1-1.4.2.5.2.1.1" class="pilcrow">¶</a></p>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.4.2.5">
+                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="xref">4.5</a>.  <a href="#name-record-payload-protection" class="xref">Record Payload Protection</a></p>
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.4.2.5.2.1">
+                    <p id="section-toc.1-1.4.2.5.2.1.1"><a href="#section-4.5.1" class="xref">4.5.1</a>.  <a href="#name-anti-replay" class="xref">Anti-Replay</a></p>
 </li>
-                  <li class="compact toc ulEmpty" id="section-toc.1-1.4.2.5.2.2">
-                    <p id="section-toc.1-1.4.2.5.2.2.1"><a href="#section-4.5.2" class="xref">4.5.2</a>.  <a href="#name-handling-invalid-records" class="xref">Handling Invalid Records</a><a href="#section-toc.1-1.4.2.5.2.2.1" class="pilcrow">¶</a></p>
+                  <li class="ulEmpty toc compact" id="section-toc.1-1.4.2.5.2.2">
+                    <p id="section-toc.1-1.4.2.5.2.2.1"><a href="#section-4.5.2" class="xref">4.5.2</a>.  <a href="#name-handling-invalid-records" class="xref">Handling Invalid Records</a></p>
 </li>
-                  <li class="compact toc ulEmpty" id="section-toc.1-1.4.2.5.2.3">
-                    <p id="section-toc.1-1.4.2.5.2.3.1"><a href="#section-4.5.3" class="xref">4.5.3</a>.  <a href="#name-aead-limits" class="xref">AEAD Limits</a><a href="#section-toc.1-1.4.2.5.2.3.1" class="pilcrow">¶</a></p>
-</li>
-                </ul>
-</li>
-            </ul>
-</li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-the-dtls-handshake-protocol" class="xref">The DTLS Handshake Protocol</a><a href="#section-toc.1-1.5.1" class="pilcrow">¶</a></p>
-<ul class="compact toc ulEmpty">
-<li class="compact toc ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="xref">5.1</a>.  <a href="#name-denial-of-service-counterme" class="xref">Denial-of-Service Countermeasures</a><a href="#section-toc.1-1.5.2.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="xref">5.2</a>.  <a href="#name-dtls-handshake-message-form" class="xref">DTLS Handshake Message Format</a><a href="#section-toc.1-1.5.2.2.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.5.2.3">
-                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="xref">5.3</a>.  <a href="#name-clienthello-message" class="xref">ClientHello Message</a><a href="#section-toc.1-1.5.2.3.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.5.2.4">
-                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="xref">5.4</a>.  <a href="#name-serverhello-message" class="xref">ServerHello Message</a><a href="#section-toc.1-1.5.2.4.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.5.2.5">
-                <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="xref">5.5</a>.  <a href="#name-handshake-message-fragmenta" class="xref">Handshake Message Fragmentation and Reassembly</a><a href="#section-toc.1-1.5.2.5.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.5.2.6">
-                <p id="section-toc.1-1.5.2.6.1"><a href="#section-5.6" class="xref">5.6</a>.  <a href="#name-end-of-early-data" class="xref">End Of Early Data</a><a href="#section-toc.1-1.5.2.6.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.5.2.7">
-                <p id="section-toc.1-1.5.2.7.1"><a href="#section-5.7" class="xref">5.7</a>.  <a href="#name-dtls-handshake-flights" class="xref">DTLS Handshake Flights</a><a href="#section-toc.1-1.5.2.7.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.5.2.8">
-                <p id="section-toc.1-1.5.2.8.1"><a href="#section-5.8" class="xref">5.8</a>.  <a href="#name-timeout-and-retransmission" class="xref">Timeout and Retransmission</a><a href="#section-toc.1-1.5.2.8.1" class="pilcrow">¶</a></p>
-<ul class="compact toc ulEmpty">
-<li class="compact toc ulEmpty" id="section-toc.1-1.5.2.8.2.1">
-                    <p id="section-toc.1-1.5.2.8.2.1.1"><a href="#section-5.8.1" class="xref">5.8.1</a>.  <a href="#name-state-machine" class="xref">State Machine</a><a href="#section-toc.1-1.5.2.8.2.1.1" class="pilcrow">¶</a></p>
-</li>
-                  <li class="compact toc ulEmpty" id="section-toc.1-1.5.2.8.2.2">
-                    <p id="section-toc.1-1.5.2.8.2.2.1"><a href="#section-5.8.2" class="xref">5.8.2</a>.  <a href="#name-timer-values" class="xref">Timer Values</a><a href="#section-toc.1-1.5.2.8.2.2.1" class="pilcrow">¶</a></p>
-</li>
-                  <li class="compact toc ulEmpty" id="section-toc.1-1.5.2.8.2.3">
-                    <p id="section-toc.1-1.5.2.8.2.3.1"><a href="#section-5.8.3" class="xref">5.8.3</a>.  <a href="#name-large-flight-sizes" class="xref">Large Flight Sizes</a><a href="#section-toc.1-1.5.2.8.2.3.1" class="pilcrow">¶</a></p>
-</li>
-                  <li class="compact toc ulEmpty" id="section-toc.1-1.5.2.8.2.4">
-                    <p id="section-toc.1-1.5.2.8.2.4.1"><a href="#section-5.8.4" class="xref">5.8.4</a>.  <a href="#name-state-machine-duplication-f" class="xref">State machine duplication for post-handshake messages</a><a href="#section-toc.1-1.5.2.8.2.4.1" class="pilcrow">¶</a></p>
+                  <li class="ulEmpty toc compact" id="section-toc.1-1.4.2.5.2.3">
+                    <p id="section-toc.1-1.4.2.5.2.3.1"><a href="#section-4.5.3" class="xref">4.5.3</a>.  <a href="#name-aead-limits" class="xref">AEAD Limits</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.5.2.9">
-                <p id="section-toc.1-1.5.2.9.1"><a href="#section-5.9" class="xref">5.9</a>.  <a href="#name-certificateverify-and-finis" class="xref">CertificateVerify and Finished Messages</a><a href="#section-toc.1-1.5.2.9.1" class="pilcrow">¶</a></p>
+            </ul>
 </li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.5.2.10">
-                <p id="section-toc.1-1.5.2.10.1"><a href="#section-5.10" class="xref">5.10</a>. <a href="#name-cryptographic-label-prefix" class="xref">Cryptographic Label Prefix</a><a href="#section-toc.1-1.5.2.10.1" class="pilcrow">¶</a></p>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-the-dtls-handshake-protocol" class="xref">The DTLS Handshake Protocol</a></p>
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="xref">5.1</a>.  <a href="#name-denial-of-service-counterme" class="xref">Denial-of-Service Countermeasures</a></p>
 </li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.5.2.11">
-                <p id="section-toc.1-1.5.2.11.1"><a href="#section-5.11" class="xref">5.11</a>. <a href="#name-alert-messages" class="xref">Alert Messages</a><a href="#section-toc.1-1.5.2.11.1" class="pilcrow">¶</a></p>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="xref">5.2</a>.  <a href="#name-dtls-handshake-message-form" class="xref">DTLS Handshake Message Format</a></p>
 </li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.5.2.12">
-                <p id="section-toc.1-1.5.2.12.1"><a href="#section-5.12" class="xref">5.12</a>. <a href="#name-establishing-new-associatio" class="xref">Establishing New Associations with Existing Parameters</a><a href="#section-toc.1-1.5.2.12.1" class="pilcrow">¶</a></p>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.3">
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="xref">5.3</a>.  <a href="#name-clienthello-message" class="xref">ClientHello Message</a></p>
+</li>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.4">
+                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="xref">5.4</a>.  <a href="#name-serverhello-message" class="xref">ServerHello Message</a></p>
+</li>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.5">
+                <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="xref">5.5</a>.  <a href="#name-handshake-message-fragmenta" class="xref">Handshake Message Fragmentation and Reassembly</a></p>
+</li>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.6">
+                <p id="section-toc.1-1.5.2.6.1"><a href="#section-5.6" class="xref">5.6</a>.  <a href="#name-end-of-early-data" class="xref">End Of Early Data</a></p>
+</li>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.7">
+                <p id="section-toc.1-1.5.2.7.1"><a href="#section-5.7" class="xref">5.7</a>.  <a href="#name-dtls-handshake-flights" class="xref">DTLS Handshake Flights</a></p>
+</li>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.8">
+                <p id="section-toc.1-1.5.2.8.1"><a href="#section-5.8" class="xref">5.8</a>.  <a href="#name-timeout-and-retransmission" class="xref">Timeout and Retransmission</a></p>
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.5.2.8.2.1">
+                    <p id="section-toc.1-1.5.2.8.2.1.1"><a href="#section-5.8.1" class="xref">5.8.1</a>.  <a href="#name-state-machine" class="xref">State Machine</a></p>
+</li>
+                  <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.8.2.2">
+                    <p id="section-toc.1-1.5.2.8.2.2.1"><a href="#section-5.8.2" class="xref">5.8.2</a>.  <a href="#name-timer-values" class="xref">Timer Values</a></p>
+</li>
+                  <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.8.2.3">
+                    <p id="section-toc.1-1.5.2.8.2.3.1"><a href="#section-5.8.3" class="xref">5.8.3</a>.  <a href="#name-large-flight-sizes" class="xref">Large Flight Sizes</a></p>
+</li>
+                  <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.8.2.4">
+                    <p id="section-toc.1-1.5.2.8.2.4.1"><a href="#section-5.8.4" class="xref">5.8.4</a>.  <a href="#name-state-machine-duplication-f" class="xref">State machine duplication for post-handshake messages</a></p>
+</li>
+                </ul>
+</li>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.9">
+                <p id="section-toc.1-1.5.2.9.1"><a href="#section-5.9" class="xref">5.9</a>.  <a href="#name-certificateverify-and-finis" class="xref">CertificateVerify and Finished Messages</a></p>
+</li>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.10">
+                <p id="section-toc.1-1.5.2.10.1"><a href="#section-5.10" class="xref">5.10</a>. <a href="#name-cryptographic-label-prefix" class="xref">Cryptographic Label Prefix</a></p>
+</li>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.11">
+                <p id="section-toc.1-1.5.2.11.1"><a href="#section-5.11" class="xref">5.11</a>. <a href="#name-alert-messages" class="xref">Alert Messages</a></p>
+</li>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.5.2.12">
+                <p id="section-toc.1-1.5.2.12.1"><a href="#section-5.12" class="xref">5.12</a>. <a href="#name-establishing-new-associatio" class="xref">Establishing New Associations with Existing Parameters</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-example-of-handshake-with-t" class="xref">Example of Handshake with Timeout and Retransmission</a><a href="#section-toc.1-1.6.1" class="pilcrow">¶</a></p>
-<ul class="compact toc ulEmpty">
-<li class="compact toc ulEmpty" id="section-toc.1-1.6.2.1">
-                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="xref">6.1</a>.  <a href="#name-epoch-values-and-rekeying" class="xref">Epoch Values and Rekeying</a><a href="#section-toc.1-1.6.2.1.1" class="pilcrow">¶</a></p>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-example-of-handshake-with-t" class="xref">Example of Handshake with Timeout and Retransmission</a></p>
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="xref">6.1</a>.  <a href="#name-epoch-values-and-rekeying" class="xref">Epoch Values and Rekeying</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-ack-message" class="xref">ACK Message</a><a href="#section-toc.1-1.7.1" class="pilcrow">¶</a></p>
-<ul class="compact toc ulEmpty">
-<li class="compact toc ulEmpty" id="section-toc.1-1.7.2.1">
-                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="xref">7.1</a>.  <a href="#name-sending-acks" class="xref">Sending ACKs</a><a href="#section-toc.1-1.7.2.1.1" class="pilcrow">¶</a></p>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-ack-message" class="xref">ACK Message</a></p>
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="xref">7.1</a>.  <a href="#name-sending-acks" class="xref">Sending ACKs</a></p>
 </li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.7.2.2">
-                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-receiving-acks" class="xref">Receiving ACKs</a><a href="#section-toc.1-1.7.2.2.1" class="pilcrow">¶</a></p>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-receiving-acks" class="xref">Receiving ACKs</a></p>
 </li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.7.2.3">
-                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="xref">7.3</a>.  <a href="#name-design-rationale" class="xref">Design Rationale</a><a href="#section-toc.1-1.7.2.3.1" class="pilcrow">¶</a></p>
-</li>
-            </ul>
-</li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-key-updates" class="xref">Key Updates</a><a href="#section-toc.1-1.8.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#section-9" class="xref">9</a>.  <a href="#name-connection-id-updates" class="xref">Connection ID Updates</a><a href="#section-toc.1-1.9.1" class="pilcrow">¶</a></p>
-<ul class="compact toc ulEmpty">
-<li class="compact toc ulEmpty" id="section-toc.1-1.9.2.1">
-                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="xref">9.1</a>.  <a href="#name-connection-id-example" class="xref">Connection ID Example</a><a href="#section-toc.1-1.9.2.1.1" class="pilcrow">¶</a></p>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.7.2.3">
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="xref">7.3</a>.  <a href="#name-design-rationale" class="xref">Design Rationale</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#section-10" class="xref">10</a>. <a href="#name-application-data-protocol" class="xref">Application Data Protocol</a><a href="#section-toc.1-1.10.1" class="pilcrow">¶</a></p>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-key-updates" class="xref">Key Updates</a></p>
 </li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#section-11" class="xref">11</a>. <a href="#name-security-considerations" class="xref">Security Considerations</a><a href="#section-toc.1-1.11.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#section-12" class="xref">12</a>. <a href="#name-changes-since-dtls-12" class="xref">Changes since DTLS 1.2</a><a href="#section-toc.1-1.12.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#section-13" class="xref">13</a>. <a href="#name-updates-affecting-dtls-12" class="xref">Updates affecting DTLS 1.2</a><a href="#section-toc.1-1.13.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.14">
-            <p id="section-toc.1-1.14.1"><a href="#section-14" class="xref">14</a>. <a href="#name-iana-considerations" class="xref">IANA Considerations</a><a href="#section-toc.1-1.14.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.15">
-            <p id="section-toc.1-1.15.1"><a href="#section-15" class="xref">15</a>. <a href="#name-references" class="xref">References</a><a href="#section-toc.1-1.15.1" class="pilcrow">¶</a></p>
-<ul class="compact toc ulEmpty">
-<li class="compact toc ulEmpty" id="section-toc.1-1.15.2.1">
-                <p id="section-toc.1-1.15.2.1.1"><a href="#section-15.1" class="xref">15.1</a>.  <a href="#name-normative-references" class="xref">Normative References</a><a href="#section-toc.1-1.15.2.1.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.15.2.2">
-                <p id="section-toc.1-1.15.2.2.1"><a href="#section-15.2" class="xref">15.2</a>.  <a href="#name-informative-references" class="xref">Informative References</a><a href="#section-toc.1-1.15.2.2.1" class="pilcrow">¶</a></p>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="xref">9</a>.  <a href="#name-connection-id-updates" class="xref">Connection ID Updates</a></p>
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.9.2.1">
+                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="xref">9.1</a>.  <a href="#name-connection-id-example" class="xref">Connection ID Example</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.16">
-            <p id="section-toc.1-1.16.1"><a href="#section-appendix.a" class="xref">Appendix A</a>.  <a href="#name-protocol-data-structures-an" class="xref">Protocol Data Structures and Constant Values</a><a href="#section-toc.1-1.16.1" class="pilcrow">¶</a></p>
-<ul class="compact toc ulEmpty">
-<li class="compact toc ulEmpty" id="section-toc.1-1.16.2.1">
-                <p id="section-toc.1-1.16.2.1.1"><a href="#section-a.1" class="xref">A.1</a>.  <a href="#name-record-layer" class="xref">Record Layer</a><a href="#section-toc.1-1.16.2.1.1" class="pilcrow">¶</a></p>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="xref">10</a>. <a href="#name-application-data-protocol" class="xref">Application Data Protocol</a></p>
 </li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.16.2.2">
-                <p id="section-toc.1-1.16.2.2.1"><a href="#section-a.2" class="xref">A.2</a>.  <a href="#name-handshake-protocol" class="xref">Handshake Protocol</a><a href="#section-toc.1-1.16.2.2.1" class="pilcrow">¶</a></p>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#section-11" class="xref">11</a>. <a href="#name-security-considerations" class="xref">Security Considerations</a></p>
 </li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.16.2.3">
-                <p id="section-toc.1-1.16.2.3.1"><a href="#section-a.3" class="xref">A.3</a>.  <a href="#name-acks" class="xref">ACKs</a><a href="#section-toc.1-1.16.2.3.1" class="pilcrow">¶</a></p>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#section-12" class="xref">12</a>. <a href="#name-changes-since-dtls-12" class="xref">Changes since DTLS 1.2</a></p>
 </li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.16.2.4">
-                <p id="section-toc.1-1.16.2.4.1"><a href="#section-a.4" class="xref">A.4</a>.  <a href="#name-connection-id-management" class="xref">Connection ID Management</a><a href="#section-toc.1-1.16.2.4.1" class="pilcrow">¶</a></p>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.13">
+            <p id="section-toc.1-1.13.1"><a href="#section-13" class="xref">13</a>. <a href="#name-updates-affecting-dtls-12" class="xref">Updates affecting DTLS 1.2</a></p>
 </li>
-            </ul>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.14">
+            <p id="section-toc.1-1.14.1"><a href="#section-14" class="xref">14</a>. <a href="#name-iana-considerations" class="xref">IANA Considerations</a></p>
 </li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.17">
-            <p id="section-toc.1-1.17.1"><a href="#section-appendix.b" class="xref">Appendix B</a>.  <a href="#name-analysis-of-limits-on-ccm-u" class="xref">Analysis of Limits on CCM Usage</a><a href="#section-toc.1-1.17.1" class="pilcrow">¶</a></p>
-<ul class="compact toc ulEmpty">
-<li class="compact toc ulEmpty" id="section-toc.1-1.17.2.1">
-                <p id="section-toc.1-1.17.2.1.1"><a href="#section-b.1" class="xref">B.1</a>.  <a href="#name-confidentiality-limits" class="xref">Confidentiality Limits</a><a href="#section-toc.1-1.17.2.1.1" class="pilcrow">¶</a></p>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.15">
+            <p id="section-toc.1-1.15.1"><a href="#section-15" class="xref">15</a>. <a href="#name-references" class="xref">References</a></p>
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.15.2.1">
+                <p id="section-toc.1-1.15.2.1.1"><a href="#section-15.1" class="xref">15.1</a>.  <a href="#name-normative-references" class="xref">Normative References</a></p>
 </li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.17.2.2">
-                <p id="section-toc.1-1.17.2.2.1"><a href="#section-b.2" class="xref">B.2</a>.  <a href="#name-integrity-limits" class="xref">Integrity Limits</a><a href="#section-toc.1-1.17.2.2.1" class="pilcrow">¶</a></p>
-</li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.17.2.3">
-                <p id="section-toc.1-1.17.2.3.1"><a href="#section-b.3" class="xref">B.3</a>.  <a href="#name-limits-for-aead_aes_128_ccm" class="xref">Limits for AEAD_AES_128_CCM_8</a><a href="#section-toc.1-1.17.2.3.1" class="pilcrow">¶</a></p>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.15.2.2">
+                <p id="section-toc.1-1.15.2.2.1"><a href="#section-15.2" class="xref">15.2</a>.  <a href="#name-informative-references" class="xref">Informative References</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.18">
-            <p id="section-toc.1-1.18.1"><a href="#section-appendix.c" class="xref">Appendix C</a>.  <a href="#name-implementation-pitfalls" class="xref">Implementation Pitfalls</a><a href="#section-toc.1-1.18.1" class="pilcrow">¶</a></p>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.16">
+            <p id="section-toc.1-1.16.1"><a href="#section-appendix.a" class="xref">Appendix A</a>.  <a href="#name-protocol-data-structures-an" class="xref">Protocol Data Structures and Constant Values</a></p>
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.16.2.1">
+                <p id="section-toc.1-1.16.2.1.1"><a href="#section-a.1" class="xref">A.1</a>.  <a href="#name-record-layer" class="xref">Record Layer</a></p>
 </li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.19">
-            <p id="section-toc.1-1.19.1"><a href="#section-appendix.d" class="xref">Appendix D</a>.  <a href="#name-history" class="xref">History</a><a href="#section-toc.1-1.19.1" class="pilcrow">¶</a></p>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.16.2.2">
+                <p id="section-toc.1-1.16.2.2.1"><a href="#section-a.2" class="xref">A.2</a>.  <a href="#name-handshake-protocol" class="xref">Handshake Protocol</a></p>
 </li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.20">
-            <p id="section-toc.1-1.20.1"><a href="#section-appendix.e" class="xref">Appendix E</a>.  <a href="#name-working-group-information" class="xref">Working Group Information</a><a href="#section-toc.1-1.20.1" class="pilcrow">¶</a></p>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.16.2.3">
+                <p id="section-toc.1-1.16.2.3.1"><a href="#section-a.3" class="xref">A.3</a>.  <a href="#name-acks" class="xref">ACKs</a></p>
 </li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.21">
-            <p id="section-toc.1-1.21.1"><a href="#section-appendix.f" class="xref">Appendix F</a>.  <a href="#name-contributors" class="xref">Contributors</a><a href="#section-toc.1-1.21.1" class="pilcrow">¶</a></p>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.16.2.4">
+                <p id="section-toc.1-1.16.2.4.1"><a href="#section-a.4" class="xref">A.4</a>.  <a href="#name-connection-id-management" class="xref">Connection ID Management</a></p>
 </li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.22">
-            <p id="section-toc.1-1.22.1"><a href="#section-appendix.g" class="xref">Appendix G</a>.  <a href="#name-acknowledgements" class="xref">Acknowledgements</a><a href="#section-toc.1-1.22.1" class="pilcrow">¶</a></p>
+            </ul>
 </li>
-          <li class="compact toc ulEmpty" id="section-toc.1-1.23">
-            <p id="section-toc.1-1.23.1"><a href="#section-appendix.h" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a><a href="#section-toc.1-1.23.1" class="pilcrow">¶</a></p>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.17">
+            <p id="section-toc.1-1.17.1"><a href="#section-appendix.b" class="xref">Appendix B</a>.  <a href="#name-analysis-of-limits-on-ccm-u" class="xref">Analysis of Limits on CCM Usage</a></p>
+<ul class="ulEmpty toc compact">
+<li class="ulEmpty toc compact" id="section-toc.1-1.17.2.1">
+                <p id="section-toc.1-1.17.2.1.1"><a href="#section-b.1" class="xref">B.1</a>.  <a href="#name-confidentiality-limits" class="xref">Confidentiality Limits</a></p>
+</li>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.17.2.2">
+                <p id="section-toc.1-1.17.2.2.1"><a href="#section-b.2" class="xref">B.2</a>.  <a href="#name-integrity-limits" class="xref">Integrity Limits</a></p>
+</li>
+              <li class="ulEmpty toc compact" id="section-toc.1-1.17.2.3">
+                <p id="section-toc.1-1.17.2.3.1"><a href="#section-b.3" class="xref">B.3</a>.  <a href="#name-limits-for-aead_aes_128_ccm" class="xref">Limits for AEAD_AES_128_CCM_8</a></p>
+</li>
+            </ul>
+</li>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.18">
+            <p id="section-toc.1-1.18.1"><a href="#section-appendix.c" class="xref">Appendix C</a>.  <a href="#name-implementation-pitfalls" class="xref">Implementation Pitfalls</a></p>
+</li>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.19">
+            <p id="section-toc.1-1.19.1"><a href="#section-appendix.d" class="xref">Appendix D</a>.  <a href="#name-history" class="xref">History</a></p>
+</li>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.20">
+            <p id="section-toc.1-1.20.1"><a href="#section-appendix.e" class="xref">Appendix E</a>.  <a href="#name-working-group-information" class="xref">Working Group Information</a></p>
+</li>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.21">
+            <p id="section-toc.1-1.21.1"><a href="#section-appendix.f" class="xref">Appendix F</a>.  <a href="#name-contributors" class="xref">Contributors</a></p>
+</li>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.22">
+            <p id="section-toc.1-1.22.1"><a href="#section-appendix.g" class="xref">Appendix G</a>.  <a href="#name-acknowledgements" class="xref">Acknowledgements</a></p>
+</li>
+          <li class="ulEmpty toc compact" id="section-toc.1-1.23">
+            <p id="section-toc.1-1.23.1"><a href="#section-appendix.h" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1194,7 +1194,7 @@ maximize the amount of code and infrastructure reuse.<a href="#section-1-4" clas
 DTLS 1.2 <span>[<a href="#RFC6347" class="xref">RFC6347</a>]</span> was defined as a series of deltas to TLS 1.2 <span>[<a href="#RFC5246" class="xref">RFC5246</a>]</span>.  There
 is no DTLS 1.1; that version number was skipped in order to harmonize version numbers
 with TLS.  This specification describes the most current version of the DTLS protocol
-based on TLS 1.3 <span>[<a href="#TLS13" class="xref">TLS13</a>]</span>.<a href="#section-1-5" class="pilcrow">¶</a></p>
+as a delta from TLS 1.3 <span>[<a href="#TLS13" class="xref">TLS13</a>]</span>. It obsoletes DTLS 1.2.<a href="#section-1-5" class="pilcrow">¶</a></p>
 <p id="section-1-6">Implementations that speak both DTLS 1.2 and DTLS 1.3 can interoperate with those
 that speak only DTLS 1.2 (using DTLS 1.2 of course), just as TLS 1.3 implementations
 can interoperate with TLS 1.2 (see Appendix D of <span>[<a href="#TLS13" class="xref">TLS13</a>]</span> for details).
@@ -1239,10 +1239,10 @@ the endpoint that is remote to the primary subject of discussion.<a href="#secti
         <li class="normal" id="section-2-3.11">MSL: Maximum Segment Lifetime<a href="#section-2-3.11" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="section-2-4">The reader is assumed to be familiar with the TLS 1.3 specification since this
-document is defined as a delta from TLS 1.3. As in TLS 1.3 the HelloRetryRequest has
-the same format as a ServerHello message but for convenience we use the term
-HelloRetryRequest throughout this document as if it were a distinct message.<a href="#section-2-4" class="pilcrow">¶</a></p>
+<p id="section-2-4">The reader is assumed to be familiar with the TLS 1.3 specification. 
+As in TLS 1.3 the HelloRetryRequest has the same format as a ServerHello 
+message but for convenience we use the term HelloRetryRequest throughout 
+this document as if it were a distinct message.<a href="#section-2-4" class="pilcrow">¶</a></p>
 <p id="section-2-5">The reader is also as to be familiar with <span>[<a href="#I-D.ietf-tls-dtls-connection-id" class="xref">I-D.ietf-tls-dtls-connection-id</a>]</span>
 as this document applies the CID functionality to DTLS 1.3.<a href="#section-2-5" class="pilcrow">¶</a></p>
 <p id="section-2-6">Figures in this document illustrate various combinations of the DTLS protocol exchanges and the symbols have the following meaning:<a href="#section-2-6" class="pilcrow">¶</a></p>
@@ -3768,11 +3768,11 @@ NewConnectionId (TBD), as defined in this document.  The value for the
 <dl class="references">
 <dt id="CHACHA">[CHACHA]</dt>
         <dd>
-<span class="refAuthor">Nir, Y.</span><span class="refAuthor"> and A. Langley</span>, <span class="refTitle">"ChaCha20 and Poly1305 for IETF Protocols"</span>, <span class="seriesInfo">RFC 8439</span>, <span class="seriesInfo">DOI 10.17487/RFC8439</span>, <time datetime="2018-06" class="refDate">June 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8439">https://www.rfc-editor.org/info/rfc8439</a>&gt;</span>. </dd>
+<span class="refAuthor">Nir, Y.</span> and <span class="refAuthor">A. Langley</span>, <span class="refTitle">"ChaCha20 and Poly1305 for IETF Protocols"</span>, <span class="seriesInfo">RFC 8439</span>, <span class="seriesInfo">DOI 10.17487/RFC8439</span>, <time datetime="2018-06" class="refDate">June 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8439">https://www.rfc-editor.org/info/rfc8439</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-tls-dtls-connection-id">[I-D.ietf-tls-dtls-connection-id]</dt>
         <dd>
-<span class="refAuthor">Rescorla, E.</span><span class="refAuthor">, Tschofenig, H.</span><span class="refAuthor">, and T. Fossati</span>, <span class="refTitle">"Connection Identifiers for DTLS 1.2"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-tls-dtls-connection-id-09</span>, <time datetime="2021-01-17" class="refDate">17 January 2021</time>, <span>&lt;<a href="http://www.ietf.org/internet-drafts/draft-ietf-tls-dtls-connection-id-09.txt">http://www.ietf.org/internet-drafts/draft-ietf-tls-dtls-connection-id-09.txt</a>&gt;</span>. </dd>
+<span class="refAuthor">Rescorla, E.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Fossati, T.</span>, and <span class="refAuthor">A. Kraus</span>, <span class="refTitle">"Connection Identifiers for DTLS 1.2"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-tls-dtls-connection-id-10</span>, <time datetime="2021-03-07" class="refDate">7 March 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-tls-dtls-connection-id-10.txt">https://www.ietf.org/archive/id/draft-ietf-tls-dtls-connection-id-10.txt</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC0768">[RFC0768]</dt>
         <dd>
@@ -3784,7 +3784,7 @@ NewConnectionId (TBD), as defined in this document.  The value for the
 <dd class="break"></dd>
 <dt id="RFC1191">[RFC1191]</dt>
         <dd>
-<span class="refAuthor">Mogul, J.</span><span class="refAuthor"> and S. Deering</span>, <span class="refTitle">"Path MTU discovery"</span>, <span class="seriesInfo">RFC 1191</span>, <span class="seriesInfo">DOI 10.17487/RFC1191</span>, <time datetime="1990-11" class="refDate">November 1990</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc1191">https://www.rfc-editor.org/info/rfc1191</a>&gt;</span>. </dd>
+<span class="refAuthor">Mogul, J.</span> and <span class="refAuthor">S. Deering</span>, <span class="refTitle">"Path MTU discovery"</span>, <span class="seriesInfo">RFC 1191</span>, <span class="seriesInfo">DOI 10.17487/RFC1191</span>, <time datetime="1990-11" class="refDate">November 1990</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc1191">https://www.rfc-editor.org/info/rfc1191</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
@@ -3792,15 +3792,15 @@ NewConnectionId (TBD), as defined in this document.  The value for the
 <dd class="break"></dd>
 <dt id="RFC4443">[RFC4443]</dt>
         <dd>
-<span class="refAuthor">Conta, A.</span><span class="refAuthor">, Deering, S.</span><span class="refAuthor">, and M. Gupta, Ed.</span>, <span class="refTitle">"Internet Control Message Protocol (ICMPv6) for the Internet Protocol Version 6 (IPv6) Specification"</span>, <span class="seriesInfo">STD 89</span>, <span class="seriesInfo">RFC 4443</span>, <span class="seriesInfo">DOI 10.17487/RFC4443</span>, <time datetime="2006-03" class="refDate">March 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4443">https://www.rfc-editor.org/info/rfc4443</a>&gt;</span>. </dd>
+<span class="refAuthor">Conta, A.</span>, <span class="refAuthor">Deering, S.</span>, and <span class="refAuthor">M. Gupta, Ed.</span>, <span class="refTitle">"Internet Control Message Protocol (ICMPv6) for the Internet Protocol Version 6 (IPv6) Specification"</span>, <span class="seriesInfo">STD 89</span>, <span class="seriesInfo">RFC 4443</span>, <span class="seriesInfo">DOI 10.17487/RFC4443</span>, <time datetime="2006-03" class="refDate">March 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4443">https://www.rfc-editor.org/info/rfc4443</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC4821">[RFC4821]</dt>
         <dd>
-<span class="refAuthor">Mathis, M.</span><span class="refAuthor"> and J. Heffner</span>, <span class="refTitle">"Packetization Layer Path MTU Discovery"</span>, <span class="seriesInfo">RFC 4821</span>, <span class="seriesInfo">DOI 10.17487/RFC4821</span>, <time datetime="2007-03" class="refDate">March 2007</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4821">https://www.rfc-editor.org/info/rfc4821</a>&gt;</span>. </dd>
+<span class="refAuthor">Mathis, M.</span> and <span class="refAuthor">J. Heffner</span>, <span class="refTitle">"Packetization Layer Path MTU Discovery"</span>, <span class="seriesInfo">RFC 4821</span>, <span class="seriesInfo">DOI 10.17487/RFC4821</span>, <time datetime="2007-03" class="refDate">March 2007</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4821">https://www.rfc-editor.org/info/rfc4821</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC6298">[RFC6298]</dt>
         <dd>
-<span class="refAuthor">Paxson, V.</span><span class="refAuthor">, Allman, M.</span><span class="refAuthor">, Chu, J.</span><span class="refAuthor">, and M. Sargent</span>, <span class="refTitle">"Computing TCP's Retransmission Timer"</span>, <span class="seriesInfo">RFC 6298</span>, <span class="seriesInfo">DOI 10.17487/RFC6298</span>, <time datetime="2011-06" class="refDate">June 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6298">https://www.rfc-editor.org/info/rfc6298</a>&gt;</span>. </dd>
+<span class="refAuthor">Paxson, V.</span>, <span class="refAuthor">Allman, M.</span>, <span class="refAuthor">Chu, J.</span>, and <span class="refAuthor">M. Sargent</span>, <span class="refTitle">"Computing TCP's Retransmission Timer"</span>, <span class="seriesInfo">RFC 6298</span>, <span class="seriesInfo">DOI 10.17487/RFC6298</span>, <time datetime="2011-06" class="refDate">June 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6298">https://www.rfc-editor.org/info/rfc6298</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
         <dd>
@@ -3819,7 +3819,7 @@ NewConnectionId (TBD), as defined in this document.  The value for the
 <dl class="references">
 <dt id="AEBounds">[AEBounds]</dt>
         <dd>
-<span class="refAuthor">Luykx, A.</span><span class="refAuthor"> and K. Paterson</span>, <span class="refTitle">"Limits on Authenticated Encryption Use in TLS"</span>, <time datetime="2016-03-08" class="refDate">8 March 2016</time>, <span>&lt;<a href="http://www.isg.rhul.ac.uk/~kp/TLS-AEbounds.pdf">http://www.isg.rhul.ac.uk/~kp/TLS-AEbounds.pdf</a>&gt;</span>. </dd>
+<span class="refAuthor">Luykx, A.</span> and <span class="refAuthor">K. Paterson</span>, <span class="refTitle">"Limits on Authenticated Encryption Use in TLS"</span>, <time datetime="2016-03-08" class="refDate">8 March 2016</time>, <span>&lt;<a href="http://www.isg.rhul.ac.uk/~kp/TLS-AEbounds.pdf">http://www.isg.rhul.ac.uk/~kp/TLS-AEbounds.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="CCM-ANALYSIS">[CCM-ANALYSIS]</dt>
         <dd>
@@ -3827,15 +3827,15 @@ NewConnectionId (TBD), as defined in this document.  The value for the
 <dd class="break"></dd>
 <dt id="DEPRECATE">[DEPRECATE]</dt>
         <dd>
-<span class="refAuthor">Moriarty, K.</span><span class="refAuthor"> and S. Farrell</span>, <span class="refTitle">"Deprecating TLSv1.0 and TLSv1.1"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-tls-oldversions-deprecate-12</span>, <time datetime="2021-01-21" class="refDate">21 January 2021</time>, <span>&lt;<a href="http://www.ietf.org/internet-drafts/draft-ietf-tls-oldversions-deprecate-12.txt">http://www.ietf.org/internet-drafts/draft-ietf-tls-oldversions-deprecate-12.txt</a>&gt;</span>. </dd>
+<span class="refAuthor">Moriarty, K.</span> and <span class="refAuthor">S. Farrell</span>, <span class="refTitle">"Deprecating TLS 1.0 and TLS 1.1"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-tls-oldversions-deprecate-12</span>, <time datetime="2021-01-21" class="refDate">21 January 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-tls-oldversions-deprecate-12.txt">https://www.ietf.org/archive/id/draft-ietf-tls-oldversions-deprecate-12.txt</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-tls-esni">[I-D.ietf-tls-esni]</dt>
         <dd>
-<span class="refAuthor">Rescorla, E.</span><span class="refAuthor">, Oku, K.</span><span class="refAuthor">, Sullivan, N.</span><span class="refAuthor">, and C. Wood</span>, <span class="refTitle">"TLS Encrypted Client Hello"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-tls-esni-09</span>, <time datetime="2020-12-16" class="refDate">16 December 2020</time>, <span>&lt;<a href="http://www.ietf.org/internet-drafts/draft-ietf-tls-esni-09.txt">http://www.ietf.org/internet-drafts/draft-ietf-tls-esni-09.txt</a>&gt;</span>. </dd>
+<span class="refAuthor">Rescorla, E.</span>, <span class="refAuthor">Oku, K.</span>, <span class="refAuthor">Sullivan, N.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"TLS Encrypted Client Hello"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-tls-esni-10</span>, <time datetime="2021-03-08" class="refDate">8 March 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-tls-esni-10.txt">https://www.ietf.org/archive/id/draft-ietf-tls-esni-10.txt</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2522">[RFC2522]</dt>
         <dd>
-<span class="refAuthor">Karn, P.</span><span class="refAuthor"> and W. Simpson</span>, <span class="refTitle">"Photuris: Session-Key Management Protocol"</span>, <span class="seriesInfo">RFC 2522</span>, <span class="seriesInfo">DOI 10.17487/RFC2522</span>, <time datetime="1999-03" class="refDate">March 1999</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2522">https://www.rfc-editor.org/info/rfc2522</a>&gt;</span>. </dd>
+<span class="refAuthor">Karn, P.</span> and <span class="refAuthor">W. Simpson</span>, <span class="refTitle">"Photuris: Session-Key Management Protocol"</span>, <span class="seriesInfo">RFC 2522</span>, <span class="seriesInfo">DOI 10.17487/RFC2522</span>, <time datetime="1999-03" class="refDate">March 1999</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2522">https://www.rfc-editor.org/info/rfc2522</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC4303">[RFC4303]</dt>
         <dd>
@@ -3843,15 +3843,15 @@ NewConnectionId (TBD), as defined in this document.  The value for the
 <dd class="break"></dd>
 <dt id="RFC4340">[RFC4340]</dt>
         <dd>
-<span class="refAuthor">Kohler, E.</span><span class="refAuthor">, Handley, M.</span><span class="refAuthor">, and S. Floyd</span>, <span class="refTitle">"Datagram Congestion Control Protocol (DCCP)"</span>, <span class="seriesInfo">RFC 4340</span>, <span class="seriesInfo">DOI 10.17487/RFC4340</span>, <time datetime="2006-03" class="refDate">March 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4340">https://www.rfc-editor.org/info/rfc4340</a>&gt;</span>. </dd>
+<span class="refAuthor">Kohler, E.</span>, <span class="refAuthor">Handley, M.</span>, and <span class="refAuthor">S. Floyd</span>, <span class="refTitle">"Datagram Congestion Control Protocol (DCCP)"</span>, <span class="seriesInfo">RFC 4340</span>, <span class="seriesInfo">DOI 10.17487/RFC4340</span>, <time datetime="2006-03" class="refDate">March 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4340">https://www.rfc-editor.org/info/rfc4340</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC4346">[RFC4346]</dt>
         <dd>
-<span class="refAuthor">Dierks, T.</span><span class="refAuthor"> and E. Rescorla</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.1"</span>, <span class="seriesInfo">RFC 4346</span>, <span class="seriesInfo">DOI 10.17487/RFC4346</span>, <time datetime="2006-04" class="refDate">April 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4346">https://www.rfc-editor.org/info/rfc4346</a>&gt;</span>. </dd>
+<span class="refAuthor">Dierks, T.</span> and <span class="refAuthor">E. Rescorla</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.1"</span>, <span class="seriesInfo">RFC 4346</span>, <span class="seriesInfo">DOI 10.17487/RFC4346</span>, <time datetime="2006-04" class="refDate">April 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4346">https://www.rfc-editor.org/info/rfc4346</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC4347">[RFC4347]</dt>
         <dd>
-<span class="refAuthor">Rescorla, E.</span><span class="refAuthor"> and N. Modadugu</span>, <span class="refTitle">"Datagram Transport Layer Security"</span>, <span class="seriesInfo">RFC 4347</span>, <span class="seriesInfo">DOI 10.17487/RFC4347</span>, <time datetime="2006-04" class="refDate">April 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4347">https://www.rfc-editor.org/info/rfc4347</a>&gt;</span>. </dd>
+<span class="refAuthor">Rescorla, E.</span> and <span class="refAuthor">N. Modadugu</span>, <span class="refTitle">"Datagram Transport Layer Security"</span>, <span class="seriesInfo">RFC 4347</span>, <span class="seriesInfo">DOI 10.17487/RFC4347</span>, <time datetime="2006-04" class="refDate">April 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4347">https://www.rfc-editor.org/info/rfc4347</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC4960">[RFC4960]</dt>
         <dd>
@@ -3863,35 +3863,35 @@ NewConnectionId (TBD), as defined in this document.  The value for the
 <dd class="break"></dd>
 <dt id="RFC5246">[RFC5246]</dt>
         <dd>
-<span class="refAuthor">Dierks, T.</span><span class="refAuthor"> and E. Rescorla</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.2"</span>, <span class="seriesInfo">RFC 5246</span>, <span class="seriesInfo">DOI 10.17487/RFC5246</span>, <time datetime="2008-08" class="refDate">August 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5246">https://www.rfc-editor.org/info/rfc5246</a>&gt;</span>. </dd>
+<span class="refAuthor">Dierks, T.</span> and <span class="refAuthor">E. Rescorla</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.2"</span>, <span class="seriesInfo">RFC 5246</span>, <span class="seriesInfo">DOI 10.17487/RFC5246</span>, <time datetime="2008-08" class="refDate">August 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5246">https://www.rfc-editor.org/info/rfc5246</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC6347">[RFC6347]</dt>
         <dd>
-<span class="refAuthor">Rescorla, E.</span><span class="refAuthor"> and N. Modadugu</span>, <span class="refTitle">"Datagram Transport Layer Security Version 1.2"</span>, <span class="seriesInfo">RFC 6347</span>, <span class="seriesInfo">DOI 10.17487/RFC6347</span>, <time datetime="2012-01" class="refDate">January 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6347">https://www.rfc-editor.org/info/rfc6347</a>&gt;</span>. </dd>
+<span class="refAuthor">Rescorla, E.</span> and <span class="refAuthor">N. Modadugu</span>, <span class="refTitle">"Datagram Transport Layer Security Version 1.2"</span>, <span class="seriesInfo">RFC 6347</span>, <span class="seriesInfo">DOI 10.17487/RFC6347</span>, <time datetime="2012-01" class="refDate">January 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6347">https://www.rfc-editor.org/info/rfc6347</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC7296">[RFC7296]</dt>
         <dd>
-<span class="refAuthor">Kaufman, C.</span><span class="refAuthor">, Hoffman, P.</span><span class="refAuthor">, Nir, Y.</span><span class="refAuthor">, Eronen, P.</span><span class="refAuthor">, and T. Kivinen</span>, <span class="refTitle">"Internet Key Exchange Protocol Version 2 (IKEv2)"</span>, <span class="seriesInfo">STD 79</span>, <span class="seriesInfo">RFC 7296</span>, <span class="seriesInfo">DOI 10.17487/RFC7296</span>, <time datetime="2014-10" class="refDate">October 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7296">https://www.rfc-editor.org/info/rfc7296</a>&gt;</span>. </dd>
+<span class="refAuthor">Kaufman, C.</span>, <span class="refAuthor">Hoffman, P.</span>, <span class="refAuthor">Nir, Y.</span>, <span class="refAuthor">Eronen, P.</span>, and <span class="refAuthor">T. Kivinen</span>, <span class="refTitle">"Internet Key Exchange Protocol Version 2 (IKEv2)"</span>, <span class="seriesInfo">STD 79</span>, <span class="seriesInfo">RFC 7296</span>, <span class="seriesInfo">DOI 10.17487/RFC7296</span>, <time datetime="2014-10" class="refDate">October 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7296">https://www.rfc-editor.org/info/rfc7296</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC7525">[RFC7525]</dt>
         <dd>
-<span class="refAuthor">Sheffer, Y.</span><span class="refAuthor">, Holz, R.</span><span class="refAuthor">, and P. Saint-Andre</span>, <span class="refTitle">"Recommendations for Secure Use of Transport Layer Security (TLS) and Datagram Transport Layer Security (DTLS)"</span>, <span class="seriesInfo">BCP 195</span>, <span class="seriesInfo">RFC 7525</span>, <span class="seriesInfo">DOI 10.17487/RFC7525</span>, <time datetime="2015-05" class="refDate">May 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7525">https://www.rfc-editor.org/info/rfc7525</a>&gt;</span>. </dd>
+<span class="refAuthor">Sheffer, Y.</span>, <span class="refAuthor">Holz, R.</span>, and <span class="refAuthor">P. Saint-Andre</span>, <span class="refTitle">"Recommendations for Secure Use of Transport Layer Security (TLS) and Datagram Transport Layer Security (DTLS)"</span>, <span class="seriesInfo">BCP 195</span>, <span class="seriesInfo">RFC 7525</span>, <span class="seriesInfo">DOI 10.17487/RFC7525</span>, <time datetime="2015-05" class="refDate">May 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7525">https://www.rfc-editor.org/info/rfc7525</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC7924">[RFC7924]</dt>
         <dd>
-<span class="refAuthor">Santesson, S.</span><span class="refAuthor"> and H. Tschofenig</span>, <span class="refTitle">"Transport Layer Security (TLS) Cached Information Extension"</span>, <span class="seriesInfo">RFC 7924</span>, <span class="seriesInfo">DOI 10.17487/RFC7924</span>, <time datetime="2016-07" class="refDate">July 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7924">https://www.rfc-editor.org/info/rfc7924</a>&gt;</span>. </dd>
+<span class="refAuthor">Santesson, S.</span> and <span class="refAuthor">H. Tschofenig</span>, <span class="refTitle">"Transport Layer Security (TLS) Cached Information Extension"</span>, <span class="seriesInfo">RFC 7924</span>, <span class="seriesInfo">DOI 10.17487/RFC7924</span>, <time datetime="2016-07" class="refDate">July 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7924">https://www.rfc-editor.org/info/rfc7924</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC7983">[RFC7983]</dt>
         <dd>
-<span class="refAuthor">Petit-Huguenin, M.</span><span class="refAuthor"> and G. Salgueiro</span>, <span class="refTitle">"Multiplexing Scheme Updates for Secure Real-time Transport Protocol (SRTP) Extension for Datagram Transport Layer Security (DTLS)"</span>, <span class="seriesInfo">RFC 7983</span>, <span class="seriesInfo">DOI 10.17487/RFC7983</span>, <time datetime="2016-09" class="refDate">September 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7983">https://www.rfc-editor.org/info/rfc7983</a>&gt;</span>. </dd>
+<span class="refAuthor">Petit-Huguenin, M.</span> and <span class="refAuthor">G. Salgueiro</span>, <span class="refTitle">"Multiplexing Scheme Updates for Secure Real-time Transport Protocol (SRTP) Extension for Datagram Transport Layer Security (DTLS)"</span>, <span class="seriesInfo">RFC 7983</span>, <span class="seriesInfo">DOI 10.17487/RFC7983</span>, <time datetime="2016-09" class="refDate">September 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7983">https://www.rfc-editor.org/info/rfc7983</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8879">[RFC8879]</dt>
         <dd>
-<span class="refAuthor">Ghedini, A.</span><span class="refAuthor"> and V. Vasiliev</span>, <span class="refTitle">"TLS Certificate Compression"</span>, <span class="seriesInfo">RFC 8879</span>, <span class="seriesInfo">DOI 10.17487/RFC8879</span>, <time datetime="2020-12" class="refDate">December 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8879">https://www.rfc-editor.org/info/rfc8879</a>&gt;</span>. </dd>
+<span class="refAuthor">Ghedini, A.</span> and <span class="refAuthor">V. Vasiliev</span>, <span class="refTitle">"TLS Certificate Compression"</span>, <span class="seriesInfo">RFC 8879</span>, <span class="seriesInfo">DOI 10.17487/RFC8879</span>, <time datetime="2020-12" class="refDate">December 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8879">https://www.rfc-editor.org/info/rfc8879</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="ROBUST">[ROBUST]</dt>
       <dd>
-<span class="refAuthor">Fischlin, M.</span><span class="refAuthor">, Günther, F.</span><span class="refAuthor">, and C. Janson</span>, <span class="refTitle">"Robust Channels: Handling Unreliable Networks in the Record Layers of QUIC and DTLS 1.3"</span>, <time datetime="2020-06-15" class="refDate">15 June 2020</time>, <span>&lt;<a href="https://eprint.iacr.org/2020/718">https://eprint.iacr.org/2020/718</a>&gt;</span>. </dd>
+<span class="refAuthor">Fischlin, M.</span>, <span class="refAuthor">Günther, F.</span>, and <span class="refAuthor">C. Janson</span>, <span class="refTitle">"Robust Channels: Handling Unreliable Networks in the Record Layers of QUIC and DTLS 1.3"</span>, <time datetime="2020-06-15" class="refDate">15 June 2020</time>, <span>&lt;<a href="https://eprint.iacr.org/2020/718">https://eprint.iacr.org/2020/718</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -4445,6 +4445,15 @@ Guenther and Martin Thomson contributed the analysis in <a href="#ccm-bounds" cl
 <a href="#section-appendix.g" class="section-number selfRef">Appendix G. </a><a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
       </h2>
 <p id="section-appendix.g-1">We would like to thank Jonathan Hammell and Andy Cunningham for their review comments.<a href="#section-appendix.g-1" class="pilcrow">¶</a></p>
+<p id="section-appendix.g-2">Additionally, we would like to thank the following IESG members for their review comments: 
+- Martin Duke 
+- Erik Kline 
+- Francesca Palombini
+- Lars Eggert 
+- Zaheduzzaman Sarker 
+- John Scudder 
+- Eric Vyncke
+- Robert Wilton<a href="#section-appendix.g-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
