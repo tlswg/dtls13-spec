@@ -164,7 +164,7 @@ document is defined as a delta from TLS 1.3. As in TLS 1.3 the HelloRetryRequest
 the same format as a ServerHello message but for convenience we use the term
 HelloRetryRequest throughout this document as if it were a distinct message.
 
-The reader is also as to be familiar with {{I-D.ietf-tls-dtls-connection-id}}
+The reader is also assumed to be familiar with {{I-D.ietf-tls-dtls-connection-id}}
 as this document applies the CID functionality to DTLS 1.3.
 
 Figures in this document illustrate various combinations of the DTLS protocol exchanges and the symbols have the following meaning:
@@ -239,14 +239,12 @@ server's message is lost, the client knows that either the
 ClientHello or the response from the server has been lost and retransmits.
 When the server receives the retransmission, it knows to retransmit.
 
-The server also maintains a retransmission timer and retransmits when
-that timer expires.
-
-Note that timeout and retransmission do not apply to the
-HelloRetryRequest since this would require creating state on the
-server.  The HelloRetryRequest is designed to be small enough that
-it will not itself be fragmented, thus avoiding concerns about
-interleaving multiple HelloRetryRequests.
+The server also maintains a retransmission timer for messages other than 
+the HelloRetryRequest and retransmits when that timer expires. Not 
+applying retransmissions to the HelloRetryRequest avoids the need to 
+create state on the server.  The HelloRetryRequest is designed to be 
+small enough that it will not itself be fragmented, thus avoiding 
+concerns about interleaving multiple HelloRetryRequests.
 
 ##  Reordering
 
@@ -546,9 +544,9 @@ are provided in {{dtls-epoch}}.
 ### Processing Guidelines
 
 Because DTLS records could be reordered, a record from epoch
-M may be received after epoch N (where N > M) has begun.  In general,
-implementations SHOULD discard records from earlier epochs, but if
-packet loss causes noticeable problems implementations MAY choose to
+M may be received after epoch N (where N > M) has begun. 
+Implementations SHOULD discard records from earlier epochs, but 
+implementations MAY choose to
 retain keying material from previous epochs for up to the default MSL
 specified for TCP {{RFC0793}} to allow for packet reordering.  (Note that
 the intention here is that implementers use the current guidance from
@@ -2239,7 +2237,7 @@ to be functional are described in Section 3.3 of {{?RFC2522}}:
   avoid having the cookie-exchange mechanism itself serve as a DoS vector.
 
 Although the cookie must allow the server to produce the right handshake
-transcript, they SHOULD be constructed so that knowledge of the cookie
+transcript, it SHOULD be constructed so that knowledge of the cookie
 is insufficient to reproduce the ClientHello contents. Otherwise,
 this may create problems with future extensions such as {{?I-D.ietf-tls-esni}}.
 
@@ -2252,7 +2250,7 @@ cookie-generation key on a similar timescale would ensure that the
 key-rotation functionality is exercised regularly and thus in working order.
 
 The cookie exchange provides address validation during the initial handshake.
-DTLS with connection IDs allow for endpoint addresses to change during the
+DTLS with connection IDs allows for endpoint addresses to change during the
 association; any such updated addresses are not covered by the cookie exchange
 during the handshake.
 DTLS implementations MUST NOT update the address they send to in response
