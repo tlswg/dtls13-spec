@@ -360,15 +360,13 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
    Once the client has transmitted the ClientHello message, it expects
    to see a HelloRetryRequest or a ServerHello from the server.
-   However, if the timer expires, the client knows that either the
-   ClientHello or the response from the server has been lost.  The
-   client then retransmits the ClientHello message.  When the server
-   receives the retransmission, it knows to retransmit its
-   HelloRetryRequest or ServerHello.
+   However, if the server's message is lost, the client knows that
+   either the ClientHello or the response from the server has been lost
+   and retransmits.  When the server receives the retransmission, it
+   knows to retransmit.
 
-   In addition the client maintaining a retransmission timer, the server
-   also maintains a retransmission timer and retransmits when that timer
-   expires.
+   The server also maintains a retransmission timer and retransmits when
+   that timer expires.
 
    Note that timeout and retransmission do not apply to the
    HelloRetryRequest since this would require creating state on the
@@ -383,6 +381,8 @@ Internet-Draft                  DTLS 1.3                      April 2021
    determine whether that message is the next message it expects.  If it
    is, then it processes it.  If not, it queues it for future handling
    once all previous messages have been received.
+
+
 
 
 
@@ -406,9 +406,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    offset and a fragment length.  Thus, a recipient in possession of all
    bytes of a handshake message can reassemble the original unfragmented
    message.
-
-   Relevant to fragmentation is the computation of the path MTU, which
-   is discussed in Section 4.4.
 
 3.4.  Replay Detection
 
@@ -440,6 +437,9 @@ Internet-Draft                  DTLS 1.3                      April 2021
    DTLSPlaintext records are used to send unprotected records and
    DTLSCiphertext records are used to send protected records.
 
+   The DTLS record formats are shown below.  Unless explicitly stated
+   the meaning of the fields is unchanged from previous TLS / DTLS
+   versions.
 
 
 
@@ -449,10 +449,6 @@ Rescorla, et al.         Expires 7 October 2021                 [Page 8]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
-
-   The DTLS record formats are shown below.  Unless explicitly stated
-   the meaning of the fields is unchanged from previous TLS / DTLS
-   versions.
 
        struct {
            ContentType type;
@@ -487,6 +483,10 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
    encrypted_record:  The AEAD-encrypted form of the serialized
       DTLSInnerPlaintext structure.
+
+
+
+
 
 
 
@@ -618,7 +618,7 @@ Rescorla, et al.         Expires 7 October 2021                [Page 11]
 Internet-Draft                  DTLS 1.3                      April 2021
 
 
-   If a connection ID is negotiated, then it MUST be contained in all
+   If a Connection ID is negotiated, then it MUST be contained in all
    datagrams.  Sending implementations MUST NOT mix records from
    multiple DTLS associations in the same datagram.  If the second or
    later record has a connection ID which does not correspond to the
@@ -1799,10 +1799,10 @@ Internet-Draft                  DTLS 1.3                      April 2021
 5.8.1.  State Machine
 
    DTLS uses a simple timeout and retransmission scheme with the state
-   machine shown in Figure 11.
-
-
-
+   machine shown in Figure 11.  Because DTLS clients send the first
+   message (ClientHello), they start in the PREPARING state.  DTLS
+   servers start in the WAITING state, but with empty buffers and no
+   retransmit timer.
 
 
 
@@ -2693,7 +2693,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
    Implementations which either did not negotiate the "connection_id"
    extension or which have negotiated receiving an empty CID MUST NOT
    send NewConnectionId.  Implementations MUST NOT send
-   RequestConnectionId when sending an empty connection ID.
+   RequestConnectionId when sending an empty Connection ID.
    Implementations which detect a violation of these rules MUST
    terminate the connection with an "unexpected_message" alert.
 
@@ -2863,7 +2863,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
    working order.
 
    The cookie exchange provides address validation during the initial
-   handshake.  DTLS with connection IDs allow for endpoint addresses to
+   handshake.  DTLS with Connection IDs allow for endpoint addresses to
    change during the association; any such updated addresses are not
    covered by the cookie exchange during the handshake.  DTLS
    implementations MUST NOT update the address they send to in response
@@ -3608,7 +3608,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
    draft-39 - Updated Figure 4 due to misalignment with Figure 3 content
 
-   draft-38 - Ban implicit connection IDs (*) - ACKs are processed as
+   draft-38 - Ban implicit Connection IDs (*) - ACKs are processed as
    the union.
 
    draft-37: - Fix the other place where we have ACK.
