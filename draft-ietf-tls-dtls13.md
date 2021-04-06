@@ -1554,7 +1554,7 @@ timer to the initial value.
 Note that because retransmission for handshake and not dataflow, the effect on
 congestion of shorter timeouts is smaller than in generic protocols
 such as TCP or QUIC. Experience with DTLS 1.2, which uses a
-simpler "retransmit everything on timeout" approach has not shown
+simpler "retransmit everything on timeout" approach, has not shown
 serious congestion problems in practice.
 
 ### Large Flight Sizes
