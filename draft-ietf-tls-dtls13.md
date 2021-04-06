@@ -164,6 +164,9 @@ As in TLS 1.3 the HelloRetryRequest has the same format as a ServerHello
 message but for convenience we use the term HelloRetryRequest throughout 
 this document as if it were a distinct message.
 
+DTLS 1.3 uses network byte order or big-endian format for encoding messages
+based on the encoding format defined in TLS 1.3 and earlier TLS/DTLS specifications.
+
 The reader is also assumed to be familiar with {{I-D.ietf-tls-dtls-connection-id}}
 as this document applies the CID functionality to DTLS 1.3.
 
@@ -531,6 +534,16 @@ packet  -->  |   OCT == 25   -+--> DTLSCipherText with CID (DTLS 1.2)
 ~~~
 {: #demux title="Demultiplexing DTLS 1.2 and DTLS 1.3 Records"}
 
+Note: The optimized DTLS header format shown in {{cid_hdr}}, which 
+does not carry the Content Type in the Unified Header format, requires 
+a different demultixplexing strategy compared to what was used in previous 
+DTLS versions where the Content Type was conveyed in every record. 
+As described in {{demux}}, the first byte determines how an incoming 
+DTLS record is demultiplexed. The first 3 bits of the first byte 
+distinguish a DTLS 1.3 encrypted record from a record type used in 
+previous DTLS versions or from plaintext DTLS 1.3 record. Hence, the 
+range 32 (0b0010 0000) to 63 (0b0011 1111) needs to be excluded 
+from future allocations by IANA to avoid demultiplexing problems.
 
 ## Sequence Number and Epoch
 
@@ -657,7 +670,7 @@ sequence number.
 DTLS messages MAY be fragmented into multiple DTLS records.
 Each DTLS record MUST fit within a single datagram.  In order to
 avoid IP fragmentation, clients of the DTLS record layer SHOULD
-attempt to size records so that they fit within any PMTU estimates
+attempt to size records so that they fit within any Path MTU (PMTU) estimates
 obtained from the record layer.
 
 Multiple DTLS records MAY be placed in a single datagram.  Records are encoded
@@ -737,8 +750,8 @@ refusal to send the datagram as in Section 14 of {{RFC4340}}), then the
 DTLS record layer MUST inform the upper layer protocol of the error.
 
 The DTLS record layer SHOULD NOT interfere with upper layer protocols
-performing PMTU discovery, whether via {{RFC1191}} or {{RFC4821}}
-mechanisms.  In particular:
+performing PMTU discovery, whether via {{RFC1191}} and {{RFC4821}} for 
+IPv4 or via {{?RFC8201}} for IPv6.  In particular:
 
 - Where allowed by the underlying transport protocol, the upper
   layer protocol SHOULD be allowed to set the state of the DF bit
