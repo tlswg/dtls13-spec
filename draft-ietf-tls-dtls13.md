@@ -729,7 +729,7 @@ framing.
 Note that DTLS does not defend against spoofed ICMP messages;
 implementations SHOULD ignore any such messages that indicate
 PMTUs below the IPv4 and IPv6 minimums of 576 and 1280 bytes
-respectively
+respectively.
 
 If there is a transport protocol indication that the PMTU was exceeded
 (either via ICMP or via a
@@ -877,7 +877,7 @@ The AEAD_AES_128_CCM_8 AEAD, as used in TLS_AES_128_CCM_8_SHA256, does not have 
 limit on the number of records that fail authentication that both limits the
 probability of forgery by the same amount and does not expose implementations
 to the risk of denial of service; see {{ccm-short}}. Therefore,
-TLS_AES_128_CCM_8_SHA256 MUST NOT used in DTLS without additional safeguards
+TLS_AES_128_CCM_8_SHA256 MUST NOT be used in DTLS without additional safeguards
 against forgery. Implementations MUST set usage limits for AEAD_AES_128_CCM_8
 based on an understanding of any additional forgery protections that are used.
 
@@ -1580,7 +1580,7 @@ categories, but not for others. Specifically, a server MAY send multiple NewSess
 messages at once without awaiting ACKs for earlier NewSessionTicket first. Likewise, a
 server MAY send multiple CertificateRequest messages at once without having completed
 earlier client authentication requests before. In contrast, implementations MUST NOT
-have send KeyUpdate, NewConnectionId or RequestConnectionId message if an earlier message
+have sent KeyUpdate, NewConnectionId or RequestConnectionId message if an earlier message
 of the same type has not yet been acknowledged.
 
 Note: Except for post-handshake client authentication, which involves handshake messages
@@ -1665,7 +1665,7 @@ The following is an example of a handshake with lost packets and
 retransmissions. Note that the client sends an empty ACK message
 because it can only acknowledge Record 1 sent by the server once it has
 processed messages in Record 0 needed to establish epoch 2 keys, which
-are needed to encrypt to decrypt messages found in Record 1.  {{ack-msg}}
+are needed to encrypt or decrypt messages found in Record 1.  {{ack-msg}}
 provides the necessary background details for this interaction.
 
 ~~~
