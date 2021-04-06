@@ -1194,7 +1194,7 @@ maximize the amount of code and infrastructure reuse.<a href="#section-1-4" clas
 DTLS 1.2 <span>[<a href="#RFC6347" class="xref">RFC6347</a>]</span> was defined as a series of deltas to TLS 1.2 <span>[<a href="#RFC5246" class="xref">RFC5246</a>]</span>.  There
 is no DTLS 1.1; that version number was skipped in order to harmonize version numbers
 with TLS.  This specification describes the most current version of the DTLS protocol
-based on TLS 1.3 <span>[<a href="#TLS13" class="xref">TLS13</a>]</span>.<a href="#section-1-5" class="pilcrow">¶</a></p>
+as a delta from TLS 1.3 <span>[<a href="#TLS13" class="xref">TLS13</a>]</span>. It obsoletes DTLS 1.2.<a href="#section-1-5" class="pilcrow">¶</a></p>
 <p id="section-1-6">Implementations that speak both DTLS 1.2 and DTLS 1.3 can interoperate with those
 that speak only DTLS 1.2 (using DTLS 1.2 of course), just as TLS 1.3 implementations
 can interoperate with TLS 1.2 (see Appendix D of <span>[<a href="#TLS13" class="xref">TLS13</a>]</span> for details).
@@ -1239,10 +1239,10 @@ the endpoint that is remote to the primary subject of discussion.<a href="#secti
         <li class="normal" id="section-2-3.11">MSL: Maximum Segment Lifetime<a href="#section-2-3.11" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="section-2-4">The reader is assumed to be familiar with the TLS 1.3 specification since this
-document is defined as a delta from TLS 1.3. As in TLS 1.3 the HelloRetryRequest has
-the same format as a ServerHello message but for convenience we use the term
-HelloRetryRequest throughout this document as if it were a distinct message.<a href="#section-2-4" class="pilcrow">¶</a></p>
+<p id="section-2-4">The reader is assumed to be familiar with the TLS 1.3 specification. 
+As in TLS 1.3 the HelloRetryRequest has the same format as a ServerHello 
+message but for convenience we use the term HelloRetryRequest throughout 
+this document as if it were a distinct message.<a href="#section-2-4" class="pilcrow">¶</a></p>
 <p id="section-2-5">The reader is also as to be familiar with <span>[<a href="#I-D.ietf-tls-dtls-connection-id" class="xref">I-D.ietf-tls-dtls-connection-id</a>]</span>
 as this document applies the CID functionality to DTLS 1.3.<a href="#section-2-5" class="pilcrow">¶</a></p>
 <p id="section-2-6">Figures in this document illustrate various combinations of the DTLS protocol exchanges and the symbols have the following meaning:<a href="#section-2-6" class="pilcrow">¶</a></p>
@@ -4445,6 +4445,15 @@ Guenther and Martin Thomson contributed the analysis in <a href="#ccm-bounds" cl
 <a href="#section-appendix.g" class="section-number selfRef">Appendix G. </a><a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
       </h2>
 <p id="section-appendix.g-1">We would like to thank Jonathan Hammell and Andy Cunningham for their review comments.<a href="#section-appendix.g-1" class="pilcrow">¶</a></p>
+<p id="section-appendix.g-2">Additionally, we would like to thank the following IESG members for their review comments: 
+- Martin Duke 
+- Erik Kline 
+- Francesca Palombini
+- Lars Eggert 
+- Zaheduzzaman Sarker 
+- John Scudder 
+- Eric Vyncke
+- Robert Wilton<a href="#section-appendix.g-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
