@@ -444,7 +444,7 @@ Omitting the length field MUST only be used for the last record in a
 datagram. Implementations MAY mix records with and without length
 fields on the same connection.
 
-If a connection ID is negotiated, then it MUST be contained in all
+If a Connection ID is negotiated, then it MUST be contained in all
 datagrams. Sending implementations MUST NOT mix records from multiple DTLS associations
 in the same datagram. If the second or later record has a connection
 ID which does not correspond to the same association used
@@ -2114,7 +2114,7 @@ Endpoints MUST NOT have more than one NewConnectionId message outstanding.
 Implementations which either did not negotiate the "connection_id" extension
 or which have negotiated receiving an empty CID MUST NOT
 send NewConnectionId. Implementations MUST NOT send RequestConnectionId
-when sending an empty connection ID. Implementations which detect a violation
+when sending an empty Connection ID. Implementations which detect a violation
 of these rules MUST terminate the connection with an "unexpected_message"
 alert.
 
@@ -2252,7 +2252,7 @@ cookie-generation key on a similar timescale would ensure that the
 key-rotation functionality is exercised regularly and thus in working order.
 
 The cookie exchange provides address validation during the initial handshake.
-DTLS with connection IDs allow for endpoint addresses to change during the
+DTLS with Connection IDs allow for endpoint addresses to change during the
 association; any such updated addresses are not covered by the cookie exchange
 during the handshake.
 DTLS implementations MUST NOT update the address they send to in response
@@ -2571,7 +2571,7 @@ draft-39
 - Updated Figure 4 due to misalignment with Figure 3 content
 
 draft-38
-- Ban implicit connection IDs (*)
+- Ban implicit Connection IDs (*)
 - ACKs are processed as the union.
 
 draft-37:
