@@ -236,13 +236,14 @@ phase of the DTLS handshake:
 Once the client has transmitted the ClientHello message, it expects
 to see a HelloRetryRequest or a ServerHello from the server. However, if the
 timer expires, the client knows that either the
-ClientHello or the response from the server has been lost. The client then 
-retransmits the ClientHello message. When the server receives the retransmission, 
+ClientHello or the response from the server has been lost, which
+causes the the client
+to retransmit the ClientHello. When the server receives the retransmission, 
 it knows to retransmit its HelloRetryRequest or ServerHello. 
 
-In addition the client maintaining a retransmission timer, the server 
-also maintains a retransmission timer and retransmits when
-that timer expires.
+In addition to the client maintaining a retransmission timer, the server 
+also maintains a retransmission timer for messages it sends and retransmits
+those messages when that timer expires.
 
 Note that timeout and retransmission do not apply to the
 HelloRetryRequest since this would require creating state on the
@@ -266,13 +267,11 @@ TLS and DTLS handshake messages can be quite large (in theory up to
 datagrams are often limited to less than 1500 bytes if IP fragmentation is not
 desired.  In order to compensate for this limitation, each DTLS
 handshake message may be fragmented over several DTLS records, each
-of which is intended to fit in a single UDP datagram.  Each DTLS
+of which is intended to fit in a single UDP datagram
+(see {{pmtu-issues}} for guidance). Each DTLS
 handshake message contains both a fragment offset and a fragment
 length.  Thus, a recipient in possession of all bytes of a handshake
 message can reassemble the original unfragmented message.
-
-Relevant to fragmentation is the computation of the path MTU, which is 
-discussed in {{pmtu-issues}}.
 
 ##  Replay Detection
 
