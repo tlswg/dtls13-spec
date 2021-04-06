@@ -117,7 +117,7 @@ DTLS 1.0 {{RFC4347}} was originally defined as a delta from TLS 1.1 {{RFC4346}} 
 DTLS 1.2 {{RFC6347}} was defined as a series of deltas to TLS 1.2 {{RFC5246}}.  There
 is no DTLS 1.1; that version number was skipped in order to harmonize version numbers
 with TLS.  This specification describes the most current version of the DTLS protocol
-based on TLS 1.3 {{!TLS13=RFC8446}}.
+as a delta from TLS 1.3 {{!TLS13=RFC8446}}. It obsoletes DTLS 1.2.
 
 Implementations that speak both DTLS 1.2 and DTLS 1.3 can interoperate with those
 that speak only DTLS 1.2 (using DTLS 1.2 of course), just as TLS 1.3 implementations
@@ -159,10 +159,10 @@ The following terms are used:
 
   - MSL: Maximum Segment Lifetime
 
-The reader is assumed to be familiar with the TLS 1.3 specification since this
-document is defined as a delta from TLS 1.3. As in TLS 1.3 the HelloRetryRequest has
-the same format as a ServerHello message but for convenience we use the term
-HelloRetryRequest throughout this document as if it were a distinct message.
+The reader is assumed to be familiar with the TLS 1.3 specification. 
+As in TLS 1.3 the HelloRetryRequest has the same format as a ServerHello 
+message but for convenience we use the term HelloRetryRequest throughout 
+this document as if it were a distinct message.
 
 The reader is also as to be familiar with {{I-D.ietf-tls-dtls-connection-id}}
 as this document applies the CID functionality to DTLS 1.3.
@@ -2736,3 +2736,13 @@ In addition, we would like to thank:
 # Acknowledgements
 
 We would like to thank Jonathan Hammell and Andy Cunningham for their review comments.
+
+Additionally, we would like to thank the following IESG members for their review comments: 
+- Martin Duke 
+- Erik Kline 
+- Francesca Palombini
+- Lars Eggert 
+- Zaheduzzaman Sarker 
+- John Scudder 
+- Éric Vyncke
+- Robert Wilton 
