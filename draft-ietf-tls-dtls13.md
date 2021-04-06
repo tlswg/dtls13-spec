@@ -1527,7 +1527,7 @@ flight immediately, shortcutting the retransmission timer.
 Unless they have extra information about the
 round trip time, implementations SHOULD use an initial timer value
 of 1000 ms and double the value at each retransmission, up to no less than 60 seconds
-(the {{RFC 6298}} maximum). Application specific profiles, MAY recommend shorter
+(the RFC 6298 {{RFC6298}} maximum). Application specific profiles, MAY recommend shorter
 or longer timer values. For instance:
 
 * Restricted profiles such as IoT MAY specify longer timeouts.
