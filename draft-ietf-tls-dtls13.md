@@ -834,7 +834,7 @@ repeatedly probes the implementation to see how it responds to
 various types of error.  Note that if DTLS is run over UDP, then any
 implementation which does this will be extremely susceptible to
 denial-of-service (DoS) attacks because UDP forgery is so easy.
-Thus, the practice of generating fatal alerts is NOT RECOMMENDED for such transports, both
+Thus, generating fatal alerts is NOT RECOMMENDED for such transports, both
 to increase the reliability of DTLS service and to avoid the risk
 of spoofing attacks sending traffic to unrelated third parties.
 
@@ -1920,8 +1920,9 @@ by the receipt of the next flight, which generally immediately follows the fligh
    main handshake.
 2. The server's post-handshake CertificateRequest.
 
-ACKs SHOULD NOT be sent for these flights unless generating
-the responding flight takes significant time. In this case,
+ACKs SHOULD NOT be sent for these flights unless
+the responding flight cannot be generated immediately.
+In this case,
 implementations MAY send explicit ACKs for the complete received
 flight even though it will eventually also be implicitly acknowledged
 through the responding flight. A notable example for this is
