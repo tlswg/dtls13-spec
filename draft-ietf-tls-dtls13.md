@@ -1530,7 +1530,7 @@ of 1000 ms and double the value at each retransmission, up to no less than 60 se
 (the RFC 6298 {{RFC6298}} maximum). Application specific profiles, MAY recommend shorter
 or longer timer values. For instance:
 
-* Restricted profiles such as IoT MAY specify longer timeouts.
+* Profiles for specific deployment environments, such as in low-power, multi-hop mesh network as used in some Internet of Things (IoT) networks, MAY specify longer timeouts. See {{?I-D.ietf-uta-tls13-iot-profile}} for more information about one such DTLS 1.3 IoT profile.
 
 * Real-time protocols MAY specify shorter timeouts. It is RECOMMENDED
   that for DTLS-SRTP {{?RFC5764}}, a default timeout of
