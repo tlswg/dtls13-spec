@@ -180,11 +180,15 @@ Figures in this document illustrate various combinations of the DTLS protocol ex
 The basic design philosophy of DTLS is to construct "TLS over datagram transport".
 Datagram transport does not require nor provide reliable or in-order delivery of data.
 The DTLS protocol preserves this property for application data.
-Applications such as media streaming, Internet telephony, and online gaming use
+Applications, such as media streaming, Internet telephony, and online gaming use
 datagram transport for communication due to the delay-sensitive nature
 of transported data.  The behavior of such applications is unchanged when the
 DTLS protocol is used to secure communication, since the DTLS protocol
-does not compensate for lost or reordered data traffic.
+does not compensate for lost or reordered data traffic. Note that while 
+low-latency streaming and gaming use DTLS to protect data (e.g. for
+protection of a WebRTC data channel), telephony utilizes DTLS for
+key establishment, and Secure Real-time Transport Protocol (SRTP) for 
+protection of data {{?RFC5763}}.
 
 TLS cannot be used directly in datagram environments for the following five reasons:
 
@@ -247,6 +251,9 @@ applying retransmissions to the HelloRetryRequest avoids the need to
 create state on the server.  The HelloRetryRequest is designed to be 
 small enough that it will not itself be fragmented, thus avoiding 
 concerns about interleaving multiple HelloRetryRequests.
+
+For more detail on timeouts and retransmission,
+see {{timeout-retransmissions}.
 
 ##  Reordering
 
@@ -658,7 +665,8 @@ DTLS messages MAY be fragmented into multiple DTLS records.
 Each DTLS record MUST fit within a single datagram.  In order to
 avoid IP fragmentation, clients of the DTLS record layer SHOULD
 attempt to size records so that they fit within any PMTU estimates
-obtained from the record layer.
+obtained from the record layer. For more information about PMTU issues 
+see {{pmtu-issues}}. 
 
 Multiple DTLS records MAY be placed in a single datagram.  Records are encoded
 consecutively.  The length field from DTLS records containing that field can be
@@ -685,7 +693,6 @@ immediately, potentially leading to timeouts and spurious
 retransmission.  When DTLS is used over such transports, care should
 be taken not to overrun the likely congestion window. {{RFC5238}}
 defines a mapping of DTLS to DCCP that takes these issues into account.
-
 
 ##  PMTU Issues {#pmtu-issues}
 
@@ -827,7 +834,7 @@ repeatedly probes the implementation to see how it responds to
 various types of error.  Note that if DTLS is run over UDP, then any
 implementation which does this will be extremely susceptible to
 denial-of-service (DoS) attacks because UDP forgery is so easy.
-Thus, this practice is NOT RECOMMENDED for such transports, both
+Thus, the practice of generating fatal alerts is NOT RECOMMENDED for such transports, both
 to increase the reliability of DTLS service and to avoid the risk
 of spoofing attacks sending traffic to unrelated third parties.
 
@@ -1396,7 +1403,7 @@ KeyUpdate, NewConnectionId and RequestConnectionId follow a similar
 pattern to NewSessionTicket: a single message sent by one side
 followed by an ACK by the other.
 
-## Timeout and Retransmission
+## Timeout and Retransmission {#timeout-retransmissions}
 
 ### State Machine {#state-machine}
 
@@ -1521,7 +1528,8 @@ flight immediately, shortcutting the retransmission timer.
 
 ### Timer Values
 
-Though timer values are the choice of the implementation, mishandling
+The configuration of timer settings varies with implementations and certain
+deployment environments require timer value adjustments. Mishandling
 of the timer can lead to serious congestion problems, for example if
 many instances of a DTLS time out early and retransmit too quickly on
 a congested link.  Implementations SHOULD use an initial timer value
@@ -1550,10 +1558,12 @@ However, in principle, some messages -- especially Certificate -- can
 be quite large. If all the messages in a large flight are sent
 at once, this can result in network congestion. A better strategy
 is to send out only part of the flight, sending more when
-messages are acknowledged. DTLS offers a number of mechanisms
-for minimizing the size of the certificate message, including
-the cached information extension {{?RFC7924}} and certificate
-compression {{?RFC8879}}.
+messages are acknowledged. Several extensions have been standardized
+to reduce the size of the certificate message, for example
+the cached information extension {{?RFC7924}}, certificate
+compression {{?RFC8879}} and {{?RFC6066}}, which defines the "client_certificate_url"
+extension allowing DTLS clients to send a sequence of Uniform
+Resource Locators (URLs) instead of the client certificate.
 
 ### State machine duplication for post-handshake messages {#state-machine-duplication}
 
@@ -1580,7 +1590,7 @@ categories, but not for others. Specifically, a server MAY send multiple NewSess
 messages at once without awaiting ACKs for earlier NewSessionTicket first. Likewise, a
 server MAY send multiple CertificateRequest messages at once without having completed
 earlier client authentication requests before. In contrast, implementations MUST NOT
-have send KeyUpdate, NewConnectionId or RequestConnectionId message if an earlier message
+have sent KeyUpdate, NewConnectionId or RequestConnectionId message if an earlier message
 of the same type has not yet been acknowledged.
 
 Note: Except for post-handshake client authentication, which involves handshake messages
@@ -1665,7 +1675,7 @@ The following is an example of a handshake with lost packets and
 retransmissions. Note that the client sends an empty ACK message
 because it can only acknowledge Record 1 sent by the server once it has
 processed messages in Record 0 needed to establish epoch 2 keys, which
-are needed to encrypt to decrypt messages found in Record 1.  {{ack-msg}}
+are needed to encrypt or decrypt messages found in Record 1.  {{ack-msg}}
 provides the necessary background details for this interaction.
 
 ~~~
@@ -1978,7 +1988,7 @@ In the first case the use of the ACK message is optional because
 the peer will retransmit in any case and therefore the ACK just
 allows for selective retransmission, as opposed to the whole
 flight retransmission in previous versions of DTLS. For instance
-in the flow shown in Figure 11 if the client does not send the ACK message when it
+in the flow shown in {{dtls-key-update}} if the client does not send the ACK message when it
 received record 1 indicating loss of record 0,
 the entire flight would be retransmitted. When DTLS 1.3 is used in deployments
 with lossy networks, such as low-power, long range radio networks as well as
@@ -1988,7 +1998,7 @@ The use of the ACK for the second case is mandatory for the proper functioning o
 protocol. For instance, the ACK message sent by the client in Figure 13,
 acknowledges receipt and processing of record 4 (containing the NewSessionTicket
 message) and if it is not sent the server will continue retransmission
-of the NewSessionTicket indefinitely until its transmission cap is reached.
+of the NewSessionTicket indefinitely until its maximum retransmission timemout value is reached.
 
 # Key Updates
 
@@ -2732,14 +2742,6 @@ In addition, we would like to thank:
 
 # Acknowledgements
 
-We would like to thank Jonathan Hammell and Andy Cunningham for their review comments.
+We would like to thank Jonathan Hammell, Bernard Aboba and Andy Cunningham for their review comments.
 
-Additionally, we would like to thank the following IESG members for their review comments: 
-- Martin Duke 
-- Erik Kline 
-- Francesca Palombini
-- Lars Eggert 
-- Zaheduzzaman Sarker 
-- John Scudder 
-- Éric Vyncke
-- Robert Wilton 
+Additionally, we would like to thank the IESG members for their review comments: Martin Duke, Erik Kline, Francesca Palombini, Lars Eggert, Zaheduzzaman Sarker, John Scudder, Éric Vyncke, Robert Wilton, Roman Danyliw, Benjamin Kaduk, Murray Kucherawy, Martin Vigoureux, and Alvaro Retana 
