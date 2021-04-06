@@ -829,7 +829,7 @@ address div.right {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Rescorla, et al.</td>
-<td class="center">Expires 7 October 2021</td>
+<td class="center">Expires 8 October 2021</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -845,12 +845,12 @@ address div.right {
 <a href="https://www.rfc-editor.org/rfc/rfc6347" class="eref">6347</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2021-04-05" class="published">5 April 2021</time>
+<time datetime="2021-04-06" class="published">6 April 2021</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2021-10-07">7 October 2021</time></dd>
+<dd class="expires"><time datetime="2021-10-08">8 October 2021</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -897,7 +897,7 @@ forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 7 October 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 8 October 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1600,7 +1600,7 @@ DTLSCiphertext format records without length fields in the same datagram.
 Omitting the length field MUST only be used for the last record in a
 datagram. Implementations MAY mix records with and without length
 fields on the same connection.<a href="#section-4-12" class="pilcrow">¶</a></p>
-<p id="section-4-13">If a Connection ID is negotiated, then it MUST be contained in all
+<p id="section-4-13">If a connection ID is negotiated, then it MUST be contained in all
 datagrams. Sending implementations MUST NOT mix records from multiple DTLS associations
 in the same datagram. If the second or later record has a connection
 ID which does not correspond to the same association used
@@ -1995,7 +1995,7 @@ invalid formatting, length, MAC, etc.).  In general, invalid records
 SHOULD be silently discarded, thus preserving the association;
 however, an error MAY be logged for diagnostic purposes.
 Implementations which choose to generate an alert instead, MUST
-generate error alerts to avoid attacks where the attacker
+generate fatal alerts to avoid attacks where the attacker
 repeatedly probes the implementation to see how it responds to
 various types of error.  Note that if DTLS is run over UDP, then any
 implementation which does this will be extremely susceptible to
@@ -3466,7 +3466,7 @@ Endpoints MUST NOT have more than one NewConnectionId message outstanding.<a hre
 <p id="section-9-5">Implementations which either did not negotiate the "connection_id" extension
 or which have negotiated receiving an empty CID MUST NOT
 send NewConnectionId. Implementations MUST NOT send RequestConnectionId
-when sending an empty Connection ID. Implementations which detect a violation
+when sending an empty connection ID. Implementations which detect a violation
 of these rules MUST terminate the connection with an "unexpected_message"
 alert.<a href="#section-9-5" class="pilcrow">¶</a></p>
 <p id="section-9-6">Implementations SHOULD use a new CID whenever sending on a new path,
@@ -3618,7 +3618,7 @@ is not as high-value as, e.g., a session-ticket-encryption key, rotating the
 cookie-generation key on a similar timescale would ensure that the
 key-rotation functionality is exercised regularly and thus in working order.<a href="#section-11-6" class="pilcrow">¶</a></p>
 <p id="section-11-7">The cookie exchange provides address validation during the initial handshake.
-DTLS with Connection IDs allow for endpoint addresses to change during the
+DTLS with connection IDs allow for endpoint addresses to change during the
 association; any such updated addresses are not covered by the cookie exchange
 during the handshake.
 DTLS implementations MUST NOT update the address they send to in response
@@ -4276,7 +4276,7 @@ datagram in which it is contained?<a href="#section-appendix.c-2.6" class="pilcr
 <p id="section-appendix.d-6">draft-39
 - Updated Figure 4 due to misalignment with Figure 3 content<a href="#section-appendix.d-6" class="pilcrow">¶</a></p>
 <p id="section-appendix.d-7">draft-38
-- Ban implicit Connection IDs (*)
+- Ban implicit connection IDs (*)
 - ACKs are processed as the union.<a href="#section-appendix.d-7" class="pilcrow">¶</a></p>
 <p id="section-appendix.d-8">draft-37:
 - Fix the other place where we have ACK.<a href="#section-appendix.d-8" class="pilcrow">¶</a></p>
