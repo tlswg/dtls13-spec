@@ -2528,7 +2528,7 @@ potential sources of issues, noted here.
   replay detection, if enabled.
 
 - Do you retransmit handshake messages that are not (implicitly or explicitly)
-  acknowledged ({{timeout-and-retransmission}})?
+  acknowledged ({{timeout-retransmissions}})?
 
 - Do you correctly handle handshake message fragments received, including
   when they are out of order?
