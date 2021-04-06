@@ -1568,8 +1568,8 @@ is to send out only part of the flight, sending more when
 messages are acknowledged. DTLS offers a number of mechanisms
 for minimizing the size of the certificate message, including
 the cached information extension {{?RFC7924}} and certificate
-compression {{?RFC8879}}. DTLS stacks MUST NOT send flights
-greater than 10 records.
+compression {{?RFC8879}}. DTLS stacks SHOULD NOT send more
+than 10 records in a single transmission.
 
 ### State machine duplication for post-handshake messages {#state-machine-duplication}
 
