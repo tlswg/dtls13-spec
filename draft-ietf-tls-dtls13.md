@@ -164,7 +164,7 @@ As in TLS 1.3 the HelloRetryRequest has the same format as a ServerHello
 message but for convenience we use the term HelloRetryRequest throughout 
 this document as if it were a distinct message.
 
-DTLS 1.3 uses network byte order or big-endian format for encoding messages
+DTLS 1.3 uses network byte order (big-endian) format for encoding messages
 based on the encoding format defined in TLS 1.3 and earlier TLS/DTLS specifications.
 
 The reader is also assumed to be familiar with {{I-D.ietf-tls-dtls-connection-id}}
@@ -536,7 +536,7 @@ packet  -->  |   OCT == 25   -+--> DTLSCipherText with CID (DTLS 1.2)
 
 Note: The optimized DTLS header format shown in {{cid_hdr}}, which 
 does not carry the Content Type in the Unified Header format, requires 
-a different demultixplexing strategy compared to what was used in previous 
+a different demultilexing strategy compared to what was used in previous 
 DTLS versions where the Content Type was conveyed in every record. 
 As described in {{demux}}, the first byte determines how an incoming 
 DTLS record is demultiplexed. The first 3 bits of the first byte 
@@ -993,7 +993,7 @@ are omitted.
 The cookie extension is defined in Section 4.2.2 of {{!TLS13}}. When sending the
 initial ClientHello, the client does not have a cookie yet. In this case,
 the cookie extension is omitted and the legacy_cookie field in the ClientHello
-message MUST be set to a zero length vector (i.e., a single zero byte length field).
+message MUST be set to a zero-length vector (i.e., a zero-valued single byte length field).
 
 When responding to a HelloRetryRequest, the client MUST create a new
 ClientHello message following the description in Section 4.1.2 of {{!TLS13}}.
@@ -1991,7 +1991,7 @@ In the first case the use of the ACK message is optional because
 the peer will retransmit in any case and therefore the ACK just
 allows for selective retransmission, as opposed to the whole
 flight retransmission in previous versions of DTLS. For instance
-in the flow shown in Figure 11 if the client does not send the ACK message when it
+in the flow shown in Figure 12 if the client does not send the ACK message when it
 received record 1 indicating loss of record 0,
 the entire flight would be retransmitted. When DTLS 1.3 is used in deployments
 with lossy networks, such as low-power, long range radio networks as well as
@@ -2377,7 +2377,13 @@ registry, defined in {{!TLS13}}, for RequestConnectionId (TBD), and
 NewConnectionId (TBD), as defined in this document.  The value for the
 "DTLS-OK" columns are "Y".
 
-IANA is requested to add this RFC as a reference to the TLS Cipher Suite Registry.
+IANA is requested to add this RFC as a reference to the TLS Cipher Suite Registry
+along with the following Note:
+
+    Any TLS cipher suite that is specified for use with DTLS MUST
+    define limits on the use of the associated AEAD function that
+    preserves margins for both confidentiality and integrity,
+    as specified in [THIS RFC; Section TODO]
 --- back
 
 # Protocol Data Structures and Constant Values
