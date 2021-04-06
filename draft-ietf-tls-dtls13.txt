@@ -618,7 +618,7 @@ Rescorla, et al.         Expires 8 October 2021                [Page 11]
 Internet-Draft                  DTLS 1.3                      April 2021
 
 
-   If a connection ID is negotiated, then it MUST be contained in all
+   If a Connection ID is negotiated, then it MUST be contained in all
    datagrams.  Sending implementations MUST NOT mix records from
    multiple DTLS associations in the same datagram.  If the second or
    later record has a connection ID which does not correspond to the
@@ -2693,7 +2693,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
    Implementations which either did not negotiate the "connection_id"
    extension or which have negotiated receiving an empty CID MUST NOT
    send NewConnectionId.  Implementations MUST NOT send
-   RequestConnectionId when sending an empty connection ID.
+   RequestConnectionId when sending an empty Connection ID.
    Implementations which detect a violation of these rules MUST
    terminate the connection with an "unexpected_message" alert.
 
@@ -2863,7 +2863,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
    working order.
 
    The cookie exchange provides address validation during the initial
-   handshake.  DTLS with connection IDs allow for endpoint addresses to
+   handshake.  DTLS with Connection IDs allow for endpoint addresses to
    change during the association; any such updated addresses are not
    covered by the cookie exchange during the handshake.  DTLS
    implementations MUST NOT update the address they send to in response
@@ -3608,7 +3608,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
    draft-39 - Updated Figure 4 due to misalignment with Figure 3 content
 
-   draft-38 - Ban implicit connection IDs (*) - ACKs are processed as
+   draft-38 - Ban implicit Connection IDs (*) - ACKs are processed as
    the union.
 
    draft-37: - Fix the other place where we have ACK.
