@@ -27,6 +27,8 @@ Abstract
    Datagram semantics of the underlying transport are preserved by the
    DTLS protocol.
 
+   This document obsoletes RFC 6347.
+
 Status of This Memo
 
    This Internet-Draft is submitted in full conformance with the
@@ -48,8 +50,6 @@ Copyright Notice
 
    Copyright (c) 2021 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
-
-
 
 
 
@@ -1575,7 +1575,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
    DTLS handshake messages are grouped into a series of message flights.
    A flight starts with the handshake message transmission of one peer
    and ends with the expected response from the other peer.  Table 1
-   contains a complete list of message combinations that consitute
+   contains a complete list of message combinations that constitute
    flights.
 
       +======+========+========+===================================+
