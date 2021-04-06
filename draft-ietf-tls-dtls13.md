@@ -1475,14 +1475,14 @@ and enters the WAITING state.
 There are four ways to exit the WAITING state:
 
 1. The retransmit timer expires: the implementation transitions to
-   the SENDING state, where it retransmits the flight, resets the
-   retransmit timer, and returns to the WAITING state.
+   the SENDING state, where it retransmits the flight, adjusts and re-arms the
+   retransmit timer (see {{timer-values}}), and returns to the WAITING state.
 
 2. The implementation reads an ACK from the peer: upon receiving
    an ACK for a partial flight (as mentioned in {{sending-acks}}),
    the implementation transitions
    to the SENDING state, where it retransmits the unacked portion
-   of the flight, resets the retransmit timer, and returns to the
+   of the flight, adjusts and re-arms the retransmit timer, and returns to the
    WAITING state. Upon receiving an ACK for a complete flight,
    the implementation cancels all retransmissions and either
    remains in WAITING, or, if the ACK was for the final flight,
@@ -1490,7 +1490,7 @@ There are four ways to exit the WAITING state:
 
 3. The implementation reads a retransmitted flight from the peer: the
    implementation transitions to the SENDING state, where it
-   retransmits the flight, resets the retransmit timer, and returns
+   retransmits the flight, adjusts and re-arms the retransmit timer, and returns
    to the WAITING state.  The rationale here is that the receipt of a
    duplicate message is the likely result of timer expiry on the peer
    and therefore suggests that part of one's previous flight was
@@ -1524,26 +1524,38 @@ flight immediately, shortcutting the retransmission timer.
 
 ### Timer Values
 
-Though timer values are the choice of the implementation, mishandling
-of the timer can lead to serious congestion problems, for example if
-many instances of a DTLS time out early and retransmit too quickly on
-a congested link.  Implementations SHOULD use an initial timer value
-of 100 msec (the minimum defined in RFC 6298 {{RFC6298}}) and double
-the value at each retransmission, up to no less than 60 seconds
-(the RFC 6298 maximum). Application specific profiles, such as those
-used for the Internet of Things environment, may recommend longer
-timer values. Note that a 100 msec timer is recommended
-rather than the 3-second RFC 6298 default in order to improve latency
-for time-sensitive applications.  Because DTLS only uses
-retransmission for handshake and not dataflow, the effect on
-congestion should be minimal.
+Unless they have extra information about the
+round trip time, implementations SHOULD use an initial timer value
+of 1000 ms and double the value at each retransmission, up to no less than 60 seconds
+(the {{RFC 6298}} maximum). Application specific profiles, MAY recommend shorter
+or longer timer values. For instance:
+
+* Restricted profiles such as IoT MAY specify longer timeouts.
+
+* Real-time protocols MAY specify shorter timeouts. It is RECOMMENDED
+  that for DTLS-SRTP {{?RFC5764}}, a default timeout of
+  400ms be used; because customer experience degrades with one-way latencies
+  of greater than 200ms, real-time deployments are less likely
+  to have long latencies. 
+
+In settings where external information (for instance from an ICE {{?RFC8445}}
+handshake, or from previous connections to the same server)
+about the RTT, implementations SHOULD use that to set the retransmit
+time. 
 
 Implementations SHOULD retain the current timer value until a
 message is transmitted and acknowledged without having to
-be retransmitted, at which time the value may be
-reset to the initial value.  After a long period of idleness, no less
+be retransmitted, at which time the value SHOULD be reset
+to approximately 1.5 times the measured round trip time for that
+message. After a long period of idleness, no less
 than 10 times the current timer value, implementations MAY reset the
 timer to the initial value.
+
+Note that because retransmission for handshake and not dataflow, the effect on
+congestion of shorter timeouts is smaller than in generic protocols
+such as TCP or QUIC. Experience with DTLS 1.2, which uses a
+simpler "retransmit everything on timeout" approach has not shown
+serious congestion problems in practice.
 
 ### Large Flight Sizes
 
@@ -1556,7 +1568,8 @@ is to send out only part of the flight, sending more when
 messages are acknowledged. DTLS offers a number of mechanisms
 for minimizing the size of the certificate message, including
 the cached information extension {{?RFC7924}} and certificate
-compression {{?RFC8879}}.
+compression {{?RFC8879}}. DTLS stacks MUST NOT send flights
+greater than 10 records.
 
 ### State machine duplication for post-handshake messages {#state-machine-duplication}
 
@@ -1900,10 +1913,19 @@ ACKs under two circumstances:
 
 - When they have received part of a flight and do not immediately
   receive the rest of the flight (which may be in the same UDP
-  datagram). A reasonable approach here is to
+  datagram). "Immediately" is hard to define. One approach is to
   set a timer for 1/4 the current retransmit timer value when
   the first record in the flight is received and then send an
-  ACK when that timer expires.
+  ACK when that timer expires. Note: the 1/4 value here is somewhat
+  arbitrary. Given that the round trip estimates in the DTLS
+  handshake are generally very rough (or the default), any
+  value will be an approximation, and there is an inherent
+  compromise due to retransmit due to over-agressive ACKing
+  and over-aggressive timeout-based retransmission.
+  As a comparison point,
+  QUIC's loss-based recovery algorithms
+  ({{?I-D.ietf-quic-recovery}}; Section 6.1.2)
+  work out to delay of about 1/3 of the retransmit timer.
 
 In general, flights MUST be ACKed unless they are implicitly
 acknowledged. In the present specification the following flights are implicitly acknowledged
@@ -2542,6 +2564,18 @@ RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 (*) indicates a change that may affect interoperability.
 
 IETF Drafts
+
+draft-41
+- Change the default retransmission timer to 1s and
+  allow people to do otherwise if they have side knowledge.
+  
+- Cap any given flight to 10 records
+
+- Don't re-set the timer to the initial value but to 1.5
+  times the measured RTT.
+  
+- A bunch more clarity about the reliability algorithms
+  and timers (including changing reset to re-arm)
 
 draft-40
 
