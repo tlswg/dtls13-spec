@@ -27,8 +27,6 @@ Abstract
    Datagram semantics of the underlying transport are preserved by the
    DTLS protocol.
 
-   This document obsoletes RFC 6347.
-
 Status of This Memo
 
    This Internet-Draft is submitted in full conformance with the
@@ -50,6 +48,8 @@ Copyright Notice
 
    Copyright (c) 2021 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
+
+
 
 
 
@@ -90,22 +90,22 @@ Table of Contents
      3.4.  Replay Detection  . . . . . . . . . . . . . . . . . . . .   8
    4.  The DTLS Record Layer . . . . . . . . . . . . . . . . . . . .   8
      4.1.  Demultiplexing DTLS Records . . . . . . . . . . . . . . .  12
-     4.2.  Sequence Number and Epoch . . . . . . . . . . . . . . . .  13
+     4.2.  Sequence Number and Epoch . . . . . . . . . . . . . . . .  14
        4.2.1.  Processing Guidelines . . . . . . . . . . . . . . . .  14
-       4.2.2.  Reconstructing the Sequence Number and Epoch  . . . .  14
+       4.2.2.  Reconstructing the Sequence Number and Epoch  . . . .  15
        4.2.3.  Record Number Encryption  . . . . . . . . . . . . . .  15
      4.3.  Transport Layer Mapping . . . . . . . . . . . . . . . . .  16
      4.4.  PMTU Issues . . . . . . . . . . . . . . . . . . . . . . .  17
-     4.5.  Record Payload Protection . . . . . . . . . . . . . . . .  18
-       4.5.1.  Anti-Replay . . . . . . . . . . . . . . . . . . . . .  18
-       4.5.2.  Handling Invalid Records  . . . . . . . . . . . . . .  19
+     4.5.  Record Payload Protection . . . . . . . . . . . . . . . .  19
+       4.5.1.  Anti-Replay . . . . . . . . . . . . . . . . . . . . .  19
+       4.5.2.  Handling Invalid Records  . . . . . . . . . . . . . .  20
        4.5.3.  AEAD Limits . . . . . . . . . . . . . . . . . . . . .  20
    5.  The DTLS Handshake Protocol . . . . . . . . . . . . . . . . .  21
      5.1.  Denial-of-Service Countermeasures . . . . . . . . . . . .  22
-     5.2.  DTLS Handshake Message Format . . . . . . . . . . . . . .  24
+     5.2.  DTLS Handshake Message Format . . . . . . . . . . . . . .  25
      5.3.  ClientHello Message . . . . . . . . . . . . . . . . . . .  26
      5.4.  ServerHello Message . . . . . . . . . . . . . . . . . . .  27
-     5.5.  Handshake Message Fragmentation and Reassembly  . . . . .  27
+     5.5.  Handshake Message Fragmentation and Reassembly  . . . . .  28
 
 
 
@@ -258,6 +258,10 @@ Internet-Draft                  DTLS 1.3                      April 2021
    HelloRetryRequest throughout this document as if it were a distinct
    message.
 
+   DTLS 1.3 uses network byte order or big-endian format for encoding
+   messages based on the encoding format defined in TLS 1.3 and earlier
+   TLS/DTLS specifications.
+
    The reader is also assumed to be familiar with
    [I-D.ietf-tls-dtls-connection-id] as this document applies the CID
    functionality to DTLS 1.3.
@@ -271,16 +275,15 @@ Internet-Draft                  DTLS 1.3                      April 2021
    *  '*' indicates optional or situation-dependent messages/extensions
       that are not always sent.
 
-   *  '{}' indicates messages protected using keys derived from a
-      [sender]_handshake_traffic_secret.
-
-
 
 
 Rescorla, et al.         Expires 8 October 2021                 [Page 5]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
+
+   *  '{}' indicates messages protected using keys derived from a
+      [sender]_handshake_traffic_secret.
 
    *  '[]' indicates messages protected using keys derived from
       traffic_secret_N.
@@ -327,9 +330,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
        nonparticipants.  DTLS adds a return-routability check and DTLS
        1.3 uses the TLS 1.3 HelloRetryRequest message (see Section 5.1
        for details).
-
-
-
 
 
 
@@ -712,6 +712,24 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
            Figure 5: Demultiplexing DTLS 1.2 and DTLS 1.3 Records
 
+   Note: The optimized DTLS header format shown in Figure 3, which does
+   not carry the Content Type in the Unified Header format, requires a
+   different demultixplexing strategy compared to what was used in
+   previous DTLS versions where the Content Type was conveyed in every
+   record.  As described in Figure 5, the first byte determines how an
+   incoming DTLS record is demultiplexed.  The first 3 bits of the first
+   byte distinguish a DTLS 1.3 encrypted record from a record type used
+   in previous DTLS versions or from plaintext DTLS 1.3 record.  Hence,
+   the range 32 (0b0010 0000) to 63 (0b0011 1111) needs to be excluded
+   from future allocations by IANA to avoid demultiplexing problems.
+
+
+
+Rescorla, et al.         Expires 8 October 2021                [Page 13]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
 4.2.  Sequence Number and Epoch
 
    DTLS uses an explicit or partly explicit sequence number, rather than
@@ -722,13 +740,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    The epoch number is initially zero and is incremented each time
    keying material changes and a sender aims to rekey.  More details are
    provided in Section 6.1.
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 13]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
 4.2.1.  Processing Guidelines
 
@@ -761,6 +772,20 @@ Internet-Draft                  DTLS 1.3                      April 2021
    Implementations MUST NOT allow the epoch to wrap, but instead MUST
    establish a new association, terminating the old association.
 
+
+
+
+
+
+
+
+
+
+Rescorla, et al.         Expires 8 October 2021                [Page 14]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
 4.2.2.  Reconstructing the Sequence Number and Epoch
 
    When receiving protected DTLS records, the recipient does not have a
@@ -778,13 +803,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    the full sequence number which is numerically closest to one plus the
    sequence number of the highest successfully deprotected record in the
    current epoch.
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 14]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
    During the handshake phase, the epoch bits unambiguously indicate the
    correct key to use.  After the handshake is complete, if the epoch
@@ -815,6 +833,15 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
      [sender]_sn_key  = HKDF-Expand-Label(Secret, "sn" , "", key_length)
 
+
+
+
+
+Rescorla, et al.         Expires 8 October 2021                [Page 15]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
    [sender] denotes the sending side.  The Secret value to be used is
    described in Section 7.3 of [TLS13].
 
@@ -832,16 +859,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    have a shorter authentication tag and may require padding for short
    inputs.
 
-
-
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 15]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
-
    Future cipher suites, which are not based on AES or ChaCha20, MUST
    define their own record sequence number encryption in order to be
    used with DTLS.
@@ -855,8 +872,8 @@ Internet-Draft                  DTLS 1.3                      April 2021
    DTLS messages MAY be fragmented into multiple DTLS records.  Each
    DTLS record MUST fit within a single datagram.  In order to avoid IP
    fragmentation, clients of the DTLS record layer SHOULD attempt to
-   size records so that they fit within any PMTU estimates obtained from
-   the record layer.
+   size records so that they fit within any Path MTU (PMTU) estimates
+   obtained from the record layer.
 
    Multiple DTLS records MAY be placed in a single datagram.  Records
    are encoded consecutively.  The length field from DTLS records
@@ -873,6 +890,14 @@ Internet-Draft                  DTLS 1.3                      April 2021
    Some transports, such as DCCP [RFC4340], provide their own sequence
    numbers.  When carried over those transports, both the DTLS and the
    transport sequence numbers will be present.  Although this introduces
+
+
+
+Rescorla, et al.         Expires 8 October 2021                [Page 16]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
    a small amount of inefficiency, the transport layer and DTLS sequence
    numbers serve different purposes; therefore, for conceptual
    simplicity, it is superior to use both sequence numbers.
@@ -885,18 +910,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    be taken not to overrun the likely congestion window.  [RFC5238]
    defines a mapping of DTLS to DCCP that takes these issues into
    account.
-
-
-
-
-
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 16]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
 4.4.  PMTU Issues
 
@@ -932,6 +945,15 @@ Internet-Draft                  DTLS 1.3                      April 2021
       upper layer protocol MUST NOT write any record that exceeds the
       maximum record size of 2^14 bytes.
 
+
+
+
+
+Rescorla, et al.         Expires 8 October 2021                [Page 17]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
    The DTLS record layer SHOULD also allow the upper layer protocol to
    discover the amount of record expansion expected by the DTLS
    processing; alternately it MAY report PMTU estimates minus the
@@ -946,17 +968,9 @@ Internet-Draft                  DTLS 1.3                      April 2021
    Section 14 of [RFC4340]), then the DTLS record layer MUST inform the
    upper layer protocol of the error.
 
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 17]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
-
    The DTLS record layer SHOULD NOT interfere with upper layer protocols
-   performing PMTU discovery, whether via [RFC1191] or [RFC4821]
-   mechanisms.  In particular:
+   performing PMTU discovery, whether via [RFC1191] and [RFC4821] for
+   IPv4 or via [RFC8201] for IPv6.  In particular:
 
    *  Where allowed by the underlying transport protocol, the upper
       layer protocol SHOULD be allowed to set the state of the DF bit
@@ -986,6 +1000,16 @@ Internet-Draft                  DTLS 1.3                      April 2021
       of retransmits to attempt before backing off, but 2-3 seems
       appropriate.
 
+
+
+
+
+
+Rescorla, et al.         Expires 8 October 2021                [Page 18]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
 4.5.  Record Payload Protection
 
    Like TLS, DTLS transmits data as a series of protected records.  The
@@ -1002,14 +1026,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    The received record counter for an epoch MUST be initialized to zero
    when that epoch is first used.  For each received record, the
    receiver MUST verify that the record contains a sequence number that
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 18]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
-
    does not duplicate the sequence number of any other record received
    in that epoch during the lifetime of the association.  This check
    SHOULD happen after deprotecting the record; otherwise the record
@@ -1038,6 +1054,18 @@ Internet-Draft                  DTLS 1.3                      April 2021
    The window MUST NOT be updated until the record has been deprotected
    successfully.
 
+
+
+
+
+
+
+
+Rescorla, et al.         Expires 8 October 2021                [Page 19]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
 4.5.2.  Handling Invalid Records
 
    Unlike TLS, DTLS is resilient in the face of invalid records (e.g.,
@@ -1058,13 +1086,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    forgery (e.g., SCTP with SCTP-AUTH), then it is safer to send alerts
    because an attacker will have difficulty forging a datagram that will
    not be rejected by the transport layer.
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 19]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
 4.5.3.  AEAD Limits
 
@@ -1093,6 +1114,14 @@ Internet-Draft                  DTLS 1.3                      April 2021
    authentication with each key.  If the number of packets that fail
    authentication exceed a limit that is specific to the AEAD in use, an
    implementation SHOULD immediately close the connection.
+
+
+
+Rescorla, et al.         Expires 8 October 2021                [Page 20]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
    Implementations SHOULD initiate a key update with update_requested
    before reaching this limit.  Once a key update has been initiated,
    the previous keys can be dropped when the limit is reached rather
@@ -1106,21 +1135,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    AEAD_AES_128_GCM and AEAD_AES_256_GCM, but this specification
    recommends a lower limit.  For AEAD_AES_128_CCM, the limit on the
    number of records that fail authentication is 2^23.5; see Appendix B.
-
-
-
-
-
-
-
-
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 20]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
    The AEAD_AES_128_CCM_8 AEAD, as used in TLS_AES_128_CCM_8_SHA256,
    does not have a limit on the number of records that fail
@@ -1156,6 +1170,14 @@ Internet-Draft                  DTLS 1.3                      April 2021
    Note that TLS 1.3 already supports a cookie extension, which is used
    to prevent denial-of-service attacks.  This DoS prevention mechanism
    is described in more detail below since UDP-based protocols are more
+
+
+
+Rescorla, et al.         Expires 8 October 2021                [Page 21]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
    vulnerable to amplification attacks than a connection-oriented
    transport like TCP that performs return-routability checks as part of
    the connection establishment.
@@ -1167,16 +1189,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
    With these exceptions, the DTLS message formats, flows, and logic are
    the same as those of TLS 1.3.
-
-
-
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 21]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
 5.1.  Denial-of-Service Countermeasures
 
@@ -1214,6 +1226,14 @@ Internet-Draft                  DTLS 1.3                      April 2021
    conveys the cookie to the client via an extension.  The client
    receiving the cookie uses the same extension to place the cookie
    subsequently into a ClientHello message.  DTLS 1.2 on the other hand
+
+
+
+Rescorla, et al.         Expires 8 October 2021                [Page 22]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
    used a separate message, namely the HelloVerifyRequest, to pass a
    cookie to the client and did not utilize the extension mechanism.
    For backwards compatibility reasons, the cookie field in the
@@ -1222,17 +1242,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
    The exchange is shown in Figure 6.  Note that the figure focuses on
    the cookie exchange; all other extensions are omitted.
-
-
-
-
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 22]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
          Client                                   Server
          ------                                   ------
@@ -1273,6 +1282,14 @@ Internet-Draft                  DTLS 1.3                      April 2021
    value is needed for the handshake to complete, though the complete
    HelloRetryRequest contents are needed.
 
+
+
+
+Rescorla, et al.         Expires 8 October 2021                [Page 23]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
    When the second ClientHello is received, the server can verify that
    the cookie is valid and that the client can receive packets at the
    given IP address.  If the client's apparent IP address is embedded in
@@ -1282,14 +1299,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    One potential attack on this scheme is for the attacker to collect a
    number of cookies from different addresses where it controls
    endpoints and then reuse them to attack the server.  The server can
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 23]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
-
    defend against this attack by changing the secret value frequently,
    thus invalidating those cookies.  If the server wishes to allow
    legitimate clients to handshake through the transition (e.g., a
@@ -1329,6 +1338,14 @@ Internet-Draft                  DTLS 1.3                      April 2021
    allows the client to restart the connection from scratch without a
    cookie.
 
+
+
+
+Rescorla, et al.         Expires 8 October 2021                [Page 24]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
    As described in Section 4.1.4 of [TLS13], clients MUST abort the
    handshake with an "unexpected_message" alert in response to any
    second HelloRetryRequest which was sent in the same connection (i.e.,
@@ -1338,13 +1355,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
    In order to support message loss, reordering, and message
    fragmentation, DTLS modifies the TLS 1.3 handshake header:
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 24]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
        enum {
            client_hello(1),
@@ -1384,16 +1394,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    The first message each side transmits in each association always has
    message_seq = 0.  Whenever a new message is generated, the
    message_seq value is incremented by one.  When a message is
-   retransmitted, the old message_seq value is re-used, i.e., not
-   incremented.  From the perspective of the DTLS record layer, the
-   retransmission is a new record.  This record will have a new
-   DTLSPlaintext.sequence_number value.
-
-
-
-
-
-
 
 
 
@@ -1401,6 +1401,11 @@ Rescorla, et al.         Expires 8 October 2021                [Page 25]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
+
+   retransmitted, the old message_seq value is re-used, i.e., not
+   incremented.  From the perspective of the DTLS record layer, the
+   retransmission is a new record.  This record will have a new
+   DTLSPlaintext.sequence_number value.
 
    Note: In DTLS 1.2 the message_seq was reset to zero in case of a
    rehandshake (i.e., renegotiation).  On the surface, a rehandshake in
@@ -1446,11 +1451,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
            Extension extensions<8..2^16-1>;
        } ClientHello;
 
-   legacy_version:  In previous versions of DTLS, this field was used
-      for version negotiation and represented the highest version number
-      supported by the client.  Experience has shown that many servers
-      do not properly implement version negotiation, leading to "version
-
 
 
 Rescorla, et al.         Expires 8 October 2021                [Page 26]
@@ -1458,6 +1458,10 @@ Rescorla, et al.         Expires 8 October 2021                [Page 26]
 Internet-Draft                  DTLS 1.3                      April 2021
 
 
+   legacy_version:  In previous versions of DTLS, this field was used
+      for version negotiation and represented the highest version number
+      supported by the client.  Experience has shown that many servers
+      do not properly implement version negotiation, leading to "version
       intolerance" in which the server rejects an otherwise acceptable
       ClientHello with a version number higher than it supports.  In
       DTLS 1.3, the client indicates its version preferences in the
@@ -1496,14 +1500,10 @@ Internet-Draft                  DTLS 1.3                      April 2021
    ServerHello message, except that the legacy_version field is set to
    0xfefd, indicating DTLS 1.2.
 
-5.5.  Handshake Message Fragmentation and Reassembly
 
-   As described in Section 4.3 one or more handshake messages may be
-   carried in a single datagram.  However, handshake messages are
-   potentially bigger than the size allowed by the underlying datagram
-   transport.  DTLS provides a mechanism for fragmenting a handshake
-   message over a number of records, each of which can be transmitted in
-   separate datagrams, thus avoiding IP fragmentation.
+
+
+
 
 
 
@@ -1513,6 +1513,15 @@ Rescorla, et al.         Expires 8 October 2021                [Page 27]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
+
+5.5.  Handshake Message Fragmentation and Reassembly
+
+   As described in Section 4.3 one or more handshake messages may be
+   carried in a single datagram.  However, handshake messages are
+   potentially bigger than the size allowed by the underlying datagram
+   transport.  DTLS provides a mechanism for fragmenting a handshake
+   message over a number of records, each of which can be transmitted in
+   separate datagrams, thus avoiding IP fragmentation.
 
    When transmitting the handshake message, the sender divides the
    message into a series of N contiguous data ranges.  The ranges MUST
@@ -1553,15 +1562,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    SHOULD NOT accept records from epoch 1 indefinitely once they are
    able to process records from epoch 3.  Though reordering of IP
    packets can result in records from epoch 1 arriving after records
-   from epoch 3, this is not likely to persist for very long relative to
-   the round trip time.  Servers could discard epoch 1 keys after the
-   first epoch 3 data arrives, or retain keys for processing epoch 1
-   data for a short period.  (See Section 6.1 for the definitions of
-   each epoch.)
-
-
-
-
 
 
 
@@ -1570,12 +1570,18 @@ Rescorla, et al.         Expires 8 October 2021                [Page 28]
 Internet-Draft                  DTLS 1.3                      April 2021
 
 
+   from epoch 3, this is not likely to persist for very long relative to
+   the round trip time.  Servers could discard epoch 1 keys after the
+   first epoch 3 data arrives, or retain keys for processing epoch 1
+   data for a short period.  (See Section 6.1 for the definitions of
+   each epoch.)
+
 5.7.  DTLS Handshake Flights
 
    DTLS handshake messages are grouped into a series of message flights.
    A flight starts with the handshake message transmission of one peer
    and ends with the expected response from the other peer.  Table 1
-   contains a complete list of message combinations that constitute
+   contains a complete list of message combinations that consitute
    flights.
 
       +======+========+========+===================================+
@@ -1610,12 +1616,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
    Below are several example message exchange illustrating the flight
    concept.  The notational conventions from [TLS13] are used.
-
-
-
-
-
-
 
 
 
@@ -3182,10 +3182,10 @@ Internet-Draft                  DTLS 1.3                      April 2021
               RFC 7983, DOI 10.17487/RFC7983, September 2016,
               <https://www.rfc-editor.org/info/rfc7983>.
 
-   [RFC8879]  Ghedini, A. and V. Vasiliev, "TLS Certificate
-              Compression", RFC 8879, DOI 10.17487/RFC8879, December
-              2020, <https://www.rfc-editor.org/info/rfc8879>.
-
+   [RFC8201]  McCann, J., Deering, S., Mogul, J., and R. Hinden, Ed.,
+              "Path MTU Discovery for IP version 6", STD 87, RFC 8201,
+              DOI 10.17487/RFC8201, July 2017,
+              <https://www.rfc-editor.org/info/rfc8201>.
 
 
 
@@ -3193,6 +3193,10 @@ Rescorla, et al.         Expires 8 October 2021                [Page 57]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
+
+   [RFC8879]  Ghedini, A. and V. Vasiliev, "TLS Certificate
+              Compression", RFC 8879, DOI 10.17487/RFC8879, December
+              2020, <https://www.rfc-editor.org/info/rfc8879>.
 
    [ROBUST]   Fischlin, M., Günther, F., and C. Janson, "Robust
               Channels: Handling Unreliable Networks in the Record
@@ -3205,10 +3209,6 @@ Appendix A.  Protocol Data Structures and Constant Values
    definitions.
 
 A.1.  Record Layer
-
-
-
-
 
 
 

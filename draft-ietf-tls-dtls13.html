@@ -15,7 +15,6 @@ Internet in a way that is designed to prevent eavesdropping, tampering, and mess
 forgery. 
        The DTLS 1.3 protocol is intentionally based on the Transport Layer Security (TLS)
 1.3 protocol and provides equivalent security guarantees with the exception of order protection/non-replayability.  Datagram semantics of the underlying transport are preserved by the DTLS protocol. 
-       This document obsoletes RFC 6347. 
     " name="description">
 <meta content="xml2rfc 3.6.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
@@ -878,7 +877,6 @@ Internet in a way that is designed to prevent eavesdropping, tampering, and mess
 forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <p id="section-abstract-2">The DTLS 1.3 protocol is intentionally based on the Transport Layer Security (TLS)
 1.3 protocol and provides equivalent security guarantees with the exception of order protection/non-replayability.  Datagram semantics of the underlying transport are preserved by the DTLS protocol.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
-<p id="section-abstract-3">This document obsoletes RFC 6347.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -948,57 +946,57 @@ forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </li>
           <li class="ulEmpty compact toc" id="section-toc.1-1.3">
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-dtls-design-rationale-and-o" class="xref">DTLS Design Rationale and Overview</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.3.2.1">
+<ul class="ulEmpty compact toc">
+<li class="ulEmpty compact toc" id="section-toc.1-1.3.2.1">
                 <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-packet-loss" class="xref">Packet Loss</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.3.2.2">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.3.2.2">
                 <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="xref">3.2</a>.  <a href="#name-reordering" class="xref">Reordering</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.3.2.3">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.3.2.3">
                 <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="xref">3.3</a>.  <a href="#name-fragmentation" class="xref">Fragmentation</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.3.2.4">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.3.2.4">
                 <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="xref">3.4</a>.  <a href="#name-replay-detection" class="xref">Replay Detection</a></p>
 </li>
             </ul>
 </li>
           <li class="ulEmpty compact toc" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-the-dtls-record-layer" class="xref">The DTLS Record Layer</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.4.2.1">
+<ul class="ulEmpty compact toc">
+<li class="ulEmpty compact toc" id="section-toc.1-1.4.2.1">
                 <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-demultiplexing-dtls-records" class="xref">Demultiplexing DTLS Records</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.4.2.2">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.4.2.2">
                 <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-sequence-number-and-epoch" class="xref">Sequence Number and Epoch</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.4.2.2.2.1">
+<ul class="ulEmpty compact toc">
+<li class="ulEmpty compact toc" id="section-toc.1-1.4.2.2.2.1">
                     <p id="section-toc.1-1.4.2.2.2.1.1"><a href="#section-4.2.1" class="xref">4.2.1</a>.  <a href="#name-processing-guidelines" class="xref">Processing Guidelines</a></p>
 </li>
-                  <li class="compact ulEmpty toc" id="section-toc.1-1.4.2.2.2.2">
+                  <li class="ulEmpty compact toc" id="section-toc.1-1.4.2.2.2.2">
                     <p id="section-toc.1-1.4.2.2.2.2.1"><a href="#section-4.2.2" class="xref">4.2.2</a>.  <a href="#name-reconstructing-the-sequence" class="xref">Reconstructing the Sequence Number and Epoch</a></p>
 </li>
-                  <li class="compact ulEmpty toc" id="section-toc.1-1.4.2.2.2.3">
+                  <li class="ulEmpty compact toc" id="section-toc.1-1.4.2.2.2.3">
                     <p id="section-toc.1-1.4.2.2.2.3.1"><a href="#section-4.2.3" class="xref">4.2.3</a>.  <a href="#name-record-number-encryption" class="xref">Record Number Encryption</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.4.2.3">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.4.2.3">
                 <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-transport-layer-mapping" class="xref">Transport Layer Mapping</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.4.2.4">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.4.2.4">
                 <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="xref">4.4</a>.  <a href="#name-pmtu-issues" class="xref">PMTU Issues</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.4.2.5">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.4.2.5">
                 <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="xref">4.5</a>.  <a href="#name-record-payload-protection" class="xref">Record Payload Protection</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.4.2.5.2.1">
+<ul class="ulEmpty compact toc">
+<li class="ulEmpty compact toc" id="section-toc.1-1.4.2.5.2.1">
                     <p id="section-toc.1-1.4.2.5.2.1.1"><a href="#section-4.5.1" class="xref">4.5.1</a>.  <a href="#name-anti-replay" class="xref">Anti-Replay</a></p>
 </li>
-                  <li class="compact ulEmpty toc" id="section-toc.1-1.4.2.5.2.2">
+                  <li class="ulEmpty compact toc" id="section-toc.1-1.4.2.5.2.2">
                     <p id="section-toc.1-1.4.2.5.2.2.1"><a href="#section-4.5.2" class="xref">4.5.2</a>.  <a href="#name-handling-invalid-records" class="xref">Handling Invalid Records</a></p>
 </li>
-                  <li class="compact ulEmpty toc" id="section-toc.1-1.4.2.5.2.3">
+                  <li class="ulEmpty compact toc" id="section-toc.1-1.4.2.5.2.3">
                     <p id="section-toc.1-1.4.2.5.2.3.1"><a href="#section-4.5.3" class="xref">4.5.3</a>.  <a href="#name-aead-limits" class="xref">AEAD Limits</a></p>
 </li>
                 </ul>
@@ -1007,77 +1005,77 @@ forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </li>
           <li class="ulEmpty compact toc" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-the-dtls-handshake-protocol" class="xref">The DTLS Handshake Protocol</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.5.2.1">
+<ul class="ulEmpty compact toc">
+<li class="ulEmpty compact toc" id="section-toc.1-1.5.2.1">
                 <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="xref">5.1</a>.  <a href="#name-denial-of-service-counterme" class="xref">Denial-of-Service Countermeasures</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.2">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.5.2.2">
                 <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="xref">5.2</a>.  <a href="#name-dtls-handshake-message-form" class="xref">DTLS Handshake Message Format</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.3">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.5.2.3">
                 <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="xref">5.3</a>.  <a href="#name-clienthello-message" class="xref">ClientHello Message</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.4">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.5.2.4">
                 <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="xref">5.4</a>.  <a href="#name-serverhello-message" class="xref">ServerHello Message</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.5">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.5.2.5">
                 <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="xref">5.5</a>.  <a href="#name-handshake-message-fragmenta" class="xref">Handshake Message Fragmentation and Reassembly</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.6">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.5.2.6">
                 <p id="section-toc.1-1.5.2.6.1"><a href="#section-5.6" class="xref">5.6</a>.  <a href="#name-end-of-early-data" class="xref">End Of Early Data</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.7">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.5.2.7">
                 <p id="section-toc.1-1.5.2.7.1"><a href="#section-5.7" class="xref">5.7</a>.  <a href="#name-dtls-handshake-flights" class="xref">DTLS Handshake Flights</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.8">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.5.2.8">
                 <p id="section-toc.1-1.5.2.8.1"><a href="#section-5.8" class="xref">5.8</a>.  <a href="#name-timeout-and-retransmission" class="xref">Timeout and Retransmission</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.5.2.8.2.1">
+<ul class="ulEmpty compact toc">
+<li class="ulEmpty compact toc" id="section-toc.1-1.5.2.8.2.1">
                     <p id="section-toc.1-1.5.2.8.2.1.1"><a href="#section-5.8.1" class="xref">5.8.1</a>.  <a href="#name-state-machine" class="xref">State Machine</a></p>
 </li>
-                  <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.8.2.2">
+                  <li class="ulEmpty compact toc" id="section-toc.1-1.5.2.8.2.2">
                     <p id="section-toc.1-1.5.2.8.2.2.1"><a href="#section-5.8.2" class="xref">5.8.2</a>.  <a href="#name-timer-values" class="xref">Timer Values</a></p>
 </li>
-                  <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.8.2.3">
+                  <li class="ulEmpty compact toc" id="section-toc.1-1.5.2.8.2.3">
                     <p id="section-toc.1-1.5.2.8.2.3.1"><a href="#section-5.8.3" class="xref">5.8.3</a>.  <a href="#name-large-flight-sizes" class="xref">Large Flight Sizes</a></p>
 </li>
-                  <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.8.2.4">
+                  <li class="ulEmpty compact toc" id="section-toc.1-1.5.2.8.2.4">
                     <p id="section-toc.1-1.5.2.8.2.4.1"><a href="#section-5.8.4" class="xref">5.8.4</a>.  <a href="#name-state-machine-duplication-f" class="xref">State machine duplication for post-handshake messages</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.9">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.5.2.9">
                 <p id="section-toc.1-1.5.2.9.1"><a href="#section-5.9" class="xref">5.9</a>.  <a href="#name-certificateverify-and-finis" class="xref">CertificateVerify and Finished Messages</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.10">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.5.2.10">
                 <p id="section-toc.1-1.5.2.10.1"><a href="#section-5.10" class="xref">5.10</a>. <a href="#name-cryptographic-label-prefix" class="xref">Cryptographic Label Prefix</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.11">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.5.2.11">
                 <p id="section-toc.1-1.5.2.11.1"><a href="#section-5.11" class="xref">5.11</a>. <a href="#name-alert-messages" class="xref">Alert Messages</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.5.2.12">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.5.2.12">
                 <p id="section-toc.1-1.5.2.12.1"><a href="#section-5.12" class="xref">5.12</a>. <a href="#name-establishing-new-associatio" class="xref">Establishing New Associations with Existing Parameters</a></p>
 </li>
             </ul>
 </li>
           <li class="ulEmpty compact toc" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-example-of-handshake-with-t" class="xref">Example of Handshake with Timeout and Retransmission</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.6.2.1">
+<ul class="ulEmpty compact toc">
+<li class="ulEmpty compact toc" id="section-toc.1-1.6.2.1">
                 <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="xref">6.1</a>.  <a href="#name-epoch-values-and-rekeying" class="xref">Epoch Values and Rekeying</a></p>
 </li>
             </ul>
 </li>
           <li class="ulEmpty compact toc" id="section-toc.1-1.7">
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-ack-message" class="xref">ACK Message</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.7.2.1">
+<ul class="ulEmpty compact toc">
+<li class="ulEmpty compact toc" id="section-toc.1-1.7.2.1">
                 <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="xref">7.1</a>.  <a href="#name-sending-acks" class="xref">Sending ACKs</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.7.2.2">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.7.2.2">
                 <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-receiving-acks" class="xref">Receiving ACKs</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.7.2.3">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.7.2.3">
                 <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="xref">7.3</a>.  <a href="#name-design-rationale" class="xref">Design Rationale</a></p>
 </li>
             </ul>
@@ -1087,8 +1085,8 @@ forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </li>
           <li class="ulEmpty compact toc" id="section-toc.1-1.9">
             <p id="section-toc.1-1.9.1"><a href="#section-9" class="xref">9</a>.  <a href="#name-connection-id-updates" class="xref">Connection ID Updates</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.9.2.1">
+<ul class="ulEmpty compact toc">
+<li class="ulEmpty compact toc" id="section-toc.1-1.9.2.1">
                 <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="xref">9.1</a>.  <a href="#name-connection-id-example" class="xref">Connection ID Example</a></p>
 </li>
             </ul>
@@ -1110,42 +1108,42 @@ forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </li>
           <li class="ulEmpty compact toc" id="section-toc.1-1.15">
             <p id="section-toc.1-1.15.1"><a href="#section-15" class="xref">15</a>. <a href="#name-references" class="xref">References</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.15.2.1">
+<ul class="ulEmpty compact toc">
+<li class="ulEmpty compact toc" id="section-toc.1-1.15.2.1">
                 <p id="section-toc.1-1.15.2.1.1"><a href="#section-15.1" class="xref">15.1</a>.  <a href="#name-normative-references" class="xref">Normative References</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.15.2.2">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.15.2.2">
                 <p id="section-toc.1-1.15.2.2.1"><a href="#section-15.2" class="xref">15.2</a>.  <a href="#name-informative-references" class="xref">Informative References</a></p>
 </li>
             </ul>
 </li>
           <li class="ulEmpty compact toc" id="section-toc.1-1.16">
             <p id="section-toc.1-1.16.1"><a href="#section-appendix.a" class="xref">Appendix A</a>.  <a href="#name-protocol-data-structures-an" class="xref">Protocol Data Structures and Constant Values</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.16.2.1">
+<ul class="ulEmpty compact toc">
+<li class="ulEmpty compact toc" id="section-toc.1-1.16.2.1">
                 <p id="section-toc.1-1.16.2.1.1"><a href="#section-a.1" class="xref">A.1</a>.  <a href="#name-record-layer" class="xref">Record Layer</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.16.2.2">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.16.2.2">
                 <p id="section-toc.1-1.16.2.2.1"><a href="#section-a.2" class="xref">A.2</a>.  <a href="#name-handshake-protocol" class="xref">Handshake Protocol</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.16.2.3">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.16.2.3">
                 <p id="section-toc.1-1.16.2.3.1"><a href="#section-a.3" class="xref">A.3</a>.  <a href="#name-acks" class="xref">ACKs</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.16.2.4">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.16.2.4">
                 <p id="section-toc.1-1.16.2.4.1"><a href="#section-a.4" class="xref">A.4</a>.  <a href="#name-connection-id-management" class="xref">Connection ID Management</a></p>
 </li>
             </ul>
 </li>
           <li class="ulEmpty compact toc" id="section-toc.1-1.17">
             <p id="section-toc.1-1.17.1"><a href="#section-appendix.b" class="xref">Appendix B</a>.  <a href="#name-analysis-of-limits-on-ccm-u" class="xref">Analysis of Limits on CCM Usage</a></p>
-<ul class="compact ulEmpty toc">
-<li class="compact ulEmpty toc" id="section-toc.1-1.17.2.1">
+<ul class="ulEmpty compact toc">
+<li class="ulEmpty compact toc" id="section-toc.1-1.17.2.1">
                 <p id="section-toc.1-1.17.2.1.1"><a href="#section-b.1" class="xref">B.1</a>.  <a href="#name-confidentiality-limits" class="xref">Confidentiality Limits</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.17.2.2">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.17.2.2">
                 <p id="section-toc.1-1.17.2.2.1"><a href="#section-b.2" class="xref">B.2</a>.  <a href="#name-integrity-limits" class="xref">Integrity Limits</a></p>
 </li>
-              <li class="compact ulEmpty toc" id="section-toc.1-1.17.2.3">
+              <li class="ulEmpty compact toc" id="section-toc.1-1.17.2.3">
                 <p id="section-toc.1-1.17.2.3.1"><a href="#section-b.3" class="xref">B.3</a>.  <a href="#name-limits-for-aead_aes_128_ccm" class="xref">Limits for AEAD_AES_128_CCM_8</a></p>
 </li>
             </ul>
@@ -1245,17 +1243,19 @@ the endpoint that is remote to the primary subject of discussion.<a href="#secti
 As in TLS 1.3 the HelloRetryRequest has the same format as a ServerHello 
 message but for convenience we use the term HelloRetryRequest throughout 
 this document as if it were a distinct message.<a href="#section-2-4" class="pilcrow">¶</a></p>
-<p id="section-2-5">The reader is also assumed to be familiar with <span>[<a href="#I-D.ietf-tls-dtls-connection-id" class="xref">I-D.ietf-tls-dtls-connection-id</a>]</span>
-as this document applies the CID functionality to DTLS 1.3.<a href="#section-2-5" class="pilcrow">¶</a></p>
-<p id="section-2-6">Figures in this document illustrate various combinations of the DTLS protocol exchanges and the symbols have the following meaning:<a href="#section-2-6" class="pilcrow">¶</a></p>
+<p id="section-2-5">DTLS 1.3 uses network byte order or big-endian format for encoding messages
+based on the encoding format defined in TLS 1.3 and earlier TLS/DTLS specifications.<a href="#section-2-5" class="pilcrow">¶</a></p>
+<p id="section-2-6">The reader is also assumed to be familiar with <span>[<a href="#I-D.ietf-tls-dtls-connection-id" class="xref">I-D.ietf-tls-dtls-connection-id</a>]</span>
+as this document applies the CID functionality to DTLS 1.3.<a href="#section-2-6" class="pilcrow">¶</a></p>
+<p id="section-2-7">Figures in this document illustrate various combinations of the DTLS protocol exchanges and the symbols have the following meaning:<a href="#section-2-7" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2-7.1">'+'  indicates noteworthy extensions sent in the previously noted message.<a href="#section-2-7.1" class="pilcrow">¶</a>
+<li class="normal" id="section-2-8.1">'+'  indicates noteworthy extensions sent in the previously noted message.<a href="#section-2-8.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-2-7.2">'*'  indicates optional or situation-dependent messages/extensions that are not always sent.<a href="#section-2-7.2" class="pilcrow">¶</a>
+        <li class="normal" id="section-2-8.2">'*'  indicates optional or situation-dependent messages/extensions that are not always sent.<a href="#section-2-8.2" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-2-7.3">'{}' indicates messages protected using keys derived from a [sender]_handshake_traffic_secret.<a href="#section-2-7.3" class="pilcrow">¶</a>
+        <li class="normal" id="section-2-8.3">'{}' indicates messages protected using keys derived from a [sender]_handshake_traffic_secret.<a href="#section-2-8.3" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-2-7.4">'[]' indicates messages protected using keys derived from traffic_secret_N.<a href="#section-2-7.4" class="pilcrow">¶</a>
+        <li class="normal" id="section-2-8.4">'[]' indicates messages protected using keys derived from traffic_secret_N.<a href="#section-2-8.4" class="pilcrow">¶</a>
 </li>
       </ul>
 </section>
@@ -1696,6 +1696,16 @@ packet  --&gt;  |   OCT == 25   -+--&gt; DTLSCipherText with CID (DTLS 1.2)
 <a href="#name-demultiplexing-dtls-12-and-" class="selfRef">Demultiplexing DTLS 1.2 and DTLS 1.3 Records</a>
           </figcaption></figure>
 </div>
+<p id="section-4.1-5">Note: The optimized DTLS header format shown in <a href="#cid_hdr" class="xref">Figure 3</a>, which 
+does not carry the Content Type in the Unified Header format, requires 
+a different demultixplexing strategy compared to what was used in previous 
+DTLS versions where the Content Type was conveyed in every record. 
+As described in <a href="#demux" class="xref">Figure 5</a>, the first byte determines how an incoming 
+DTLS record is demultiplexed. The first 3 bits of the first byte 
+distinguish a DTLS 1.3 encrypted record from a record type used in 
+previous DTLS versions or from plaintext DTLS 1.3 record. Hence, the 
+range 32 (0b0010 0000) to 63 (0b0011 1111) needs to be excluded 
+from future allocations by IANA to avoid demultiplexing problems.<a href="#section-4.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sequence-number-and-epoch">
@@ -1830,7 +1840,7 @@ sequence number.<a href="#section-4.2.3-12" class="pilcrow">¶</a></p>
 <p id="section-4.3-1">DTLS messages MAY be fragmented into multiple DTLS records.
 Each DTLS record MUST fit within a single datagram.  In order to
 avoid IP fragmentation, clients of the DTLS record layer SHOULD
-attempt to size records so that they fit within any PMTU estimates
+attempt to size records so that they fit within any Path MTU (PMTU) estimates
 obtained from the record layer.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 <p id="section-4.3-2">Multiple DTLS records MAY be placed in a single datagram.  Records are encoded
 consecutively.  The length field from DTLS records containing that field can be
@@ -1907,8 +1917,8 @@ respectively<a href="#section-4.4-7" class="pilcrow">¶</a></p>
 refusal to send the datagram as in Section 14 of <span>[<a href="#RFC4340" class="xref">RFC4340</a>]</span>), then the
 DTLS record layer MUST inform the upper layer protocol of the error.<a href="#section-4.4-8" class="pilcrow">¶</a></p>
 <p id="section-4.4-9">The DTLS record layer SHOULD NOT interfere with upper layer protocols
-performing PMTU discovery, whether via <span>[<a href="#RFC1191" class="xref">RFC1191</a>]</span> or <span>[<a href="#RFC4821" class="xref">RFC4821</a>]</span>
-mechanisms.  In particular:<a href="#section-4.4-9" class="pilcrow">¶</a></p>
+performing PMTU discovery, whether via <span>[<a href="#RFC1191" class="xref">RFC1191</a>]</span> and <span>[<a href="#RFC4821" class="xref">RFC4821</a>]</span> for 
+IPv4 or via <span>[<a href="#RFC8201" class="xref">RFC8201</a>]</span> for IPv6.  In particular:<a href="#section-4.4-9" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.4-10.1">Where allowed by the underlying transport protocol, the upper
 layer protocol SHOULD be allowed to set the state of the DF bit
@@ -2463,7 +2473,7 @@ prevents in TLS. Servers SHOULD NOT accept records from epoch 1 indefinitely onc
         </h3>
 <p id="section-5.7-1">DTLS handshake messages are grouped into a series of message flights. A flight starts with the
 handshake message transmission of one peer and ends with the expected response from the
-other peer. <a href="#tab-flights" class="xref">Table 1</a> contains a complete list of message combinations that constitute flights.<a href="#section-5.7-1" class="pilcrow">¶</a></p>
+other peer. <a href="#tab-flights" class="xref">Table 1</a> contains a complete list of message combinations that consitute flights.<a href="#section-5.7-1" class="pilcrow">¶</a></p>
 <span id="name-flight-handshake-message-co"></span><div id="tab-flights">
 <table class="center" id="table-1">
           <caption>
@@ -3885,6 +3895,10 @@ NewConnectionId (TBD), as defined in this document.  The value for the
 <dt id="RFC7983">[RFC7983]</dt>
         <dd>
 <span class="refAuthor">Petit-Huguenin, M.</span> and <span class="refAuthor">G. Salgueiro</span>, <span class="refTitle">"Multiplexing Scheme Updates for Secure Real-time Transport Protocol (SRTP) Extension for Datagram Transport Layer Security (DTLS)"</span>, <span class="seriesInfo">RFC 7983</span>, <span class="seriesInfo">DOI 10.17487/RFC7983</span>, <time datetime="2016-09" class="refDate">September 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7983">https://www.rfc-editor.org/info/rfc7983</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8201">[RFC8201]</dt>
+        <dd>
+<span class="refAuthor">McCann, J.</span>, <span class="refAuthor">Deering, S.</span>, <span class="refAuthor">Mogul, J.</span>, and <span class="refAuthor">R. Hinden, Ed.</span>, <span class="refTitle">"Path MTU Discovery for IP version 6"</span>, <span class="seriesInfo">STD 87</span>, <span class="seriesInfo">RFC 8201</span>, <span class="seriesInfo">DOI 10.17487/RFC8201</span>, <time datetime="2017-07" class="refDate">July 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8201">https://www.rfc-editor.org/info/rfc8201</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8879">[RFC8879]</dt>
         <dd>
