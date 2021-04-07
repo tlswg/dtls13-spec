@@ -143,6 +143,8 @@ The following terms are used:
 
   - endpoint: Either the client or server of the connection.
 
+  - epoch: one set of cryptographic keys used for encryption and decryption.
+
   - handshake: An initial negotiation between client and server that establishes
     the parameters of the connection.
 
@@ -159,9 +161,9 @@ The following terms are used:
 
   - MSL: Maximum Segment Lifetime
 
-The reader is assumed to be familiar with the TLS 1.3 specification. 
-As in TLS 1.3 the HelloRetryRequest has the same format as a ServerHello 
-message but for convenience we use the term HelloRetryRequest throughout 
+The reader is assumed to be familiar with the TLS 1.3 specification.
+As in TLS 1.3 the HelloRetryRequest has the same format as a ServerHello
+message but for convenience we use the term HelloRetryRequest throughout
 this document as if it were a distinct message.
 
 The reader is also assumed to be familiar with {{I-D.ietf-tls-dtls-connection-id}}
@@ -184,10 +186,10 @@ Applications, such as media streaming, Internet telephony, and online gaming use
 datagram transport for communication due to the delay-sensitive nature
 of transported data.  The behavior of such applications is unchanged when the
 DTLS protocol is used to secure communication, since the DTLS protocol
-does not compensate for lost or reordered data traffic. Note that while 
+does not compensate for lost or reordered data traffic. Note that while
 low-latency streaming and gaming use DTLS to protect data (e.g. for
 protection of a WebRTC data channel), telephony utilizes DTLS for
-key establishment, and Secure Real-time Transport Protocol (SRTP) for 
+key establishment, and Secure Real-time Transport Protocol (SRTP) for
 protection of data {{?RFC5763}}.
 
 TLS cannot be used directly in datagram environments for the following five reasons:
@@ -242,14 +244,14 @@ to see a HelloRetryRequest or a ServerHello from the server. However, if the
 timer expires, the client knows that either the
 ClientHello or the response from the server has been lost, which
 causes the the client
-to retransmit the ClientHello. When the server receives the retransmission, 
-it knows to retransmit its HelloRetryRequest or ServerHello. 
+to retransmit the ClientHello. When the server receives the retransmission,
+it knows to retransmit its HelloRetryRequest or ServerHello.
 
 The server also maintains a retransmission timer for messages it
-sends (other than HelloRetryRequest) and retransmits when that timer expires. Not 
-applying retransmissions to the HelloRetryRequest avoids the need to 
-create state on the server.  The HelloRetryRequest is designed to be 
-small enough that it will not itself be fragmented, thus avoiding 
+sends (other than HelloRetryRequest) and retransmits when that timer expires. Not
+applying retransmissions to the HelloRetryRequest avoids the need to
+create state on the server.  The HelloRetryRequest is designed to be
+small enough that it will not itself be fragmented, thus avoiding
 concerns about interleaving multiple HelloRetryRequests.
 
 For more detail on timeouts and retransmission,
@@ -553,8 +555,8 @@ are provided in {{dtls-epoch}}.
 ### Processing Guidelines
 
 Because DTLS records could be reordered, a record from epoch
-M may be received after epoch N (where N > M) has begun. 
-Implementations SHOULD discard records from earlier epochs, but 
+M may be received after epoch N (where N > M) has begun.
+Implementations SHOULD discard records from earlier epochs, but
 implementations MAY choose to
 retain keying material from previous epochs for up to the default MSL
 specified for TCP {{RFC0793}} to allow for packet reordering.  (Note that
@@ -636,11 +638,12 @@ The sn_key is computed as follows:
 ~~~
 
 [sender] denotes the sending side. The Secret value to be used is described
-in Section 7.3 of {{!TLS13}}.
+in Section 7.3 of {{!TLS13}}. Note that a new key is used for each epoch:
+because the epoch is in the clear, this does not result in ambiguity.
 
 The encrypted sequence number is computed by XORing the leading
-bytes of the Mask with the sequence number. Decryption is
-accomplished by the same process.
+bytes of the Mask with the on-the-wire representation of the
+sequence number. Decryption is accomplished by the same process.
 
 This procedure requires the ciphertext length be at least 16 bytes. Receivers
 MUST reject shorter records as if they had failed deprotection, as described in
@@ -665,8 +668,8 @@ DTLS messages MAY be fragmented into multiple DTLS records.
 Each DTLS record MUST fit within a single datagram.  In order to
 avoid IP fragmentation, clients of the DTLS record layer SHOULD
 attempt to size records so that they fit within any PMTU estimates
-obtained from the record layer. For more information about PMTU issues 
-see {{pmtu-issues}}. 
+obtained from the record layer. For more information about PMTU issues
+see {{pmtu-issues}}.
 
 Multiple DTLS records MAY be placed in a single datagram.  Records are encoded
 consecutively.  The length field from DTLS records containing that field can be
@@ -1037,17 +1040,18 @@ environment where amplification is not a problem, the server MAY be
 configured not to perform a cookie exchange.  The default SHOULD be
 that the exchange is performed, however.  In addition, the server MAY
 choose not to do a cookie exchange when a session is resumed or, more
-generically, when the DTLS handshake uses a PSK-based key exchange.
+generically, when the DTLS handshake uses a PSK-based key exchange
+and the IP address matches one associated with the PSK.
 Servers which process 0-RTT requests and send 0.5-RTT responses
 without a cookie exchange risk being used in an amplification attack
 if the size of outgoing messages greatly exceeds the size of those that are received.
 A server SHOULD limit the amount of data it sends toward a client address
-before it verifies that the client is able to receive data at that address.
+to three times the amount of data sent by the client before
+it verifies that the client is able to receive data at that address.
 A client address is valid after a cookie exchange or handshake completion.
-A server MAY apply a higher limit based on heuristics, such as if the client
-uses the same IP address as the connection on which the cookie was created.
 Clients MUST be prepared to do a cookie exchange with every
-handshake.
+handshake. Note that cookies are only valid for the existing
+handshake and cannoy be stored for future handshakes.
 
 If a server receives a ClientHello with an invalid cookie, it
 MUST terminate the handshake with an "illegal_parameter" alert.
@@ -1097,7 +1101,7 @@ fragmentation, DTLS modifies the TLS 1.3 handshake header:
         uint16 message_seq;        /* DTLS-required field */
         uint24 fragment_offset;    /* DTLS-required field */
         uint24 fragment_length;    /* DTLS-required field */
-        select (HandshakeType) {
+        select (msg_type) {
             case client_hello:          ClientHello;
             case server_hello:          ServerHello;
             case end_of_early_data:     EndOfEarlyData;
@@ -1713,6 +1717,13 @@ Client                                                Server
                                                   Certificate
                                               (message_seq=2)
 
+                           <--------                 Record 3
+                                            CertificateVerify
+                                              (message_seq=3)
+                                                     Finished
+                                              (message_seq=4)
+
+
  Record 2                  -------->
  Certificate
  (message_seq=1)
@@ -1976,7 +1987,7 @@ very large and the receiver is forced to elide acknowledgements
 for records which have already been ACKed.
 As noted above, the receipt of any record responding
 to a given flight MUST be taken as an implicit acknowledgement for the entire
-flight.
+flight to which it is responding.
 
 ## Design Rationale
 
@@ -2117,6 +2128,8 @@ MUST be used immediately for all future records. If it is set to
 {:br}
 
 Endpoints SHOULD use receiver-provided CIDs in the order they were provided.
+Implementations which receive more spare CIDs than they wish to maintain
+MAY simply discard any extra CIDs.
 Endpoints MUST NOT have more than one NewConnectionId message outstanding.
 
 Implementations which either did not negotiate the "connection_id" extension
@@ -2149,6 +2162,7 @@ a NewConnectionId message containing fewer than num_cid CIDs,
 including no CIDs at all. Endpoints MAY handle an excessive number
 of RequestConnectionId messages by terminating the connection
 using a "too_many_cids_requested" (alert number 52) alert.
+
 
 Endpoints MUST NOT send either of these messages if they did not negotiate a
 CID. If an implementation receives these messages when CIDs
@@ -2745,4 +2759,4 @@ In addition, we would like to thank:
 
 We would like to thank Jonathan Hammell, Bernard Aboba and Andy Cunningham for their review comments.
 
-Additionally, we would like to thank the IESG members for their review comments: Martin Duke, Erik Kline, Francesca Palombini, Lars Eggert, Zaheduzzaman Sarker, John Scudder, Éric Vyncke, Robert Wilton, Roman Danyliw, Benjamin Kaduk, Murray Kucherawy, Martin Vigoureux, and Alvaro Retana 
+Additionally, we would like to thank the IESG members for their review comments: Martin Duke, Erik Kline, Francesca Palombini, Lars Eggert, Zaheduzzaman Sarker, John Scudder, Éric Vyncke, Robert Wilton, Roman Danyliw, Benjamin Kaduk, Murray Kucherawy, Martin Vigoureux, and Alvaro Retana
