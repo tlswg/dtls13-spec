@@ -1051,7 +1051,7 @@ it verifies that the client is able to receive data at that address.
 A client address is valid after a cookie exchange or handshake completion.
 Clients MUST be prepared to do a cookie exchange with every
 handshake. Note that cookies are only valid for the existing
-handshake and cannoy be stored for future handshakes.
+handshake and cannot be stored for future handshakes.
 
 If a server receives a ClientHello with an invalid cookie, it
 MUST terminate the handshake with an "illegal_parameter" alert.
