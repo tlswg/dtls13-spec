@@ -1551,7 +1551,7 @@ recommend shorter or longer timer values. For instance:
   of greater than 200ms, real-time deployments are less likely
   to have long latencies. 
 
-In settings where external information (for instance from an ICE {{?RFC8445}}
+In settings where there is external information (for instance from an ICE {{?RFC8445}}
 handshake, or from previous connections to the same server)
 about the RTT, implementations SHOULD use that to set the retransmit
 time. 
@@ -1564,7 +1564,7 @@ message. After a long period of idleness, no less
 than 10 times the current timer value, implementations MAY reset the
 timer to the initial value.
 
-Note that because retransmission for handshake and not dataflow, the effect on
+Note that because retransmission is for the handshake and not dataflow, the effect on
 congestion of shorter timeouts is smaller than in generic protocols
 such as TCP or QUIC. Experience with DTLS 1.2, which uses a
 simpler "retransmit everything on timeout" approach, has not shown
