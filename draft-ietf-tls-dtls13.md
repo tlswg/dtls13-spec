@@ -1059,6 +1059,10 @@ abort the handshake with an "unexpected_message" alert in response
 to any second HelloRetryRequest which was sent in the same connection
 (i.e., where the ClientHello was itself in response to a HelloRetryRequest).
 
+DTLS clients which do not want to receive a Connection ID SHOULD
+still offer the "connection_id" extension unless
+there is an application profile to the contrary. This permits
+a server which wants to receive a CID to negotiate one.
 
 ##  DTLS Handshake Message Format
 
