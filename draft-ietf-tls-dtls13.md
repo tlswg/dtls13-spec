@@ -1534,7 +1534,7 @@ of the timer can lead to serious congestion problems, for example if
 many instances of a DTLS time out early and retransmit too quickly on
 a congested link.
 
-Unless implementations have extra information about the round trip time, 
+Unless implementations have deployment-specific and/or external information about the round trip time, 
 implementations SHOULD use an initial timer value of 1000 ms and double 
 the value at each retransmission, up to no less than 60 seconds (the 
 RFC 6298 {{RFC6298}} maximum). Application specific profiles, MAY 
