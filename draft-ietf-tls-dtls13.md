@@ -1553,13 +1553,13 @@ recommend shorter or longer timer values. For instance:
 
 In settings where there is external information (for instance from an ICE {{?RFC8445}}
 handshake, or from previous connections to the same server)
-about the RTT, implementations SHOULD use that to set the retransmit
-time. 
+about the RTT, implementations SHOULD use 1.5 times that RTT
+as the retransmit timer.
 
 Implementations SHOULD retain the current timer value until a
 message is transmitted and acknowledged without having to
 be retransmitted, at which time the value SHOULD be reset
-to approximately 1.5 times the measured round trip time for that
+to 1.5 times the measured round trip time for that
 message. After a long period of idleness, no less
 than 10 times the current timer value, implementations MAY reset the
 timer to the initial value.
