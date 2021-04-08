@@ -6,9 +6,9 @@ TLS                                                          E. Rescorla
 Internet-Draft                                                RTFM, Inc.
 Obsoletes: 6347 (if approved)                              H. Tschofenig
 Intended status: Standards Track                             Arm Limited
-Expires: 8 October 2021                                      N. Modadugu
+Expires: 10 October 2021                                     N. Modadugu
                                                             Google, Inc.
-                                                            6 April 2021
+                                                            8 April 2021
 
 
    The Datagram Transport Layer Security (DTLS) Protocol Version 1.3
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 October 2021.
+   This Internet-Draft will expire on 10 October 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Rescorla, et al.         Expires 8 October 2021                 [Page 1]
+Rescorla, et al.         Expires 10 October 2021                [Page 1]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Rescorla, et al.         Expires 8 October 2021                 [Page 2]
+Rescorla, et al.         Expires 10 October 2021                [Page 2]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -123,41 +123,41 @@ Internet-Draft                  DTLS 1.3                      April 2021
        5.8.4.  State machine duplication for post-handshake
                messages  . . . . . . . . . . . . . . . . . . . . . .  37
      5.9.  CertificateVerify and Finished Messages . . . . . . . . .  38
-     5.10. Cryptographic Label Prefix  . . . . . . . . . . . . . . .  38
-     5.11. Alert Messages  . . . . . . . . . . . . . . . . . . . . .  38
+     5.10. Cryptographic Label Prefix  . . . . . . . . . . . . . . .  39
+     5.11. Alert Messages  . . . . . . . . . . . . . . . . . . . . .  39
      5.12. Establishing New Associations with Existing Parameters  .  39
-   6.  Example of Handshake with Timeout and Retransmission  . . . .  39
-     6.1.  Epoch Values and Rekeying . . . . . . . . . . . . . . . .  41
-   7.  ACK Message . . . . . . . . . . . . . . . . . . . . . . . . .  43
-     7.1.  Sending ACKs  . . . . . . . . . . . . . . . . . . . . . .  44
-     7.2.  Receiving ACKs  . . . . . . . . . . . . . . . . . . . . .  45
-     7.3.  Design Rationale  . . . . . . . . . . . . . . . . . . . .  46
-   8.  Key Updates . . . . . . . . . . . . . . . . . . . . . . . . .  46
-   9.  Connection ID Updates . . . . . . . . . . . . . . . . . . . .  48
-     9.1.  Connection ID Example . . . . . . . . . . . . . . . . . .  49
-   10. Application Data Protocol . . . . . . . . . . . . . . . . . .  51
-   11. Security Considerations . . . . . . . . . . . . . . . . . . .  51
-   12. Changes since DTLS 1.2  . . . . . . . . . . . . . . . . . . .  53
-   13. Updates affecting DTLS 1.2  . . . . . . . . . . . . . . . . .  54
-   14. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  54
-   15. References  . . . . . . . . . . . . . . . . . . . . . . . . .  54
-     15.1.  Normative References . . . . . . . . . . . . . . . . . .  54
-     15.2.  Informative References . . . . . . . . . . . . . . . . .  56
-   Appendix A.  Protocol Data Structures and Constant Values . . . .  58
-     A.1.  Record Layer  . . . . . . . . . . . . . . . . . . . . . .  58
-     A.2.  Handshake Protocol  . . . . . . . . . . . . . . . . . . .  59
-     A.3.  ACKs  . . . . . . . . . . . . . . . . . . . . . . . . . .  61
-     A.4.  Connection ID Management  . . . . . . . . . . . . . . . .  61
-   Appendix B.  Analysis of Limits on CCM Usage  . . . . . . . . . .  61
-     B.1.  Confidentiality Limits  . . . . . . . . . . . . . . . . .  62
-     B.2.  Integrity Limits  . . . . . . . . . . . . . . . . . . . .  63
-     B.3.  Limits for AEAD_AES_128_CCM_8 . . . . . . . . . . . . . .  63
-   Appendix C.  Implementation Pitfalls  . . . . . . . . . . . . . .  64
-   Appendix D.  History  . . . . . . . . . . . . . . . . . . . . . .  64
-   Appendix E.  Working Group Information  . . . . . . . . . . . . .  66
-   Appendix F.  Contributors . . . . . . . . . . . . . . . . . . . .  67
-   Appendix G.  Acknowledgements . . . . . . . . . . . . . . . . . .  68
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  68
+   6.  Example of Handshake with Timeout and Retransmission  . . . .  40
+     6.1.  Epoch Values and Rekeying . . . . . . . . . . . . . . . .  42
+   7.  ACK Message . . . . . . . . . . . . . . . . . . . . . . . . .  44
+     7.1.  Sending ACKs  . . . . . . . . . . . . . . . . . . . . . .  45
+     7.2.  Receiving ACKs  . . . . . . . . . . . . . . . . . . . . .  47
+     7.3.  Design Rationale  . . . . . . . . . . . . . . . . . . . .  47
+   8.  Key Updates . . . . . . . . . . . . . . . . . . . . . . . . .  48
+   9.  Connection ID Updates . . . . . . . . . . . . . . . . . . . .  49
+     9.1.  Connection ID Example . . . . . . . . . . . . . . . . . .  51
+   10. Application Data Protocol . . . . . . . . . . . . . . . . . .  53
+   11. Security Considerations . . . . . . . . . . . . . . . . . . .  53
+   12. Changes since DTLS 1.2  . . . . . . . . . . . . . . . . . . .  55
+   13. Updates affecting DTLS 1.2  . . . . . . . . . . . . . . . . .  56
+   14. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  56
+   15. References  . . . . . . . . . . . . . . . . . . . . . . . . .  56
+     15.1.  Normative References . . . . . . . . . . . . . . . . . .  56
+     15.2.  Informative References . . . . . . . . . . . . . . . . .  58
+   Appendix A.  Protocol Data Structures and Constant Values . . . .  60
+     A.1.  Record Layer  . . . . . . . . . . . . . . . . . . . . . .  60
+     A.2.  Handshake Protocol  . . . . . . . . . . . . . . . . . . .  61
+     A.3.  ACKs  . . . . . . . . . . . . . . . . . . . . . . . . . .  63
+     A.4.  Connection ID Management  . . . . . . . . . . . . . . . .  63
+   Appendix B.  Analysis of Limits on CCM Usage  . . . . . . . . . .  63
+     B.1.  Confidentiality Limits  . . . . . . . . . . . . . . . . .  64
+     B.2.  Integrity Limits  . . . . . . . . . . . . . . . . . . . .  65
+     B.3.  Limits for AEAD_AES_128_CCM_8 . . . . . . . . . . . . . .  65
+   Appendix C.  Implementation Pitfalls  . . . . . . . . . . . . . .  66
+   Appendix D.  History  . . . . . . . . . . . . . . . . . . . . . .  66
+   Appendix E.  Working Group Information  . . . . . . . . . . . . .  68
+   Appendix F.  Contributors . . . . . . . . . . . . . . . . . . . .  69
+   Appendix G.  Acknowledgements . . . . . . . . . . . . . . . . . .  70
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  70
 
 
 
@@ -165,7 +165,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                 [Page 3]
+Rescorla, et al.         Expires 10 October 2021                [Page 3]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -221,7 +221,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                 [Page 4]
+Rescorla, et al.         Expires 10 October 2021                [Page 4]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -277,7 +277,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                 [Page 5]
+Rescorla, et al.         Expires 10 October 2021                [Page 5]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -333,7 +333,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                 [Page 6]
+Rescorla, et al.         Expires 10 October 2021                [Page 6]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -389,7 +389,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                 [Page 7]
+Rescorla, et al.         Expires 10 October 2021                [Page 7]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -445,7 +445,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                 [Page 8]
+Rescorla, et al.         Expires 10 October 2021                [Page 8]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -501,7 +501,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                 [Page 9]
+Rescorla, et al.         Expires 10 October 2021                [Page 9]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -557,7 +557,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 10]
+Rescorla, et al.         Expires 10 October 2021               [Page 10]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -613,7 +613,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 11]
+Rescorla, et al.         Expires 10 October 2021               [Page 11]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -669,7 +669,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 12]
+Rescorla, et al.         Expires 10 October 2021               [Page 12]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -725,7 +725,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 13]
+Rescorla, et al.         Expires 10 October 2021               [Page 13]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -781,7 +781,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 14]
+Rescorla, et al.         Expires 10 October 2021               [Page 14]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -837,7 +837,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 15]
+Rescorla, et al.         Expires 10 October 2021               [Page 15]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -893,7 +893,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 16]
+Rescorla, et al.         Expires 10 October 2021               [Page 16]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -949,7 +949,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 17]
+Rescorla, et al.         Expires 10 October 2021               [Page 17]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1005,7 +1005,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 18]
+Rescorla, et al.         Expires 10 October 2021               [Page 18]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1061,7 +1061,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 19]
+Rescorla, et al.         Expires 10 October 2021               [Page 19]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1117,7 +1117,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 20]
+Rescorla, et al.         Expires 10 October 2021               [Page 20]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1173,7 +1173,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 21]
+Rescorla, et al.         Expires 10 October 2021               [Page 21]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1229,7 +1229,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 22]
+Rescorla, et al.         Expires 10 October 2021               [Page 22]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1285,7 +1285,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 23]
+Rescorla, et al.         Expires 10 October 2021               [Page 23]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1341,7 +1341,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 24]
+Rescorla, et al.         Expires 10 October 2021               [Page 24]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1397,7 +1397,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 25]
+Rescorla, et al.         Expires 10 October 2021               [Page 25]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1453,7 +1453,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 26]
+Rescorla, et al.         Expires 10 October 2021               [Page 26]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1509,7 +1509,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 27]
+Rescorla, et al.         Expires 10 October 2021               [Page 27]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1565,7 +1565,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 28]
+Rescorla, et al.         Expires 10 October 2021               [Page 28]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1621,7 +1621,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 29]
+Rescorla, et al.         Expires 10 October 2021               [Page 29]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1677,7 +1677,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 30]
+Rescorla, et al.         Expires 10 October 2021               [Page 30]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1733,7 +1733,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 31]
+Rescorla, et al.         Expires 10 October 2021               [Page 31]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1789,7 +1789,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 32]
+Rescorla, et al.         Expires 10 October 2021               [Page 32]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1845,7 +1845,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 33]
+Rescorla, et al.         Expires 10 October 2021               [Page 33]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1901,7 +1901,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 34]
+Rescorla, et al.         Expires 10 October 2021               [Page 34]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1926,25 +1926,26 @@ Internet-Draft                  DTLS 1.3                      April 2021
    There are four ways to exit the WAITING state:
 
    1.  The retransmit timer expires: the implementation transitions to
-       the SENDING state, where it retransmits the flight, resets the
-       retransmit timer, and returns to the WAITING state.
+       the SENDING state, where it retransmits the flight, adjusts and
+       re-arms the retransmit timer (see Section 5.8.2), and returns to
+       the WAITING state.
 
    2.  The implementation reads an ACK from the peer: upon receiving an
        ACK for a partial flight (as mentioned in Section 7.1), the
        implementation transitions to the SENDING state, where it
-       retransmits the unacked portion of the flight, resets the
-       retransmit timer, and returns to the WAITING state.  Upon
-       receiving an ACK for a complete flight, the implementation
+       retransmits the unacked portion of the flight, adjusts and re-
+       arms the retransmit timer, and returns to the WAITING state.
+       Upon receiving an ACK for a complete flight, the implementation
        cancels all retransmissions and either remains in WAITING, or, if
        the ACK was for the final flight, transitions to FINISHED.
 
    3.  The implementation reads a retransmitted flight from the peer:
        the implementation transitions to the SENDING state, where it
-       retransmits the flight, resets the retransmit timer, and returns
-       to the WAITING state.  The rationale here is that the receipt of
-       a duplicate message is the likely result of timer expiry on the
-       peer and therefore suggests that part of one's previous flight
-       was lost.
+       retransmits the flight, adjusts and re-arms the retransmit timer,
+       and returns to the WAITING state.  The rationale here is that the
+       receipt of a duplicate message is the likely result of timer
+       expiry on the peer and therefore suggests that part of one's
+       previous flight was lost.
 
    4.  The implementation receives some or all of the next flight of
        messages: if this is the final flight of messages, the
@@ -1956,8 +1957,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-
-Rescorla, et al.         Expires 8 October 2021                [Page 35]
+Rescorla, et al.         Expires 10 October 2021               [Page 35]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1987,36 +1987,54 @@ Internet-Draft                  DTLS 1.3                      April 2021
    certain deployment environments require timer value adjustments.
    Mishandling of the timer can lead to serious congestion problems, for
    example if many instances of a DTLS time out early and retransmit too
-   quickly on a congested link.  Implementations SHOULD use an initial
-   timer value of 100 msec (the minimum defined in RFC 6298 [RFC6298])
-   and double the value at each retransmission, up to no less than 60
-   seconds (the RFC 6298 maximum).  Application specific profiles, such
-   as those used for the Internet of Things environment, may recommend
-   longer timer values.  Note that a 100 msec timer is recommended
-   rather than the 3-second RFC 6298 default in order to improve latency
-   for time-sensitive applications.  Because DTLS only uses
-   retransmission for handshake and not dataflow, the effect on
-   congestion should be minimal.
+   quickly on a congested link.
 
-   Implementations SHOULD retain the current timer value until a message
-   is transmitted and acknowledged without having to be retransmitted,
-   at which time the value may be reset to the initial value.  After a
-   long period of idleness, no less than 10 times the current timer
-   value, implementations MAY reset the timer to the initial value.
+   Unless implementations have deployment-specific and/or external
+   information about the round trip time, implementations SHOULD use an
+   initial timer value of 1000 ms and double the value at each
+   retransmission, up to no less than 60 seconds (the RFC 6298 [RFC6298]
+   maximum).  Application specific profiles, MAY recommend shorter or
+   longer timer values.  For instance:
 
+   *  Profiles for specific deployment environments, such as in low-
+      power, multi-hop mesh network as used in some Internet of Things
+      (IoT) networks, MAY specify longer timeouts.  See
+      [I-D.ietf-uta-tls13-iot-profile] for more information about one
+      such DTLS 1.3 IoT profile.
 
-
-
-
-
+   *  Real-time protocols MAY specify shorter timeouts.  It is
+      RECOMMENDED that for DTLS-SRTP [RFC5764], a default timeout of
+      400ms be used; because customer experience degrades with one-way
+      latencies of greater than 200ms, real-time deployments are less
+      likely to have long latencies.
 
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 36]
+
+
+Rescorla, et al.         Expires 10 October 2021               [Page 36]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
+
+   In settings where there is external information (for instance from an
+   ICE [RFC8445] handshake, or from previous connections to the same
+   server) about the RTT, implementations SHOULD use 1.5 times that RTT
+   as the retransmit timer.
+
+   Implementations SHOULD retain the current timer value until a message
+   is transmitted and acknowledged without having to be retransmitted,
+   at which time the value SHOULD be reset to 1.5 times the measured
+   round trip time for that message.  After a long period of idleness,
+   no less than 10 times the current timer value, implementations MAY
+   reset the timer to the initial value.
+
+   Note that because retransmission is for the handshake and not
+   dataflow, the effect on congestion of shorter timeouts is smaller
+   than in generic protocols such as TCP or QUIC.  Experience with DTLS
+   1.2, which uses a simpler "retransmit everything on timeout"
+   approach, has not shown serious congestion problems in practice.
 
 5.8.3.  Large Flight Sizes
 
@@ -2033,6 +2051,9 @@ Internet-Draft                  DTLS 1.3                      April 2021
    allowing DTLS clients to send a sequence of Uniform Resource Locators
    (URLs) instead of the client certificate.
 
+   DTLS stacks SHOULD NOT send more than 10 records in a single
+   transmission.
+
 5.8.4.  State machine duplication for post-handshake messages
 
    DTLS 1.3 makes use of the following categories of post-handshake
@@ -2045,6 +2066,13 @@ Internet-Draft                  DTLS 1.3                      April 2021
    3.  NewConnectionId
 
    4.  RequestConnectionId
+
+
+
+Rescorla, et al.         Expires 10 October 2021               [Page 37]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
 
    5.  Post-handshake client authentication
 
@@ -2065,14 +2093,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    NOT have sent KeyUpdate, NewConnectionId or RequestConnectionId
    message if an earlier message of the same type has not yet been
    acknowledged.
-
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 37]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
    Note: Except for post-handshake client authentication, which involves
    handshake messages in both directions, post-handshake messages are
@@ -2102,6 +2122,14 @@ Internet-Draft                  DTLS 1.3                      April 2021
    fragment_length.  However, in order to remove sensitivity to
    handshake message fragmentation, the CertificateVerify and the
    Finished messages MUST be computed as if each handshake message had
+
+
+
+Rescorla, et al.         Expires 10 October 2021               [Page 38]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
    been sent as a single fragment following the algorithm described in
    Section 4.4.3 and Section 4.4.4 of [TLS13], respectively.
 
@@ -2122,14 +2150,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    message if the offending record is received again (e.g., as a
    retransmitted handshake message).  Implementations SHOULD detect when
    a peer is persistently sending bad messages and terminate the local
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 38]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
-
    connection state after such misbehavior is detected.  Note that
    alerts are not reliably transmitted; implementation SHOULD NOT depend
    on receiving alerts in order to signal errors or connection closure.
@@ -2152,6 +2172,19 @@ Internet-Draft                  DTLS 1.3                      April 2021
    overlapping epochs.  The reachability requirement prevents off-path/
    blind attackers from destroying associations merely by sending forged
    ClientHellos.
+
+
+
+
+
+
+
+
+
+Rescorla, et al.         Expires 10 October 2021               [Page 39]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
 
    Note: it is not always possible to distinguish which association a
    given record is from.  For instance, if the client performs a
@@ -2181,7 +2214,30 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 39]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Rescorla, et al.         Expires 10 October 2021               [Page 40]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2237,7 +2293,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 40]
+Rescorla, et al.         Expires 10 October 2021               [Page 41]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2293,7 +2349,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 41]
+Rescorla, et al.         Expires 10 October 2021               [Page 42]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2349,7 +2405,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 42]
+Rescorla, et al.         Expires 10 October 2021               [Page 43]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2405,7 +2461,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 43]
+Rescorla, et al.         Expires 10 October 2021               [Page 44]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2442,9 +2498,29 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
    *  When they have received part of a flight and do not immediately
       receive the rest of the flight (which may be in the same UDP
-      datagram).  A reasonable approach here is to set a timer for 1/4
-      the current retransmit timer value when the first record in the
-      flight is received and then send an ACK when that timer expires.
+      datagram).  "Immediately" is hard to define.  One approach is to
+      set a timer for 1/4 the current retransmit timer value when the
+      first record in the flight is received and then send an ACK when
+      that timer expires.  Note: the 1/4 value here is somewhat
+      arbitrary.  Given that the round trip estimates in the DTLS
+      handshake are generally very rough (or the default), any value
+      will be an approximation, and there is an inherent compromise due
+      to retransmit due to over-agressive ACKing and over-aggressive
+      timeout-based retransmission.  As a comparison point, QUIC's loss-
+      based recovery algorithms ([I-D.ietf-quic-recovery];
+      Section 6.1.2) work out to delay of about 1/3 of the retransmit
+      timer.
+
+
+
+
+
+
+
+Rescorla, et al.         Expires 10 October 2021               [Page 45]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
 
    In general, flights MUST be ACKed unless they are implicitly
    acknowledged.  In the present specification the following flights are
@@ -2455,16 +2531,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
        main handshake.
 
    2.  The server's post-handshake CertificateRequest.
-
-
-
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 44]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
    ACKs SHOULD NOT be sent for these flights unless the responding
    flight cannot be generated immediately.  In this case,
@@ -2502,6 +2568,16 @@ Internet-Draft                  DTLS 1.3                      April 2021
    client and server.  Having the client send an empty ACK shortcuts
    this process.
 
+
+
+
+
+
+Rescorla, et al.         Expires 10 October 2021               [Page 46]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
 7.2.  Receiving ACKs
 
    When an implementation receives an ACK, it SHOULD record that the
@@ -2514,14 +2590,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    Once all the messages in a flight have been acknowledged, the
    implementation MUST cancel all retransmissions of that flight.
    Implementations MUST treat a record as having been acknowledged if it
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 45]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
-
    appears in any ACK; this prevents spurious retransmission in cases
    where a flight is very large and the receiver is forced to elide
    acknowledgements for records which have already been ACKed.  As noted
@@ -2554,6 +2622,18 @@ Internet-Draft                  DTLS 1.3                      April 2021
    indefinitely until its maximum retransmission timemout value is
    reached.
 
+
+
+
+
+
+
+
+Rescorla, et al.         Expires 10 October 2021               [Page 47]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
 8.  Key Updates
 
    As with TLS 1.3, DTLS 1.3 implementations send a KeyUpdate message to
@@ -2570,13 +2650,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    process those records with that epoch (see Section 4.2.2 for
    information on determining the correct epoch), but MAY opt to discard
    such out-of-epoch records.
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 46]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
    Due to the possibility of an ACK message for a KeyUpdate being lost
    and thereby preventing the sender of the KeyUpdate from updating its
@@ -2609,6 +2682,14 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
     [Application Data]         -------->
+
+
+
+Rescorla, et al.         Expires 10 October 2021               [Page 48]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
     (epoch=3)
 
 
@@ -2626,14 +2707,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
     [Application Data]
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 47]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
-
     (epoch=4)                  -------->
 
 
@@ -2658,6 +2731,21 @@ Internet-Draft                  DTLS 1.3                      April 2021
    new CID which it wishes the other side to use in a NewConnectionId
    message.
 
+
+
+
+
+
+
+
+
+
+
+Rescorla, et al.         Expires 10 October 2021               [Page 49]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
        enum {
            cid_immediate(0), cid_spare(1), (255)
        } ConnectionIdUsage;
@@ -2681,15 +2769,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    provided.  Endpoints MUST NOT have more than one NewConnectionId
    message outstanding.
 
-
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 48]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
-
    Implementations which either did not negotiate the "connection_id"
    extension or which have negotiated receiving an empty CID MUST NOT
    send NewConnectionId.  Implementations MUST NOT send
@@ -2706,6 +2785,22 @@ Internet-Draft                  DTLS 1.3                      April 2021
        } RequestConnectionId;
 
    num_cids  The number of CIDs desired.
+
+
+
+
+
+
+
+
+
+
+
+
+Rescorla, et al.         Expires 10 October 2021               [Page 50]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
 
    Endpoints SHOULD respond to RequestConnectionId by sending a
    NewConnectionId with usage "cid_spare" containing num_cid CIDs soon
@@ -2741,7 +2836,24 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 49]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Rescorla, et al.         Expires 10 October 2021               [Page 51]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2797,7 +2909,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 50]
+Rescorla, et al.         Expires 10 October 2021               [Page 52]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2853,7 +2965,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 51]
+Rescorla, et al.         Expires 10 October 2021               [Page 53]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2909,7 +3021,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 52]
+Rescorla, et al.         Expires 10 October 2021               [Page 54]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2965,7 +3077,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 53]
+Rescorla, et al.         Expires 10 October 2021               [Page 55]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3021,7 +3133,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 54]
+Rescorla, et al.         Expires 10 October 2021               [Page 56]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3077,7 +3189,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 55]
+Rescorla, et al.         Expires 10 October 2021               [Page 57]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3105,6 +3217,13 @@ Internet-Draft                  DTLS 1.3                      April 2021
               <https://www.ietf.org/archive/id/draft-ietf-tls-
               oldversions-deprecate-12.txt>.
 
+   [I-D.ietf-quic-recovery]
+              Iyengar, J. and I. Swett, "QUIC Loss Detection and
+              Congestion Control", Work in Progress, Internet-Draft,
+              draft-ietf-quic-recovery-34, 14 January 2021,
+              <https://www.ietf.org/archive/id/draft-ietf-quic-recovery-
+              34.txt>.
+
    [I-D.ietf-tls-esni]
               Rescorla, E., Oku, K., Sullivan, N., and C. A. Wood, "TLS
               Encrypted Client Hello", Work in Progress, Internet-Draft,
@@ -3112,9 +3231,24 @@ Internet-Draft                  DTLS 1.3                      April 2021
               <https://www.ietf.org/archive/id/draft-ietf-tls-esni-
               10.txt>.
 
+   [I-D.ietf-uta-tls13-iot-profile]
+              Tschofenig, H. and T. Fossati, "TLS/DTLS 1.3 Profiles for
+              the Internet of Things", Work in Progress, Internet-Draft,
+              draft-ietf-uta-tls13-iot-profile-01, 22 February 2021,
+              <https://www.ietf.org/archive/id/draft-ietf-uta-tls13-iot-
+              profile-01.txt>.
+
    [RFC2522]  Karn, P. and W. Simpson, "Photuris: Session-Key Management
               Protocol", RFC 2522, DOI 10.17487/RFC2522, March 1999,
               <https://www.rfc-editor.org/info/rfc2522>.
+
+
+
+
+Rescorla, et al.         Expires 10 October 2021               [Page 58]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
 
    [RFC4303]  Kent, S., "IP Encapsulating Security Payload (ESP)",
               RFC 4303, DOI 10.17487/RFC4303, December 2005,
@@ -3129,14 +3263,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
               (TLS) Protocol Version 1.1", RFC 4346,
               DOI 10.17487/RFC4346, April 2006,
               <https://www.rfc-editor.org/info/rfc4346>.
-
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 56]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
    [RFC4347]  Rescorla, E. and N. Modadugu, "Datagram Transport Layer
               Security", RFC 4347, DOI 10.17487/RFC4347, April 2006,
@@ -3162,10 +3288,23 @@ Internet-Draft                  DTLS 1.3                      April 2021
               Security (DTLS)", RFC 5763, DOI 10.17487/RFC5763, May
               2010, <https://www.rfc-editor.org/info/rfc5763>.
 
+   [RFC5764]  McGrew, D. and E. Rescorla, "Datagram Transport Layer
+              Security (DTLS) Extension to Establish Keys for the Secure
+              Real-time Transport Protocol (SRTP)", RFC 5764,
+              DOI 10.17487/RFC5764, May 2010,
+              <https://www.rfc-editor.org/info/rfc5764>.
+
    [RFC6066]  Eastlake 3rd, D., "Transport Layer Security (TLS)
               Extensions: Extension Definitions", RFC 6066,
               DOI 10.17487/RFC6066, January 2011,
               <https://www.rfc-editor.org/info/rfc6066>.
+
+
+
+Rescorla, et al.         Expires 10 October 2021               [Page 59]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
 
    [RFC6347]  Rescorla, E. and N. Modadugu, "Datagram Transport Layer
               Security Version 1.2", RFC 6347, DOI 10.17487/RFC6347,
@@ -3187,18 +3326,17 @@ Internet-Draft                  DTLS 1.3                      April 2021
               DOI 10.17487/RFC7924, July 2016,
               <https://www.rfc-editor.org/info/rfc7924>.
 
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 57]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
-
    [RFC7983]  Petit-Huguenin, M. and G. Salgueiro, "Multiplexing Scheme
               Updates for Secure Real-time Transport Protocol (SRTP)
               Extension for Datagram Transport Layer Security (DTLS)",
               RFC 7983, DOI 10.17487/RFC7983, September 2016,
               <https://www.rfc-editor.org/info/rfc7983>.
+
+   [RFC8445]  Keranen, A., Holmberg, C., and J. Rosenberg, "Interactive
+              Connectivity Establishment (ICE): A Protocol for Network
+              Address Translator (NAT) Traversal", RFC 8445,
+              DOI 10.17487/RFC8445, July 2018,
+              <https://www.rfc-editor.org/info/rfc8445>.
 
    [RFC8879]  Ghedini, A. and V. Vasiliev, "TLS Certificate
               Compression", RFC 8879, DOI 10.17487/RFC8879, December
@@ -3219,33 +3357,7 @@ A.1.  Record Layer
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 58]
+Rescorla, et al.         Expires 10 October 2021               [Page 60]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3301,7 +3413,7 @@ A.2.  Handshake Protocol
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 59]
+Rescorla, et al.         Expires 10 October 2021               [Page 61]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3357,7 +3469,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 60]
+Rescorla, et al.         Expires 10 October 2021               [Page 62]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3413,7 +3525,7 @@ Appendix B.  Analysis of Limits on CCM Usage
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 61]
+Rescorla, et al.         Expires 10 October 2021               [Page 63]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3469,7 +3581,7 @@ B.1.  Confidentiality Limits
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 62]
+Rescorla, et al.         Expires 10 October 2021               [Page 64]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3525,7 +3637,7 @@ B.3.  Limits for AEAD_AES_128_CCM_8
 
 
 
-Rescorla, et al.         Expires 8 October 2021                [Page 63]
+Rescorla, et al.         Expires 10 October 2021               [Page 65]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3572,19 +3684,27 @@ Appendix D.  History
 
    IETF Drafts
 
-   draft-40
+   draft-41 - Change the default retransmission timer to 1s and allow
+   people to do otherwise if they have side knowledge.
+
+   *  Cap any given flight to 10 records
 
 
 
 
 
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 64]
+Rescorla, et al.         Expires 10 October 2021               [Page 66]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
+
+   *  Don't re-set the timer to the initial value but to 1.5 times the
+      measured RTT.
+
+   *  A bunch more clarity about the reliability algorithms and timers
+      (including changing reset to re-arm)
+
+   draft-40
 
    - Clarified encrypted_record structure in DTLS 1.3 record layer
    - Added description of the demultiplexing process
@@ -3626,21 +3746,20 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
    draft-32: - Editorial improvements and clarifications.
 
+
+
+
+Rescorla, et al.         Expires 10 October 2021               [Page 67]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
    draft-31: - Editorial improvements in text and figures. - Added
    normative reference to ChaCha20 and Poly1305.
 
    draft-30: - Changed record format - Added text about end of early
    data - Changed format of the Connection ID Update message - Added
    Appendix A "Protocol Data Structures and Constant Values"
-
-
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 65]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
    draft-29: - Added support for sequence number encryption - Update to
    new record format - Emphasize that compatibility mode isn't used.
@@ -3683,20 +3802,19 @@ Appendix E.  Working Group Information
 
    RFC EDITOR: PLEASE REMOVE THIS SECTION.
 
+
+
+
+Rescorla, et al.         Expires 10 October 2021               [Page 68]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
    The discussion list for the IETF TLS working group is located at the
    e-mail address tls@ietf.org (mailto:tls@ietf.org).  Information on
    the group and information on how to subscribe to the list is at
    https://www1.ietf.org/mailman/listinfo/tls
    (https://www1.ietf.org/mailman/listinfo/tls)
-
-
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 66]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
    Archives of the list can be found at: https://www.ietf.org/mail-
    archive/web/tls/current/index.html (https://www.ietf.org/mail-
@@ -3741,18 +3859,16 @@ Appendix F.  Contributors
      Mozilla
      martin.thomson@gmail.com
 
-   * Christopher A. Wood
-     Apple Inc.
-     cawood@apple.com
 
 
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 67]
+Rescorla, et al.         Expires 10 October 2021               [Page 69]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
+
+   * Christopher A. Wood
+     Apple Inc.
+     cawood@apple.com
 
    * Yin Xinxing
      Huawei
@@ -3801,8 +3917,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-Rescorla, et al.         Expires 8 October 2021                [Page 68]
+Rescorla, et al.         Expires 10 October 2021               [Page 70]
