@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-04-08T00:35:06.255111+00:00",
+  "timestamp": "2021-04-11T00:35:02.988431+00:00",
   "repo": "tlswg/dtls13-spec",
   "labels": [
     {
@@ -10945,24 +10945,26 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NjA5MzYyNjYx",
       "title": "Updates to address Martin Duke's DISCUSS",
       "url": "https://github.com/tlswg/dtls13-spec/pull/226",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "ekr",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "- Change the default retransmission timer to 1s and\r\n  allow people to do otherwise if they have side knowledge.\r\n\r\n- Cap any given flight to 10 records\r\n\r\n- Don't re-set the timer to the initial value but to 1.5\r\n  times the measured RTT.\r\n\r\n- A bunch more clarity about the reliability algorithms\r\n  and timers (including changing reset to re-arm)",
       "createdAt": "2021-04-06T00:10:15Z",
-      "updatedAt": "2021-04-07T15:55:39Z",
+      "updatedAt": "2021-04-08T20:00:54Z",
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "c91d41b25a64cc955166f2589e6328938aed3d79",
       "headRepository": "ekr/dtls13-spec",
       "headRefName": "retransmission",
-      "headRefOid": "623d7ff159267300b29d4e8aecbd29efae5db9d2",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "1285111b9a6b9799355881ffb8d7ea5278ab6574",
+      "closedAt": "2021-04-08T20:00:54Z",
+      "mergedAt": "2021-04-08T20:00:54Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "1285111b9a6b9799355881ffb8d7ea5278ab6574"
+      },
       "comments": [],
       "reviews": [
         {
@@ -10981,7 +10983,7 @@
               "originalPosition": 87,
               "body": "The mailing list discussion recommended a SHOULD NOT, as far as I understand. It's not clear to me how a MUST NOT could be enforced in practice, if the e.g. the certificate chain is very long and the MTU is small.\r\n\r\nThe issue here might be an overloading of the term \"flight\": As I read the paragraph, you use it not in the sense defined (https://www.ietf.org/archive/id/draft-ietf-tls-dtls13-41.html#name-dtls-handshake-flights) but in the sense of the part of the current flight which is currenly attempted to be transmitted. Using this latter definition, a MUST NOT as above could indeed be enforced, but then I think a different term should be used.",
               "createdAt": "2021-04-06T04:50:12Z",
-              "updatedAt": "2021-04-07T15:55:39Z"
+              "updatedAt": "2021-04-08T16:19:14Z"
             }
           ]
         },
@@ -11001,7 +11003,7 @@
               "originalPosition": 76,
               "body": "```suggestion\r\nsimpler \"retransmit everything on timeout\" approach, has not shown\r\n```",
               "createdAt": "2021-04-06T06:55:34Z",
-              "updatedAt": "2021-04-07T15:55:39Z"
+              "updatedAt": "2021-04-08T16:19:14Z"
             }
           ]
         },
@@ -11021,7 +11023,7 @@
               "originalPosition": 50,
               "body": "```suggestion\r\n* Profiles for specific deployment environments, such as in low-power, multi-hop mesh network as used in some Internet of Things (IoT) networks, MAY specify longer timeouts. See {{?I-D.ietf-uta-tls13-iot-profile}} for more information about one such DTLS 1.3 IoT profile.\r\n```",
               "createdAt": "2021-04-06T07:00:01Z",
-              "updatedAt": "2021-04-07T15:55:39Z"
+              "updatedAt": "2021-04-08T16:19:14Z"
             }
           ]
         },
@@ -11041,7 +11043,7 @@
               "originalPosition": 87,
               "body": "Agreed. Fixed.",
               "createdAt": "2021-04-06T23:55:25Z",
-              "updatedAt": "2021-04-07T15:55:39Z"
+              "updatedAt": "2021-04-08T16:19:14Z"
             }
           ]
         },
@@ -11051,7 +11053,7 @@
             "abbreviatedOid": "e8c310e"
           },
           "author": "martinduke",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "APPROVED",
           "body": "IMO this addresses my DISCUSS, though I'd like Lars's opinion as well.\r\n\r\nAlthough ack-induced retransmissions are not formally reducing the send rate, as ekr pointed out the partial ack in itself will usually clear some data, so the added complexity in further limiting the retransmission is probably too much.",
           "createdAt": "2021-04-07T15:29:49Z",
@@ -11061,13 +11063,91 @@
               "originalPosition": 60,
               "body": "```suggestion\r\nIn settings where there is external information (for instance from an ICE {{?RFC8445}}\r\n```",
               "createdAt": "2021-04-07T15:29:49Z",
-              "updatedAt": "2021-04-07T15:55:39Z"
+              "updatedAt": "2021-04-08T16:19:14Z"
             },
             {
               "originalPosition": 75,
               "body": "```suggestion\r\nNote that because retransmission is for the handshake and not dataflow, the effect on\r\n```",
               "createdAt": "2021-04-07T15:30:31Z",
-              "updatedAt": "2021-04-07T15:55:39Z"
+              "updatedAt": "2021-04-08T16:19:14Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjMxMDc2NzUz",
+          "commit": {
+            "abbreviatedOid": "623d7ff"
+          },
+          "author": "larseggert",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2021-04-08T07:45:52Z",
+          "updatedAt": "2021-04-08T07:57:13Z",
+          "comments": [
+            {
+              "originalPosition": 43,
+              "body": "```suggestion\r\nUnless implementations have deployment-specific and/or external information about the round trip time, \r\n```",
+              "createdAt": "2021-04-08T07:45:52Z",
+              "updatedAt": "2021-04-08T16:19:14Z"
+            },
+            {
+              "originalPosition": 46,
+              "body": "```suggestion\r\n{{RFC6298}} maximum). Application-specific profiles, MAY \r\n```",
+              "createdAt": "2021-04-08T07:46:28Z",
+              "updatedAt": "2021-04-08T16:19:14Z"
+            },
+            {
+              "originalPosition": 63,
+              "body": "There should probably be some text about how to \"use that to set the retransmit time\", i.e., simply reusing that value is not what TCP does. I think Linux does something like `RTO = max(SRTT + 4 * RTTVAR, 1000ms)`. [QUIC does something similar](https://www.ietf.org/archive/id/draft-ietf-quic-recovery-34.html#section-6.2.1). ",
+              "createdAt": "2021-04-08T07:54:25Z",
+              "updatedAt": "2021-04-08T16:19:14Z"
+            },
+            {
+              "originalPosition": 70,
+              "body": "Why \"approximately\"?",
+              "createdAt": "2021-04-08T07:55:23Z",
+              "updatedAt": "2021-04-08T16:19:14Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjMxNTk1ODk0",
+          "commit": {
+            "abbreviatedOid": "1285111"
+          },
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2021-04-08T16:19:57Z",
+          "updatedAt": "2021-04-08T16:19:58Z",
+          "comments": [
+            {
+              "originalPosition": 63,
+              "body": "Sure. I'll make this 1.5RTT as suggested by Allman and used elsewhere in this doc,",
+              "createdAt": "2021-04-08T16:19:58Z",
+              "updatedAt": "2021-04-08T16:19:58Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjMxNTk2MjA5",
+          "commit": {
+            "abbreviatedOid": "1285111"
+          },
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2021-04-08T16:20:16Z",
+          "updatedAt": "2021-04-08T16:20:16Z",
+          "comments": [
+            {
+              "originalPosition": 70,
+              "body": "All of these values are approximate because timers are approximate.",
+              "createdAt": "2021-04-08T16:20:16Z",
+              "updatedAt": "2021-04-08T16:20:16Z"
             }
           ]
         }
@@ -11191,7 +11271,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2021-04-07T01:13:58Z",
-      "updatedAt": "2021-04-07T01:13:58Z",
+      "updatedAt": "2021-04-08T20:59:35Z",
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "c91d41b25a64cc955166f2589e6328938aed3d79",
@@ -11204,6 +11284,54 @@
       "mergeCommit": null,
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 239,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjEyMDIzNDUx",
+      "title": "Clients SHOULD offer a connection ID",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/239",
+      "state": "OPEN",
+      "author": "ekr",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-04-08T23:12:36Z",
+      "updatedAt": "2021-04-08T23:14:41Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "ad1fd96a975bae620a4271e9252bd0e6f1951762",
+      "headRepository": "ekr/dtls13-spec",
+      "headRefName": "offer_cid",
+      "headRefOid": "5f41d9b5a4ce5065cf90e3feb6300f55ce3f5ad3",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@martinduke ",
+          "createdAt": "2021-04-08T23:12:52Z",
+          "updatedAt": "2021-04-08T23:12:52Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjMxOTA4OTMx",
+          "commit": {
+            "abbreviatedOid": "5f41d9b"
+          },
+          "author": "martinduke",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "This definitely helps, thanks. It doesn't completely eliminate the possibility of QUIC-LB catastrophic failure, but it makes things way better.",
+          "createdAt": "2021-04-08T23:14:41Z",
+          "updatedAt": "2021-04-08T23:14:41Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
