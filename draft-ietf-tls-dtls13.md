@@ -161,7 +161,7 @@ The following terms are used:
 
   - MSL: Maximum Segment Lifetime
 
-The reader is assumed to be familiar with the TLS 1.3 specification.
+The reader is assumed to be familiar with {{TLS13}}.
 As in TLS 1.3 the HelloRetryRequest has the same format as a ServerHello
 message but for convenience we use the term HelloRetryRequest throughout
 this document as if it were a distinct message.
