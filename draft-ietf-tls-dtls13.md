@@ -89,6 +89,8 @@ forgery.
 The DTLS 1.3 protocol is intentionally based on the Transport Layer Security (TLS)
 1.3 protocol and provides equivalent security guarantees with the exception of order protection/non-replayability.  Datagram semantics of the underlying transport are preserved by the DTLS protocol.
 
+This document obsoletes RFC 6347.
+
 --- middle
 
 
@@ -121,7 +123,7 @@ as a delta from TLS 1.3 {{!TLS13=RFC8446}}. It obsoletes DTLS 1.2.
 
 Implementations that speak both DTLS 1.2 and DTLS 1.3 can interoperate with those
 that speak only DTLS 1.2 (using DTLS 1.2 of course), just as TLS 1.3 implementations
-can interoperate with TLS 1.2 (see Appendix D of {{!TLS13}} for details).
+can interoperate with TLS 1.2 (see Appendix D of {{TLS13}} for details).
 While backwards compatibility with DTLS 1.0 is possible the use of DTLS 1.0 is not
 recommended as explained in Section 3.1.2 of RFC 7525 {{RFC7525}} and {{?DEPRECATE=I-D.ietf-tls-oldversions-deprecate}}.
 
@@ -1267,7 +1269,7 @@ prevents in TLS. Servers SHOULD NOT accept records from epoch 1 indefinitely onc
 
 DTLS handshake messages are grouped into a series of message flights. A flight starts with the
 handshake message transmission of one peer and ends with the expected response from the
-other peer. {{tab-flights}} contains a complete list of message combinations that consitute flights.
+other peer. {{tab-flights}} contains a complete list of message combinations that constitute flights.
 
 | Note | Client | Server | Handshake Messages |
 |-----+--------+--------+------------------ |
