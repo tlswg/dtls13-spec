@@ -168,6 +168,9 @@ As in TLS 1.3, the HelloRetryRequest has the same format as a ServerHello
 message, but for convenience we use the term HelloRetryRequest throughout
 this document as if it were a distinct message.
 
+DTLS 1.3 uses network byte order (big-endian) format for encoding messages
+based on the encoding format defined in {{TLS13}} and earlier (D)TLS specifications.
+
 The reader is also assumed to be familiar with {{I-D.ietf-tls-dtls-connection-id}}
 as this document applies the CID functionality to DTLS 1.3.
 
@@ -542,6 +545,17 @@ packet  -->  |   OCT == 25   -+--> DTLSCipherText with CID (DTLS 1.2)
 ~~~
 {: #demux title="Demultiplexing DTLS 1.2 and DTLS 1.3 Records"}
 
+Note: The optimized DTLS header format shown in {{cid_hdr}}, which 
+does not carry the Content Type in the Unified Header format, requires 
+a different demultilexing strategy compared to what was used in previous 
+DTLS versions where the Content Type was conveyed in every record. 
+As described in {{demux}}, the first byte determines how an incoming 
+DTLS record is demultiplexed. The first 3 bits of the first byte 
+distinguish a DTLS 1.3 encrypted record from record types used in 
+previous DTLS versions and plaintext DTLS 1.3 record types. Hence, the 
+range 32 (0b0010 0000) to 63 (0b0011 1111) needs to be excluded 
+from future allocations by IANA to avoid demultiplexing problems;
+see {{iana-considerations}}.
 
 ## Sequence Number and Epoch
 
@@ -669,9 +683,14 @@ sequence number.
 DTLS messages MAY be fragmented into multiple DTLS records.
 Each DTLS record MUST fit within a single datagram.  In order to
 avoid IP fragmentation, clients of the DTLS record layer SHOULD
+<<<<<<< HEAD
 attempt to size records so that they fit within any PMTU estimates
 obtained from the record layer. For more information about PMTU issues
 see {{pmtu-issues}}.
+=======
+attempt to size records so that they fit within any Path MTU (PMTU) estimates
+obtained from the record layer.
+>>>>>>> hannestschofenig-patch-40
 
 Multiple DTLS records MAY be placed in a single datagram.  Records are encoded
 consecutively.  The length field from DTLS records containing that field can be
@@ -749,8 +768,8 @@ refusal to send the datagram as in Section 14 of {{RFC4340}}), then the
 DTLS record layer MUST inform the upper layer protocol of the error.
 
 The DTLS record layer SHOULD NOT interfere with upper layer protocols
-performing PMTU discovery, whether via {{RFC1191}} or {{RFC4821}}
-mechanisms.  In particular:
+performing PMTU discovery, whether via {{RFC1191}} and {{RFC4821}} for 
+IPv4 or via {{?RFC8201}} for IPv6.  In particular:
 
 - Where allowed by the underlying transport protocol, the upper
   layer protocol SHOULD be allowed to set the state of the DF bit
@@ -992,7 +1011,7 @@ are omitted.
 The cookie extension is defined in Section 4.2.2 of {{!TLS13}}. When sending the
 initial ClientHello, the client does not have a cookie yet. In this case,
 the cookie extension is omitted and the legacy_cookie field in the ClientHello
-message MUST be set to a zero length vector (i.e., a single zero byte length field).
+message MUST be set to a zero-length vector (i.e., a zero-valued single byte length field).
 
 When responding to a HelloRetryRequest, the client MUST create a new
 ClientHello message following the description in Section 4.1.2 of {{!TLS13}}.
@@ -2032,10 +2051,7 @@ ACK messages are used in two circumstances, namely :
 In the first case the use of the ACK message is optional because
 the peer will retransmit in any case and therefore the ACK just
 allows for selective retransmission, as opposed to the whole
-flight retransmission in previous versions of DTLS. For instance
-in the flow shown in {{dtls-key-update}} if the client does not send the ACK message when it
-received record 1 indicating loss of record 0,
-the entire flight would be retransmitted. When DTLS 1.3 is used in deployments
+flight retransmission in previous versions of DTLS. When DTLS 1.3 is used in deployments
 with lossy networks, such as low-power, long range radio networks as well as
 low-power mesh networks, the use of ACKs is recommended.
 
@@ -2422,7 +2438,13 @@ registry, defined in {{!TLS13}}, for RequestConnectionId (TBD), and
 NewConnectionId (TBD), as defined in this document.  The value for the
 "DTLS-OK" columns are "Y".
 
-IANA is requested to add this RFC as a reference to the TLS Cipher Suite Registry.
+IANA is requested to add this RFC as a reference to the TLS Cipher Suite Registry
+along with the following Note:
+
+    Any TLS cipher suite that is specified for use with DTLS MUST
+    define limits on the use of the associated AEAD function that
+    preserves margins for both confidentiality and integrity,
+    as specified in [THIS RFC; Section TODO]
 --- back
 
 # Protocol Data Structures and Constant Values
