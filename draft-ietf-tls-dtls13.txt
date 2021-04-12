@@ -102,7 +102,7 @@ Table of Contents
        4.5.3.  AEAD Limits . . . . . . . . . . . . . . . . . . . . .  20
    5.  The DTLS Handshake Protocol . . . . . . . . . . . . . . . . .  21
      5.1.  Denial-of-Service Countermeasures . . . . . . . . . . . .  22
-     5.2.  DTLS Handshake Message Format . . . . . . . . . . . . . .  24
+     5.2.  DTLS Handshake Message Format . . . . . . . . . . . . . .  25
      5.3.  ClientHello Message . . . . . . . . . . . . . . . . . . .  26
      5.4.  ServerHello Message . . . . . . . . . . . . . . . . . . .  27
      5.5.  Handshake Message Fragmentation and Reassembly  . . . . .  27
@@ -127,37 +127,37 @@ Internet-Draft                  DTLS 1.3                      April 2021
      5.11. Alert Messages  . . . . . . . . . . . . . . . . . . . . .  39
      5.12. Establishing New Associations with Existing Parameters  .  39
    6.  Example of Handshake with Timeout and Retransmission  . . . .  40
-     6.1.  Epoch Values and Rekeying . . . . . . . . . . . . . . . .  42
+     6.1.  Epoch Values and Rekeying . . . . . . . . . . . . . . . .  41
    7.  ACK Message . . . . . . . . . . . . . . . . . . . . . . . . .  44
      7.1.  Sending ACKs  . . . . . . . . . . . . . . . . . . . . . .  45
-     7.2.  Receiving ACKs  . . . . . . . . . . . . . . . . . . . . .  47
+     7.2.  Receiving ACKs  . . . . . . . . . . . . . . . . . . . . .  46
      7.3.  Design Rationale  . . . . . . . . . . . . . . . . . . . .  47
-   8.  Key Updates . . . . . . . . . . . . . . . . . . . . . . . . .  48
+   8.  Key Updates . . . . . . . . . . . . . . . . . . . . . . . . .  47
    9.  Connection ID Updates . . . . . . . . . . . . . . . . . . . .  49
-     9.1.  Connection ID Example . . . . . . . . . . . . . . . . . .  51
-   10. Application Data Protocol . . . . . . . . . . . . . . . . . .  53
-   11. Security Considerations . . . . . . . . . . . . . . . . . . .  53
-   12. Changes since DTLS 1.2  . . . . . . . . . . . . . . . . . . .  55
-   13. Updates affecting DTLS 1.2  . . . . . . . . . . . . . . . . .  56
-   14. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  56
-   15. References  . . . . . . . . . . . . . . . . . . . . . . . . .  56
-     15.1.  Normative References . . . . . . . . . . . . . . . . . .  56
-     15.2.  Informative References . . . . . . . . . . . . . . . . .  58
-   Appendix A.  Protocol Data Structures and Constant Values . . . .  60
-     A.1.  Record Layer  . . . . . . . . . . . . . . . . . . . . . .  60
-     A.2.  Handshake Protocol  . . . . . . . . . . . . . . . . . . .  61
-     A.3.  ACKs  . . . . . . . . . . . . . . . . . . . . . . . . . .  63
-     A.4.  Connection ID Management  . . . . . . . . . . . . . . . .  63
-   Appendix B.  Analysis of Limits on CCM Usage  . . . . . . . . . .  63
-     B.1.  Confidentiality Limits  . . . . . . . . . . . . . . . . .  64
-     B.2.  Integrity Limits  . . . . . . . . . . . . . . . . . . . .  65
-     B.3.  Limits for AEAD_AES_128_CCM_8 . . . . . . . . . . . . . .  65
-   Appendix C.  Implementation Pitfalls  . . . . . . . . . . . . . .  66
-   Appendix D.  History  . . . . . . . . . . . . . . . . . . . . . .  66
-   Appendix E.  Working Group Information  . . . . . . . . . . . . .  68
-   Appendix F.  Contributors . . . . . . . . . . . . . . . . . . . .  69
-   Appendix G.  Acknowledgements . . . . . . . . . . . . . . . . . .  70
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  70
+     9.1.  Connection ID Example . . . . . . . . . . . . . . . . . .  50
+   10. Application Data Protocol . . . . . . . . . . . . . . . . . .  52
+   11. Security Considerations . . . . . . . . . . . . . . . . . . .  52
+   12. Changes since DTLS 1.2  . . . . . . . . . . . . . . . . . . .  54
+   13. Updates affecting DTLS 1.2  . . . . . . . . . . . . . . . . .  55
+   14. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  55
+   15. References  . . . . . . . . . . . . . . . . . . . . . . . . .  55
+     15.1.  Normative References . . . . . . . . . . . . . . . . . .  55
+     15.2.  Informative References . . . . . . . . . . . . . . . . .  57
+   Appendix A.  Protocol Data Structures and Constant Values . . . .  59
+     A.1.  Record Layer  . . . . . . . . . . . . . . . . . . . . . .  59
+     A.2.  Handshake Protocol  . . . . . . . . . . . . . . . . . . .  60
+     A.3.  ACKs  . . . . . . . . . . . . . . . . . . . . . . . . . .  62
+     A.4.  Connection ID Management  . . . . . . . . . . . . . . . .  62
+   Appendix B.  Analysis of Limits on CCM Usage  . . . . . . . . . .  62
+     B.1.  Confidentiality Limits  . . . . . . . . . . . . . . . . .  63
+     B.2.  Integrity Limits  . . . . . . . . . . . . . . . . . . . .  64
+     B.3.  Limits for AEAD_AES_128_CCM_8 . . . . . . . . . . . . . .  64
+   Appendix C.  Implementation Pitfalls  . . . . . . . . . . . . . .  65
+   Appendix D.  History  . . . . . . . . . . . . . . . . . . . . . .  65
+   Appendix E.  Working Group Information  . . . . . . . . . . . . .  67
+   Appendix F.  Contributors . . . . . . . . . . . . . . . . . . . .  68
+   Appendix G.  Acknowledgements . . . . . . . . . . . . . . . . . .  69
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  69
 
 
 
@@ -235,6 +235,9 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
    *  endpoint: Either the client or server of the connection.
 
+   *  epoch: one set of cryptographic keys used for encryption and
+      decryption.
+
    *  handshake: An initial negotiation between client and server that
       establishes the parameters of the connection.
 
@@ -252,11 +255,10 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
    *  MSL: Maximum Segment Lifetime
 
-   The reader is assumed to be familiar with the TLS 1.3 specification.
-   As in TLS 1.3 the HelloRetryRequest has the same format as a
-   ServerHello message but for convenience we use the term
-   HelloRetryRequest throughout this document as if it were a distinct
-   message.
+   The reader is assumed to be familiar with [TLS13].  As in TLS 1.3,
+   the HelloRetryRequest has the same format as a ServerHello message,
+   but for convenience we use the term HelloRetryRequest throughout this
+   document as if it were a distinct message.
 
    The reader is also assumed to be familiar with
    [I-D.ietf-tls-dtls-connection-id] as this document applies the CID
@@ -271,8 +273,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    *  '*' indicates optional or situation-dependent messages/extensions
       that are not always sent.
 
-   *  '{}' indicates messages protected using keys derived from a
-      [sender]_handshake_traffic_secret.
 
 
 
@@ -281,6 +281,9 @@ Rescorla, et al.         Expires 14 October 2021                [Page 5]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
+
+   *  '{}' indicates messages protected using keys derived from a
+      [sender]_handshake_traffic_secret.
 
    *  '[]' indicates messages protected using keys derived from
       traffic_secret_N.
@@ -325,9 +328,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    4.  Handshake messages are potentially larger than can be contained
        in a single datagram.  DTLS adds fields to handshake messages to
        support fragmentation and reassembly.
-
-
-
 
 
 
@@ -816,11 +816,13 @@ Internet-Draft                  DTLS 1.3                      April 2021
      [sender]_sn_key  = HKDF-Expand-Label(Secret, "sn" , "", key_length)
 
    [sender] denotes the sending side.  The Secret value to be used is
-   described in Section 7.3 of [TLS13].
+   described in Section 7.3 of [TLS13].  Note that a new key is used for
+   each epoch: because the epoch is in the clear, this does not result
+   in ambiguity.
 
    The encrypted sequence number is computed by XORing the leading bytes
-   of the Mask with the sequence number.  Decryption is accomplished by
-   the same process.
+   of the Mask with the on-the-wire representation of the sequence
+   number.  Decryption is accomplished by the same process.
 
    This procedure requires the ciphertext length be at least 16 bytes.
    Receivers MUST reject shorter records as if they had failed
@@ -831,8 +833,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    padding.  However, some algorithms such as TLS_AES_128_CCM_8_SHA256
    have a shorter authentication tag and may require padding for short
    inputs.
-
-
 
 
 
@@ -1312,17 +1312,18 @@ Internet-Draft                  DTLS 1.3                      April 2021
    configured not to perform a cookie exchange.  The default SHOULD be
    that the exchange is performed, however.  In addition, the server MAY
    choose not to do a cookie exchange when a session is resumed or, more
-   generically, when the DTLS handshake uses a PSK-based key exchange.
-   Servers which process 0-RTT requests and send 0.5-RTT responses
-   without a cookie exchange risk being used in an amplification attack
-   if the size of outgoing messages greatly exceeds the size of those
-   that are received.  A server SHOULD limit the amount of data it sends
-   toward a client address before it verifies that the client is able to
-   receive data at that address.  A client address is valid after a
-   cookie exchange or handshake completion.  A server MAY apply a higher
-   limit based on heuristics, such as if the client uses the same IP
-   address as the connection on which the cookie was created.  Clients
-   MUST be prepared to do a cookie exchange with every handshake.
+   generically, when the DTLS handshake uses a PSK-based key exchange
+   and the IP address matches one associated with the PSK.  Servers
+   which process 0-RTT requests and send 0.5-RTT responses without a
+   cookie exchange risk being used in an amplification attack if the
+   size of outgoing messages greatly exceeds the size of those that are
+   received.  A server SHOULD limit the amount of data it sends toward a
+   client address to three times the amount of data sent by the client
+   before it verifies that the client is able to receive data at that
+   address.  A client address is valid after a cookie exchange or
+   handshake completion.  Clients MUST be prepared to do a cookie
+   exchange with every handshake.  Note that cookies are only valid for
+   the existing handshake and cannot be stored for future handshakes.
 
    If a server receives a ClientHello with an invalid cookie, it MUST
    terminate the handshake with an "illegal_parameter" alert.  This
@@ -1334,10 +1335,9 @@ Internet-Draft                  DTLS 1.3                      April 2021
    second HelloRetryRequest which was sent in the same connection (i.e.,
    where the ClientHello was itself in response to a HelloRetryRequest).
 
-5.2.  DTLS Handshake Message Format
 
-   In order to support message loss, reordering, and message
-   fragmentation, DTLS modifies the TLS 1.3 handshake header:
+
+
 
 
 
@@ -1345,6 +1345,11 @@ Rescorla, et al.         Expires 14 October 2021               [Page 24]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
+
+5.2.  DTLS Handshake Message Format
+
+   In order to support message loss, reordering, and message
+   fragmentation, DTLS modifies the TLS 1.3 handshake header:
 
        enum {
            client_hello(1),
@@ -1367,7 +1372,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
            uint16 message_seq;        /* DTLS-required field */
            uint24 fragment_offset;    /* DTLS-required field */
            uint24 fragment_length;    /* DTLS-required field */
-           select (HandshakeType) {
+           select (msg_type) {
                case client_hello:          ClientHello;
                case server_hello:          ServerHello;
                case end_of_early_data:     EndOfEarlyData;
@@ -1388,11 +1393,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    incremented.  From the perspective of the DTLS record layer, the
    retransmission is a new record.  This record will have a new
    DTLSPlaintext.sequence_number value.
-
-
-
-
-
 
 
 
@@ -2204,44 +2204,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    Section 7 provides the necessary background details for this
    interaction.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Rescorla, et al.         Expires 14 October 2021               [Page 40]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
-
    Client                                                Server
    ------                                                ------
 
@@ -2272,9 +2234,24 @@ Internet-Draft                  DTLS 1.3                      April 2021
                                                      ServerHello
                                                  (message_seq=0)
                                              EncryptedExtensions
+
+
+
+Rescorla, et al.         Expires 14 October 2021               [Page 40]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
                                                  (message_seq=1)
                                                      Certificate
                                                  (message_seq=2)
+
+                              <--------                 Record 3
+                                               CertificateVerify
+                                                 (message_seq=3)
+                                                        Finished
+                                                 (message_seq=4)
+
 
     Record 2                  -------->
     Certificate
@@ -2288,15 +2265,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
                                                        ACK [2]
 
          Figure 12: Example DTLS exchange illustrating message loss
-
-
-
-
-
-Rescorla, et al.         Expires 14 October 2021               [Page 41]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
 6.1.  Epoch Values and Rekeying
 
@@ -2321,6 +2289,14 @@ Internet-Draft                  DTLS 1.3                      April 2021
    *  epoch value (1) is used for messages protected using keys derived
       from client_early_traffic_secret.  Note this epoch is skipped if
       the client does not offer early data.
+
+
+
+
+Rescorla, et al.         Expires 14 October 2021               [Page 41]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
 
    *  epoch value (2) is used for messages protected using keys derived
       from [sender]_handshake_traffic_secret.  Messages transmitted
@@ -2347,13 +2323,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    Note that epoch values do not wrap.  If a DTLS implementation would
    need to wrap the epoch value, it MUST terminate the connection.
 
-
-
-Rescorla, et al.         Expires 14 October 2021               [Page 42]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
-
    The traffic key calculation is described in Section 7.3 of [TLS13].
 
    Figure 13 illustrates the epoch values in an example DTLS handshake.
@@ -2377,6 +2346,14 @@ Internet-Draft                  DTLS 1.3                      April 2021
                                            {EncryptedExtensions}
                                                        (epoch=2)
                                                    {Certificate}
+
+
+
+Rescorla, et al.         Expires 14 October 2021               [Page 42]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
                                                        (epoch=2)
                                              {CertificateVerify}
                                                        (epoch=2)
@@ -2402,14 +2379,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
                             Some time later ...
                     (Post-Handshake Message Exchange)
                                                         Record 4
-
-
-
-Rescorla, et al.         Expires 14 October 2021               [Page 43]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
-
                                <--------      [NewSessionTicket]
                                                        (epoch=3)
     Record 4
@@ -2426,6 +2395,20 @@ Internet-Draft                  DTLS 1.3                      April 2021
     (epoch=4)
 
           Figure 13: Example DTLS exchange with epoch information
+
+
+
+
+
+
+
+
+
+
+Rescorla, et al.         Expires 14 October 2021               [Page 43]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
 
 7.  ACK Message
 
@@ -2459,13 +2442,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    are in different flights.  Implementations can accomplish this by
    clearing their ACK list upon receiving the start of the next flight.
 
-
-
-Rescorla, et al.         Expires 14 October 2021               [Page 44]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
-
    After the handshake, ACKs SHOULD be sent once for each received and
    processed handshake record (potentially subject to some delay) and
    MAY cover more than one flight.  This includes records containing
@@ -2482,6 +2458,13 @@ Internet-Draft                  DTLS 1.3                      April 2021
    Implementations SHOULD simply use the highest current sending epoch,
    which will generally be the highest available.  After the handshake,
    implementations MUST use the highest available sending epoch.
+
+
+
+Rescorla, et al.         Expires 14 October 2021               [Page 44]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
 
 7.1.  Sending ACKs
 
@@ -2511,17 +2494,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
       Section 6.1.2) work out to delay of about 1/3 of the retransmit
       timer.
 
-
-
-
-
-
-
-Rescorla, et al.         Expires 14 October 2021               [Page 45]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
-
    In general, flights MUST be ACKed unless they are implicitly
    acknowledged.  In the present specification the following flights are
    implicitly acknowledged by the receipt of the next flight, which
@@ -2542,6 +2514,14 @@ Internet-Draft                  DTLS 1.3                      April 2021
    on the client.  All other flights MUST be ACKed.  Implementations MAY
    acknowledge the records corresponding to each transmission of each
    flight or simply acknowledge the most recent one.  In general,
+
+
+
+Rescorla, et al.         Expires 14 October 2021               [Page 45]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
    implementations SHOULD ACK as many received packets as can fit into
    the ACK record, as this provides the most complete information and
    thus reduces the chance of spurious retransmission; if space is
@@ -2568,16 +2548,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    client and server.  Having the client send an empty ACK shortcuts
    this process.
 
-
-
-
-
-
-Rescorla, et al.         Expires 14 October 2021               [Page 46]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
-
 7.2.  Receiving ACKs
 
    When an implementation receives an ACK, it SHOULD record that the
@@ -2594,7 +2564,19 @@ Internet-Draft                  DTLS 1.3                      April 2021
    where a flight is very large and the receiver is forced to elide
    acknowledgements for records which have already been ACKed.  As noted
    above, the receipt of any record responding to a given flight MUST be
-   taken as an implicit acknowledgement for the entire flight.
+   taken as an implicit acknowledgement for the entire flight to which
+   it is responding.
+
+
+
+
+
+
+
+Rescorla, et al.         Expires 14 October 2021               [Page 46]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
 
 7.3.  Design Rationale
 
@@ -2622,18 +2604,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    indefinitely until its maximum retransmission timemout value is
    reached.
 
-
-
-
-
-
-
-
-Rescorla, et al.         Expires 14 October 2021               [Page 47]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
-
 8.  Key Updates
 
    As with TLS 1.3, DTLS 1.3 implementations send a KeyUpdate message to
@@ -2656,6 +2626,13 @@ Internet-Draft                  DTLS 1.3                      April 2021
    keying material, receivers MUST retain the pre-update keying material
    until receipt and successful decryption of a message using the new
    keys.
+
+
+
+Rescorla, et al.         Expires 14 October 2021               [Page 47]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
 
    Figure 14 shows an example exchange illustrating that a successful
    ACK processing updates the keys of the KeyUpdate message sender,
@@ -2682,14 +2659,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
     [Application Data]         -------->
-
-
-
-Rescorla, et al.         Expires 14 October 2021               [Page 48]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
-
     (epoch=3)
 
 
@@ -2715,6 +2684,12 @@ Internet-Draft                  DTLS 1.3                      April 2021
                                                        (epoch=3)
 
 
+
+Rescorla, et al.         Expires 14 October 2021               [Page 48]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
     [Ack]                      -------->
     (epoch=4)
 
@@ -2730,21 +2705,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    extension [I-D.ietf-tls-dtls-connection-id], either side can send a
    new CID which it wishes the other side to use in a NewConnectionId
    message.
-
-
-
-
-
-
-
-
-
-
-
-Rescorla, et al.         Expires 14 October 2021               [Page 49]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
        enum {
            cid_immediate(0), cid_spare(1), (255)
@@ -2766,8 +2726,9 @@ Internet-Draft                  DTLS 1.3                      April 2021
       set to "cid_spare", then either existing or new CID MAY be used.
 
    Endpoints SHOULD use receiver-provided CIDs in the order they were
-   provided.  Endpoints MUST NOT have more than one NewConnectionId
-   message outstanding.
+   provided.  Implementations which receive more spare CIDs than they
+   wish to maintain MAY simply discard any extra CIDs.  Endpoints MUST
+   NOT have more than one NewConnectionId message outstanding.
 
    Implementations which either did not negotiate the "connection_id"
    extension or which have negotiated receiving an empty CID MUST NOT
@@ -2775,6 +2736,15 @@ Internet-Draft                  DTLS 1.3                      April 2021
    RequestConnectionId when sending an empty Connection ID.
    Implementations which detect a violation of these rules MUST
    terminate the connection with an "unexpected_message" alert.
+
+
+
+
+
+Rescorla, et al.         Expires 14 October 2021               [Page 49]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
 
    Implementations SHOULD use a new CID whenever sending on a new path,
    and SHOULD request new CIDs for this purpose if path changes are
@@ -2785,22 +2755,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
        } RequestConnectionId;
 
    num_cids  The number of CIDs desired.
-
-
-
-
-
-
-
-
-
-
-
-
-Rescorla, et al.         Expires 14 October 2021               [Page 50]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
    Endpoints SHOULD respond to RequestConnectionId by sending a
    NewConnectionId with usage "cid_spare" containing num_cid CIDs soon
@@ -2843,17 +2797,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-
-
-
-
-
-
-
-
-
-
-Rescorla, et al.         Expires 14 October 2021               [Page 51]
+Rescorla, et al.         Expires 14 October 2021               [Page 50]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2909,7 +2853,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 52]
+Rescorla, et al.         Expires 14 October 2021               [Page 51]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2965,7 +2909,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 53]
+Rescorla, et al.         Expires 14 October 2021               [Page 52]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3021,7 +2965,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 54]
+Rescorla, et al.         Expires 14 October 2021               [Page 53]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3077,7 +3021,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 55]
+Rescorla, et al.         Expires 14 October 2021               [Page 54]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3133,7 +3077,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 56]
+Rescorla, et al.         Expires 14 October 2021               [Page 55]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3189,7 +3133,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 57]
+Rescorla, et al.         Expires 14 October 2021               [Page 56]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3245,7 +3189,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 58]
+Rescorla, et al.         Expires 14 October 2021               [Page 57]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3301,7 +3245,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 59]
+Rescorla, et al.         Expires 14 October 2021               [Page 58]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3357,7 +3301,7 @@ A.1.  Record Layer
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 60]
+Rescorla, et al.         Expires 14 October 2021               [Page 59]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3413,7 +3357,7 @@ A.2.  Handshake Protocol
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 61]
+Rescorla, et al.         Expires 14 October 2021               [Page 60]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3448,7 +3392,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
        uint16 message_seq;        /* DTLS-required field */
        uint24 fragment_offset;    /* DTLS-required field */
        uint24 fragment_length;    /* DTLS-required field */
-       select (HandshakeType) {
+       select (msg_type) {
            case client_hello:          ClientHello;
            case server_hello:          ServerHello;
            case end_of_early_data:     EndOfEarlyData;
@@ -3469,7 +3413,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 62]
+Rescorla, et al.         Expires 14 October 2021               [Page 61]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3525,7 +3469,7 @@ Appendix B.  Analysis of Limits on CCM Usage
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 63]
+Rescorla, et al.         Expires 14 October 2021               [Page 62]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3581,7 +3525,7 @@ B.1.  Confidentiality Limits
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 64]
+Rescorla, et al.         Expires 14 October 2021               [Page 63]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3637,7 +3581,7 @@ B.3.  Limits for AEAD_AES_128_CCM_8
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 65]
+Rescorla, et al.         Expires 14 October 2021               [Page 64]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3693,7 +3637,7 @@ Appendix D.  History
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 66]
+Rescorla, et al.         Expires 14 October 2021               [Page 65]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3749,7 +3693,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 67]
+Rescorla, et al.         Expires 14 October 2021               [Page 66]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3805,7 +3749,7 @@ Appendix E.  Working Group Information
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 68]
+Rescorla, et al.         Expires 14 October 2021               [Page 67]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3861,7 +3805,7 @@ Appendix F.  Contributors
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 69]
+Rescorla, et al.         Expires 14 October 2021               [Page 68]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3917,4 +3861,4 @@ Authors' Addresses
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 70]
+Rescorla, et al.         Expires 14 October 2021               [Page 69]
