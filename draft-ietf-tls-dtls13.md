@@ -540,8 +540,8 @@ a different demultilexing strategy compared to what was used in previous
 DTLS versions where the Content Type was conveyed in every record. 
 As described in {{demux}}, the first byte determines how an incoming 
 DTLS record is demultiplexed. The first 3 bits of the first byte 
-distinguish a DTLS 1.3 encrypted record from a record type used in 
-previous DTLS versions or from plaintext DTLS 1.3 record. Hence, the 
+distinguish a DTLS 1.3 encrypted record from record types used in 
+previous DTLS versions and plaintext DTLS 1.3 record types. Hence, the 
 range 32 (0b0010 0000) to 63 (0b0011 1111) needs to be excluded 
 from future allocations by IANA to avoid demultiplexing problems.
 
