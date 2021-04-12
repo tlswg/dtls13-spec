@@ -15,6 +15,7 @@ Internet in a way that is designed to prevent eavesdropping, tampering, and mess
 forgery. 
        The DTLS 1.3 protocol is intentionally based on the Transport Layer Security (TLS)
 1.3 protocol and provides equivalent security guarantees with the exception of order protection/non-replayability.  Datagram semantics of the underlying transport are preserved by the DTLS protocol. 
+       This document obsoletes RFC 6347. 
     " name="description">
 <meta content="xml2rfc 3.6.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
@@ -829,7 +830,7 @@ address div.right {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Rescorla, et al.</td>
-<td class="center">Expires 10 October 2021</td>
+<td class="center">Expires 14 October 2021</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -845,12 +846,12 @@ address div.right {
 <a href="https://www.rfc-editor.org/rfc/rfc6347" class="eref">6347</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2021-04-08" class="published">8 April 2021</time>
+<time datetime="2021-04-12" class="published">12 April 2021</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2021-10-10">10 October 2021</time></dd>
+<dd class="expires"><time datetime="2021-10-14">14 October 2021</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -877,6 +878,7 @@ Internet in a way that is designed to prevent eavesdropping, tampering, and mess
 forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <p id="section-abstract-2">The DTLS 1.3 protocol is intentionally based on the Transport Layer Security (TLS)
 1.3 protocol and provides equivalent security guarantees with the exception of order protection/non-replayability.  Datagram semantics of the underlying transport are preserved by the DTLS protocol.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-3">This document obsoletes RFC 6347.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -897,7 +899,7 @@ forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 10 October 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 14 October 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2468,7 +2470,7 @@ prevents in TLS. Servers SHOULD NOT accept records from epoch 1 indefinitely onc
         </h3>
 <p id="section-5.7-1">DTLS handshake messages are grouped into a series of message flights. A flight starts with the
 handshake message transmission of one peer and ends with the expected response from the
-other peer. <a href="#tab-flights" class="xref">Table 1</a> contains a complete list of message combinations that consitute flights.<a href="#section-5.7-1" class="pilcrow">¶</a></p>
+other peer. <a href="#tab-flights" class="xref">Table 1</a> contains a complete list of message combinations that constitute flights.<a href="#section-5.7-1" class="pilcrow">¶</a></p>
 <span id="name-flight-handshake-message-co"></span><div id="tab-flights">
 <table class="center" id="table-1">
           <caption>
