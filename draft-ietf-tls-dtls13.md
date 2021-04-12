@@ -165,7 +165,7 @@ message but for convenience we use the term HelloRetryRequest throughout
 this document as if it were a distinct message.
 
 DTLS 1.3 uses network byte order (big-endian) format for encoding messages
-based on the encoding format defined in TLS 1.3 and earlier TLS/DTLS specifications.
+based on the encoding format defined in {{TLS13}} and earlier (D)TLS specifications.
 
 The reader is also assumed to be familiar with {{I-D.ietf-tls-dtls-connection-id}}
 as this document applies the CID functionality to DTLS 1.3.
