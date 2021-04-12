@@ -738,7 +738,7 @@ framing.
 Note that DTLS does not defend against spoofed ICMP messages;
 implementations SHOULD ignore any such messages that indicate
 PMTUs below the IPv4 and IPv6 minimums of 576 and 1280 bytes
-respectively
+respectively.
 
 If there is a transport protocol indication that the PMTU was exceeded
 (either via ICMP or via a
@@ -886,7 +886,7 @@ The AEAD_AES_128_CCM_8 AEAD, as used in TLS_AES_128_CCM_8_SHA256, does not have 
 limit on the number of records that fail authentication that both limits the
 probability of forgery by the same amount and does not expose implementations
 to the risk of denial of service; see {{ccm-short}}. Therefore,
-TLS_AES_128_CCM_8_SHA256 MUST NOT used in DTLS without additional safeguards
+TLS_AES_128_CCM_8_SHA256 MUST NOT be used in DTLS without additional safeguards
 against forgery. Implementations MUST set usage limits for AEAD_AES_128_CCM_8
 based on an understanding of any additional forgery protections that are used.
 
