@@ -543,7 +543,8 @@ DTLS record is demultiplexed. The first 3 bits of the first byte
 distinguish a DTLS 1.3 encrypted record from record types used in 
 previous DTLS versions and plaintext DTLS 1.3 record types. Hence, the 
 range 32 (0b0010 0000) to 63 (0b0011 1111) needs to be excluded 
-from future allocations by IANA to avoid demultiplexing problems.
+from future allocations by IANA to avoid demultiplexing problems;
+see {{iana-considerations}}.
 
 ## Sequence Number and Epoch
 
