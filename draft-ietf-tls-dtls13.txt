@@ -939,7 +939,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
    Note that DTLS does not defend against spoofed ICMP messages;
    implementations SHOULD ignore any such messages that indicate PMTUs
-   below the IPv4 and IPv6 minimums of 576 and 1280 bytes respectively
+   below the IPv4 and IPv6 minimums of 576 and 1280 bytes respectively.
 
    If there is a transport protocol indication that the PMTU was
    exceeded (either via ICMP or via a refusal to send the datagram as in
@@ -1127,9 +1127,10 @@ Internet-Draft                  DTLS 1.3                      April 2021
    authentication that both limits the probability of forgery by the
    same amount and does not expose implementations to the risk of denial
    of service; see Appendix B.3.  Therefore, TLS_AES_128_CCM_8_SHA256
-   MUST NOT used in DTLS without additional safeguards against forgery.
-   Implementations MUST set usage limits for AEAD_AES_128_CCM_8 based on
-   an understanding of any additional forgery protections that are used.
+   MUST NOT be used in DTLS without additional safeguards against
+   forgery.  Implementations MUST set usage limits for
+   AEAD_AES_128_CCM_8 based on an understanding of any additional
+   forgery protections that are used.
 
    Any TLS cipher suite that is specified for use with DTLS MUST define
    limits on the use of the associated AEAD function that preserves
@@ -1167,7 +1168,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
    With these exceptions, the DTLS message formats, flows, and logic are
    the same as those of TLS 1.3.
-
 
 
 
