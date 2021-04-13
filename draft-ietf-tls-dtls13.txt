@@ -100,7 +100,7 @@ Table of Contents
        4.5.1.  Anti-Replay . . . . . . . . . . . . . . . . . . . . .  19
        4.5.2.  Handling Invalid Records  . . . . . . . . . . . . . .  20
        4.5.3.  AEAD Limits . . . . . . . . . . . . . . . . . . . . .  20
-   5.  The DTLS Handshake Protocol . . . . . . . . . . . . . . . . .  21
+   5.  The DTLS Handshake Protocol . . . . . . . . . . . . . . . . .  22
      5.1.  Denial-of-Service Countermeasures . . . . . . . . . . . .  22
      5.2.  DTLS Handshake Message Format . . . . . . . . . . . . . .  25
      5.3.  ClientHello Message . . . . . . . . . . . . . . . . . . .  27
@@ -1090,6 +1090,10 @@ Internet-Draft                  DTLS 1.3                      April 2021
    because an attacker will have difficulty forging a datagram that will
    not be rejected by the transport layer.
 
+   Note that because invalid records are rejected at a layer lower than
+   the handshake state machine, they do not affect pending
+   retransmission timers.
+
 4.5.3.  AEAD Limits
 
    Section 5.5 of TLS [TLS13] defines limits on the number of records
@@ -1104,14 +1108,10 @@ Internet-Draft                  DTLS 1.3                      April 2021
    to obtain the same confidentiality protection as the limits specified
    in TLS.
 
-   The usage limits defined in TLS 1.3 exist for protection against
-   attacks on confidentiality and apply to successful applications of
-   AEAD protection.  The integrity protections in authenticated
-   encryption also depend on limiting the number of attempts to forge
-   packets.  TLS achieves this by closing connections after any record
-   fails an authentication check.  In comparison, DTLS ignores any
-   packet that cannot be authenticated, allowing multiple forgery
-   attempts.
+
+
+
+
 
 
 
@@ -1121,6 +1121,15 @@ Rescorla, et al.         Expires 15 October 2021               [Page 20]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
+
+   The usage limits defined in TLS 1.3 exist for protection against
+   attacks on confidentiality and apply to successful applications of
+   AEAD protection.  The integrity protections in authenticated
+   encryption also depend on limiting the number of attempts to forge
+   packets.  TLS achieves this by closing connections after any record
+   fails an authentication check.  In comparison, DTLS ignores any
+   packet that cannot be authenticated, allowing multiple forgery
+   attempts.
 
    Implementations MUST count the number of received packets that fail
    authentication with each key.  If the number of packets that fail
@@ -1159,15 +1168,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    values are based - and any assumptions used in that analysis - allows
    limits to be adapted to varying usage conditions.
 
-5.  The DTLS Handshake Protocol
-
-   DTLS 1.3 re-uses the TLS 1.3 handshake messages and flows, with the
-   following changes:
-
-   1.  To handle message loss, reordering, and fragmentation
-       modifications to the handshake header are necessary.
-
-   2.  Retransmission timers are introduced to handle message loss.
 
 
 
@@ -1177,6 +1177,16 @@ Rescorla, et al.         Expires 15 October 2021               [Page 21]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
+
+5.  The DTLS Handshake Protocol
+
+   DTLS 1.3 re-uses the TLS 1.3 handshake messages and flows, with the
+   following changes:
+
+   1.  To handle message loss, reordering, and fragmentation
+       modifications to the handshake header are necessary.
+
+   2.  Retransmission timers are introduced to handle message loss.
 
    3.  A new ACK content type has been added for reliable message
        delivery of handshake messages.
@@ -1216,6 +1226,14 @@ Internet-Draft                  DTLS 1.3                      April 2021
    In order to counter both of these attacks, DTLS borrows the stateless
    cookie technique used by Photuris [RFC2522] and IKE [RFC7296].  When
    the client sends its ClientHello message to the server, the server
+
+
+
+Rescorla, et al.         Expires 15 October 2021               [Page 22]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
    MAY respond with a HelloRetryRequest message.  The HelloRetryRequest
    message, as well as the cookie extension, is defined in TLS 1.3.  The
    HelloRetryRequest message contains a stateless cookie (see [TLS13];
@@ -1226,13 +1244,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    makes DoS attacks with spoofed IP addresses difficult.  This
    mechanism does not provide any defense against DoS attacks mounted
    from valid IP addresses.
-
-
-
-Rescorla, et al.         Expires 15 October 2021               [Page 22]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
    The DTLS 1.3 specification changes how cookies are exchanged compared
    to DTLS 1.2.  DTLS 1.3 re-uses the HelloRetryRequest message and
@@ -1269,6 +1280,16 @@ Internet-Draft                  DTLS 1.3                      April 2021
    legacy_cookie field in the ClientHello message MUST be set to a zero-
    length vector (i.e., a zero-valued single byte length field).
 
+
+
+
+
+
+Rescorla, et al.         Expires 15 October 2021               [Page 23]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
    When responding to a HelloRetryRequest, the client MUST create a new
    ClientHello message following the description in Section 4.1.2 of
    [TLS13].
@@ -1282,14 +1303,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    The handshake transcript is not reset with the second ClientHello and
    a stateless server-cookie implementation requires the content or hash
    of the initial ClientHello (and HelloRetryRequest) to be stored in
-
-
-
-Rescorla, et al.         Expires 15 October 2021               [Page 23]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
-
    the cookie.  The initial ClientHello is included in the handshake
    transcript as a synthetic "message_hash" message, so only the hash
    value is needed for the handshake to complete, though the complete
@@ -1325,6 +1338,14 @@ Internet-Draft                  DTLS 1.3                      April 2021
    environment where amplification is not a problem, the server MAY be
    configured not to perform a cookie exchange.  The default SHOULD be
    that the exchange is performed, however.  In addition, the server MAY
+
+
+
+Rescorla, et al.         Expires 15 October 2021               [Page 24]
+
+Internet-Draft                  DTLS 1.3                      April 2021
+
+
    choose not to do a cookie exchange when a session is resumed or, more
    generically, when the DTLS handshake uses a PSK-based key exchange
    and the IP address matches one associated with the PSK.  Servers
@@ -1338,13 +1359,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    handshake completion.  Clients MUST be prepared to do a cookie
    exchange with every handshake.  Note that cookies are only valid for
    the existing handshake and cannot be stored for future handshakes.
-
-
-
-Rescorla, et al.         Expires 15 October 2021               [Page 24]
-
-Internet-Draft                  DTLS 1.3                      April 2021
-
 
    If a server receives a ClientHello with an invalid cookie, it MUST
    terminate the handshake with an "illegal_parameter" alert.  This
@@ -1360,20 +1374,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
    In order to support message loss, reordering, and message
    fragmentation, DTLS modifies the TLS 1.3 handshake header:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
