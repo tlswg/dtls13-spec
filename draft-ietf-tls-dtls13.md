@@ -1301,7 +1301,6 @@ other peer. {{tab-flights}} contains a complete list of message combinations tha
 |     |        |    x   | HelloRetryRequest |
 |     |        |    x   | ServerHello, EncryptedExtensions, CertificateRequest, Certificate, CertificateVerify, Finished |
 | 1 |    x   |        | Certificate, CertificateVerify, Finished |
-|     |        |    x   | ACK |
 | 1 |        |    x   | NewSessionTicket |
 {: #tab-flights title="Flight Handshake Message Combinations."}
 
