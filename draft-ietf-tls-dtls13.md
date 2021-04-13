@@ -867,6 +867,10 @@ forgery (e.g., SCTP with SCTP-AUTH), then it is safer to send alerts
 because an attacker will have difficulty forging a datagram that will
 not be rejected by the transport layer.
 
+Note that because invalid records are rejected at a layer lower than
+the handshake state machine, they do not affect pending
+retransmission timers.
+
 
 ### AEAD Limits
 
