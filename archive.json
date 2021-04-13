@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-04-11T00:35:02.988431+00:00",
+  "timestamp": "2021-04-13T00:34:14.976421+00:00",
   "repo": "tlswg/dtls13-spec",
   "labels": [
     {
@@ -1842,7 +1842,7 @@
       ],
       "body": " Zaheduzzaman Sarker wrote\r\n \r\n> * Section 4.5.2: I assume the silent discard of invalid records will not impact the timers, is that a valid assumption? if yes, then it would be good if this is clarified in the text. \r\n\r\n-> need to add text",
       "createdAt": "2021-04-05T20:08:48Z",
-      "updatedAt": "2021-04-07T07:01:21Z",
+      "updatedAt": "2021-04-12T19:55:00Z",
       "closedAt": null,
       "comments": [
         {
@@ -1858,6 +1858,13 @@
           "body": "I believe he wants us to note that when an invalid record is received and silently discarded then it does not impact timers in any way. It would be surprising if it did but do we want to add a sentence about that?",
           "createdAt": "2021-04-07T07:01:21Z",
           "updatedAt": "2021-04-07T07:01:21Z"
+        },
+        {
+          "author": "kaduk",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Since we have a dedicated section for \"handling invalid records\" that does allow for things other than silent discard, it makes sense to mention the lack of effect on timers.  \"[...] however, an error MAY be logged for diagnostic purposes.  In no case does an invalid record affect pending retransmission timers.\"?",
+          "createdAt": "2021-04-12T19:55:00Z",
+          "updatedAt": "2021-04-12T19:55:00Z"
         }
       ]
     },
@@ -1875,16 +1882,24 @@
       ],
       "body": "== COMMENTS ==\r\n\r\n-- Section 3 --\r\ns/TLS cannot be used directly in datagram environments/TLS cannot be used directly over a datagram transport/ ?\r\n\r\n[Hannes] DTLS is also used over non-IP-based networks (e.g. LoRaWAN, NB IoT, Bluetooth Smart) and \"datagram transport\". What would be the right term to describe \"environments\" that include transport layer protocols like UDP as well as those non-IP-based networks?\r\n\r\nBullet 2) s/to enable reassembly in the correct order/to enable reordering/ ?\r\n\r\n[Hannes] The complete sentence is:\r\n\r\n\"\r\n       The DTLS handshake includes message\r\n       sequence numbers to enable reassembly in the correct order in\r\n       case datagrams are lost or reordered.\r\n\"\r\n\r\nI believe that saying sequence numbers enable reassembly in the correct order is correct. \r\n\r\n-- Section 3.1 --\r\nShould there be a hint to a maximum retry count ?\r\n\r\n[Hannes] There will be a retry count in an implementation. Do we need to say that if we don't have a number to suggest? Not sure. \r\n\r\n-- Section 3.3 --\r\nI understand the motivation (and no need to reply), but, sigh... implementing frag/reassembly above the transport layer...\r\n\r\n[Hannes] Seems to be common these days. Examples: CoAP, and QUIC",
       "createdAt": "2021-04-05T20:14:32Z",
-      "updatedAt": "2021-04-07T01:28:34Z",
+      "updatedAt": "2021-04-12T22:34:04Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "kaduk",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I don't think I found the PR to match up with the \"pr-exists\" label; could I get a pointer?",
+          "createdAt": "2021-04-12T22:34:04Z",
+          "updatedAt": "2021-04-12T22:34:04Z"
+        }
+      ]
     },
     {
       "number": 228,
       "id": "MDU6SXNzdWU4NTA4Njc0MjU=",
       "title": "Erik Kline comments",
       "url": "https://github.com/tlswg/dtls13-spec/issues/228",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ekr",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -1893,8 +1908,8 @@
       ],
       "body": "[ section 4.4 ]\r\n\r\n* \"respectively\" -> \"respectively.\"\r\n\r\n* Could a DTLS implementation packetize to a min-MTU for an IP version\r\n  and avoid all pMTU issues?  Such a strategy would probably be poor for\r\n  IPv4 but might be acceptable for IPv6 communications.\r\n\r\n[ section 4.5.3 ]\r\n\r\n* \"MUST NOT used\" -> \"MUST NOT be used\"\r\n\r\n[ section 5.8.4 ]\r\n\r\n* \"NOT have send\" -> \"NOT send\", I think\r\n\r\n[ section 6 ]\r\n\r\n* \"which are needed to encrypt to decrypt\"?",
       "createdAt": "2021-04-06T01:08:43Z",
-      "updatedAt": "2021-04-07T01:28:35Z",
-      "closedAt": null,
+      "updatedAt": "2021-04-12T18:00:48Z",
+      "closedAt": "2021-04-12T18:00:47Z",
       "comments": [
         {
           "author": "ekr",
@@ -1936,7 +1951,7 @@
       "id": "MDU6SXNzdWU4NTA4Njc2NjU=",
       "title": "Martin Duke Comments",
       "url": "https://github.com/tlswg/dtls13-spec/issues/230",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ekr",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -1945,8 +1960,8 @@
       ],
       "body": "Thanks for this document -- badly needed and easy to read.\r\n\r\nThanks also to Bernard Adoba for his recent tsvart review. I support his comments.\r\n\r\nCOMMENTS:\r\nSec 2. It might be useful to introduce the term \"epoch\" in the glossary, for those who read this front to back.\r\n\r\nSec 4.2.3: \"The encrypted sequence number is computed by XORing the leading bytes of the Mask with the sequence number. Decryption is accomplished by the same process.\"\r\n\r\nThe text is unclear if the XOR is applied to the expanded sequence number or merely the 1-2 octets on the wire. I presume it's the latter, but this should be clarified.\r\n\r\nSec 4.2.3: It's implied here that the sn_key rotates with the epoch. As this is different from QUIC, it's probably worth spelling out.\r\n\r\nSec 5.1 is a bit vague about the amplification limit; why not at least RECOMMEND 3, as we've converged on this elsewhere?\r\n\r\nSec 5.1. Reading between the lines, it's clear that the cookie can't be used as address verification across connections in the way that a NEW_TOKEN token is. It would be good to spell this out for clients -- use the resumption token or whatever instead.\r\n\r\nSec 7.2 \"As noted above, the receipt of any record responding to a given flight MUST be taken as an implicit acknowledgement for the entire flight.\" I think this should be s/entire flight/entire previous flight?\r\n\r\nSec 7.2 \"Upon receipt of an ACK that leaves it with only some messages from a flight having been acknowledged an implementation SHOULD retransmit the unacknowledged messages or fragments.\"\r\n\r\nThis language appears inconsistent with Figure 12, where Record 1 has not been acknowledged but is also not retransmitted. It appears there is an implied handling of empty ACKs that isn't written down anywhere in Sec 7.2\r\n\r\nSec 9. Should there be any flow control limits on new_connection_id? Or should receivers be free to simply drop CIDs they can't handle? It might be good to specify.\r\n\r\nFinally, a really weird one. Reading this document and references to connection ID prompted to me to think how QUIC-LB could apply to DTLS. The result is here: https://github.com/quicwg/load-balancers/pull/106/files. Please note the rather unfortunate third-to-last paragraph. I'm happy to take the answer that this use case doesn't matter, since I made it up today. But if it does, it would be very helpful if (1) DTLS 1.3 clients MUST include a connection_id extension in their ClientHello, even if zero length, and/or (2) this draft updated 4.1.4 of 8446 to allow the server to include connection_id in HelloRetryRequest even if the client didn't offer it. Thoughts?\r\n\r\nNITS:\r\n5.2 s/select(HandshakeType)/select(msg_type). Though with pseudocode your mileage may vary as to what's clearer.\r\n\r\n5.7 s/consitute/constitute\r\n\r\nSec 5.7 In table 1, why include one ACK in the diagram but not the other? It's clear from the note, but the figure is a weird omission.",
       "createdAt": "2021-04-06T01:09:32Z",
-      "updatedAt": "2021-04-07T01:28:35Z",
-      "closedAt": null,
+      "updatedAt": "2021-04-12T18:15:22Z",
+      "closedAt": "2021-04-12T18:15:22Z",
       "comments": [
         {
           "author": "hannestschofenig",
@@ -1997,7 +2012,7 @@
       ],
       "body": "Francesca says\r\n\r\n\r\n>    Any TLS cipher suite that is specified for use with DTLS MUST define\r\n>    limits on the use of the associated AEAD function that preserves\r\n>    margins for both confidentiality and integrity.  That is, limits MUST\r\n>    be specified for the number of packets that can be authenticated and\r\n>    for the number of packets that can fail authentication before a key\r\n>    update is required.  Providing a reference to any analysis upon which\r\n>    values are based - and any assumptions used in that analysis - allows\r\n>    limits to be adapted to varying usage conditions.\r\n> \r\n> FP: This seems important enough that it should be highlighted for the experts reviewing the registration. I see that https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4 has a number of notes, maybe that would be enough, or maybe add it (as an update?) to RFC 8447?\r\n\r\n\r\nI am uncertain whether this document is the right place to place restrictions on IANA for this purpose beyond what has already been done elsewhere. Maybe there is a chance to do something in the TLS 1.3 update. ",
       "createdAt": "2021-04-06T06:49:06Z",
-      "updatedAt": "2021-04-07T01:30:38Z",
+      "updatedAt": "2021-04-12T23:01:02Z",
       "closedAt": null,
       "comments": [
         {
@@ -2006,6 +2021,13 @@
           "body": "I added some text to the PR.",
           "createdAt": "2021-04-06T22:35:00Z",
           "updatedAt": "2021-04-06T22:35:00Z"
+        },
+        {
+          "author": "kaduk",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Since #234 got merged, should this issue be closed now?",
+          "createdAt": "2021-04-12T23:01:02Z",
+          "updatedAt": "2021-04-12T23:01:02Z"
         }
       ]
     },
@@ -11158,52 +11180,84 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NjA5Mzc5NDQ4",
       "title": "Lars Eggert's comments",
       "url": "https://github.com/tlswg/dtls13-spec/pull/227",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "ekr",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2021-04-06T01:08:01Z",
-      "updatedAt": "2021-04-06T22:24:03Z",
+      "updatedAt": "2021-04-12T18:00:28Z",
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "5a37267179961a032e9359fdad2b5ddcb726ed13",
       "headRepository": "tlswg/dtls13-spec",
       "headRefName": "eggert_issues",
       "headRefOid": "9863772b8421552531d8ee142ea6b2d9cc797081",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2021-04-12T18:00:28Z",
+      "mergedAt": "2021-04-12T18:00:27Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "b232732487d762a4899e8859890c7bfbd4c5e1dc"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjMzODIyOTgw",
+          "commit": {
+            "abbreviatedOid": "9863772"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-04-12T18:00:23Z",
+          "updatedAt": "2021-04-12T18:00:23Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 232,
       "id": "MDExOlB1bGxSZXF1ZXN0NjA5MzgyNTI4",
       "title": "Eric Kline editorial. Fixes #228",
       "url": "https://github.com/tlswg/dtls13-spec/pull/232",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "ekr",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2021-04-06T01:19:12Z",
-      "updatedAt": "2021-04-06T22:24:11Z",
+      "updatedAt": "2021-04-12T18:00:47Z",
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "5a37267179961a032e9359fdad2b5ddcb726ed13",
       "headRepository": "ekr/dtls13-spec",
       "headRefName": "kline_comments",
       "headRefOid": "4e06286c6f33b215b4cdcf1c156f79cf490672f6",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2021-04-12T18:00:47Z",
+      "mergedAt": "2021-04-12T18:00:47Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "ef38e19e8b88aaee666e28b3676f9590ae4031d3"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjMzODIzMjY3",
+          "commit": {
+            "abbreviatedOid": "4e06286"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-04-12T18:00:43Z",
+          "updatedAt": "2021-04-12T18:00:43Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 233,
@@ -11238,52 +11292,116 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NjA5NTQ0NDU0",
       "title": "Addressing feedback by Francesca Palombini",
       "url": "https://github.com/tlswg/dtls13-spec/pull/234",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2021-04-06T06:46:13Z",
-      "updatedAt": "2021-04-06T22:34:14Z",
+      "updatedAt": "2021-04-12T19:41:23Z",
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "5a37267179961a032e9359fdad2b5ddcb726ed13",
       "headRepository": "tlswg/dtls13-spec",
       "headRefName": "hannestschofenig-patch-40",
-      "headRefOid": "81347d718f6664019b47aa19db1e7d49d30acd1a",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "a3f9d74fad2f9001082be777eaf4f22812764f6f",
+      "closedAt": "2021-04-12T19:41:23Z",
+      "mergedAt": "2021-04-12T19:41:23Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "a711614ad29112809ce332c7b98107fd11c3ccd8"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjMzODI0MjEx",
+          "commit": {
+            "abbreviatedOid": "81347d7"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "LGTM with some suggested nits",
+          "createdAt": "2021-04-12T18:01:51Z",
+          "updatedAt": "2021-04-12T18:09:11Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\r\nbased on the encoding format defined in {{TLS13}} and earlier (D)TLS specifications.\r\n```",
+              "createdAt": "2021-04-12T18:01:51Z",
+              "updatedAt": "2021-04-12T18:16:00Z"
+            },
+            {
+              "originalPosition": 21,
+              "body": "```suggestion\r\ndistinguish a DTLS 1.3 encrypted record from record types used in \r\nprevious DTLS versions and plaintext DTLS 1.3 record types. Hence, the \r\n```",
+              "createdAt": "2021-04-12T18:07:43Z",
+              "updatedAt": "2021-04-12T18:16:00Z"
+            },
+            {
+              "originalPosition": 23,
+              "body": "```suggestion\r\nfrom future allocations by IANA to avoid demultiplexing problems;\r\nsee {{iana-considerations}}.\r\n```\r\n\r\n(The iana-considerations anchor isn't in the doc yet, though)",
+              "createdAt": "2021-04-12T18:08:55Z",
+              "updatedAt": "2021-04-12T18:16:00Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 238,
       "id": "MDExOlB1bGxSZXF1ZXN0NjEwMjU4MzIz",
       "title": "Martin Duke's comments. Fixes #230",
       "url": "https://github.com/tlswg/dtls13-spec/pull/238",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "ekr",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2021-04-07T01:13:58Z",
-      "updatedAt": "2021-04-08T20:59:35Z",
+      "updatedAt": "2021-04-12T18:15:22Z",
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "c91d41b25a64cc955166f2589e6328938aed3d79",
       "headRepository": "ekr/dtls13-spec",
       "headRefName": "duke_comments",
-      "headRefOid": "728f11321e194961cb972d718021ab064c9100a4",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "1f15d245aa2984a5e6b7c311270be085eabf804a",
+      "closedAt": "2021-04-12T18:15:21Z",
+      "mergedAt": "2021-04-12T18:15:21Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "0f8896e29fddfa14c621329be70d3c4dbce90d96"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjMzODMwNDYw",
+          "commit": {
+            "abbreviatedOid": "728f113"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-04-12T18:09:42Z",
+          "updatedAt": "2021-04-12T18:11:00Z",
+          "comments": [
+            {
+              "originalPosition": 16,
+              "body": "```suggestion\r\nThe reader is assumed to be familiar with {{TLS13}}.\r\n```",
+              "createdAt": "2021-04-12T18:09:42Z",
+              "updatedAt": "2021-04-12T18:15:18Z"
+            },
+            {
+              "originalPosition": 18,
+              "body": "```suggestion\r\nAs in TLS 1.3, the HelloRetryRequest has the same format as a ServerHello\r\nmessage, but for convenience we use the term HelloRetryRequest throughout\r\n```",
+              "createdAt": "2021-04-12T18:10:11Z",
+              "updatedAt": "2021-04-12T18:15:18Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 239,
@@ -11297,7 +11415,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2021-04-08T23:12:36Z",
-      "updatedAt": "2021-04-08T23:14:41Z",
+      "updatedAt": "2021-04-12T18:11:28Z",
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "ad1fd96a975bae620a4271e9252bd0e6f1951762",
@@ -11329,6 +11447,19 @@
           "body": "This definitely helps, thanks. It doesn't completely eliminate the possibility of QUIC-LB catastrophic failure, but it makes things way better.",
           "createdAt": "2021-04-08T23:14:41Z",
           "updatedAt": "2021-04-08T23:14:41Z",
+          "comments": []
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjMzODMxODU4",
+          "commit": {
+            "abbreviatedOid": "5f41d9b"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "LGTM, but we should confirm on the list.",
+          "createdAt": "2021-04-12T18:11:28Z",
+          "updatedAt": "2021-04-12T18:11:28Z",
           "comments": []
         }
       ]
