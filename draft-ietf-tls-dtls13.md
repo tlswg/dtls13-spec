@@ -197,17 +197,18 @@ protection of a WebRTC data channel), telephony utilizes DTLS for
 key establishment, and Secure Real-time Transport Protocol (SRTP) for
 protection of data {{?RFC5763}}.
 
-TLS cannot be used directly in datagram environments for the following five reasons:
+TLS cannot be used directly over datagram transports the following five reasons:
 
 1. TLS relies on an implicit sequence number on records.  If a record is not
    received, then the recipient will use the wrong sequence number when
    attempting to remove record protection from subsequent records. DTLS solves
    this problem by adding sequence numbers to records.
 
-2. The TLS handshake is a lock-step cryptographic protocol.  Messages must be
-   transmitted and received in a defined order; any other order is an error.
-   The DTLS handshake includes message sequence numbers to enable
-   reassembly in the correct order in case datagrams are lost or reordered.
+2. The TLS handshake is a lock-step cryptographic protocol.  Messages
+   must be transmitted and received in a defined order; any other
+   order is an error.  The DTLS handshake includes message sequence
+   numbers to enable fragmented message reassembly and in-order
+   delivery in case datagrams are lost or reordered.
 
 3. During the handshake, messages are implicitly acknowledged by other handshake
    messages. Some handshake messages, such as the NewSessionTicket message, do
