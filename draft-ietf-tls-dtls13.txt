@@ -6,9 +6,9 @@ TLS                                                          E. Rescorla
 Internet-Draft                                                RTFM, Inc.
 Obsoletes: 6347 (if approved)                              H. Tschofenig
 Intended status: Standards Track                             Arm Limited
-Expires: 14 October 2021                                     N. Modadugu
+Expires: 15 October 2021                                     N. Modadugu
                                                             Google, Inc.
-                                                           12 April 2021
+                                                           13 April 2021
 
 
    The Datagram Transport Layer Security (DTLS) Protocol Version 1.3
@@ -44,7 +44,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 October 2021.
+   This Internet-Draft will expire on 15 October 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Rescorla, et al.         Expires 14 October 2021                [Page 1]
+Rescorla, et al.         Expires 15 October 2021                [Page 1]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Rescorla, et al.         Expires 14 October 2021                [Page 2]
+Rescorla, et al.         Expires 15 October 2021                [Page 2]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -165,7 +165,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021                [Page 3]
+Rescorla, et al.         Expires 15 October 2021                [Page 3]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -221,7 +221,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021                [Page 4]
+Rescorla, et al.         Expires 15 October 2021                [Page 4]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -277,7 +277,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021                [Page 5]
+Rescorla, et al.         Expires 15 October 2021                [Page 5]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -307,8 +307,8 @@ Internet-Draft                  DTLS 1.3                      April 2021
    utilizes DTLS for key establishment, and Secure Real-time Transport
    Protocol (SRTP) for protection of data [RFC5763].
 
-   TLS cannot be used directly in datagram environments for the
-   following five reasons:
+   TLS cannot be used directly over datagram transports the following
+   five reasons:
 
    1.  TLS relies on an implicit sequence number on records.  If a
        record is not received, then the recipient will use the wrong
@@ -319,8 +319,8 @@ Internet-Draft                  DTLS 1.3                      April 2021
    2.  The TLS handshake is a lock-step cryptographic protocol.
        Messages must be transmitted and received in a defined order; any
        other order is an error.  The DTLS handshake includes message
-       sequence numbers to enable reassembly in the correct order in
-       case datagrams are lost or reordered.
+       sequence numbers to enable fragmented message reassembly and in-
+       order delivery in case datagrams are lost or reordered.
 
    3.  During the handshake, messages are implicitly acknowledged by
        other handshake messages.  Some handshake messages, such as the
@@ -333,7 +333,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021                [Page 6]
+Rescorla, et al.         Expires 15 October 2021                [Page 6]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -389,7 +389,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021                [Page 7]
+Rescorla, et al.         Expires 15 October 2021                [Page 7]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -445,7 +445,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021                [Page 8]
+Rescorla, et al.         Expires 15 October 2021                [Page 8]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -501,7 +501,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021                [Page 9]
+Rescorla, et al.         Expires 15 October 2021                [Page 9]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -557,7 +557,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 10]
+Rescorla, et al.         Expires 15 October 2021               [Page 10]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -613,7 +613,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 11]
+Rescorla, et al.         Expires 15 October 2021               [Page 11]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -669,7 +669,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 12]
+Rescorla, et al.         Expires 15 October 2021               [Page 12]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -725,7 +725,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 13]
+Rescorla, et al.         Expires 15 October 2021               [Page 13]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -781,7 +781,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 14]
+Rescorla, et al.         Expires 15 October 2021               [Page 14]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -837,7 +837,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 15]
+Rescorla, et al.         Expires 15 October 2021               [Page 15]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -893,7 +893,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 16]
+Rescorla, et al.         Expires 15 October 2021               [Page 16]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -949,7 +949,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 17]
+Rescorla, et al.         Expires 15 October 2021               [Page 17]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1005,7 +1005,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 18]
+Rescorla, et al.         Expires 15 October 2021               [Page 18]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1061,7 +1061,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 19]
+Rescorla, et al.         Expires 15 October 2021               [Page 19]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1117,7 +1117,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 20]
+Rescorla, et al.         Expires 15 October 2021               [Page 20]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1173,7 +1173,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 21]
+Rescorla, et al.         Expires 15 October 2021               [Page 21]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1229,7 +1229,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 22]
+Rescorla, et al.         Expires 15 October 2021               [Page 22]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1285,7 +1285,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 23]
+Rescorla, et al.         Expires 15 October 2021               [Page 23]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1341,7 +1341,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 24]
+Rescorla, et al.         Expires 15 October 2021               [Page 24]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1397,7 +1397,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 25]
+Rescorla, et al.         Expires 15 October 2021               [Page 25]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1453,7 +1453,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 26]
+Rescorla, et al.         Expires 15 October 2021               [Page 26]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1509,7 +1509,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 27]
+Rescorla, et al.         Expires 15 October 2021               [Page 27]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1565,7 +1565,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 28]
+Rescorla, et al.         Expires 15 October 2021               [Page 28]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1621,7 +1621,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 29]
+Rescorla, et al.         Expires 15 October 2021               [Page 29]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1677,7 +1677,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 30]
+Rescorla, et al.         Expires 15 October 2021               [Page 30]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1733,7 +1733,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 31]
+Rescorla, et al.         Expires 15 October 2021               [Page 31]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1789,7 +1789,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 32]
+Rescorla, et al.         Expires 15 October 2021               [Page 32]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1845,7 +1845,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 33]
+Rescorla, et al.         Expires 15 October 2021               [Page 33]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1901,7 +1901,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 34]
+Rescorla, et al.         Expires 15 October 2021               [Page 34]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -1957,7 +1957,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 35]
+Rescorla, et al.         Expires 15 October 2021               [Page 35]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2013,7 +2013,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 36]
+Rescorla, et al.         Expires 15 October 2021               [Page 36]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2069,7 +2069,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 37]
+Rescorla, et al.         Expires 15 October 2021               [Page 37]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2125,7 +2125,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 38]
+Rescorla, et al.         Expires 15 October 2021               [Page 38]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2181,7 +2181,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 39]
+Rescorla, et al.         Expires 15 October 2021               [Page 39]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2237,7 +2237,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 40]
+Rescorla, et al.         Expires 15 October 2021               [Page 40]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2293,7 +2293,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 41]
+Rescorla, et al.         Expires 15 October 2021               [Page 41]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2349,7 +2349,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 42]
+Rescorla, et al.         Expires 15 October 2021               [Page 42]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2405,7 +2405,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 43]
+Rescorla, et al.         Expires 15 October 2021               [Page 43]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2461,7 +2461,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 44]
+Rescorla, et al.         Expires 15 October 2021               [Page 44]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2517,7 +2517,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 45]
+Rescorla, et al.         Expires 15 October 2021               [Page 45]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2573,7 +2573,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 46]
+Rescorla, et al.         Expires 15 October 2021               [Page 46]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2629,7 +2629,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 47]
+Rescorla, et al.         Expires 15 October 2021               [Page 47]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2685,7 +2685,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 48]
+Rescorla, et al.         Expires 15 October 2021               [Page 48]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2741,7 +2741,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 49]
+Rescorla, et al.         Expires 15 October 2021               [Page 49]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2797,7 +2797,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 50]
+Rescorla, et al.         Expires 15 October 2021               [Page 50]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2853,7 +2853,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 51]
+Rescorla, et al.         Expires 15 October 2021               [Page 51]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2909,7 +2909,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 52]
+Rescorla, et al.         Expires 15 October 2021               [Page 52]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -2965,7 +2965,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 53]
+Rescorla, et al.         Expires 15 October 2021               [Page 53]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3021,7 +3021,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 54]
+Rescorla, et al.         Expires 15 October 2021               [Page 54]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3077,7 +3077,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 55]
+Rescorla, et al.         Expires 15 October 2021               [Page 55]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3133,7 +3133,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 56]
+Rescorla, et al.         Expires 15 October 2021               [Page 56]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3189,7 +3189,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 57]
+Rescorla, et al.         Expires 15 October 2021               [Page 57]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3245,7 +3245,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 58]
+Rescorla, et al.         Expires 15 October 2021               [Page 58]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3301,7 +3301,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 59]
+Rescorla, et al.         Expires 15 October 2021               [Page 59]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3357,7 +3357,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 60]
+Rescorla, et al.         Expires 15 October 2021               [Page 60]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3413,7 +3413,7 @@ A.1.  Record Layer
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 61]
+Rescorla, et al.         Expires 15 October 2021               [Page 61]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3469,7 +3469,7 @@ A.2.  Handshake Protocol
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 62]
+Rescorla, et al.         Expires 15 October 2021               [Page 62]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3525,7 +3525,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 63]
+Rescorla, et al.         Expires 15 October 2021               [Page 63]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3581,7 +3581,7 @@ Appendix B.  Analysis of Limits on CCM Usage
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 64]
+Rescorla, et al.         Expires 15 October 2021               [Page 64]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3637,7 +3637,7 @@ B.1.  Confidentiality Limits
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 65]
+Rescorla, et al.         Expires 15 October 2021               [Page 65]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3693,7 +3693,7 @@ B.3.  Limits for AEAD_AES_128_CCM_8
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 66]
+Rescorla, et al.         Expires 15 October 2021               [Page 66]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3749,7 +3749,7 @@ Appendix D.  History
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 67]
+Rescorla, et al.         Expires 15 October 2021               [Page 67]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3805,7 +3805,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 68]
+Rescorla, et al.         Expires 15 October 2021               [Page 68]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3861,7 +3861,7 @@ Appendix E.  Working Group Information
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 69]
+Rescorla, et al.         Expires 15 October 2021               [Page 69]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3917,7 +3917,7 @@ Appendix F.  Contributors
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 70]
+Rescorla, et al.         Expires 15 October 2021               [Page 70]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
@@ -3973,4 +3973,4 @@ Authors' Addresses
 
 
 
-Rescorla, et al.         Expires 14 October 2021               [Page 71]
+Rescorla, et al.         Expires 15 October 2021               [Page 71]
