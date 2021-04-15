@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-04-13T00:34:14.976421+00:00",
+  "timestamp": "2021-04-15T00:31:58.963964+00:00",
   "repo": "tlswg/dtls13-spec",
   "labels": [
     {
@@ -1833,7 +1833,7 @@
       "id": "MDU6SXNzdWU4NTA2MjkxMTc=",
       "title": "Invalid records and impact on timers",
       "url": "https://github.com/tlswg/dtls13-spec/issues/224",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -1842,8 +1842,8 @@
       ],
       "body": " Zaheduzzaman Sarker wrote\r\n \r\n> * Section 4.5.2: I assume the silent discard of invalid records will not impact the timers, is that a valid assumption? if yes, then it would be good if this is clarified in the text. \r\n\r\n-> need to add text",
       "createdAt": "2021-04-05T20:08:48Z",
-      "updatedAt": "2021-04-12T19:55:00Z",
-      "closedAt": null,
+      "updatedAt": "2021-04-13T17:01:06Z",
+      "closedAt": "2021-04-13T17:01:06Z",
       "comments": [
         {
           "author": "ekr",
@@ -1865,6 +1865,13 @@
           "body": "Since we have a dedicated section for \"handling invalid records\" that does allow for things other than silent discard, it makes sense to mention the lack of effect on timers.  \"[...] however, an error MAY be logged for diagnostic purposes.  In no case does an invalid record affect pending retransmission timers.\"?",
           "createdAt": "2021-04-12T19:55:00Z",
           "updatedAt": "2021-04-12T19:55:00Z"
+        },
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'm not sure I agree, but I added something.",
+          "createdAt": "2021-04-13T16:55:04Z",
+          "updatedAt": "2021-04-13T16:55:04Z"
         }
       ]
     },
@@ -1873,7 +1880,7 @@
       "id": "MDU6SXNzdWU4NTA2MzI1ODQ=",
       "title": "Feedback by \u00c9ric Vyncke ",
       "url": "https://github.com/tlswg/dtls13-spec/issues/225",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -1882,8 +1889,8 @@
       ],
       "body": "== COMMENTS ==\r\n\r\n-- Section 3 --\r\ns/TLS cannot be used directly in datagram environments/TLS cannot be used directly over a datagram transport/ ?\r\n\r\n[Hannes] DTLS is also used over non-IP-based networks (e.g. LoRaWAN, NB IoT, Bluetooth Smart) and \"datagram transport\". What would be the right term to describe \"environments\" that include transport layer protocols like UDP as well as those non-IP-based networks?\r\n\r\nBullet 2) s/to enable reassembly in the correct order/to enable reordering/ ?\r\n\r\n[Hannes] The complete sentence is:\r\n\r\n\"\r\n       The DTLS handshake includes message\r\n       sequence numbers to enable reassembly in the correct order in\r\n       case datagrams are lost or reordered.\r\n\"\r\n\r\nI believe that saying sequence numbers enable reassembly in the correct order is correct. \r\n\r\n-- Section 3.1 --\r\nShould there be a hint to a maximum retry count ?\r\n\r\n[Hannes] There will be a retry count in an implementation. Do we need to say that if we don't have a number to suggest? Not sure. \r\n\r\n-- Section 3.3 --\r\nI understand the motivation (and no need to reply), but, sigh... implementing frag/reassembly above the transport layer...\r\n\r\n[Hannes] Seems to be common these days. Examples: CoAP, and QUIC",
       "createdAt": "2021-04-05T20:14:32Z",
-      "updatedAt": "2021-04-12T22:34:04Z",
-      "closedAt": null,
+      "updatedAt": "2021-04-13T16:52:29Z",
+      "closedAt": "2021-04-13T16:52:29Z",
       "comments": [
         {
           "author": "kaduk",
@@ -1891,6 +1898,13 @@
           "body": "I don't think I found the PR to match up with the \"pr-exists\" label; could I get a pointer?",
           "createdAt": "2021-04-12T22:34:04Z",
           "updatedAt": "2021-04-12T22:34:04Z"
+        },
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "My bad. https://github.com/tlswg/dtls13-spec/pull/240",
+          "createdAt": "2021-04-13T16:49:48Z",
+          "updatedAt": "2021-04-13T16:49:48Z"
         }
       ]
     },
@@ -1925,7 +1939,7 @@
       "id": "MDU6SXNzdWU4NTA4Njc1NjE=",
       "title": "Francesca Palombini Comments",
       "url": "https://github.com/tlswg/dtls13-spec/issues/229",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ekr",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -1934,8 +1948,8 @@
       ],
       "body": "Thank you for this document. Please find some minor comments below.\r\n\r\nFrancesca\r\n\r\n1. -----\r\n\r\nsection 2.  Conventions and Terminology\r\n\r\nFP: Please spell out that network byte order (most significant byte first) is used throughout the document.\r\n\r\n2. -----\r\n\r\n   Once the client has transmitted the ClientHello message, it expects\r\n   to see a HelloRetryRequest or a ServerHello from the server.\r\n   However, if the server's message is lost, the client knows that\r\n   either the ClientHello or the response from the server has been lost\r\n   and retransmits.  When the server receives the retransmission, it\r\n   knows to retransmit.\r\n\r\nFP: It would be good to mention retransmission max times here.\r\n\r\n3. -----\r\n\r\n                |                |   /+----------------+\\\r\n                | 31 < OCT < 64 -+--> |DTLS Ciphertext |\r\n                |                |    |(header bits    |\r\n                |      else      |    | start with 001)|\r\n                |       |        |   /+-------+--------+\\\r\n\r\n\r\n\r\n\r\n   26.  The value for the \"DTLS-OK\" column is \"Y\".  IANA is requested to\r\n   reserve the content type range 32-63 so that content types in this\r\n   range are not allocated.\r\n\r\nFP: IANA is asked to reserve 32-63, but I could not see any explanation for that. I would like to see it justified in section 4.1 or in the respective IANA section.\r\n\r\n4. -----\r\n\r\n   fragmentation, clients of the DTLS record layer SHOULD attempt to\r\n   size records so that they fit within any PMTU estimates obtained from\r\n   the record layer.\r\n\r\nFP: First time PMTU appears, please expand and add reference.\r\n\r\n5. -----\r\n\r\n   performing PMTU discovery, whether via [RFC1191] or [RFC4821]\r\n   mechanisms.  In particular:\r\n\r\nFP: I think this is missing areference to RFC 8201 since IPv6 is mentioned below.\r\n\r\n6. -----\r\n\r\n   Any TLS cipher suite that is specified for use with DTLS MUST define\r\n   limits on the use of the associated AEAD function that preserves\r\n   margins for both confidentiality and integrity.  That is, limits MUST\r\n   be specified for the number of packets that can be authenticated and\r\n   for the number of packets that can fail authentication before a key\r\n   update is required.  Providing a reference to any analysis upon which\r\n   values are based - and any assumptions used in that analysis - allows\r\n   limits to be adapted to varying usage conditions.\r\n\r\nFP: This seems important enough that it should be highlighted for the experts reviewing the registration. I see that https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4 has a number of notes, maybe that would be enough, or maybe add it (as an update?) to RFC 8447?\r\n\r\n7. -----\r\n\r\n zero\r\n length vector (i.e., a single zero byte length field).\r\n\r\nFP: I suggest using TLS 1.3 terminology of \"zero-length vector (i.e., a zero-valued single byte length field)\"\r\n\r\n8. -----\r\n\r\n   flow shown in Figure 11 if the client does not send the ACK message\r\n\r\nFP: s/11/12",
       "createdAt": "2021-04-06T01:09:12Z",
-      "updatedAt": "2021-04-07T01:28:35Z",
-      "closedAt": null,
+      "updatedAt": "2021-04-13T16:50:07Z",
+      "closedAt": "2021-04-13T16:50:07Z",
       "comments": [
         {
           "author": "hannestschofenig",
@@ -1977,7 +1991,7 @@
       "id": "MDU6SXNzdWU4NTA4Njc4MjQ=",
       "title": "Bernard Aboba Comments",
       "url": "https://github.com/tlswg/dtls13-spec/issues/231",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ekr",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -1986,8 +2000,8 @@
       ],
       "body": "This document has been reviewed as part of the transport area review team's\r\nongoing effort to review key IETF documents. These comments were written\r\nprimarily for the transport area directors, but are copied to the document's\r\nauthors and WG to allow them to address any issues raised and also to the IETF\r\ndiscussion list for information.\r\n\r\nWhen done at the time of IETF Last Call, the authors should consider this\r\nreview as part of the last-call comments they receive. Please always CC\r\ntsv-art@ietf.org if you reply to or forward this review.\r\n\r\nTSV-ART Review of draft-ietf-tls-dtls13-41\r\nReviewer: Bernard Aboba\r\n\r\nSummary: The timeout and retransmission scheme looks workable for common cases, but could use some refinement to make it more robust. \r\n\r\nTechnical Comments\r\n\r\n4.5.2.  Handling Invalid Records\r\n\r\n   Unlike TLS, DTLS is resilient in the face of invalid records (e.g.,\r\n   invalid formatting, length, MAC, etc.).  In general, invalid records\r\n   SHOULD be silently discarded, thus preserving the association;\r\n   however, an error MAY be logged for diagnostic purposes.\r\n\r\n[BA] How does silent discard of invalid records interact with retransmission timers? \r\n\r\n   Implementations which choose to generate an alert instead, MUST\r\n   generate error alerts to avoid attacks where the attacker repeatedly\r\n   probes the implementation to see how it responds to various types of\r\n   error.  Note that if DTLS is run over UDP, then any implementation\r\n   which does this will be extremely susceptible to denial-of-service\r\n   (DoS) attacks because UDP forgery is so easy.  Thus, this practice is\r\n   NOT RECOMMENDED for such transports, both to increase the reliability\r\n   of DTLS service and to avoid the risk of spoofing attacks sending\r\n   traffic to unrelated third parties.\r\n\r\n[BA] \"this practice\" refers to \"generate an alert instead\", correct?\r\n\r\n5.8.2.  Timer Values\r\n\r\n   Though timer values are the choice of the implementation, mishandling\r\n   of the timer can lead to serious congestion problems, for example if\r\n\r\n[BA] Saying \"timer values are the choice of the implementation\" seems\r\nodd, because it is followed by normative language. I would delete this\r\nand start the sentence with \"Mishandling...\". \r\n\r\n   many instances of a DTLS time out early and retransmit too quickly on\r\n   a congested link.  Implementations SHOULD use an initial timer value\r\n   of 100 msec (the minimum defined in RFC 6298 [RFC6298]) and double\r\n   the value at each retransmission, up to no less than 60 seconds (the\r\n   RFC 6298 maximum).  Application specific profiles, such as those used\r\n   for the Internet of Things environment, may recommend longer timer\r\n   values.  Note that a 100 msec timer is recommended rather than the\r\n   3-second RFC 6298 default in order to improve latency for time-\r\n   sensitive applications.  Because DTLS only uses retransmission for\r\n   handshake and not dataflow, the effect on congestion should be\r\n   minimal.\r\n\r\n   Implementations SHOULD retain the current timer value until a message\r\n   is transmitted and acknowledged without having to be retransmitted,\r\n   at which time the value may be reset to the initial value.  \r\n\r\n[BA] Is it always possible to distinguish a retransmission from a late\r\narrival of an original packet? This seems like it could result in\r\nwrongly resetting the timer in some situations. \r\n\r\n5.8.3.  Large Flight Sizes\r\n\r\n   DTLS does not have any built-in congestion control or rate control;\r\n   in general this is not an issue because messages tend to be small.\r\n   However, in principle, some messages - especially Certificate - can\r\n   be quite large.  If all the messages in a large flight are sent at\r\n   once, this can result in network congestion.  A better strategy is to\r\n   send out only part of the flight, sending more when messages are\r\n   acknowledged.  DTLS offers a number of mechanisms for minimizing the\r\n   size of the certificate message, including the cached information\r\n   extension [RFC7924] and certificate compression [RFC8879].\r\n\r\n[BA] How does the implementation know how much of the flight to send? \r\nNot sure how prevalent large certs are for DTLS  (e.g. compared with the self-signed certs of WebRTC),\r\nbut in EAP-TLS deployments, large certs have caused problems. \r\nThe  EAP-TLS cert document draft-ietf-emu-eaptlscert cites some additional\r\nmechanisms for reducing certificate sizes, such as draft-ietf-tls-ctls\r\nand [RFC6066] which defines the \"client_certificate_url\" \r\nextension which allows TLS clients to send a sequence of Uniform \r\nResource Locators (URLs) instead of the client certificate. \r\n\r\n5.11.  Alert Messages\r\n\r\n   Note that Alert messages are not retransmitted at all, even when they\r\n   occur in the context of a handshake.  However, a DTLS implementation\r\n   which would ordinarily issue an alert SHOULD generate a new alert\r\n   message if the offending record is received again (e.g., as a\r\n   retransmitted handshake message).  Implementations SHOULD detect when\r\n   a peer is persistently sending bad messages and terminate the local\r\n   connection state after such misbehavior is detected.  Note that\r\n   alerts are not reliably transmitted; implementation SHOULD NOT depend\r\n   on receiving alerts in order to signal errors or connection closure.\r\n\r\n[BA] For the fatal alert case, it does seem like retransmission would\r\nbe a good idea; otherwise the peer can be left hanging. \r\n\r\nSection 7.1\r\n\"Disruptions\" such as reordering do not affect timers, correct? \r\n\r\n   ACKs SHOULD NOT be sent for these flights unless generating the\r\n   responding flight takes significant time.\r\n\r\nWhat is \"significant time\"? \r\n\r\nEditorial Comments (NITs)\r\n\r\nSection 2\r\n\r\n   The reader is also as to be familiar with\r\n\r\n[BA] \"as\" -> \"assumed\" \r\n\r\nSection 3\r\n\r\n   The basic design philosophy of DTLS is to construct \"TLS over\r\n   datagram transport\".  Datagram transport does not require nor provide\r\n   reliable or in-order delivery of data.  The DTLS protocol preserves\r\n   this property for application data.  Applications such as media\r\n   streaming, Internet telephony, and online gaming use datagram\r\n   transport for communication due to the delay-sensitive nature of\r\n   transported data.  The behavior of such applications is unchanged\r\n   when the DTLS protocol is used to secure communication, since the\r\n   DTLS protocol does not compensate for lost or reordered data traffic.\r\n\r\n[BA] While low-latency streaming and gaming does use DTLS to protect data (e.g. for \r\nprotection of WebRTC data channel), telephony and RTC Audio/Video uses DTLS/SRTP for\r\nkey derivation only, and SRTP for protection of data. So you might want to make a\r\ndistinction.\r\n\r\nSection 3.1\r\n\r\n   Note that timeout and retransmission do not apply to the\r\n   HelloRetryRequest since this would require creating state on the\r\n   server.  The HelloRetryRequest is designed to be small enough that it\r\n   will not itself be fragmented, thus avoiding concerns about\r\n   interleaving multiple HelloRetryRequests.\r\n\r\n[BA] I would add \"For more detail on timeouts and retransmission, \r\nsee Section 5.8.\"\r\n\r\n4.3.  Transport Layer Mapping\r\n\r\n   DTLS messages MAY be fragmented into multiple DTLS records.  Each\r\n   DTLS record MUST fit within a single datagram.  In order to avoid IP\r\n   fragmentation, clients of the DTLS record layer SHOULD attempt to\r\n   size records so that they fit within any PMTU estimates obtained from\r\n   the record layer.\r\n\r\n[BA] You might reference PMTU considerations described in Section 4.4.\r\n\r\n   5.  Post-handshake client authentication\r\n\r\n   Messages of each category can be sent independently, and reliability\r\n   is established via independent state machines each of which behaves\r\n   as described in Section 5.8.1.  For example, if a server sends a\r\n   NewSessionTicket and a CertificateRequest message, two independent\r\n   state machines will be created.\r\n\r\n   As explained in the corresponding sections, sending multiple\r\n   instances of messages of a given category without having completed\r\n   earlier transmissions is allowed for some categories, but not for\r\n   others.  Specifically, a server MAY send multiple NewSessionTicket\r\n   messages at once without awaiting ACKs for earlier NewSessionTicket\r\n   first.  Likewise, a server MAY send multiple CertificateRequest\r\n   messages at once without having completed earlier client\r\n   authentication requests before.  In contrast, implementations MUST\r\n   NOT have send KeyUpdate, NewConnectionId or RequestConnectionId\r\n\r\n[BA] \"send\" -> \"sent\"\r\n\r\n\r\n6.  Example of Handshake with Timeout and Retransmission\r\n\r\n   The following is an example of a handshake with lost packets and\r\n   retransmissions.  Note that the client sends an empty ACK message\r\n   because it can only acknowledge Record 1 sent by the server once it\r\n   has processed messages in Record 0 needed to establish epoch 2 keys,\r\n   which are needed to encrypt to decrypt messages found in Record 1.\r\n\r\n[BA] \"encrypt to decrypt\" -> \"encrypt or decrypt\"?\r\n \r\nSection 7.3\r\n\r\n   In the first case the use of the ACK message is optional because the\r\n   peer will retransmit in any case and therefore the ACK just allows\r\n   for selective retransmission, as opposed to the whole flight\r\n   retransmission in previous versions of DTLS.  For instance in the\r\n   flow shown in Figure 11 if the client does not send the ACK message\r\n\r\n[BA] Figure 11 is the DTLS State Machine. Are you referring to another figure? \r\n\r\n   The use of the ACK for the second case is mandatory for the proper\r\n   functioning of the protocol.  For instance, the ACK message sent by\r\n   the client in Figure 13, acknowledges receipt and processing of\r\n   record 4 (containing the NewSessionTicket message) and if it is not\r\n   sent the server will continue retransmission of the NewSessionTicket\r\n   indefinitely until its transmission cap is reached.\r\n\r\n[BA] Do you mean \"maximum retransmission timemout value\"?",
       "createdAt": "2021-04-06T01:10:05Z",
-      "updatedAt": "2021-04-07T01:28:35Z",
-      "closedAt": null,
+      "updatedAt": "2021-04-13T16:50:07Z",
+      "closedAt": "2021-04-13T16:50:07Z",
       "comments": [
         {
           "author": "hannestschofenig",
@@ -2003,7 +2017,7 @@
       "id": "MDU6SXNzdWU4NTEwNjcwMTA=",
       "title": "AEAD Limits",
       "url": "https://github.com/tlswg/dtls13-spec/issues/235",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -2012,8 +2026,8 @@
       ],
       "body": "Francesca says\r\n\r\n\r\n>    Any TLS cipher suite that is specified for use with DTLS MUST define\r\n>    limits on the use of the associated AEAD function that preserves\r\n>    margins for both confidentiality and integrity.  That is, limits MUST\r\n>    be specified for the number of packets that can be authenticated and\r\n>    for the number of packets that can fail authentication before a key\r\n>    update is required.  Providing a reference to any analysis upon which\r\n>    values are based - and any assumptions used in that analysis - allows\r\n>    limits to be adapted to varying usage conditions.\r\n> \r\n> FP: This seems important enough that it should be highlighted for the experts reviewing the registration. I see that https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4 has a number of notes, maybe that would be enough, or maybe add it (as an update?) to RFC 8447?\r\n\r\n\r\nI am uncertain whether this document is the right place to place restrictions on IANA for this purpose beyond what has already been done elsewhere. Maybe there is a chance to do something in the TLS 1.3 update. ",
       "createdAt": "2021-04-06T06:49:06Z",
-      "updatedAt": "2021-04-12T23:01:02Z",
-      "closedAt": null,
+      "updatedAt": "2021-04-13T16:50:07Z",
+      "closedAt": "2021-04-13T16:50:07Z",
       "comments": [
         {
           "author": "ekr",
@@ -2036,7 +2050,7 @@
       "id": "MDU6SXNzdWU4NTEwNjc4MTM=",
       "title": "Retransmissions",
       "url": "https://github.com/tlswg/dtls13-spec/issues/236",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "hannestschofenig",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -2045,8 +2059,8 @@
       ],
       "body": "Bernard writes: \r\n\r\n> [BA] Is it always possible to distinguish a retransmission from a late\r\n> arrival of an original packet? This seems like it could result in\r\n> wrongly resetting the timer in some situations.\r\n> \r\n> [BA] How does the implementation know how much of the flight to send?\r\n> \r\n> [BA] For the fatal alert case, it does seem like retransmission would\r\n> be a good idea; otherwise the peer can be left hanging.\r\n> \r\n> \r\n> Section 7.1\u2028\"Disruptions\" such as reordering do not affect timers, correct?\r\n> ACKs SHOULD NOT be sent for these flights unless generating the\u2028responding flight takes significant time.\r\n> What is \"significant time\"?",
       "createdAt": "2021-04-06T06:49:55Z",
-      "updatedAt": "2021-04-07T06:49:35Z",
-      "closedAt": null,
+      "updatedAt": "2021-04-13T19:16:02Z",
+      "closedAt": "2021-04-13T19:16:02Z",
       "comments": [
         {
           "author": "ekr",
@@ -2061,6 +2075,20 @@
           "body": "Regarding: \r\n\r\n> [BA] How does the implementation know how much of the flight to send?\r\n\r\nI guess the question is about whether one or multiple handshake messages are packed in single underlying datagram. \r\n\r\nI would say it depends a bit on the use case and the PMTU size.  If there is enough space (PMTU-wise) then it may be good in some cases to wait until a number of messages are ready for transmission. In other cases, it may be better to transmit the messages right away individually without packing. \r\n\r\n",
           "createdAt": "2021-04-07T06:49:35Z",
           "updatedAt": "2021-04-07T06:49:35Z"
+        },
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@chris-wood I propose we just close this.",
+          "createdAt": "2021-04-13T16:56:01Z",
+          "updatedAt": "2021-04-13T16:56:01Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "That seems reasonable. @ekr, please feel free to close with no action (beyond \"immediate\" above).",
+          "createdAt": "2021-04-13T19:14:01Z",
+          "updatedAt": "2021-04-13T19:14:26Z"
         }
       ]
     },
@@ -2069,15 +2097,15 @@
       "id": "MDU6SXNzdWU4NTE5MTczODc=",
       "title": "Remove ACK from flight table",
       "url": "https://github.com/tlswg/dtls13-spec/issues/237",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ekr",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Martin duke writes:\r\n> Sec 5.7 In table 1, why include one ACK in the diagram but not the other? It's clear from the note, but the figure is a weird omission.\r\n\r\nWell, it's not a flight in those other cases. It's just sort of out of band data. Maybe we should just\r\nremove flight entirely?\r\n",
       "createdAt": "2021-04-07T01:12:38Z",
-      "updatedAt": "2021-04-07T01:31:12Z",
-      "closedAt": null,
+      "updatedAt": "2021-04-13T16:52:53Z",
+      "closedAt": "2021-04-13T16:52:53Z",
       "comments": [
         {
           "author": "ekr",
@@ -11415,7 +11443,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2021-04-08T23:12:36Z",
-      "updatedAt": "2021-04-12T18:11:28Z",
+      "updatedAt": "2021-04-13T08:51:53Z",
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "ad1fd96a975bae620a4271e9252bd0e6f1951762",
@@ -11433,6 +11461,13 @@
           "body": "@martinduke ",
           "createdAt": "2021-04-08T23:12:52Z",
           "updatedAt": "2021-04-08T23:12:52Z"
+        },
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The text is good for me. ",
+          "createdAt": "2021-04-13T08:51:53Z",
+          "updatedAt": "2021-04-13T08:51:53Z"
         }
       ],
       "reviews": [
@@ -11460,6 +11495,132 @@
           "body": "LGTM, but we should confirm on the list.",
           "createdAt": "2021-04-12T18:11:28Z",
           "updatedAt": "2021-04-12T18:11:28Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 240,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjE0NjE0ODY4",
+      "title": "Vyncke comments. Fixes #225",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/240",
+      "state": "MERGED",
+      "author": "ekr",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-04-13T16:49:32Z",
+      "updatedAt": "2021-04-13T16:52:29Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "a711614ad29112809ce332c7b98107fd11c3ccd8",
+      "headRepository": "ekr/dtls13-spec",
+      "headRefName": "issue225_vyncke_comments",
+      "headRefOid": "40dcb7d4b0023aea58cc35c7dd0af64a07c12768",
+      "closedAt": "2021-04-13T16:52:29Z",
+      "mergedAt": "2021-04-13T16:52:29Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "e30625331a833e1675f8dfc17f45cb649a24b0c6"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjM0ODIwNDM5",
+          "commit": {
+            "abbreviatedOid": "40dcb7d"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-04-13T16:52:22Z",
+          "updatedAt": "2021-04-13T16:52:22Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 241,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjE0NjE2MzQz",
+      "title": "Ack isn't really a flight. Fixes #237",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/241",
+      "state": "MERGED",
+      "author": "ekr",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-04-13T16:51:55Z",
+      "updatedAt": "2021-04-13T16:52:52Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "a711614ad29112809ce332c7b98107fd11c3ccd8",
+      "headRepository": "ekr/dtls13-spec",
+      "headRefName": "issue237_acks_flights",
+      "headRefOid": "277c3f4fa3a762047faaa0f39175fc08a11f34f9",
+      "closedAt": "2021-04-13T16:52:52Z",
+      "mergedAt": "2021-04-13T16:52:52Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "b477bda92682bef4bfdc8198d15672b643ce9e85"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjM0ODIwODE1",
+          "commit": {
+            "abbreviatedOid": "277c3f4"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-04-13T16:52:47Z",
+          "updatedAt": "2021-04-13T16:52:47Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 242,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjE0NjE4MDkw",
+      "title": "Clarify invalid records. Fixes #224",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/242",
+      "state": "MERGED",
+      "author": "ekr",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-04-13T16:54:45Z",
+      "updatedAt": "2021-04-13T17:01:05Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "b477bda92682bef4bfdc8198d15672b643ce9e85",
+      "headRepository": "ekr/dtls13-spec",
+      "headRefName": "issue224_invalid_records",
+      "headRefOid": "de881dcead362216eaf7a07804c57e1ffacd4b35",
+      "closedAt": "2021-04-13T17:01:05Z",
+      "mergedAt": "2021-04-13T17:01:05Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "e44592676917bf42511aceb7dc320c32d75505dc"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjM0ODI4NzYw",
+          "commit": {
+            "abbreviatedOid": "de881dc"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-04-13T17:01:01Z",
+          "updatedAt": "2021-04-13T17:01:01Z",
           "comments": []
         }
       ]
