@@ -2627,8 +2627,11 @@ RFC EDITOR: PLEASE REMOVE THE THIS SECTION
 (*) indicates a change that may affect interoperability.
 
 IETF Drafts
+draft-42
 
-draft-41
+- SHOULD level requirement for the client to offer CID
+  extension.
+
 - Change the default retransmission timer to 1s and
   allow people to do otherwise if they have side knowledge.
 
@@ -2641,9 +2644,6 @@ draft-41
   and timers (including changing reset to re-arm)
 
 - Update IANA considerations
-
-- SHOULD level requirement for the client to offer CID
-  extension.
 
 draft-40
 
