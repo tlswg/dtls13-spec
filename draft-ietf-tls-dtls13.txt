@@ -3738,14 +3738,14 @@ Appendix D.  History
 
    (*) indicates a change that may affect interoperability.
 
-   IETF Drafts
+   IETF Drafts draft-42
 
-   draft-41 - Change the default retransmission timer to 1s and allow
-   people to do otherwise if they have side knowledge.
+   *  SHOULD level requirement for the client to offer CID extension.
+
+   *  Change the default retransmission timer to 1s and allow people to
+      do otherwise if they have side knowledge.
 
    *  Cap any given flight to 10 records
-
-
 
 
 
@@ -3761,8 +3761,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
       (including changing reset to re-arm)
 
    *  Update IANA considerations
-
-   *  SHOULD level requirement for the client to offer CID extension.
 
    draft-40
 
@@ -3802,6 +3800,8 @@ Internet-Draft                  DTLS 1.3                      April 2021
    in message 1. - Clarify when you can ACK. - Clarify additional data
    computation.
 
+   draft-33: - Key separation between TLS and DTLS.  Issue #72.
+
 
 
 
@@ -3809,8 +3809,6 @@ Rescorla, et al.         Expires 24 October 2021               [Page 68]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
-
-   draft-33: - Key separation between TLS and DTLS.  Issue #72.
 
    draft-32: - Editorial improvements and clarifications.
 
@@ -3857,6 +3855,8 @@ Internet-Draft                  DTLS 1.3                      April 2021
    *  Added ACK message
 
    *  Text about sequence number handling
+
+
 
 
 
