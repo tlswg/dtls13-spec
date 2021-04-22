@@ -154,7 +154,7 @@ Internet-Draft                  DTLS 1.3                      April 2021
      B.3.  Limits for AEAD_AES_128_CCM_8 . . . . . . . . . . . . . .  66
    Appendix C.  Implementation Pitfalls  . . . . . . . . . . . . . .  67
    Appendix D.  History  . . . . . . . . . . . . . . . . . . . . . .  67
-   Appendix E.  Working Group Information  . . . . . . . . . . . . .  69
+   Appendix E.  Working Group Information  . . . . . . . . . . . . .  70
    Appendix F.  Contributors . . . . . . . . . . . . . . . . . . . .  70
    Appendix G.  Acknowledgements . . . . . . . . . . . . . . . . . .  71
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  71
@@ -3760,6 +3760,10 @@ Internet-Draft                  DTLS 1.3                      April 2021
    *  A bunch more clarity about the reliability algorithms and timers
       (including changing reset to re-arm)
 
+   *  Update IANA considerations
+
+   *  SHOULD level requirement for the client to offer CID extension.
+
    draft-40
 
    - Clarified encrypted_record structure in DTLS 1.3 record layer
@@ -3798,10 +3802,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
    in message 1. - Clarify when you can ACK. - Clarify additional data
    computation.
 
-   draft-33: - Key separation between TLS and DTLS.  Issue #72.
-
-   draft-32: - Editorial improvements and clarifications.
-
 
 
 
@@ -3809,6 +3809,10 @@ Rescorla, et al.         Expires 24 October 2021               [Page 68]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
+
+   draft-33: - Key separation between TLS and DTLS.  Issue #72.
+
+   draft-32: - Editorial improvements and clarifications.
 
    draft-31: - Editorial improvements in text and figures. - Added
    normative reference to ChaCha20 and Poly1305.
@@ -3854,10 +3858,6 @@ Internet-Draft                  DTLS 1.3                      April 2021
 
    *  Text about sequence number handling
 
-Appendix E.  Working Group Information
-
-   RFC EDITOR: PLEASE REMOVE THIS SECTION.
-
 
 
 
@@ -3865,6 +3865,10 @@ Rescorla, et al.         Expires 24 October 2021               [Page 69]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
+
+Appendix E.  Working Group Information
+
+   RFC EDITOR: PLEASE REMOVE THIS SECTION.
 
    The discussion list for the IETF TLS working group is located at the
    e-mail address tls@ietf.org (mailto:tls@ietf.org).  Information on
@@ -3911,16 +3915,16 @@ Appendix F.  Contributors
      Independent
      ilariliusvaara@welho.com
 
-   * Martin Thomson
-     Mozilla
-     martin.thomson@gmail.com
-
 
 
 Rescorla, et al.         Expires 24 October 2021               [Page 70]
 
 Internet-Draft                  DTLS 1.3                      April 2021
 
+
+   * Martin Thomson
+     Mozilla
+     martin.thomson@gmail.com
 
    * Christopher A. Wood
      Apple Inc.
@@ -3963,10 +3967,6 @@ Authors' Addresses
    Google, Inc.
 
    Email: nagendra@cs.stanford.edu
-
-
-
-
 
 
 
