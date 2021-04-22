@@ -546,15 +546,15 @@ packet  -->  |   OCT == 25   -+--> DTLSCipherText with CID (DTLS 1.2)
 ~~~
 {: #demux title="Demultiplexing DTLS 1.2 and DTLS 1.3 Records"}
 
-Note: The optimized DTLS header format shown in {{cid_hdr}}, which 
-does not carry the Content Type in the Unified Header format, requires 
-a different demultilexing strategy compared to what was used in previous 
-DTLS versions where the Content Type was conveyed in every record. 
-As described in {{demux}}, the first byte determines how an incoming 
-DTLS record is demultiplexed. The first 3 bits of the first byte 
-distinguish a DTLS 1.3 encrypted record from record types used in 
-previous DTLS versions and plaintext DTLS 1.3 record types. Hence, the 
-range 32 (0b0010 0000) to 63 (0b0011 1111) needs to be excluded 
+Note: The optimized DTLS header format shown in {{cid_hdr}}, which
+does not carry the Content Type in the Unified Header format, requires
+a different demultilexing strategy compared to what was used in previous
+DTLS versions where the Content Type was conveyed in every record.
+As described in {{demux}}, the first byte determines how an incoming
+DTLS record is demultiplexed. The first 3 bits of the first byte
+distinguish a DTLS 1.3 encrypted record from record types used in
+previous DTLS versions and plaintext DTLS 1.3 record types. Hence, the
+range 32 (0b0010 0000) to 63 (0b0011 1111) needs to be excluded
 from future allocations by IANA to avoid demultiplexing problems;
 see {{iana-considerations}}.
 
@@ -769,7 +769,7 @@ refusal to send the datagram as in Section 14 of {{RFC4340}}), then the
 DTLS record layer MUST inform the upper layer protocol of the error.
 
 The DTLS record layer SHOULD NOT interfere with upper layer protocols
-performing PMTU discovery, whether via {{RFC1191}} and {{RFC4821}} for 
+performing PMTU discovery, whether via {{RFC1191}} and {{RFC4821}} for
 IPv4 or via {{?RFC8201}} for IPv6.  In particular:
 
 - Where allowed by the underlying transport protocol, the upper
@@ -1567,22 +1567,22 @@ of the timer can lead to serious congestion problems, for example if
 many instances of a DTLS time out early and retransmit too quickly on
 a congested link.
 
-Unless implementations have deployment-specific and/or external information about the round trip time, 
-implementations SHOULD use an initial timer value of 1000 ms and double 
-the value at each retransmission, up to no less than 60 seconds (the 
-RFC 6298 {{RFC6298}} maximum). Application specific profiles, MAY 
+Unless implementations have deployment-specific and/or external information about the round trip time,
+implementations SHOULD use an initial timer value of 1000 ms and double
+the value at each retransmission, up to no less than 60 seconds (the
+RFC 6298 {{RFC6298}} maximum). Application specific profiles, MAY
 recommend shorter or longer timer values. For instance:
 
-* Profiles for specific deployment environments, such as in low-power, 
-  multi-hop mesh network as used in some Internet of Things (IoT) networks, 
-  MAY specify longer timeouts. See {{?I-D.ietf-uta-tls13-iot-profile}} for 
+* Profiles for specific deployment environments, such as in low-power,
+  multi-hop mesh network as used in some Internet of Things (IoT) networks,
+  MAY specify longer timeouts. See {{?I-D.ietf-uta-tls13-iot-profile}} for
   more information about one such DTLS 1.3 IoT profile.
 
 * Real-time protocols MAY specify shorter timeouts. It is RECOMMENDED
   that for DTLS-SRTP {{?RFC5764}}, a default timeout of
   400ms be used; because customer experience degrades with one-way latencies
   of greater than 200ms, real-time deployments are less likely
-  to have long latencies. 
+  to have long latencies.
 
 In settings where there is external information (for instance from an ICE {{?RFC8445}}
 handshake, or from previous connections to the same server)
@@ -2631,14 +2631,19 @@ IETF Drafts
 draft-41
 - Change the default retransmission timer to 1s and
   allow people to do otherwise if they have side knowledge.
-  
+
 - Cap any given flight to 10 records
 
 - Don't re-set the timer to the initial value but to 1.5
   times the measured RTT.
-  
+
 - A bunch more clarity about the reliability algorithms
   and timers (including changing reset to re-arm)
+
+- Update IANA considerations
+
+- SHOULD level requirement for the client to offer CID
+  extension.
 
 draft-40
 
