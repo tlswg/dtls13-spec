@@ -878,9 +878,9 @@ Internet-Draft                  DTLS 1.3                      April 2021
    DTLS messages MAY be fragmented into multiple DTLS records.  Each
    DTLS record MUST fit within a single datagram.  In order to avoid IP
    fragmentation, clients of the DTLS record layer SHOULD attempt to
-   size records so that they fit within any Path MTU estimates obtained
-   from the record layer.  For more information about PMTU issues see
-   Section 4.4.
+   size records so that they fit within any Path MTU (PMTU) estimates
+   obtained from the record layer.  For more information about PMTU
+   issues see Section 4.4.
 
    Multiple DTLS records MAY be placed in a single datagram.  Records
    are encoded consecutively.  The length field from DTLS records
