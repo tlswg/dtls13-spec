@@ -684,7 +684,7 @@ sequence number.
 DTLS messages MAY be fragmented into multiple DTLS records.
 Each DTLS record MUST fit within a single datagram.  In order to
 avoid IP fragmentation, clients of the DTLS record layer SHOULD
-attempt to size records so that they fit within any Path MTU estimates
+attempt to size records so that they fit within any Path MTU (PMTU) estimates
 obtained from the record layer. For more information about PMTU issues
 see {{pmtu-issues}}.
 
