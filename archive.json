@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-04-15T00:31:58.963964+00:00",
+  "timestamp": "2021-04-25T00:34:04.902277+00:00",
   "repo": "tlswg/dtls13-spec",
   "labels": [
     {
@@ -2113,6 +2113,37 @@
           "body": "@hannestschofenig: ^^?",
           "createdAt": "2021-04-07T01:31:12Z",
           "updatedAt": "2021-04-07T01:31:12Z"
+        }
+      ]
+    },
+    {
+      "number": 243,
+      "id": "MDU6SXNzdWU4NjY2OTMwMDI=",
+      "title": "It seems there a merge conflict.",
+      "url": "https://github.com/tlswg/dtls13-spec/issues/243",
+      "state": "OPEN",
+      "author": "lvht",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "It seems there a merge conflict.\r\n```\r\n##  Transport Layer Mapping {#transport-layer-mapping}\r\n\r\nDTLS messages MAY be fragmented into multiple DTLS records.\r\nEach DTLS record MUST fit within a single datagram.  In order to\r\navoid IP fragmentation, clients of the DTLS record layer SHOULD\r\n<<<<<<< HEAD\r\nattempt to size records so that they fit within any PMTU estimates\r\nobtained from the record layer. For more information about PMTU issues\r\nsee {{pmtu-issues}}.\r\n=======\r\nattempt to size records so that they fit within any Path MTU (PMTU) estimates\r\nobtained from the record layer.\r\n>>>>>>> hannestschofenig-patch-40\r\n```",
+      "createdAt": "2021-04-24T08:26:15Z",
+      "updatedAt": "2021-04-24T23:47:14Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yeah, I have fixed it in my copy.",
+          "createdAt": "2021-04-24T23:46:51Z",
+          "updatedAt": "2021-04-24T23:46:51Z"
+        },
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "and now in the repo",
+          "createdAt": "2021-04-24T23:47:14Z",
+          "updatedAt": "2021-04-24T23:47:14Z"
         }
       ]
     }
@@ -11436,24 +11467,26 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NjEyMDIzNDUx",
       "title": "Clients SHOULD offer a connection ID",
       "url": "https://github.com/tlswg/dtls13-spec/pull/239",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "ekr",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2021-04-08T23:12:36Z",
-      "updatedAt": "2021-04-13T08:51:53Z",
+      "updatedAt": "2021-04-22T16:43:56Z",
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "ad1fd96a975bae620a4271e9252bd0e6f1951762",
       "headRepository": "ekr/dtls13-spec",
       "headRefName": "offer_cid",
       "headRefOid": "5f41d9b5a4ce5065cf90e3feb6300f55ce3f5ad3",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2021-04-22T16:43:56Z",
+      "mergedAt": "2021-04-22T16:43:56Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "e0fe122c88b8369bb3bddd0e6cf19595e2fa040c"
+      },
       "comments": [
         {
           "author": "ekr",
