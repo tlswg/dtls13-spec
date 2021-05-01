@@ -1727,6 +1727,9 @@ because it can only acknowledge Record 1 sent by the server once it has
 processed messages in Record 0 needed to establish epoch 2 keys, which
 are needed to encrypt or decrypt messages found in Record 1.  {{ack-msg}}
 provides the necessary background details for this interaction.
+Note: for simplicity we are not re-setting record numbers in this
+diagram, so "Record 1" is really "Epoch 2, Record 0".
+
 
 ~~~
 Client                                                Server
