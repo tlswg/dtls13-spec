@@ -261,7 +261,7 @@ small enough that it will not itself be fragmented, thus avoiding
 concerns about interleaving multiple HelloRetryRequests.
 
 For more detail on timeouts and retransmission,
-see {{timeout-retransmissions}.
+see {{timeout-retransmissions}}.
 
 ##  Reordering
 
@@ -555,7 +555,7 @@ DTLS record is demultiplexed. The first 3 bits of the first byte
 distinguish a DTLS 1.3 encrypted record from record types used in
 previous DTLS versions and plaintext DTLS 1.3 record types. Hence, the
 range 32 (0b0010 0000) to 63 (0b0011 1111) needs to be excluded
-from future allocations by IANA to avoid demultiplexing problems;
+from future allocations by IANA to avoid problems while demultiplexing;
 see {{iana-considerations}}.
 
 ## Sequence Number and Epoch
@@ -574,7 +574,7 @@ are provided in {{dtls-epoch}}.
 Because DTLS records could be reordered, a record from epoch
 M may be received after epoch N (where N > M) has begun.
 Implementations SHOULD discard records from earlier epochs, but
-implementations MAY choose to
+MAY choose to
 retain keying material from previous epochs for up to the default MSL
 specified for TCP {{RFC0793}} to allow for packet reordering.  (Note that
 the intention here is that implementers use the current guidance from
@@ -656,7 +656,7 @@ The sn_key is computed as follows:
 
 [sender] denotes the sending side. The Secret value to be used is described
 in Section 7.3 of {{!TLS13}}. Note that a new key is used for each epoch:
-because the epoch is in the clear, this does not result in ambiguity.
+because the epoch is sent in the clear, this does not result in ambiguity.
 
 The encrypted sequence number is computed by XORing the leading
 bytes of the Mask with the on-the-wire representation of the
@@ -1556,7 +1556,7 @@ flight immediately, shortcutting the retransmission timer.
 
 ### Timer Values
 
-The configuration of timer settings varies with implementations and certain
+The configuration of timer settings varies with implementations, and certain
 deployment environments require timer value adjustments. Mishandling
 of the timer can lead to serious congestion problems, for example if
 many instances of a DTLS time out early and retransmit too quickly on
@@ -1565,11 +1565,11 @@ a congested link.
 Unless implementations have deployment-specific and/or external information about the round trip time,
 implementations SHOULD use an initial timer value of 1000 ms and double
 the value at each retransmission, up to no less than 60 seconds (the
-RFC 6298 {{RFC6298}} maximum). Application specific profiles, MAY
+RFC 6298 {{RFC6298}} maximum). Application specific profiles MAY
 recommend shorter or longer timer values. For instance:
 
 * Profiles for specific deployment environments, such as in low-power,
-  multi-hop mesh network as used in some Internet of Things (IoT) networks,
+  multi-hop mesh scenarios as used in some Internet of Things (IoT) networks,
   MAY specify longer timeouts. See {{?I-D.ietf-uta-tls13-iot-profile}} for
   more information about one such DTLS 1.3 IoT profile.
 
@@ -1581,12 +1581,12 @@ recommend shorter or longer timer values. For instance:
 
 In settings where there is external information (for instance from an ICE {{?RFC8445}}
 handshake, or from previous connections to the same server)
-about the RTT, implementations SHOULD use 1.5 times that RTT
+about the RTT, implementations SHOULD use 1.5 times that RTT estimate
 as the retransmit timer.
 
 Implementations SHOULD retain the current timer value until a
 message is transmitted and acknowledged without having to
-be retransmitted, at which time the value SHOULD be reset
+be retransmitted, at which time the value SHOULD be adjusted
 to 1.5 times the measured round trip time for that
 message. After a long period of idleness, no less
 than 10 times the current timer value, implementations MAY reset the
@@ -1640,7 +1640,7 @@ categories, but not for others. Specifically, a server MAY send multiple NewSess
 messages at once without awaiting ACKs for earlier NewSessionTicket first. Likewise, a
 server MAY send multiple CertificateRequest messages at once without having completed
 earlier client authentication requests before. In contrast, implementations MUST NOT
-have sent KeyUpdate, NewConnectionId or RequestConnectionId message if an earlier message
+send KeyUpdate, NewConnectionId or RequestConnectionId messages if an earlier message
 of the same type has not yet been acknowledged.
 
 Note: Except for post-handshake client authentication, which involves handshake messages
@@ -1975,12 +1975,12 @@ ACKs under two circumstances:
   arbitrary. Given that the round trip estimates in the DTLS
   handshake are generally very rough (or the default), any
   value will be an approximation, and there is an inherent
-  compromise due to retransmit due to over-agressive ACKing
+  compromise due to competition between retransmision due to over-agressive ACKing
   and over-aggressive timeout-based retransmission.
   As a comparison point,
   QUIC's loss-based recovery algorithms
   ({{?I-D.ietf-quic-recovery}}; Section 6.1.2)
-  work out to delay of about 1/3 of the retransmit timer.
+  work out to a delay of about 1/3 of the retransmit timer.
 
 In general, flights MUST be ACKed unless they are implicitly
 acknowledged. In the present specification the following flights are implicitly acknowledged
@@ -2066,7 +2066,7 @@ The use of the ACK for the second case is mandatory for the proper functioning o
 protocol. For instance, the ACK message sent by the client in Figure 13,
 acknowledges receipt and processing of record 4 (containing the NewSessionTicket
 message) and if it is not sent the server will continue retransmission
-of the NewSessionTicket indefinitely until its maximum retransmission timemout value is reached.
+of the NewSessionTicket indefinitely until its maximum retransmission count is reached.
 
 # Key Updates
 
