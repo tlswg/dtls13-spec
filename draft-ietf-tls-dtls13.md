@@ -1727,6 +1727,9 @@ because it can only acknowledge Record 1 sent by the server once it has
 processed messages in Record 0 needed to establish epoch 2 keys, which
 are needed to encrypt or decrypt messages found in Record 1.  {{ack-msg}}
 provides the necessary background details for this interaction.
+Note: for simplicity we are not re-setting record numbers in this
+diagram, so "Record 1" is really "Epoch 2, Record 0, etc.".
+
 
 ~~~
 Client                                                Server
@@ -1739,13 +1742,14 @@ Client                                                Server
                              X<-----                 Record 0
                              (lost)               ServerHello
                                               (message_seq=0)
+                                                     Record 1
                                           EncryptedExtensions
                                               (message_seq=1)
                                                   Certificate
                                               (message_seq=2)
 
 
-                           <--------                 Record 1
+                           <--------                 Record 2
                                             CertificateVerify
                                               (message_seq=3)
                                                      Finished
@@ -1755,7 +1759,7 @@ Client                                                Server
  ACK []
 
 
-                           <--------                 Record 2
+                           <--------                 Record 3
                                                   ServerHello
                                               (message_seq=0)
                                           EncryptedExtensions
@@ -1763,7 +1767,7 @@ Client                                                Server
                                                   Certificate
                                               (message_seq=2)
 
-                           <--------                 Record 3
+                           <--------                 Record 4
                                             CertificateVerify
                                               (message_seq=3)
                                                      Finished
@@ -1778,7 +1782,7 @@ Client                                                Server
  Finished
  (message_seq=3)
 
-                           <--------               Record 3
+                           <--------               Record 5
                                                     ACK [2]
 ~~~
 {: #dtls-msg-loss title="Example DTLS exchange illustrating message loss"}
