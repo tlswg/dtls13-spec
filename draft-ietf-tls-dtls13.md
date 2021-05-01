@@ -2057,7 +2057,7 @@ ACK messages are used in two circumstances, namely :
 
 In the first case the use of the ACK message is optional because
 the peer will retransmit in any case and therefore the ACK just
-allows for selective retransmission, as opposed to the whole
+allows for selective or early retransmission, as opposed to the timeout-based whole
 flight retransmission in previous versions of DTLS. When DTLS 1.3 is used in deployments
 with lossy networks, such as low-power, long range radio networks as well as
 low-power mesh networks, the use of ACKs is recommended.
