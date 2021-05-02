@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-04-25T00:34:04.902277+00:00",
+  "timestamp": "2021-05-02T00:26:02.883189+00:00",
   "repo": "tlswg/dtls13-spec",
   "labels": [
     {
@@ -2121,15 +2121,15 @@
       "id": "MDU6SXNzdWU4NjY2OTMwMDI=",
       "title": "It seems there a merge conflict.",
       "url": "https://github.com/tlswg/dtls13-spec/issues/243",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "lvht",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "It seems there a merge conflict.\r\n```\r\n##  Transport Layer Mapping {#transport-layer-mapping}\r\n\r\nDTLS messages MAY be fragmented into multiple DTLS records.\r\nEach DTLS record MUST fit within a single datagram.  In order to\r\navoid IP fragmentation, clients of the DTLS record layer SHOULD\r\n<<<<<<< HEAD\r\nattempt to size records so that they fit within any PMTU estimates\r\nobtained from the record layer. For more information about PMTU issues\r\nsee {{pmtu-issues}}.\r\n=======\r\nattempt to size records so that they fit within any Path MTU (PMTU) estimates\r\nobtained from the record layer.\r\n>>>>>>> hannestschofenig-patch-40\r\n```",
       "createdAt": "2021-04-24T08:26:15Z",
-      "updatedAt": "2021-04-24T23:47:14Z",
-      "closedAt": null,
+      "updatedAt": "2021-05-01T04:10:27Z",
+      "closedAt": "2021-05-01T04:10:27Z",
       "comments": [
         {
           "author": "ekr",
@@ -11657,6 +11657,91 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 244,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjI4Mjk4ODg0",
+      "title": "EE etc. has to be in a separate record. Fix up all the record numbers",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/244",
+      "state": "MERGED",
+      "author": "ekr",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-05-01T01:19:08Z",
+      "updatedAt": "2021-05-01T01:26:39Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "d1f2f97066ce4449bb71b38790f3c79be54502c0",
+      "headRepository": "ekr/dtls13-spec",
+      "headRefName": "fix_diagram",
+      "headRefOid": "75d212dac3bcf61a7898f5e8261d95ecc50d26eb",
+      "closedAt": "2021-05-01T01:26:39Z",
+      "mergedAt": "2021-05-01T01:26:39Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "5085028ad466cf232dd4721422e7e26c23c84acb"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjQ5NzAyODUw",
+          "commit": {
+            "abbreviatedOid": "86939fb"
+          },
+          "author": "kaduk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "How did we manage to go so far without noticing this!",
+          "createdAt": "2021-05-01T01:22:11Z",
+          "updatedAt": "2021-05-01T01:22:45Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\r\ndiagram, so \"Record 1\" is really \"Epoch 2, Record 0, etc.\".\r\n```",
+              "createdAt": "2021-05-01T01:22:11Z",
+              "updatedAt": "2021-05-01T01:22:45Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 245,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjI4MzAzNzk1",
+      "title": "Nits",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/245",
+      "state": "MERGED",
+      "author": "kaduk",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The middle two commits should be looked at individually.\r\nOptional-ACK can be used (as in Figure 12) to short-circuit the retransmit timer in addition to selective acknowledgment.",
+      "createdAt": "2021-05-01T01:54:56Z",
+      "updatedAt": "2021-05-01T02:10:32Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "5085028ad466cf232dd4721422e7e26c23c84acb",
+      "headRepository": "kaduk/dtls13-spec",
+      "headRefName": "nits",
+      "headRefOid": "ed4a7a8d00251b5659c43ea1b41b9ef42921ee19",
+      "closedAt": "2021-05-01T02:10:32Z",
+      "mergedAt": "2021-05-01T02:10:32Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "ed4a7a8d00251b5659c43ea1b41b9ef42921ee19"
+      },
+      "comments": [
+        {
+          "author": "kaduk",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "(Looks like I still don't understand the kramdown reference behavior.)",
+          "createdAt": "2021-05-01T01:56:49Z",
+          "updatedAt": "2021-05-01T01:56:49Z"
+        }
+      ],
+      "reviews": []
     }
   ]
 }
