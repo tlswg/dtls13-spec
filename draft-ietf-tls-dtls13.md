@@ -2812,7 +2812,7 @@ In addition, we would like to thank:
 ~~~
 * Martin Thomson
   Mozilla
-  martin.thomson@gmail.com
+  mt@lowentropy.net
 ~~~
 
 ~~~
