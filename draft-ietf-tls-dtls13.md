@@ -324,7 +324,7 @@ meaning of the fields is unchanged from previous TLS / DTLS versions.
     struct {
         ContentType type;
         ProtocolVersion legacy_record_version;
-        uint16 epoch = 0
+        uint32 epoch = 0
         uint48 sequence_number;
         uint16 length;
         opaque fragment[DTLSPlaintext.length];
@@ -427,22 +427,24 @@ underlying transport datagram.
 |   16 bit      |     |               |     |8-bit Seq. No. |
 |   Version     |     / Connection ID /     +-+-+-+-+-+-+-+-+
 +-+-+-+-+-+-+-+-+     |               |     |               |
-|   16 bit      |     +-+-+-+-+-+-+-+-+     |   Encrypted   |
-|    Epoch      |     |    16 bit     |     /   Record      /
-+-+-+-+-+-+-+-+-+     |Sequence Number|     |               |
+|               |     +-+-+-+-+-+-+-+-+     |   Encrypted   |
+|   32 bit      |     |    16 bit     |     /   Record      /
+|    Epoch      |     |Sequence Number|     |               |
 |               |     +-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+
-|               |     |   16 bit      |
-|   48 bit      |     |   Length      |       DTLSCiphertext
-|Sequence Number|     +-+-+-+-+-+-+-+-+         Structure
-|               |     |               |         (minimal)
-|               |     |  Encrypted    |
-+-+-+-+-+-+-+-+-+     /  Record       /
-|    16 bit     |     |               |
-|    Length     |     +-+-+-+-+-+-+-+-+
-+-+-+-+-+-+-+-+-+
-|               |      DTLSCiphertext
-|               |        Structure
-/   Fragment    /          (full)
++-+-+-+-+-+-+-+-+     |   16 bit      |
+|               |     |   Length      |       DTLSCiphertext
+|               |     +-+-+-+-+-+-+-+-+         Structure
+|   48 bit      |     |               |         (minimal)
+|Sequence Number|     |  Encrypted    |
+|               |     /  Record       /
+|               |     |               |
++-+-+-+-+-+-+-+-+     +-+-+-+-+-+-+-+-+
+|    16 bit     |
+|    Length     |      DTLSCiphertext
++-+-+-+-+-+-+-+-+        Structure
+|               |          (full)
+|               |
+/   Fragment    /
 |               |
 +-+-+-+-+-+-+-+-+
 
@@ -471,12 +473,12 @@ unpacked RecordNumber structure, as shown below:
 ~~~
 %%% Record Layer
     struct {
-        uint16 epoch;
+        uint32 epoch;
         uint48 sequence_number;
     } RecordNumber;
 ~~~
 
-This 64-bit value is used in the ACK message as well as in the "record_sequence_number"
+This 80-bit value is used in the ACK message. The low order 64 bits is used in the "record_sequence_number"
 input to the AEAD function.
 
 The entire header value shown in {{hdr_examples}} (but prior to record number
@@ -1818,7 +1820,7 @@ protocol exchange to allow identification of the correct cipher state:
      from the initial \[sender\]_application_traffic_secret_0. This may include
      handshake messages, such as post-handshake messages (e.g., a
      NewSessionTicket message).
-   * epoch value (4 to 2^16-1) is used for payloads protected using keys from
+   * epoch value (4 to 2^32-1) is used for payloads protected using keys from
      the \[sender\]_application_traffic_secret_N (N>0).
 
 Using these reserved epoch values a receiver knows what cipher state
