@@ -598,9 +598,6 @@ epoch and keying material as the original transmission.
 Implementations MUST either abandon an association or re-key prior to
 allowing the sequence number to wrap.
 
-Implementations MUST NOT allow the epoch to wrap, but instead MUST
-establish a new association, terminating the old association.
-
 ### Reconstructing the Sequence Number and Epoch {#reconstructing}
 
 When receiving protected DTLS records, the recipient does not
@@ -1827,8 +1824,8 @@ message. Implementations that receive a record with an epoch value
 for which no corresponding cipher state can be determined SHOULD
 handle it as a record which fails deprotection.
 
-Note that epoch values do not wrap. If a DTLS implementation would
-need to wrap the epoch value, it MUST terminate the connection.
+Epoch values are allowed to wrap. When the epoch value 2^16-1 is incremented,
+the new incremented epoch value is 4.
 
 The traffic key calculation is described in Section 7.3 of {{!TLS13}}.
 
