@@ -313,8 +313,8 @@ also different from the DTLS 1.2 record layer.
 
 3. The DTLS epoch serialized in DTLSPlaintext is 2 octets long for compatibility
    with DTLS 1.2. However, this value is set as the least significant 2 octets
-   from the effective epoch of a connection, which is an 8 octet counter
-   incremented on every KeyUpdate. See {{seq-and-epoch}} for details.
+   of the epoch of a connection, which is an 8 octet counter incremented on every
+   KeyUpdate. See {{seq-and-epoch}} for details.
 
 4. The DTLSCiphertext structure has a variable length header.
 
@@ -356,7 +356,7 @@ legacy_record_version
   for the rationale for this.
 
 legacy_epoch
-: The least significant 2 bytes of the effective connection epoch value.
+: The least significant 2 bytes of the connection epoch value.
 
 unified_hdr:
 : The unified header (unified_hdr) is a structure of variable length, as shown in {{cid_hdr}}.
@@ -573,7 +573,7 @@ carried in the sequence_number field of the record.  Sequence numbers
 are maintained separately for each epoch, with each sequence_number
 initially being 0 for each epoch.
 
-The effective epoch number is initially zero and is incremented each time
+The epoch number is initially zero and is incremented each time
 keying material changes and a sender aims to rekey. More details
 are provided in {{dtls-epoch}}.
 
