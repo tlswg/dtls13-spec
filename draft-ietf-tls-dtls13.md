@@ -313,7 +313,7 @@ also different from the DTLS 1.2 record layer.
 
 3. The DTLS epoch serialized in DTLSPlaintext is 2 octets long for compatibility
    with DTLS 1.2. However, this value is set as the least significant 2 octets
-   of the epoch of a connection, which is an 8 octet counter incremented on every
+   of the connection epoch, which is an 8 octet counter incremented on every
    KeyUpdate. See {{seq-and-epoch}} for details.
 
 4. The DTLSCiphertext structure has a variable length header.
@@ -329,7 +329,7 @@ meaning of the fields is unchanged from previous TLS / DTLS versions.
     struct {
         ContentType type;
         ProtocolVersion legacy_record_version;
-        uint16 legacy_epoch = 0
+        uint16 epoch = 0
         uint48 sequence_number;
         uint16 length;
         opaque fragment[DTLSPlaintext.length];
@@ -355,7 +355,7 @@ legacy_record_version
   It MUST be ignored for all purposes. See {{TLS13}}; Appendix D.1
   for the rationale for this.
 
-legacy_epoch
+epoch
 : The least significant 2 bytes of the connection epoch value.
 
 unified_hdr:
