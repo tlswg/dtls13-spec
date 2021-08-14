@@ -311,7 +311,12 @@ also different from the DTLS 1.2 record layer.
    the DTLSCiphertext structure have been reduced from those in previous
    versions.
 
-3. The DTLSCiphertext structure has a variable length header.
+3. The DTLS epoch serialized in DTLSPlaintext is 2 octets long for compatibility
+   with DTLS 1.2. However, this value is set as the least significant 2 octets
+   from the effective epoch of a connection, which is an 8 octet counter
+   incremented on every KeyUpdate. See {{seq-and-epoch}} for details.
+
+4. The DTLSCiphertext structure has a variable length header.
 
 DTLSPlaintext records are used to send unprotected records and DTLSCiphertext
 records are used to send protected records.
@@ -324,7 +329,7 @@ meaning of the fields is unchanged from previous TLS / DTLS versions.
     struct {
         ContentType type;
         ProtocolVersion legacy_record_version;
-        uint16 epoch = 0
+        uint16 legacy_epoch = 0
         uint48 sequence_number;
         uint16 length;
         opaque fragment[DTLSPlaintext.length];
@@ -349,6 +354,9 @@ legacy_record_version
   where it may also be {254, 255} for compatibility purposes.
   It MUST be ignored for all purposes. See {{TLS13}}; Appendix D.1
   for the rationale for this.
+
+legacy_epoch
+: The least significant 2 bytes of the effective connection epoch value.
 
 unified_hdr:
 : The unified header (unified_hdr) is a structure of variable length, as shown in {{cid_hdr}}.
@@ -471,7 +479,7 @@ unpacked RecordNumber structure, as shown below:
 ~~~
 %%% Record Layer
     struct {
-        uint16 epoch;
+        uint64 epoch;
         uint48 sequence_number;
     } RecordNumber;
 ~~~
@@ -558,14 +566,14 @@ range 32 (0b0010 0000) to 63 (0b0011 1111) needs to be excluded
 from future allocations by IANA to avoid problems while demultiplexing;
 see {{iana-considerations}}.
 
-## Sequence Number and Epoch
+## Sequence Number and Epoch {#seq-and-epoch}
 
 DTLS uses an explicit or partly explicit sequence number, rather than an implicit one,
 carried in the sequence_number field of the record.  Sequence numbers
 are maintained separately for each epoch, with each sequence_number
 initially being 0 for each epoch.
 
-The epoch number is initially zero and is incremented each time
+The effective epoch number is initially zero and is incremented each time
 keying material changes and a sender aims to rekey. More details
 are provided in {{dtls-epoch}}.
 
@@ -1818,7 +1826,7 @@ protocol exchange to allow identification of the correct cipher state:
      from the initial \[sender\]_application_traffic_secret_0. This may include
      handshake messages, such as post-handshake messages (e.g., a
      NewSessionTicket message).
-   * epoch value (4 to 2^16-1) is used for payloads protected using keys from
+   * epoch value (4 to 2^64-1) is used for payloads protected using keys from
      the \[sender\]_application_traffic_secret_N (N>0).
 
 Using these reserved epoch values a receiver knows what cipher state
