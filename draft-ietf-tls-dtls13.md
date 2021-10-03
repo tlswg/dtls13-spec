@@ -63,6 +63,7 @@ informative:
   RFC5246:
   RFC6347:
   RFC7525:
+  RFC7457:
   AEBounds:
     title: "Limits on Authenticated Encryption Use in TLS"
     author:
@@ -2292,6 +2293,8 @@ are treated as transparent data to the record layer.
 
 Security issues are discussed primarily in {{!TLS13}}.
 
+Security issues are also discussed in  RFC 7457 {{RFC7457}}.
+
 The primary additional security consideration raised by DTLS is that
 of denial of service by excessive resource consumption.  DTLS includes a cookie exchange designed to
 protect against denial of service.  However, implementations that do
@@ -2836,6 +2839,6 @@ In addition, we would like to thank:
 
 # Acknowledgements
 
-We would like to thank Jonathan Hammell, Bernard Aboba and Andy Cunningham for their review comments.
+We would like to thank Jonathan Hammell, Bernard Aboba, Andy Cunningham, and Matthew Elvey for their review comments.
 
 Additionally, we would like to thank the IESG members for their review comments: Martin Duke, Erik Kline, Francesca Palombini, Lars Eggert, Zaheduzzaman Sarker, John Scudder, Éric Vyncke, Robert Wilton, Roman Danyliw, Benjamin Kaduk, Murray Kucherawy, Martin Vigoureux, and Alvaro Retana
