@@ -484,8 +484,8 @@ unpacked RecordNumber structure, as shown below:
     } RecordNumber;
 ~~~
 
-This 112-bit value is used in the ACK message. The low order 64 bits are used in
-the "record_sequence_number" input to the AEAD function.
+This 112-bit value is used in the ACK message. The low order 64 bits are used as
+the sequence number for reading and writing records; see {{TLS13, Section 5.3}}.
 
 The entire header value shown in {{hdr_examples}} (but prior to record number
 encryption, see {{rne}}) is used as as the additional data value for the AEAD
