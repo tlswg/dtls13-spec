@@ -315,7 +315,9 @@ also different from the DTLS 1.2 record layer.
    with DTLS 1.2. However, this value is set as the least significant 2 octets
    of the connection epoch, which is an 8 octet counter incremented on every
    KeyUpdate. See {{seq-and-epoch}} for details. The sequence number is set to
-   be the low order 48 bits of the 64 bit sequence number.
+   be the low order 48 bits of the 64 bit sequence number. Plaintext records
+   MUST NOT be sent with sequence numbers that would exceedd 2^48-1, so the
+   upper 16 bits will always be 0.
 
 4. The DTLSCiphertext structure has a variable length header.
 
@@ -492,6 +494,8 @@ encryption, see {{rne}}) is used as as the additional data value for the AEAD
 function. For instance, if the minimal variant is used,
 the AAD is 2 octets long. Note that this design is different from the additional data
 calculation for DTLS 1.2 and for DTLS 1.2 with Connection ID.
+In DTLS 1.3 the 64-bit sequence_number is used as the sequence number for
+the AEAD computation; unlike DTLS 1.2, the epoch is not included. 
 
 ## Demultiplexing DTLS Records
 
