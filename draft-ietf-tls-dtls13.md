@@ -314,7 +314,8 @@ also different from the DTLS 1.2 record layer.
 3. The DTLS epoch serialized in DTLSPlaintext is 2 octets long for compatibility
    with DTLS 1.2. However, this value is set as the least significant 2 octets
    of the connection epoch, which is an 8 octet counter incremented on every
-   KeyUpdate. See {{seq-and-epoch}} for details.
+   KeyUpdate. See {{seq-and-epoch}} for details. The sequence number is set to
+   be the low order 48 bits of the 64 bit sequence number.
 
 4. The DTLSCiphertext structure has a variable length header.
 
@@ -480,12 +481,11 @@ unpacked RecordNumber structure, as shown below:
 %%% Record Layer
     struct {
         uint64 epoch;
-        uint48 sequence_number;
+        uint64 sequence_number;
     } RecordNumber;
 ~~~
 
-This 112-bit value is used in the ACK message. The low order 64 bits are used as
-the sequence number for reading and writing records; see {{TLS13, Section 5.3}}.
+This 128-bit value is used in the ACK message. 
 
 The entire header value shown in {{hdr_examples}} (but prior to record number
 encryption, see {{rne}}) is used as as the additional data value for the AEAD
@@ -613,8 +613,9 @@ establish a new association, terminating the old association.
 
 When receiving protected DTLS records, the recipient does not
 have a full epoch or sequence number value in the record and so there is some
-opportunity for ambiguity.  Because the full epoch and sequence number
-are used to compute the per-record nonce, failure to reconstruct these
+opportunity for ambiguity.  Because the full sequence number
+is used to compute the per-record nonce and the epoch determines
+the keys, failure to reconstruct these
 values leads to failure to deprotect the record, and so implementations
 MAY use a mechanism of their choice to determine the full values.
 This section provides an algorithm which is comparatively simple
