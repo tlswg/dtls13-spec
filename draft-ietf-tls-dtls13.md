@@ -1266,8 +1266,9 @@ MUST be delivered in a single UDP datagram.
 
 When a DTLS implementation receives a handshake message fragment corresponding
 to the next expected handshake message sequence number, it
-MUST buffer it until it has the entire handshake message. DTLS
-implementations MUST be able to handle overlapping fragment ranges.
+MUST process it, either by buffering it until it has the entire handshake message
+or by processing any in-order portions of the message.
+DTLS implementations MUST be able to handle overlapping fragment ranges.
 This allows senders to retransmit handshake messages with smaller
 fragment sizes if the PMTU estimate changes. Senders MUST NOT change
 handshake message bytes upon retransmission. Receivers MAY check
