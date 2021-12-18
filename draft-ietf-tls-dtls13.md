@@ -2164,6 +2164,14 @@ Client                                             Server
 ~~~
 {: #dtls-key-update title="Example DTLS Key Update"}
 
+Implementations MUST NOT send KeyUpdates that would result
+in epochs of greater than or equal to 2^{48}-1. This limits
+the probability that a 128 bit key will be repeated during
+a connection. Note, however, that even if the key repeats,
+the IV is also independently generated. In order to allow
+future relaxation of this requirement, receiving implementations
+MUST NOT enforce this rule.
+
 
 # Connection ID Updates
 
