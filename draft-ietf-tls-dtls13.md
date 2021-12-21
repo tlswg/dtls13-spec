@@ -514,7 +514,7 @@ taking DTLS 1.3 and earlier versions of DTLS into account.
              |                |
              |   OCT == 20   -+--> ChangeCipherSpec (DTLS <1.3)
              |   OCT == 21   -+--> Alert (Plaintext)
-             |   OCT == 22   -+--> Handshake (Plaintext)
+             |   OCT == 22   -+--> DTLSHandshake (Plaintext)
              |   OCT == 23   -+--> Application Data (DTLS <1.3)
              |   OCT == 24   -+--> Heartbeat (DTLS <1.3)
 packet  -->  |   OCT == 25   -+--> DTLSCipherText with CID (DTLS 1.2)
@@ -537,7 +537,7 @@ packet  -->  |   OCT == 25   -+--> DTLSCipherText with CID (DTLS 1.2)
                             | (DCT)          |
                             |                |
                             |     DCT == 21 -+--> Alert
-                            |     DCT == 22 -+--> Handshake
+                            |     DCT == 22 -+--> DTLSHandshake
                             |     DCT == 23 -+--> Application Data
                             |     DCT == 24 -+--> Heartbeat
                             |     DCT == 26 -+--> ACK
@@ -1091,8 +1091,10 @@ a server which wants to receive a CID to negotiate one.
 
 ##  DTLS Handshake Message Format
 
-In order to support message loss, reordering, and message
-fragmentation, DTLS modifies the TLS 1.3 handshake header:
+DTLS uses the same Handshake messages as TLS 1.3. However,
+prior to transmission they are converted to DTLSHandshake
+messages, which contain extra data needed to support
+message loss, reordering, and message fragmentation.
 
 ~~~
 %%% Handshake Protocol
@@ -1138,8 +1140,14 @@ fragmentation, DTLS modifies the TLS 1.3 handshake header:
             case new_session_ticket:    NewSessionTicket;
             case key_update:            KeyUpdate;
         } body;
-    } Handshake;
+    } DTLSHandshake;
 ~~~
+
+In DTLS 1.3, the message transcript is computed over the original
+TLS 1.3-style Handshake messages without the message_seq,
+fragment_offset, and fragment_length values. Note that this is
+a change from DTLS 1.2 where which those values were included
+in the transcript.
 
 The first message each side transmits in each association always has
 message_seq = 0.  Whenever a new message is generated, the
@@ -1254,8 +1262,8 @@ avoiding IP fragmentation.
 
 When transmitting the handshake message, the sender divides the
 message into a series of N contiguous data ranges. The ranges MUST NOT
-overlap.  The sender then creates N handshake messages, all with the
-same message_seq value as the original handshake message.  Each new
+overlap.  The sender then creates N DTLSHandshake messages, all with the
+same message_seq value asssociated the original handshake message.  Each new
 message is labeled with the fragment_offset (the number of bytes
 contained in previous fragments) and the fragment_length (the length
 of this fragment).  The length field in all messages is the same as
@@ -1267,13 +1275,19 @@ MUST be delivered in a single UDP datagram.
 When a DTLS implementation receives a handshake message fragment corresponding
 to the next expected handshake message sequence number, it
 MUST process it, either by buffering it until it has the entire handshake message
-or by processing any in-order portions of the message.
+or by processing any in-order portions of the message
+The transcript consists of complete TLS Handshake messages (reassembled
+as necessary). Note that this requires removing the message_seq,
+fragment_offset, and fragment_length fields to create the Handshake
+structure.
+
 DTLS implementations MUST be able to handle overlapping fragment ranges.
 This allows senders to retransmit handshake messages with smaller
 fragment sizes if the PMTU estimate changes. Senders MUST NOT change
 handshake message bytes upon retransmission. Receivers MAY check
 that retransmitted bytes are identical and SHOULD abort the handshake
 with an "illegal_parameter" alert if the value of a byte changes.
+
 
 Note that as with TLS, multiple handshake messages may be placed in
 the same DTLS record, provided that there is room and that they are
@@ -1659,17 +1673,6 @@ certificate_request_context field. Similarly, a server sending a single Certific
 and receiving a NewConnectionId message in response can only decide that the NewConnectionId
 message should be treated through an independent state machine after inspecting the handshake
 message type.
-
-##  CertificateVerify and Finished Messages
-
-CertificateVerify and Finished messages have the same format as in
-TLS 1.3.  Hash calculations include entire handshake messages, including
-DTLS-specific fields: message_seq, fragment_offset, and
-fragment_length.  However, in order to remove sensitivity to
-handshake message fragmentation, the CertificateVerify and the Finished messages MUST be computed as
-if each handshake message had been sent as a single fragment following
-the algorithm described in Section 4.4.3 and Section 4.4.4 of {{!TLS13}}, respectively.
-
 
 ##  Cryptographic Label Prefix
 
