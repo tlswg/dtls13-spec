@@ -1263,7 +1263,7 @@ avoiding IP fragmentation.
 When transmitting the handshake message, the sender divides the
 message into a series of N contiguous data ranges. The ranges MUST NOT
 overlap.  The sender then creates N DTLSHandshake messages, all with the
-same message_seq value asssociated the original handshake message.  Each new
+same message_seq value associated with the original handshake message.  Each new
 message is labeled with the fragment_offset (the number of bytes
 contained in previous fragments) and the fragment_length (the length
 of this fragment).  The length field in all messages is the same as
