@@ -86,7 +86,7 @@ This document specifies Version 1.3 of the Datagram Transport Layer Security
 Internet in a way that is designed to prevent eavesdropping, tampering, and message
 forgery.
 
-The DTLS 1.3 protocol is intentionally based on the Transport Layer Security (TLS)
+The DTLS 1.3 protocol is based on the Transport Layer Security (TLS)
 1.3 protocol and provides equivalent security guarantees with the exception of order protection/non-replayability.  Datagram semantics of the underlying transport are preserved by the DTLS protocol.
 
 This document obsoletes RFC 6347.
@@ -102,9 +102,10 @@ The TLS protocol is composed of two layers:
 the TLS record protocol and the TLS handshake protocol. However, TLS must
 run over a reliable transport channel -- typically TCP {{RFC0793}}.
 
-There are applications that use UDP {{RFC0768}} as a transport, and to offer communication
-security protection for those applications, the Datagram Transport Layer
-Security (DTLS) protocol has been developed. DTLS is deliberately designed to be
+There are applications that use UDP {{RFC0768}} as a transport and
+the Datagram Transport Layer Security (DTLS) protocol has been developed
+to offer communication security protection for those applications.
+TLS is deliberately designed to be
 as similar to TLS as possible, both to minimize new security invention and to
 maximize the amount of code and infrastructure reuse.
 
@@ -191,7 +192,7 @@ protection of a WebRTC data channel), telephony utilizes DTLS for
 key establishment and the Secure Real-time Transport Protocol (SRTP) for
 protection of data {{?RFC5763}}.
 
-TLS cannot be used directly over datagram transports for the following five reasons:
+TLS cannot be used directly over datagram transports for the following four reasons:
 
 1. TLS relies on an implicit sequence number on records.  If a record is not
    received, then the recipient will use the wrong sequence number when
@@ -204,16 +205,11 @@ TLS cannot be used directly over datagram transports for the following five reas
    numbers to enable fragmented message reassembly and in-order
    delivery in case datagrams are lost or reordered.
 
-3. During the handshake, messages are implicitly acknowledged by other handshake
-   messages. Some handshake messages, such as the NewSessionTicket message, do
-   not result in any direct response that would allow the sender to detect loss.
-   DTLS adds an acknowledgement message to enable better loss recovery.
-
-4. Handshake messages are potentially larger than can be contained in a single
+3. Handshake messages are potentially larger than can be contained in a single
    datagram.  DTLS adds fields to handshake messages to support fragmentation
    and reassembly.
 
-5. Datagram transport protocols, like UDP, are susceptible to abusive behavior
+4. Datagram transport protocols are susceptible to abusive behavior
    effecting denial-of-service (DoS) attacks against nonparticipants.  DTLS adds a
    return-routability check and DTLS 1.3 uses the TLS 1.3 HelloRetryRequest message
    (see {{dos}} for details).
@@ -345,7 +341,7 @@ legacy_record_version:
   for the rationale for this.
 
 unified_hdr:
-: The unified header (unified_hdr) is a structure of variable length, as shown in {{cid_hdr}}.
+: The unified header (unified_hdr) is a structure of variable length, shown in {{cid_hdr}}.
 
 encrypted_record:
 : The encrypted form of the serialized DTLSInnerPlaintext structure.
@@ -483,9 +479,16 @@ calculation for DTLS 1.2 and for DTLS 1.2 with Connection IDs.
 
 ## Demultiplexing DTLS Records
 
-DTLS 1.3 uses a variable-length record format and hence the
-demultiplexing process is more complex, as more header formats
-need to be distinguished. Implementations can demultiplex DTLS 1.3 records
+DTLS 1.3's header format is more complicated to demux than
+DTLS 1.2, which always carried the content type as the first
+byte. As described in {{demux}}, the first byte determines how an incoming
+DTLS record is demultiplexed. The first 3 bits of the first byte
+distinguish a DTLS 1.3 encrypted record from record types used in
+previous DTLS versions and plaintext DTLS 1.3 record types. Hence, the
+range 32 (0b0010 0000) to 63 (0b0011 1111) needs to be excluded
+from future allocations by IANA to avoid problems while demultiplexing;
+see {{iana-considerations}}.
+Implementations can demultiplex DTLS 1.3 records
 by examining the first byte as follows:
 
 * If the first byte is alert(21), handshake(22), or ack(proposed, 26),
@@ -537,22 +540,10 @@ packet  -->  |   OCT == 25   -+--> DTLSCiphertext with CID (DTLS 1.2)
                             |     DCT == 23 -+--> Application Data
                             |     DCT == 24 -+--> Heartbeat
                             |     DCT == 26 -+--> ACK
-                            |                |
+                            |     else ------+--> Errorbg
                             +----------------+
 ~~~
 {: #demux title="Demultiplexing DTLS 1.2 and DTLS 1.3 Records"}
-
-Note: The optimized DTLS header format shown in {{cid_hdr}}, which
-does not carry the content type in the unified header format, requires
-a different demultiplexing strategy compared to what was used in previous
-DTLS versions where the content type was conveyed in every record.
-As described in {{demux}}, the first byte determines how an incoming
-DTLS record is demultiplexed. The first 3 bits of the first byte
-distinguish a DTLS 1.3 encrypted record from record types used in
-previous DTLS versions and plaintext DTLS 1.3 record types. Hence, the
-range 32 (0b0010 0000) to 63 (0b0011 1111) needs to be excluded
-from future allocations by IANA to avoid problems while demultiplexing;
-see {{iana-considerations}}.
 
 ## Sequence Number and Epoch
 
@@ -672,7 +663,7 @@ their own record sequence number encryption in order to be used with
 DTLS.
 
 Note that sequence number encryption is only applied to the DTLSCiphertext
-structure and not to the DTLSPlaintext structure, which also contains a
+structure and not to the DTLSPlaintext structure, even though it also contains a
 sequence number.
 
 ##  Transport Layer Mapping {#transport-layer-mapping}
@@ -834,8 +825,8 @@ Section 3.4.3 of {{RFC4303}}. If the received record falls within the
 window and is new, or if the record is to the right of the window,
 then the record is new.
 
-The window MUST NOT be updated until the record has been deprotected
-successfully.
+The window MUST NOT be updated due to a received record until that
+record has been deprotected  successfully.
 
 
 ### Handling Invalid Records
@@ -929,11 +920,10 @@ the following changes:
 
 3. A new ACK content type has been added for reliable message delivery of handshake messages.
 
-Note that TLS 1.3 already supports a "cookie" extension, which is used to
-prevent DoS attacks. This DoS prevention mechanism is
-described in more detail below, since UDP-based protocols are more vulnerable
-to amplification attacks than a connection-oriented transport like TCP
-that performs return-routability checks as part of the connection establishment.
+In addition, DTLS reuses TLS 1.3's "cookie" extension to provide a return-routability
+check as part of connection establishment. This is an important DoS
+prevention mechanism for UDP-based protocols, unlike TCP, which
+establishes return-routability as part of the connection establishment.
 
 DTLS implementations do not use the TLS 1.3 "compatibility mode" described in
 Appendix D.4 of {{!TLS13}}.  DTLS servers MUST NOT echo the
@@ -1053,8 +1043,9 @@ interval of time.
 
 DTLS servers SHOULD perform a cookie exchange whenever a new
 handshake is being performed.  If the server is being operated in an
-environment where amplification is not a problem, the server MAY be
-configured not to perform a cookie exchange.  The default SHOULD be
+environment where amplification is not a problem, e.g., where
+ICE {{?RFC8445}} has been used to establish bidirectional connectivity,
+the server MAY be configured not to perform a cookie exchange.  The default SHOULD be
 that the exchange is performed, however.  In addition, the server MAY
 choose not to do a cookie exchange when a session is resumed or, more
 generically, when the DTLS handshake uses a PSK-based key exchange
@@ -1094,32 +1085,6 @@ message loss, reordering, and message fragmentation.
 
 ~~~
 %%% Handshake Protocol
-    enum {
-        hello_request_RESERVED(0),
-        client_hello(1),
-        server_hello(2),
-        hello_verify_request_RESERVED(3),
-        new_session_ticket(4),
-        end_of_early_data(5),
-        hello_retry_request_RESERVED(6),
-        encrypted_extensions(8),
-        request_connection_id(9),
-        new_connection_id(10),
-        certificate(11),
-        server_key_exchange_RESERVED(12),
-        certificate_request(13),
-        server_hello_done_RESERVED(14),
-        certificate_verify(15),
-        client_key_exchange_RESERVED(16),
-        finished(20),
-        certificate_url_RESERVED(21),
-        certificate_status_RESERVED(22),
-        supplemental_data_RESERVED(23),
-        key_update(24),
-        message_hash(254),
-        (255)
-    } HandshakeType;
-
     struct {
         HandshakeType msg_type;    /* handshake type */
         uint24 length;             /* bytes in message */
@@ -1535,7 +1500,9 @@ There are four ways to exit the WAITING state:
    remains in WAITING, or, if the ACK was for the final flight,
    transitions to FINISHED.
 
-3. The implementation reads a retransmitted flight from the peer: the
+3. The implementation reads a retransmitted flight from the peer when
+   none of the messages that it sent in response to that flight
+   have been acknowledged: the
    implementation transitions to the SENDING state, where it
    retransmits the flight, adjusts and re-arms the retransmit timer, and returns
    to the WAITING state.  The rationale here is that the receipt of a
@@ -1939,7 +1906,7 @@ Certificate message, because the ClientHello and client Certificate are in diffe
 flights. Implementations can accomplish this by clearing their ACK
 list upon receiving the start of the next flight.
 
-After the handshake, ACKs SHOULD be sent once for each received
+For post-handshake messages, ACKs SHOULD be sent once for each received
 and processed handshake record (potentially subject to some delay) and MAY
 cover more than one flight. This includes records containing messages which are
 discarded because a previous copy has been received.
@@ -1996,13 +1963,15 @@ by the receipt of the next flight, which generally immediately follows the fligh
 
 ACKs SHOULD NOT be sent for these flights unless
 the responding flight cannot be generated immediately.
+All other flights MUST be ACKed.
 In this case,
 implementations MAY send explicit ACKs for the complete received
 flight even though it will eventually also be implicitly acknowledged
-through the responding flight. A notable example for this is
+through the responding flight.
+A notable example for this is
 the case of client authentication in constrained
 environments, where generating the CertificateVerify message can
-take considerable time on the client. All other flights MUST be ACKed.
+take considerable time on the client. 
 Implementations MAY acknowledge the records corresponding to each transmission of
 each flight or simply acknowledge the most recent one. In general,
 implementations SHOULD ACK as many received packets as can fit
@@ -2019,7 +1988,7 @@ acknowledge the earlier KeyUpdate message because the two KeyUpdate
 messages might have crossed in flight.
 
 ACKs MUST NOT be sent for records of any content type
-other than handshake or for records which cannot be unprotected.
+other than handshake or for records which cannot be deprotected.
 
 Note that in some cases it may be necessary to send an ACK which
 does not contain any record numbers. For instance, a client
@@ -2056,7 +2025,7 @@ flight to which it is responding.
 
 ACK messages are used in two circumstances, namely:
 
-- On sign of disruption, or lack of progress, and
+- On sign of disruption, or lack of progress; and
 - To indicate complete receipt of the last flight in a handshake.
 
 In the first case, the use of the ACK message is optional, because
@@ -2095,7 +2064,7 @@ preventing the sender of the KeyUpdate from updating its keying material,
 receivers MUST retain the pre-update keying material until receipt and successful
 decryption of a message using the new keys.
 
-{{dtls-key-update}} shows an example exchange illustrating that a successful
+{{dtls-key-update}} shows an example exchange illustrating that successful
 ACK processing updates the keys of the KeyUpdate message sender, which is
 reflected in the change of epoch values.
 
@@ -2583,7 +2552,7 @@ is largely dictated by the first term of the advantage formula:
 v <= 2^7
 ~~~
 
-As this represents attempts to fail authentication, applying this limit might
+As this represents attempts that fail authentication, applying this limit might
 be feasible in some environments. However, applying this limit in an
 implementation intended for general use exposes connections to an inexpensive
 denial-of-service attack.
@@ -2627,11 +2596,7 @@ potential sources of issues, noted here.
 
 Many people have contributed to previous DTLS versions and they are acknowledged
 in prior versions of DTLS specifications or in the referenced specifications. The
-sequence number encryption concept is taken from QUIC {{?RFC9000}}. We would
-like to thank the authors of RFC 9000 for their work. Felix
-Günther and Martin Thomson contributed the analysis in {{ccm-bounds}}.
-
-In addition, we would like to thank:
+following people made significant contributions to this specification:
 
 ~~~
 * David Benjamin
@@ -2696,6 +2661,10 @@ In addition, we would like to thank:
 
 # Acknowledgements
 
-We would like to thank Jonathan Hammell, Bernard Aboba, and Andy Cunningham for their review comments.
+The sequence number encryption concept is taken from QUIC
+{{?RFC9000}}. We would like to thank the authors of RFC 9000 for their
+work. Felix Günther and Martin Thomson contributed the analysis in
+{{ccm-bounds}}. We would like to thank Jonathan Hammell, Bernard
+Aboba, and Andy Cunningham for their review comments.
 
 Additionally, we would like to thank the IESG members for their review comments: Martin Duke, Erik Kline, Francesca Palombini, Lars Eggert, Zaheduzzaman Sarker, John Scudder, Éric Vyncke, Robert Wilton, Roman Danyliw, Benjamin Kaduk, Murray Kucherawy, Martin Vigoureux, and Alvaro Retana.
