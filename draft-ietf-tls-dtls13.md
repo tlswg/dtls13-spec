@@ -1275,7 +1275,7 @@ MUST be delivered in a single UDP datagram.
 When a DTLS implementation receives a handshake message fragment corresponding
 to the next expected handshake message sequence number, it
 MUST process it, either by buffering it until it has the entire handshake message
-or by processing any in-order portions of the message
+or by processing any in-order portions of the message.
 The transcript consists of complete TLS Handshake messages (reassembled
 as necessary). Note that this requires removing the message_seq,
 fragment_offset, and fragment_length fields to create the Handshake
