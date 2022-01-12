@@ -2442,8 +2442,8 @@ IANA is requested to allocate "the too_many_cids_requested" alert in
 the "TLS Alerts" registry with value 52.
 
 IANA is requested to allocate two values in the "TLS Handshake Type"
-registry, defined in {{!TLS13}}, for RequestConnectionId (TBD), and
-NewConnectionId (TBD), as defined in this document.  The value for the
+registry, defined in {{!TLS13}}, for request_connection_id (TBD), and
+new_connection_id (TBD), as defined in this document.  The value for the
 "DTLS-OK" columns are "Y".
 
 IANA is requested to add this RFC as a reference to the TLS Cipher Suite Registry
