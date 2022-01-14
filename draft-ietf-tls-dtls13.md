@@ -1129,18 +1129,18 @@ fragmentation, DTLS modifies the TLS 1.3 handshake header:
         uint24 fragment_offset;    /* DTLS-required field */
         uint24 fragment_length;    /* DTLS-required field */
         select (msg_type) {
-            case client_hello:            ClientHello;
-            case server_hello:            ServerHello;
-            case end_of_early_data:       EndOfEarlyData;
-            case new_session_ticket:      NewSessionTicket;
-            case encrypted_extensions:    EncryptedExtensions;
-            case requested_connection_id: RequestedConnectionId;
-            case new_connection_id:       NewConnectionId;
-            case certificate:             Certificate;
-            case certificate_request:     CertificateRequest;
-            case certificate_verify:      CertificateVerify;
-            case finished:                Finished;
-            case key_update:              KeyUpdate;
+            case client_hello:          ClientHello;
+            case server_hello:          ServerHello;
+            case end_of_early_data:     EndOfEarlyData;
+            case new_session_ticket:    NewSessionTicket;
+            case encrypted_extensions:  EncryptedExtensions;
+            case request_connection_id: RequestedConnectionId;
+            case new_connection_id:     NewConnectionId;
+            case certificate:           Certificate;
+            case certificate_request:   CertificateRequest;
+            case certificate_verify:    CertificateVerify;
+            case finished:              Finished;
+            case key_update:            KeyUpdate;
         } body;
     } Handshake;
 ~~~
