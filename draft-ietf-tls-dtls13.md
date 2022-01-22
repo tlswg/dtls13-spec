@@ -1146,7 +1146,7 @@ message loss, reordering, and message fragmentation.
 In DTLS 1.3, the message transcript is computed over the original
 TLS 1.3-style Handshake messages without the message_seq,
 fragment_offset, and fragment_length values. Note that this is
-a change from DTLS 1.2 where which those values were included
+a change from DTLS 1.2 where those values were included
 in the transcript.
 
 The first message each side transmits in each association always has
