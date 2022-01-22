@@ -1107,6 +1107,8 @@ message loss, reordering, and message fragmentation.
         end_of_early_data(5),
         hello_retry_request_RESERVED(6),
         encrypted_extensions(8),
+        request_connection_id(9),
+        new_connection_id(10),
         certificate(11),
         server_key_exchange_RESERVED(12),
         certificate_request(13),
@@ -1132,12 +1134,14 @@ message loss, reordering, and message fragmentation.
             case client_hello:          ClientHello;
             case server_hello:          ServerHello;
             case end_of_early_data:     EndOfEarlyData;
+            case new_session_ticket:    NewSessionTicket;
             case encrypted_extensions:  EncryptedExtensions;
-            case certificate_request:   CertificateRequest;
+            case request_connection_id: RequestedConnectionId;
+            case new_connection_id:     NewConnectionId;
             case certificate:           Certificate;
+            case certificate_request:   CertificateRequest;
             case certificate_verify:    CertificateVerify;
             case finished:              Finished;
-            case new_session_ticket:    NewSessionTicket;
             case key_update:            KeyUpdate;
         } body;
     } DTLSHandshake;
@@ -2445,8 +2449,8 @@ IANA is requested to allocate "the too_many_cids_requested" alert in
 the "TLS Alerts" registry with value 52.
 
 IANA is requested to allocate two values in the "TLS Handshake Type"
-registry, defined in {{!TLS13}}, for RequestConnectionId (TBD), and
-NewConnectionId (TBD), as defined in this document.  The value for the
+registry, defined in {{!TLS13}}, for request_connection_id (TBD), and
+new_connection_id (TBD), as defined in this document.  The value for the
 "DTLS-OK" columns are "Y".
 
 IANA is requested to add this RFC as a reference to the TLS Cipher Suite Registry
