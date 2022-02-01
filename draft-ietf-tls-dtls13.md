@@ -2415,7 +2415,7 @@ the "TLS Alerts" registry. The value for the "DTLS-OK" column is "Y".
 
 IANA has allocated two values in the "TLS HandshakeType"
 registry, defined in {{!TLS13}}, for request_connection_id (9) and
-NewConnectionId (10), as defined in this document.  The value for the
+new_connection_id (10), as defined in this document.  The value for the
 "DTLS-OK" column is "Y".
 
 IANA has added this RFC as a reference to the "TLS Cipher Suites" Registry
