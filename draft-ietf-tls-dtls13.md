@@ -1,4 +1,4 @@
----
+2^---
 title: The Datagram Transport Layer Security (DTLS) Protocol Version 1.3
 abbrev: DTLS 1.3
 docname: draft-ietf-tls-dtls13-latest
@@ -316,7 +316,7 @@ also different from the DTLS 1.2 record layer.
    of the connection epoch, which is an 8 octet counter incremented on every
    KeyUpdate. See {{seq-and-epoch}} for details. The sequence number is set to
    be the low order 48 bits of the 64 bit sequence number. Plaintext records
-   MUST NOT be sent with sequence numbers that would exceedd 2^48-1, so the
+   MUST NOT be sent with sequence numbers that would exceed 2^48-1, so the
    upper 16 bits will always be 0.
 
 4. The DTLSCiphertext structure has a variable length header.
@@ -609,9 +609,6 @@ epoch and keying material as the original transmission.
 
 Implementations MUST either abandon an association or re-key prior to
 allowing the sequence number to wrap.
-
-Implementations MUST NOT allow the epoch to wrap, but instead MUST
-establish a new association, terminating the old association.
 
 ### Reconstructing the Sequence Number and Epoch {#reconstructing}
 
@@ -2164,13 +2161,16 @@ Client                                             Server
 ~~~
 {: #dtls-key-update title="Example DTLS Key Update"}
 
-Implementations MUST NOT send KeyUpdates that would result
-in epochs of greater than or equal to 2^{48}-1. This limits
-the probability that a 128 bit key will be repeated during
-a connection. Note, however, that even if the key repeats,
-the IV is also independently generated. In order to allow
-future relaxation of this requirement, receiving implementations
-MUST NOT enforce this rule.
+With a 128-bit key as in AES-256, rekeying 2^64 times has a high
+probability of key reuse within a given connection. Note that even if
+the key repeats, the IV is also independently generated. In order to
+provide an extra margin of security, sending implementations MUST NOT
+allow the epoch to exceed 2^48-1. In order to allow this value to
+be changed later, receiving implementations MUST NOT
+enforce this rule. If a sending implementation receives a KeyUpdate
+with request_update set to "update_requested", it MUST NOT send
+its own KeyUpdate if that would cause it to exceed these limits.
+
 
 
 # Connection ID Updates
