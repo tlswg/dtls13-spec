@@ -105,7 +105,7 @@ run over a reliable transport channel -- typically TCP {{RFC0793}}.
 There are applications that use UDP {{RFC0768}} as a transport and
 the Datagram Transport Layer Security (DTLS) protocol has been developed
 to offer communication security protection for those applications.
-TLS is deliberately designed to be
+DTLS is deliberately designed to be
 as similar to TLS as possible, both to minimize new security invention and to
 maximize the amount of code and infrastructure reuse.
 
@@ -540,7 +540,7 @@ packet  -->  |   OCT == 25   -+--> DTLSCiphertext with CID (DTLS 1.2)
                             |     DCT == 23 -+--> Application Data
                             |     DCT == 24 -+--> Heartbeat
                             |     DCT == 26 -+--> ACK
-                            |     else ------+--> Errorbg
+                            |     else ------+--> Error
                             +----------------+
 ~~~
 {: #demux title="Demultiplexing DTLS 1.2 and DTLS 1.3 Records"}
