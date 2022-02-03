@@ -2331,6 +2331,12 @@ inherently subject to message reordering and replay.  These two
 replay-protection mechanisms are orthogonal, and neither mechanism meets the
 requirements for the other.
 
+DTLS 1.3's handshake transcript does not include the new DTLS fields,
+which makes it have the same format as TLS 1.3. However, the DTLS 1.3 and
+TLS 1.3 transcripts are disjoint because they use different version
+numbers. Additionally, the DTLS 1.3 key schedule uses a different label
+and so will produce different keys for the sme transcript.
+
 The security and privacy properties of the CID for DTLS 1.3 build
 on top of what is described for DTLS 1.2 in {{I-D.ietf-tls-dtls-connection-id}}. There are,
 however, several differences:
