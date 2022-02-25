@@ -2169,7 +2169,8 @@ allow the epoch to exceed 2^48-1. In order to allow this value to
 be changed later, receiving implementations MUST NOT
 enforce this rule. If a sending implementation receives a KeyUpdate
 with request_update set to "update_requested", it MUST NOT send
-its own KeyUpdate if that would cause it to exceed these limits.
+its own KeyUpdate if that would cause it to exceed these limits
+and SHOULD instead ignore the "update_requested" flag.
 
 
 
