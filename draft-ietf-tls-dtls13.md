@@ -301,7 +301,15 @@ also different from the DTLS 1.2 record layer.
    the DTLSCiphertext structure has been reduced from those in previous
    versions.
 
-3. The DTLSCiphertext structure has a variable-length header.
+3. The DTLS epoch serialized in DTLSPlaintext is 2 octets long for compatibility
+   with DTLS 1.2. However, this value is set as the least significant 2 octets
+   of the connection epoch, which is an 8 octet counter incremented on every
+   KeyUpdate. See {{seq-and-epoch}} for details. The sequence number is set to
+   be the low order 48 bits of the 64 bit sequence number. Plaintext records
+   MUST NOT be sent with sequence numbers that would exceed 2^48-1, so the
+   upper 16 bits will always be 0.
+
+4. The DTLSCiphertext structure has a variable-length header.
 
 DTLSPlaintext records are used to send unprotected records and DTLSCiphertext
 records are used to send protected records.
@@ -339,6 +347,9 @@ legacy_record_version:
   where it may also be {254, 255} for compatibility purposes.
   It MUST be ignored for all purposes. See {{TLS13}}, Appendix D.1
   for the rationale for this.
+
+epoch
+: The least significant 2 bytes of the connection epoch value.
 
 unified_hdr:
 : The unified header (unified_hdr) is a structure of variable length, shown in {{cid_hdr}}.
@@ -461,14 +472,13 @@ unpacked RecordNumber structure, as shown below:
 ~~~
 %%% Record Layer
     struct {
-        uint16 epoch;
-        uint48 sequence_number;
+        uint64 epoch;
+        uint64 sequence_number;
     } RecordNumber;
 ~~~
 
-This 64-bit value is used in the ACK message as well as in the "record_sequence_number"
+This 128-bit value is used in the ACK message as well as in the "record_sequence_number"
 input to the Authenticated Encryption with Associated Data (AEAD) function.
-
 The entire header value shown in {{hdr_examples}} (but prior to record number
 encryption; see {{rne}}) is used as the additional data value for the 
 AEAD
@@ -476,6 +486,8 @@ function. For instance, if the minimal variant is used,
 the Associated Data (AD)
 is 2 octets long. Note that this design is different from the additional data
 calculation for DTLS 1.2 and for DTLS 1.2 with Connection IDs.
+In DTLS 1.3 the 64-bit sequence_number is used as the sequence number for
+the AEAD computation; unlike DTLS 1.2, the epoch is not included. 
 
 ## Demultiplexing DTLS Records
 
@@ -545,7 +557,7 @@ packet  -->  |   OCT == 25   -+--> DTLSCiphertext with CID (DTLS 1.2)
 ~~~
 {: #demux title="Demultiplexing DTLS 1.2 and DTLS 1.3 Records"}
 
-## Sequence Number and Epoch
+## Sequence Number and Epoch {#seq-and-epoch}
 
 DTLS uses an explicit or partly explicit sequence number, rather than an implicit one,
 carried in the sequence_number field of the record.  Sequence numbers
@@ -585,15 +597,13 @@ epoch and keying material as the original transmission.
 Implementations MUST either abandon an association or rekey prior to
 allowing the sequence number to wrap.
 
-Implementations MUST NOT allow the epoch to wrap, but instead MUST
-establish a new association, terminating the old association.
-
 ### Reconstructing the Sequence Number and Epoch {#reconstructing}
 
 When receiving protected DTLS records, the recipient does not
 have a full epoch or sequence number value in the record and so there is some
-opportunity for ambiguity.  Because the full epoch and sequence number
-are used to compute the per-record nonce, failure to reconstruct these
+opportunity for ambiguity.  Because the full sequence number
+is used to compute the per-record nonce and the epoch determines
+the keys, failure to reconstruct these
 values leads to failure to deprotect the record, and so implementations
 MAY use a mechanism of their choice to determine the full values.
 This section provides an algorithm which is comparatively simple
@@ -1789,7 +1799,7 @@ protocol exchange to allow identification of the correct cipher state:
      from the initial \[sender\]_application_traffic_secret_0. This may include
      handshake messages, such as post-handshake messages (e.g., a
      NewSessionTicket message).
-   * Epoch values (4 to 2^16-1) are used for payloads protected using keys from
+   * Epoch values (4 to 2^64-1) are used for payloads protected using keys from
      the \[sender\]_application_traffic_secret_N (N>0).
 
 Using these reserved epoch values, a receiver knows what cipher state
@@ -2123,6 +2133,18 @@ Client                                             Server
                                                     (epoch=4)
 ~~~
 {: #dtls-key-update title="Example DTLS Key Update"}
+
+With a 128-bit key as in AES-256, rekeying 2^64 times has a high
+probability of key reuse within a given connection. Note that even if
+the key repeats, the IV is also independently generated. In order to
+provide an extra margin of security, sending implementations MUST NOT
+allow the epoch to exceed 2^48-1. In order to allow this value to
+be changed later, receiving implementations MUST NOT
+enforce this rule. If a sending implementation receives a KeyUpdate
+with request_update set to "update_requested", it MUST NOT send
+its own KeyUpdate if that would cause it to exceed these limits
+and SHOULD instead ignore the "update_requested" flag.
+
 
 
 # Connection ID Updates
