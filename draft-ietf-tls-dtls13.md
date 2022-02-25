@@ -1,4 +1,4 @@
-2^---
+---
 title: The Datagram Transport Layer Security (DTLS) Protocol Version 1.3
 abbrev: DTLS 1.3
 docname: draft-ietf-tls-dtls13-latest
