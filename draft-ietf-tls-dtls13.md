@@ -348,7 +348,7 @@ legacy_record_version:
   It MUST be ignored for all purposes. See {{TLS13}}, Appendix D.1
   for the rationale for this.
 
-epoch
+epoch:
 : The least significant 2 bytes of the connection epoch value.
 
 unified_hdr:
