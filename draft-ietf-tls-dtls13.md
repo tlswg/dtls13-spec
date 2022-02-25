@@ -597,6 +597,9 @@ epoch and keying material as the original transmission.
 Implementations MUST either abandon an association or rekey prior to
 allowing the sequence number to wrap.
 
+Implementations MUST NOT allow the epoch to wrap, but instead MUST
+establish a new association, terminating the old association.
+
 ### Reconstructing the Sequence Number and Epoch {#reconstructing}
 
 When receiving protected DTLS records, the recipient does not
@@ -2357,7 +2360,7 @@ DTLS 1.3's handshake transcript does not include the new DTLS fields,
 which makes it have the same format as TLS 1.3. However, the DTLS 1.3 and
 TLS 1.3 transcripts are disjoint because they use different version
 numbers. Additionally, the DTLS 1.3 key schedule uses a different label
-and so will produce different keys for the sme transcript.
+and so will produce different keys for the same transcript.
 
 The security and privacy properties of the CID for DTLS 1.3 build
 on top of what is described for DTLS 1.2 in {{I-D.ietf-tls-dtls-connection-id}}. There are,
