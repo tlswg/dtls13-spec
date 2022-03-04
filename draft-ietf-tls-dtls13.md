@@ -2333,7 +2333,10 @@ association; any such updated addresses are not covered by the cookie exchange
 during the handshake.
 DTLS implementations MUST NOT update the address they send to in response
 to packets from a different address unless they first perform some
-reachability test; no such test is defined in this specification. Even
+reachability test; no such test is defined in this specification and
+a future specification would need to specify a complete
+procedure for how and when to update addresses.
+Even
 with such a test, an active on-path adversary can also black-hole traffic or
 create a reflection attack against third parties because a DTLS peer
 has no means to distinguish a genuine address update event (for
