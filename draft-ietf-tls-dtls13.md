@@ -1107,10 +1107,10 @@ message loss, reordering, and message fragmentation.
         select (msg_type) {
             case client_hello:          ClientHello;
             case server_hello:          ServerHello;
-            case end_of_early_data:     EndOfEarlyData;
             case new_session_ticket:    NewSessionTicket;
+            case end_of_early_data:     EndOfEarlyData;
             case encrypted_extensions:  EncryptedExtensions;
-            case request_connection_id: RequestedConnectionId;
+            case request_connection_id: RequestConnectionId;
             case new_connection_id:     NewConnectionId;
             case certificate:           Certificate;
             case certificate_request:   CertificateRequest;
