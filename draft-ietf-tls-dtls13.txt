@@ -6,9 +6,9 @@ TLS                                                          E. Rescorla
 Internet-Draft                                                RTFM, Inc.
 Obsoletes: 6347 (if approved)                              H. Tschofenig
 Intended status: Standards Track                             Arm Limited
-Expires: 6 September 2022                                    N. Modadugu
+Expires: 16 September 2022                                   N. Modadugu
                                                             Google, Inc.
-                                                            5 March 2022
+                                                           15 March 2022
 
 
    The Datagram Transport Layer Security (DTLS) Protocol Version 1.3
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 September 2022.
+   This Internet-Draft will expire on 16 September 2022.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Rescorla, et al.        Expires 6 September 2022                [Page 1]
+Rescorla, et al.        Expires 16 September 2022               [Page 1]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Rescorla, et al.        Expires 6 September 2022                [Page 2]
+Rescorla, et al.        Expires 16 September 2022               [Page 2]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -165,7 +165,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022                [Page 3]
+Rescorla, et al.        Expires 16 September 2022               [Page 3]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -221,7 +221,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022                [Page 4]
+Rescorla, et al.        Expires 16 September 2022               [Page 4]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -277,7 +277,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022                [Page 5]
+Rescorla, et al.        Expires 16 September 2022               [Page 5]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -333,7 +333,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022                [Page 6]
+Rescorla, et al.        Expires 16 September 2022               [Page 6]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -389,7 +389,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022                [Page 7]
+Rescorla, et al.        Expires 16 September 2022               [Page 7]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -445,7 +445,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022                [Page 8]
+Rescorla, et al.        Expires 16 September 2022               [Page 8]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -501,7 +501,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022                [Page 9]
+Rescorla, et al.        Expires 16 September 2022               [Page 9]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -557,7 +557,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 10]
+Rescorla, et al.        Expires 16 September 2022              [Page 10]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -613,7 +613,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 11]
+Rescorla, et al.        Expires 16 September 2022              [Page 11]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -669,7 +669,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 12]
+Rescorla, et al.        Expires 16 September 2022              [Page 12]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -725,7 +725,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 13]
+Rescorla, et al.        Expires 16 September 2022              [Page 13]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -781,7 +781,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 14]
+Rescorla, et al.        Expires 16 September 2022              [Page 14]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -837,7 +837,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 15]
+Rescorla, et al.        Expires 16 September 2022              [Page 15]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -893,7 +893,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 16]
+Rescorla, et al.        Expires 16 September 2022              [Page 16]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -949,7 +949,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 17]
+Rescorla, et al.        Expires 16 September 2022              [Page 17]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -1005,7 +1005,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 18]
+Rescorla, et al.        Expires 16 September 2022              [Page 18]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -1061,7 +1061,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 19]
+Rescorla, et al.        Expires 16 September 2022              [Page 19]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -1117,7 +1117,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 20]
+Rescorla, et al.        Expires 16 September 2022              [Page 20]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -1173,7 +1173,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 21]
+Rescorla, et al.        Expires 16 September 2022              [Page 21]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -1229,7 +1229,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 22]
+Rescorla, et al.        Expires 16 September 2022              [Page 22]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -1285,7 +1285,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 23]
+Rescorla, et al.        Expires 16 September 2022              [Page 23]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -1341,7 +1341,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 24]
+Rescorla, et al.        Expires 16 September 2022              [Page 24]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -1397,7 +1397,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 25]
+Rescorla, et al.        Expires 16 September 2022              [Page 25]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -1453,7 +1453,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 26]
+Rescorla, et al.        Expires 16 September 2022              [Page 26]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -1509,7 +1509,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 27]
+Rescorla, et al.        Expires 16 September 2022              [Page 27]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -1565,7 +1565,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 28]
+Rescorla, et al.        Expires 16 September 2022              [Page 28]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -1621,7 +1621,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 29]
+Rescorla, et al.        Expires 16 September 2022              [Page 29]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -1677,7 +1677,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 30]
+Rescorla, et al.        Expires 16 September 2022              [Page 30]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -1733,7 +1733,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 31]
+Rescorla, et al.        Expires 16 September 2022              [Page 31]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -1789,7 +1789,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 32]
+Rescorla, et al.        Expires 16 September 2022              [Page 32]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -1845,7 +1845,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 33]
+Rescorla, et al.        Expires 16 September 2022              [Page 33]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -1901,7 +1901,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 34]
+Rescorla, et al.        Expires 16 September 2022              [Page 34]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -1957,7 +1957,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 35]
+Rescorla, et al.        Expires 16 September 2022              [Page 35]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -2013,7 +2013,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 36]
+Rescorla, et al.        Expires 16 September 2022              [Page 36]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -2069,7 +2069,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 37]
+Rescorla, et al.        Expires 16 September 2022              [Page 37]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -2125,7 +2125,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 38]
+Rescorla, et al.        Expires 16 September 2022              [Page 38]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -2181,7 +2181,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 39]
+Rescorla, et al.        Expires 16 September 2022              [Page 39]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -2208,6 +2208,11 @@ Internet-Draft                  DTLS 1.3                      March 2022
    depend on receiving alerts in order to signal errors or connection
    closure.
 
+   Any data received with an epoch/sequence number pair after that of a
+   valid received closure alert MUST be ignored.  Note: this is a change
+   from TLS 1.3 which depends on the order of receipt rather than the
+   epoch and sequence number.
+
 5.11.  Establishing New Associations with Existing Parameters
 
    If a DTLS client-server pair is configured in such a way that
@@ -2227,6 +2232,16 @@ Internet-Draft                  DTLS 1.3                      March 2022
    blind attackers from destroying associations merely by sending forged
    ClientHellos.
 
+
+
+
+
+
+Rescorla, et al.        Expires 16 September 2022              [Page 40]
+
+Internet-Draft                  DTLS 1.3                      March 2022
+
+
    Note: It is not always possible to distinguish which association a
    given record is from.  For instance, if the client performs a
    handshake, abandons the connection, and then immediately starts a new
@@ -2234,13 +2249,6 @@ Internet-Draft                  DTLS 1.3                      March 2022
    protected record is for.  In these cases, trial decryption may be
    necessary, though implementations could use CIDs to avoid the 5-
    tuple-based ambiguity.
-
-
-
-Rescorla, et al.        Expires 6 September 2022               [Page 40]
-
-Internet-Draft                  DTLS 1.3                      March 2022
-
 
 6.  Example of Handshake with Timeout and Retransmission
 
@@ -2282,6 +2290,14 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
                               <--------                 Record 3
+
+
+
+Rescorla, et al.        Expires 16 September 2022              [Page 41]
+
+Internet-Draft                  DTLS 1.3                      March 2022
+
+
                                                      ServerHello
                                                  (message_seq=0)
                                              EncryptedExtensions
@@ -2290,14 +2306,6 @@ Internet-Draft                  DTLS 1.3                      March 2022
                                                  (message_seq=2)
 
                               <--------                 Record 4
-
-
-
-Rescorla, et al.        Expires 6 September 2022               [Page 41]
-
-Internet-Draft                  DTLS 1.3                      March 2022
-
-
                                                CertificateVerify
                                                  (message_seq=3)
                                                         Finished
@@ -2337,22 +2345,18 @@ Internet-Draft                  DTLS 1.3                      March 2022
       three unencrypted messages in DTLS, namely ClientHello,
       ServerHello, and HelloRetryRequest.
 
-   *  Epoch value (1) is used for messages protected using keys derived
-      from client_early_traffic_secret.  Note that this epoch is skipped
-      if the client does not offer early data.
 
 
 
 
-
-
-
-
-
-Rescorla, et al.        Expires 6 September 2022               [Page 42]
+Rescorla, et al.        Expires 16 September 2022              [Page 42]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
+
+   *  Epoch value (1) is used for messages protected using keys derived
+      from client_early_traffic_secret.  Note that this epoch is skipped
+      if the client does not offer early data.
 
    *  Epoch value (2) is used for messages protected using keys derived
       from [sender]_handshake_traffic_secret.  Messages transmitted
@@ -2398,18 +2402,18 @@ Internet-Draft                  DTLS 1.3                      March 2022
     (epoch=0)
                                                         Record 1
                                <--------             ServerHello
-                                                       (epoch=0)
-                                           {EncryptedExtensions}
-                                                       (epoch=2)
-                                                   {Certificate}
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 43]
+Rescorla, et al.        Expires 16 September 2022              [Page 43]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
 
+                                                       (epoch=0)
+                                           {EncryptedExtensions}
+                                                       (epoch=2)
+                                                   {Certificate}
                                                        (epoch=2)
                                              {CertificateVerify}
                                                        (epoch=2)
@@ -2457,11 +2461,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-
-
-
-
-Rescorla, et al.        Expires 6 September 2022               [Page 44]
+Rescorla, et al.        Expires 16 September 2022              [Page 44]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -2517,7 +2517,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 45]
+Rescorla, et al.        Expires 16 September 2022              [Page 45]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -2573,7 +2573,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 46]
+Rescorla, et al.        Expires 16 September 2022              [Page 46]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -2629,7 +2629,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 47]
+Rescorla, et al.        Expires 16 September 2022              [Page 47]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -2685,7 +2685,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 48]
+Rescorla, et al.        Expires 16 September 2022              [Page 48]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -2741,7 +2741,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 49]
+Rescorla, et al.        Expires 16 September 2022              [Page 49]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -2797,7 +2797,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 50]
+Rescorla, et al.        Expires 16 September 2022              [Page 50]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -2853,7 +2853,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 51]
+Rescorla, et al.        Expires 16 September 2022              [Page 51]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -2909,7 +2909,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 52]
+Rescorla, et al.        Expires 16 September 2022              [Page 52]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -2965,7 +2965,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 53]
+Rescorla, et al.        Expires 16 September 2022              [Page 53]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -3021,7 +3021,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 54]
+Rescorla, et al.        Expires 16 September 2022              [Page 54]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -3077,7 +3077,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 55]
+Rescorla, et al.        Expires 16 September 2022              [Page 55]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -3133,7 +3133,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 56]
+Rescorla, et al.        Expires 16 September 2022              [Page 56]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -3189,7 +3189,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 57]
+Rescorla, et al.        Expires 16 September 2022              [Page 57]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -3245,7 +3245,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 58]
+Rescorla, et al.        Expires 16 September 2022              [Page 58]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -3260,16 +3260,16 @@ Internet-Draft                  DTLS 1.3                      March 2022
    [I-D.ietf-uta-tls13-iot-profile]
               Tschofenig, H. and T. Fossati, "TLS/DTLS 1.3 Profiles for
               the Internet of Things", Work in Progress, Internet-Draft,
-              draft-ietf-uta-tls13-iot-profile-03, 25 October 2021,
+              draft-ietf-uta-tls13-iot-profile-04, 7 March 2022,
               <https://www.ietf.org/archive/id/draft-ietf-uta-tls13-iot-
-              profile-03.txt>.
+              profile-04.txt>.
 
    [I-D.irtf-cfrg-aead-limits]
               Günther, F., Thomson, M., and C. A. Wood, "Usage Limits on
               AEAD Algorithms", Work in Progress, Internet-Draft, draft-
-              irtf-cfrg-aead-limits-03, 12 July 2021,
+              irtf-cfrg-aead-limits-04, 7 March 2022,
               <https://www.ietf.org/archive/id/draft-irtf-cfrg-aead-
-              limits-03.txt>.
+              limits-04.txt>.
 
    [RFC2522]  Karn, P. and W. Simpson, "Photuris: Session-Key Management
               Protocol", RFC 2522, DOI 10.17487/RFC2522, March 1999,
@@ -3301,7 +3301,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 59]
+Rescorla, et al.        Expires 16 September 2022              [Page 59]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -3357,7 +3357,7 @@ Internet-Draft                  DTLS 1.3                      March 2022
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 60]
+Rescorla, et al.        Expires 16 September 2022              [Page 60]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -3413,7 +3413,7 @@ A.1.  Record Layer
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 61]
+Rescorla, et al.        Expires 16 September 2022              [Page 61]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -3469,7 +3469,7 @@ A.2.  Handshake Protocol
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 62]
+Rescorla, et al.        Expires 16 September 2022              [Page 62]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -3525,7 +3525,7 @@ A.4.  Connection ID Management
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 63]
+Rescorla, et al.        Expires 16 September 2022              [Page 63]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -3581,7 +3581,7 @@ Appendix B.  Analysis of Limits on CCM Usage
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 64]
+Rescorla, et al.        Expires 16 September 2022              [Page 64]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -3637,7 +3637,7 @@ B.2.  Integrity Limits
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 65]
+Rescorla, et al.        Expires 16 September 2022              [Page 65]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -3693,7 +3693,7 @@ Appendix C.  Implementation Pitfalls
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 66]
+Rescorla, et al.        Expires 16 September 2022              [Page 66]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -3749,7 +3749,7 @@ Appendix D.  Contributors
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 67]
+Rescorla, et al.        Expires 16 September 2022              [Page 67]
 
 Internet-Draft                  DTLS 1.3                      March 2022
 
@@ -3805,4 +3805,4 @@ Authors' Addresses
 
 
 
-Rescorla, et al.        Expires 6 September 2022               [Page 68]
+Rescorla, et al.        Expires 16 September 2022              [Page 68]
