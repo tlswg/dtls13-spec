@@ -2723,9 +2723,6 @@ following people made significant contributions to this specification:
   Hanno.Becker@arm.com
 ~~~
 
-
-# Acknowledgements
-
 The sequence number encryption concept is taken from QUIC
 {{?RFC9000}}. We would like to thank the authors of RFC 9000 for their
 work. Felix Günther and Martin Thomson contributed the analysis in
