@@ -1133,16 +1133,16 @@ message loss, reordering, and message fragmentation.
         select (msg_type) {
             case client_hello:          ClientHello;
             case server_hello:          ServerHello;
-            case new_session_ticket:    NewSessionTicket;
             case end_of_early_data:     EndOfEarlyData;
             case encrypted_extensions:  EncryptedExtensions;
-            case request_connection_id: RequestConnectionId; 
-            case new_connection_id:     NewConnectionId;
-            case certificate:           Certificate;
             case certificate_request:   CertificateRequest;
+            case certificate:           Certificate;
             case certificate_verify:    CertificateVerify;
             case finished:              Finished;
+            case new_session_ticket:    NewSessionTicket;
             case key_update:            KeyUpdate;
+            case request_connection_id: RequestConnectionId; 
+            case new_connection_id:     NewConnectionId;
         } body;
     } DTLSHandshake;
 ~~~
@@ -2483,7 +2483,7 @@ registry, defined in {{!TLS13}}, for request_connection_id (9) and
 new_connection_id (10), as defined in this document.  The value for the
 "DTLS-OK" column is "Y".
 
-IANA has added this RFC as a reference to the "TLS Cipher Suites" Registry
+IANA has added this RFC as a reference to the "TLS Cipher Suites" registry
 along with the following Note:
 
     Any TLS cipher suite that is specified for use with DTLS MUST
