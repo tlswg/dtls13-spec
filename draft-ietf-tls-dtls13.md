@@ -1098,6 +1098,32 @@ message loss, reordering, and message fragmentation.
 
 ~~~
 %%% Handshake Protocol
+    enum {
+        hello_request_RESERVED(0),
+        client_hello(1),
+        server_hello(2),
+        hello_verify_request_RESERVED(3),
+        new_session_ticket(4),
+        end_of_early_data(5),
+        hello_retry_request_RESERVED(6),
+        encrypted_extensions(8),
+        request_connection_id(9),           /* New */
+        new_connection_id(10),              /* New */
+        certificate(11),
+        server_key_exchange_RESERVED(12),
+        certificate_request(13),
+        server_hello_done_RESERVED(14),
+        certificate_verify(15),
+        client_key_exchange_RESERVED(16),
+        finished(20),
+        certificate_url_RESERVED(21),
+        certificate_status_RESERVED(22),
+        supplemental_data_RESERVED(23),
+        key_update(24),
+        message_hash(254),
+        (255)
+    } HandshakeType;
+
     struct {
         HandshakeType msg_type;    /* handshake type */
         uint24 length;             /* bytes in message */
@@ -1110,7 +1136,7 @@ message loss, reordering, and message fragmentation.
             case new_session_ticket:    NewSessionTicket;
             case end_of_early_data:     EndOfEarlyData;
             case encrypted_extensions:  EncryptedExtensions;
-            case request_connection_id: RequestConnectionId;
+            case request_connection_id: RequestConnectionId; 
             case new_connection_id:     NewConnectionId;
             case certificate:           Certificate;
             case certificate_request:   CertificateRequest;
@@ -1241,7 +1267,7 @@ avoiding IP fragmentation.
 When transmitting the handshake message, the sender divides the
 message into a series of N contiguous data ranges. The ranges MUST NOT
 overlap.  The sender then creates N DTLSHandshake messages, all with the
-same message_seq value associated with the original handshake message.  Each new
+same message_seq value as the original DTLSHandshake message.  Each new
 message is labeled with the fragment_offset (the number of bytes
 contained in previous fragments) and the fragment_length (the length
 of this fragment).  The length field in all messages is the same as
@@ -2142,7 +2168,7 @@ Client                                             Server
 ~~~
 {: #dtls-key-update title="Example DTLS Key Update"}
 
-With a 128-bit key as in AES-256, rekeying 2^64 times has a high
+With a 128-bit key as in AES-128, rekeying 2^64 times has a high
 probability of key reuse within a given connection. Note that even if
 the key repeats, the IV is also independently generated. In order to
 provide an extra margin of security, sending implementations MUST NOT
@@ -2152,8 +2178,8 @@ enforce this rule. If a sending implementation receives a KeyUpdate
 with request_update set to "update_requested", it MUST NOT send
 its own KeyUpdate if that would cause it to exceed these limits
 and SHOULD instead ignore the "update_requested" flag.
-
-
+Note: this overrides the requirement in TLS 1.3 to always
+send a KeyUpdate in response to "update_requested".
 
 # Connection ID Updates
 
