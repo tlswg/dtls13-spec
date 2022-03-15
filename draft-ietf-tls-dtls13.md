@@ -1675,6 +1675,11 @@ connection state after such misbehavior is detected. Note that alerts
 are not reliably transmitted; implementations SHOULD NOT depend on
 receiving alerts in order to signal errors or connection closure.
 
+Any data received with an epoch/sequence number pair after
+that of a valid received closure alert MUST be ignored. Note:
+this is a change from TLS 1.3 which depends on the order of
+receipt rather than the epoch and sequence number.
+
 ##  Establishing New Associations with Existing Parameters
 
 If a DTLS client-server pair is configured in such a way that
