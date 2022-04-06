@@ -14,7 +14,7 @@
 Internet in a way that is designed to prevent eavesdropping, tampering, and message
 forgery. 
        The DTLS 1.3 protocol is based on the Transport Layer Security (TLS)
-1.3 protocol and provides equivalent security guarantees with the exception of order protection/non-replayability.  Datagram semantics of the underlying transport are preserved by the DTLS protocol. 
+1.3 protocol and provides equivalent security guarantees with the exception of order protection / non-replayability.  Datagram semantics of the underlying transport are preserved by the DTLS protocol. 
        This document obsoletes RFC 6347. 
     " name="description">
 <meta content="xml2rfc 3.12.3" name="generator">
@@ -827,11 +827,11 @@ address div.right {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">DTLS 1.3</td>
-<td class="right">March 2022</td>
+<td class="right">April 2022</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Rescorla, et al.</td>
-<td class="center">Expires 16 September 2022</td>
+<td class="center">Expires 8 October 2022</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -847,17 +847,17 @@ address div.right {
 <a href="https://www.rfc-editor.org/rfc/rfc6347" class="eref">6347</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-03-15" class="published">15 March 2022</time>
+<time datetime="2022-04-06" class="published">6 April 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2022-09-16">16 September 2022</time></dd>
+<dd class="expires"><time datetime="2022-10-08">8 October 2022</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
       <div class="author-name">E. Rescorla</div>
-<div class="org">RTFM, Inc.</div>
+<div class="org">Mozilla</div>
 </div>
 <div class="author">
       <div class="author-name">H. Tschofenig</div>
@@ -878,7 +878,7 @@ address div.right {
 Internet in a way that is designed to prevent eavesdropping, tampering, and message
 forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <p id="section-abstract-2">The DTLS 1.3 protocol is based on the Transport Layer Security (TLS)
-1.3 protocol and provides equivalent security guarantees with the exception of order protection/non-replayability.  Datagram semantics of the underlying transport are preserved by the DTLS protocol.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+1.3 protocol and provides equivalent security guarantees with the exception of order protection / non-replayability.  Datagram semantics of the underlying transport are preserved by the DTLS protocol.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
 <p id="section-abstract-3">This document obsoletes RFC 6347.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
@@ -900,7 +900,7 @@ forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 16 September 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 8 October 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1155,10 +1155,7 @@ forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.19.1"><a href="#appendix-D" class="xref">Appendix D</a>.  <a href="#name-contributors" class="xref">Contributors</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20">
-            <p id="section-toc.1-1.20.1"><a href="#appendix-E" class="xref">Appendix E</a>.  <a href="#name-acknowledgements" class="xref">Acknowledgements</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.21">
-            <p id="section-toc.1-1.21.1"><a href="#appendix-F" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.20.1"><a href="#appendix-E" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1238,7 +1235,7 @@ message, but for convenience we use the term HelloRetryRequest throughout
 this document as if it were a distinct message.<a href="#section-2-4" class="pilcrow">¶</a></p>
 <p id="section-2-5">DTLS 1.3 uses network byte order (big-endian) format for encoding messages
 based on the encoding format defined in <span>[<a href="#TLS13" class="xref">TLS13</a>]</span> and earlier (D)TLS specifications.<a href="#section-2-5" class="pilcrow">¶</a></p>
-<p id="section-2-6">The reader is also assumed to be familiar with <span>[<a href="#I-D.ietf-tls-dtls-connection-id" class="xref">I-D.ietf-tls-dtls-connection-id</a>]</span>
+<p id="section-2-6">The reader is also assumed to be familiar with <span>[<a href="#RFC9146" class="xref">RFC9146</a>]</span>
 as this document applies the CID functionality to DTLS 1.3.<a href="#section-2-6" class="pilcrow">¶</a></p>
 <p id="section-2-7">Figures in this document illustrate various combinations of the DTLS protocol exchanges, and the symbols have the following meaning:<a href="#section-2-7" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -1506,7 +1503,7 @@ for the rationale for this.<a href="#section-4-6.2.1" class="pilcrow">¶</a></p>
 multiplexing is performed as described in <span>[<a href="#RFC7983" class="xref">RFC7983</a>]</span>. It also ensures
 that distinguishing encrypted DTLS 1.3 records from encrypted DTLS 1.2
 records is possible when they are carried on the same host/port quartet;
-such multiplexing is only possible when CIDs <span>[<a href="#I-D.ietf-tls-dtls-connection-id" class="xref">I-D.ietf-tls-dtls-connection-id</a>]</span>
+such multiplexing is only possible when CIDs <span>[<a href="#RFC9146" class="xref">RFC9146</a>]</span>
 are in use, in which case DTLS 1.2 records will have the content type tls12_cid (25).<a href="#section-4-8.2.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
@@ -1536,7 +1533,7 @@ are in use, in which case DTLS 1.2 records will have the content type tls12_cid 
 <dt id="section-4-8.11">Connection ID:</dt>
         <dd style="margin-left: 1.5em" id="section-4-8.12">
           <p id="section-4-8.12.1">Variable-length CID. The CID functionality
-is described in <span>[<a href="#I-D.ietf-tls-dtls-connection-id" class="xref">I-D.ietf-tls-dtls-connection-id</a>]</span>. An example
+is described in <span>[<a href="#RFC9146" class="xref">RFC9146</a>]</span>. An example
 can be found in <a href="#connection-id-example" class="xref">Section 9.1</a>.<a href="#section-4-8.12.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
@@ -2099,7 +2096,7 @@ the handshake header are necessary.<a href="#section-5-2.1" class="pilcrow">¶</
       </ol>
 <p id="section-5-3">In addition, DTLS reuses TLS 1.3's "cookie" extension to provide a return-routability
 check as part of connection establishment. This is an important DoS
-prevention mechanism for UDP-based protocols, unlike TCP, which
+prevention mechanism for UDP-based protocols, unlike TCP-based protocols, which
 establishes return-routability as part of the connection establishment.<a href="#section-5-3" class="pilcrow">¶</a></p>
 <p id="section-5-4">DTLS implementations do not use the TLS 1.3 "compatibility mode" described in
 Appendix D.4 of <span>[<a href="#TLS13" class="xref">TLS13</a>]</span>.  DTLS servers MUST NOT echo the
@@ -2243,7 +2240,7 @@ abort the handshake with an "unexpected_message" alert in response
 to any second HelloRetryRequest which was sent in the same connection
 (i.e., where the ClientHello was itself in response to a HelloRetryRequest).<a href="#section-5.1-16" class="pilcrow">¶</a></p>
 <p id="section-5.1-17">DTLS clients which do not want to receive a Connection ID SHOULD
-still offer the "connection_id" extension <span>[<a href="#I-D.ietf-tls-dtls-connection-id" class="xref">I-D.ietf-tls-dtls-connection-id</a>]</span> unless
+still offer the "connection_id" extension <span>[<a href="#RFC9146" class="xref">RFC9146</a>]</span> unless
 there is an application profile to the contrary. This permits
 a server which wants to receive a CID to negotiate one.<a href="#section-5.1-17" class="pilcrow">¶</a></p>
 </section>
@@ -2259,6 +2256,23 @@ messages, which contain extra data needed to support
 message loss, reordering, and message fragmentation.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.2-2">
 <pre>
+    enum {
+        client_hello(1),
+        server_hello(2),
+        new_session_ticket(4),
+        end_of_early_data(5),
+        encrypted_extensions(8),
+        request_connection_id(9),           /* New */
+        new_connection_id(10),              /* New */
+        certificate(11),
+        certificate_request(13),
+        certificate_verify(15),
+        finished(20),
+        key_update(24),
+        message_hash(254),
+        (255)
+    } HandshakeType;
+
     struct {
         HandshakeType msg_type;    /* handshake type */
         uint24 length;             /* bytes in message */
@@ -2268,16 +2282,16 @@ message loss, reordering, and message fragmentation.<a href="#section-5.2-1" cla
         select (msg_type) {
             case client_hello:          ClientHello;
             case server_hello:          ServerHello;
-            case new_session_ticket:    NewSessionTicket;
             case end_of_early_data:     EndOfEarlyData;
             case encrypted_extensions:  EncryptedExtensions;
-            case request_connection_id: RequestConnectionId;
-            case new_connection_id:     NewConnectionId;
-            case certificate:           Certificate;
             case certificate_request:   CertificateRequest;
+            case certificate:           Certificate;
             case certificate_verify:    CertificateVerify;
             case finished:              Finished;
+            case new_session_ticket:    NewSessionTicket;
             case key_update:            KeyUpdate;
+            case request_connection_id: RequestConnectionId;
+            case new_connection_id:     NewConnectionId;
         } body;
     } DTLSHandshake;
 </pre><a href="#section-5.2-2" class="pilcrow">¶</a>
@@ -2423,7 +2437,7 @@ avoiding IP fragmentation.<a href="#section-5.5-1" class="pilcrow">¶</a></p>
 <p id="section-5.5-2">When transmitting the handshake message, the sender divides the
 message into a series of N contiguous data ranges. The ranges MUST NOT
 overlap.  The sender then creates N DTLSHandshake messages, all with the
-same message_seq value associated with the original handshake message.  Each new
+same message_seq value as the original DTLSHandshake message.  Each new
 message is labeled with the fragment_offset (the number of bytes
 contained in previous fragments) and the fragment_length (the length
 of this fragment).  The length field in all messages is the same as
@@ -3458,7 +3472,7 @@ Client                                             Server
 <a href="#name-example-dtls-key-update" class="selfRef">Example DTLS Key Update</a>
         </figcaption></figure>
 </div>
-<p id="section-8-6">With a 128-bit key as in AES-256, rekeying 2^64 times has a high
+<p id="section-8-6">With a 128-bit key as in AES-128, rekeying 2^64 times has a high
 probability of key reuse within a given connection. Note that even if
 the key repeats, the IV is also independently generated. In order to
 provide an extra margin of security, sending implementations MUST NOT
@@ -3467,7 +3481,9 @@ be changed later, receiving implementations MUST NOT
 enforce this rule. If a sending implementation receives a KeyUpdate
 with request_update set to "update_requested", it MUST NOT send
 its own KeyUpdate if that would cause it to exceed these limits
-and SHOULD instead ignore the "update_requested" flag.<a href="#section-8-6" class="pilcrow">¶</a></p>
+and SHOULD instead ignore the "update_requested" flag.
+Note: this overrides the requirement in TLS 1.3 to always
+send a KeyUpdate in response to "update_requested".<a href="#section-8-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="connection-id-updates">
@@ -3476,7 +3492,7 @@ and SHOULD instead ignore the "update_requested" flag.<a href="#section-8-6" cla
 <a href="#section-9" class="section-number selfRef">9. </a><a href="#name-connection-id-updates" class="section-name selfRef">Connection ID Updates</a>
       </h2>
 <p id="section-9-1">If the client and server have negotiated the "connection_id"
-extension <span>[<a href="#I-D.ietf-tls-dtls-connection-id" class="xref">I-D.ietf-tls-dtls-connection-id</a>]</span>, either side
+extension <span>[<a href="#RFC9146" class="xref">RFC9146</a>]</span>, either side
 can send a new CID that it wishes the other side to use
 in a NewConnectionId message.<a href="#section-9-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-9-2">
@@ -3557,7 +3573,7 @@ alert.<a href="#section-9-10" class="pilcrow">¶</a></p>
 CID in each direction.<a href="#section-9.1-1" class="pilcrow">¶</a></p>
 <p id="section-9.1-2">Note: The "connection_id" extension, 
 which is used in ClientHello and ServerHello messages,
-is defined in <span>[<a href="#I-D.ietf-tls-dtls-connection-id" class="xref">I-D.ietf-tls-dtls-connection-id</a>]</span>.<a href="#section-9.1-2" class="pilcrow">¶</a></p>
+is defined in <span>[<a href="#RFC9146" class="xref">RFC9146</a>]</span>.<a href="#section-9.1-2" class="pilcrow">¶</a></p>
 <span id="name-example-dtls-13-exchange-wi"></span><div id="dtls-example">
 <figure id="figure-15">
           <div class="alignLeft art-text artwork" id="section-9.1-3.1">
@@ -3699,7 +3715,7 @@ TLS 1.3 transcripts are disjoint because they use different version
 numbers. Additionally, the DTLS 1.3 key schedule uses a different label
 and so will produce different keys for the same transcript.<a href="#section-11-11" class="pilcrow">¶</a></p>
 <p id="section-11-12">The security and privacy properties of the CID for DTLS 1.3 build
-on top of what is described for DTLS 1.2 in <span>[<a href="#I-D.ietf-tls-dtls-connection-id" class="xref">I-D.ietf-tls-dtls-connection-id</a>]</span>. There are,
+on top of what is described for DTLS 1.2 in <span>[<a href="#RFC9146" class="xref">RFC9146</a>]</span>. There are,
 however, several differences:<a href="#section-11-12" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-11-13.1">In both versions of DTLS, extension negotiation is used to agree on the use of the CID
@@ -3810,7 +3826,7 @@ the "TLS Alerts" registry. The value for the "DTLS-OK" column is "Y".<a href="#s
 registry, defined in <span>[<a href="#TLS13" class="xref">TLS13</a>]</span>, for request_connection_id (9) and
 new_connection_id (10), as defined in this document.  The value for the
 "DTLS-OK" column is "Y".<a href="#section-14-3" class="pilcrow">¶</a></p>
-<p id="section-14-4">IANA has added this RFC as a reference to the "TLS Cipher Suites" Registry
+<p id="section-14-4">IANA has added this RFC as a reference to the "TLS Cipher Suites" registry
 along with the following Note:<a href="#section-14-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-14-5">
 <pre>
@@ -3834,10 +3850,6 @@ as specified in Section 4.5.3 of RFC 9147.
 <dt id="CHACHA">[CHACHA]</dt>
         <dd>
 <span class="refAuthor">Nir, Y.</span> and <span class="refAuthor">A. Langley</span>, <span class="refTitle">"ChaCha20 and Poly1305 for IETF Protocols"</span>, <span class="seriesInfo">RFC 8439</span>, <span class="seriesInfo">DOI 10.17487/RFC8439</span>, <time datetime="2018-06" class="refDate">June 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8439">https://www.rfc-editor.org/info/rfc8439</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="I-D.ietf-tls-dtls-connection-id">[I-D.ietf-tls-dtls-connection-id]</dt>
-        <dd>
-<span class="refAuthor">Rescorla, E.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Fossati, T.</span>, and <span class="refAuthor">A. Kraus</span>, <span class="refTitle">"Connection Identifiers for DTLS 1.2"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-tls-dtls-connection-id-13</span>, <time datetime="2021-06-22" class="refDate">22 June 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-tls-dtls-connection-id-13.txt">https://www.ietf.org/archive/id/draft-ietf-tls-dtls-connection-id-13.txt</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC0768">[RFC0768]</dt>
         <dd>
@@ -3870,6 +3882,10 @@ as specified in Section 4.5.3 of RFC 9147.
 <dt id="RFC8174">[RFC8174]</dt>
         <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9146">[RFC9146]</dt>
+        <dd>
+<span class="refAuthor">Rescorla, E., Ed.</span>, <span class="refAuthor">Tschofenig, H., Ed.</span>, <span class="refAuthor">Fossati, T.</span>, and <span class="refAuthor">A. Kraus</span>, <span class="refTitle">"Connection Identifier for DTLS 1.2"</span>, <span class="seriesInfo">RFC 9146</span>, <span class="seriesInfo">DOI 10.17487/RFC9146</span>, <time datetime="2022-03" class="refDate">March 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9146">https://www.rfc-editor.org/info/rfc9146</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="TLS13">[TLS13]</dt>
       <dd>
@@ -4061,6 +4077,32 @@ struct {
         </h3>
 <div class="alignLeft art-text artwork" id="appendix-A.2-1">
 <pre>
+enum {
+    hello_request_RESERVED(0),
+    client_hello(1),
+    server_hello(2),
+    hello_verify_request_RESERVED(3),
+    new_session_ticket(4),
+    end_of_early_data(5),
+    hello_retry_request_RESERVED(6),
+    encrypted_extensions(8),
+    request_connection_id(9),           /* New */
+    new_connection_id(10),              /* New */
+    certificate(11),
+    server_key_exchange_RESERVED(12),
+    certificate_request(13),
+    server_hello_done_RESERVED(14),
+    certificate_verify(15),
+    client_key_exchange_RESERVED(16),
+    finished(20),
+    certificate_url_RESERVED(21),
+    certificate_status_RESERVED(22),
+    supplemental_data_RESERVED(23),
+    key_update(24),
+    message_hash(254),
+    (255)
+} HandshakeType;
+
 struct {
     HandshakeType msg_type;    /* handshake type */
     uint24 length;             /* bytes in message */
@@ -4070,16 +4112,16 @@ struct {
     select (msg_type) {
         case client_hello:          ClientHello;
         case server_hello:          ServerHello;
-        case new_session_ticket:    NewSessionTicket;
         case end_of_early_data:     EndOfEarlyData;
         case encrypted_extensions:  EncryptedExtensions;
-        case request_connection_id: RequestConnectionId;
-        case new_connection_id:     NewConnectionId;
-        case certificate:           Certificate;
         case certificate_request:   CertificateRequest;
+        case certificate:           Certificate;
         case certificate_verify:    CertificateVerify;
         case finished:              Finished;
+        case new_session_ticket:    NewSessionTicket;
         case key_update:            KeyUpdate;
+        case request_connection_id: RequestConnectionId;
+        case new_connection_id:     NewConnectionId;
     } body;
 } DTLSHandshake;
 
@@ -4393,29 +4435,22 @@ following people made significant contributions to this specification:<a href="#
   Hanno.Becker@arm.com
 </pre><a href="#appendix-D-11" class="pilcrow">¶</a>
 </div>
-</section>
-</div>
-<div id="acknowledgements">
-<section id="appendix-E">
-      <h2 id="name-acknowledgements">
-<a href="#appendix-E" class="section-number selfRef">Appendix E. </a><a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
-      </h2>
-<p id="appendix-E-1">The sequence number encryption concept is taken from QUIC
+<p id="appendix-D-12">The sequence number encryption concept is taken from QUIC
 <span>[<a href="#RFC9000" class="xref">RFC9000</a>]</span>. We would like to thank the authors of RFC 9000 for their
 work. Felix Guenther and Martin Thomson contributed the analysis in
 <a href="#ccm-bounds" class="xref">Appendix B</a>. We would like to thank Jonathan Hammell, Bernard
-Aboba, and Andy Cunningham for their review comments.<a href="#appendix-E-1" class="pilcrow">¶</a></p>
-<p id="appendix-E-2">Additionally, we would like to thank the IESG members for their review comments: Martin Duke, Erik Kline, Francesca Palombini, Lars Eggert, Zaheduzzaman Sarker, John Scudder, Eric Vyncke, Robert Wilton, Roman Danyliw, Benjamin Kaduk, Murray Kucherawy, Martin Vigoureux, and Alvaro Retana.<a href="#appendix-E-2" class="pilcrow">¶</a></p>
+Aboba, and Andy Cunningham for their review comments.<a href="#appendix-D-12" class="pilcrow">¶</a></p>
+<p id="appendix-D-13">Additionally, we would like to thank the IESG members for their review comments: Martin Duke, Erik Kline, Francesca Palombini, Lars Eggert, Zaheduzzaman Sarker, John Scudder, Eric Vyncke, Robert Wilton, Roman Danyliw, Benjamin Kaduk, Murray Kucherawy, Martin Vigoureux, and Alvaro Retana.<a href="#appendix-D-13" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
-<section id="appendix-F">
+<section id="appendix-E">
       <h2 id="name-authors-addresses">
 <a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Eric Rescorla</span></div>
-<div dir="auto" class="left"><span class="org">RTFM, Inc.</span></div>
+<div dir="auto" class="left"><span class="org">Mozilla</span></div>
 <div class="email">
 <span>Email:</span>
 <a href="mailto:ekr@rtfm.com" class="email">ekr@rtfm.com</a>
