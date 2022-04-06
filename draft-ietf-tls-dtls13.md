@@ -50,7 +50,7 @@ normative:
   RFC0793:
   RFC6298:
   RFC8174:
-  I-D.ietf-tls-dtls-connection-id:
+  RFC9146:
 
 informative:
   RFC7296:
@@ -87,7 +87,7 @@ Internet in a way that is designed to prevent eavesdropping, tampering, and mess
 forgery.
 
 The DTLS 1.3 protocol is based on the Transport Layer Security (TLS)
-1.3 protocol and provides equivalent security guarantees with the exception of order protection/non-replayability.  Datagram semantics of the underlying transport are preserved by the DTLS protocol.
+1.3 protocol and provides equivalent security guarantees with the exception of order protection / non-replayability.  Datagram semantics of the underlying transport are preserved by the DTLS protocol.
 
 This document obsoletes RFC 6347.
 
@@ -166,7 +166,7 @@ this document as if it were a distinct message.
 DTLS 1.3 uses network byte order (big-endian) format for encoding messages
 based on the encoding format defined in {{TLS13}} and earlier (D)TLS specifications.
 
-The reader is also assumed to be familiar with {{I-D.ietf-tls-dtls-connection-id}}
+The reader is also assumed to be familiar with {{RFC9146}}
 as this document applies the CID functionality to DTLS 1.3.
 
 Figures in this document illustrate various combinations of the DTLS protocol exchanges, and the symbols have the following meaning:
@@ -384,7 +384,7 @@ Fixed Bits:
   multiplexing is performed as described in {{?RFC7983}}. It also ensures
   that distinguishing encrypted DTLS 1.3 records from encrypted DTLS 1.2
   records is possible when they are carried on the same host/port quartet;
-  such multiplexing is only possible when CIDs {{I-D.ietf-tls-dtls-connection-id}}
+  such multiplexing is only possible when CIDs {{RFC9146}}
   are in use, in which case DTLS 1.2 records will have the content type tls12_cid (25).
 
 C:
@@ -404,7 +404,7 @@ E:
 
 Connection ID:
 : Variable-length CID. The CID functionality
-is described in {{I-D.ietf-tls-dtls-connection-id}}. An example
+is described in {{RFC9146}}. An example
 can be found in {{connection-id-example}}.
 
 Sequence Number:
@@ -935,7 +935,7 @@ the following changes:
 
 In addition, DTLS reuses TLS 1.3's "cookie" extension to provide a return-routability
 check as part of connection establishment. This is an important DoS
-prevention mechanism for UDP-based protocols, unlike TCP, which
+prevention mechanism for UDP-based protocols, unlike TCP-based protocols, which
 establishes return-routability as part of the connection establishment.
 
 DTLS implementations do not use the TLS 1.3 "compatibility mode" described in
@@ -1085,7 +1085,7 @@ to any second HelloRetryRequest which was sent in the same connection
 (i.e., where the ClientHello was itself in response to a HelloRetryRequest).
 
 DTLS clients which do not want to receive a Connection ID SHOULD
-still offer the "connection_id" extension {{I-D.ietf-tls-dtls-connection-id}} unless
+still offer the "connection_id" extension {{RFC9146}} unless
 there is an application profile to the contrary. This permits
 a server which wants to receive a CID to negotiate one.
 
@@ -2184,7 +2184,7 @@ send a KeyUpdate in response to "update_requested".
 # Connection ID Updates
 
 If the client and server have negotiated the "connection_id"
-extension {{I-D.ietf-tls-dtls-connection-id}}, either side
+extension {{RFC9146}}, either side
 can send a new CID that it wishes the other side to use
 in a NewConnectionId message.
 
@@ -2262,7 +2262,7 @@ CID in each direction.
 
 Note: The "connection_id" extension, 
 which is used in ClientHello and ServerHello messages,
-is defined in {{I-D.ietf-tls-dtls-connection-id}}.
+is defined in {{RFC9146}}.
 
 ~~~
 Client                                             Server
@@ -2397,7 +2397,7 @@ numbers. Additionally, the DTLS 1.3 key schedule uses a different label
 and so will produce different keys for the same transcript.
 
 The security and privacy properties of the CID for DTLS 1.3 build
-on top of what is described for DTLS 1.2 in {{I-D.ietf-tls-dtls-connection-id}}. There are,
+on top of what is described for DTLS 1.2 in {{RFC9146}}. There are,
 however, several differences:
 
   * In both versions of DTLS, extension negotiation is used to agree on the use of the CID
