@@ -935,8 +935,8 @@ the following changes:
 
 In addition, DTLS reuses TLS 1.3's "cookie" extension to provide a return-routability
 check as part of connection establishment. This is an important DoS
-prevention mechanism for UDP-based protocols, unlike TCP-based protocols, which
-establishes return-routability as part of the connection establishment.
+prevention mechanism for UDP-based protocols, unlike TCP-based protocols, for which
+TCP establishes return-routability as part of the connection establishment.
 
 DTLS implementations do not use the TLS 1.3 "compatibility mode" described in
 Appendix D.4 of {{!TLS13}}.  DTLS servers MUST NOT echo the
@@ -1994,7 +1994,7 @@ ACKs under two circumstances:
   and over-aggressive timeout-based retransmission.
   As a comparison point,
   QUIC's loss-based recovery algorithms
-  ({{?I-D.ietf-quic-recovery}}; Section 6.1.2)
+  ({{?RFC9002; Section 6.1.2)
   work out to a delay of about 1/3 of the retransmit timer.
 
 In general, flights MUST be ACKed unless they are implicitly
