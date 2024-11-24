@@ -1,4 +1,5 @@
 MD_PREPROCESSOR := python3 mk-appendix.py
+LIBDIR := lib
 include $(LIBDIR)/main.mk
 
 $(LIBDIR)/main.mk:
