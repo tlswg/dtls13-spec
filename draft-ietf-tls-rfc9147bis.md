@@ -1,9 +1,9 @@
 ---
 title: The Datagram Transport Layer Security (DTLS) Protocol Version 1.3
 abbrev: DTLS 1.3
-docname: draft-ietf-tls-dtls13-latest
+docname: draft-ietf-tls-rfc9147bis-latest
 category: std
-obsoletes: 6347
+obsoletes: 9147
 
 ipr: pre5378Trust200902
 area: Security
