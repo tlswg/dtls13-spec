@@ -81,7 +81,7 @@ informative:
 
 --- abstract
 
-This document specifies Version 1.3 of the Datagram Transport Layer Security
+This document specifies version 1.3 of the Datagram Transport Layer Security
 (DTLS) protocol. DTLS 1.3 allows client/server applications to communicate over the
 Internet in a way that is designed to prevent eavesdropping, tampering, and message
 forgery.
