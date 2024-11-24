@@ -1994,7 +1994,7 @@ ACKs under two circumstances:
   and over-aggressive timeout-based retransmission.
   As a comparison point,
   QUIC's loss-based recovery algorithms
-  ({{?RFC9002; Section 6.1.2)
+  (Section 6.1.2 of {{?RFC9002}})
   work out to a delay of about 1/3 of the retransmit timer.
 
 In general, flights MUST be ACKed unless they are implicitly
