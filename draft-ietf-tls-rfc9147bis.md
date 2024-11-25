@@ -1,9 +1,9 @@
 ---
 title: The Datagram Transport Layer Security (DTLS) Protocol Version 1.3
 abbrev: DTLS 1.3
-docname: draft-ietf-tls-dtls13-latest
+docname: draft-ietf-tls-rfc9147bis-latest
 category: std
-obsoletes: 6347
+obsoletes: 9147
 
 ipr: pre5378Trust200902
 area: Security
@@ -480,14 +480,14 @@ unpacked RecordNumber structure, as shown below:
 This 128-bit value is used in the ACK message as well as in the "record_sequence_number"
 input to the Authenticated Encryption with Associated Data (AEAD) function.
 The entire header value shown in {{hdr_examples}} (but prior to record number
-encryption; see {{rne}}) is used as the additional data value for the 
+encryption; see {{rne}}) is used as the additional data value for the
 AEAD
 function. For instance, if the minimal variant is used,
 the Associated Data (AD)
 is 2 octets long. Note that this design is different from the additional data
 calculation for DTLS 1.2 and for DTLS 1.2 with Connection IDs.
 In DTLS 1.3 the 64-bit sequence_number is used as the sequence number for
-the AEAD computation; unlike DTLS 1.2, the epoch is not included. 
+the AEAD computation; unlike DTLS 1.2, the epoch is not included.
 
 ## Demultiplexing DTLS Records
 
@@ -1141,7 +1141,7 @@ message loss, reordering, and message fragmentation.
             case finished:              Finished;
             case new_session_ticket:    NewSessionTicket;
             case key_update:            KeyUpdate;
-            case request_connection_id: RequestConnectionId; 
+            case request_connection_id: RequestConnectionId;
             case new_connection_id:     NewConnectionId;
         } body;
     } DTLSHandshake;
@@ -2015,7 +2015,7 @@ through the responding flight.
 A notable example for this is
 the case of client authentication in constrained
 environments, where generating the CertificateVerify message can
-take considerable time on the client. 
+take considerable time on the client.
 Implementations MAY acknowledge the records corresponding to each transmission of
 each flight or simply acknowledge the most recent one. In general,
 implementations SHOULD ACK as many received packets as can fit
@@ -2260,7 +2260,7 @@ alert.
 Below is an example exchange for DTLS 1.3 using a single
 CID in each direction.
 
-Note: The "connection_id" extension, 
+Note: The "connection_id" extension,
 which is used in ClientHello and ServerHello messages,
 is defined in {{RFC9146}}.
 

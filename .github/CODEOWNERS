@@ -1,0 +1,3 @@
+# Automatically generated CODEOWNERS
+# Regenerate with `make update-codeowners`
+draft-ietf-tls-rfc9147bis.md ekr@rtfm.com hannes.tschofenig@arm.com nagendra@cs.stanford.edu
