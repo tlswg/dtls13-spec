@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-08-17T00:20:20.902293+00:00",
+  "timestamp": "2024-11-26T00:45:10.766904+00:00",
   "repo": "tlswg/dtls13-spec",
   "labels": [
     {
@@ -1475,7 +1475,7 @@
       "labels": [],
       "body": "In the current DTLS 1.3 spec (version 38 - https://www.ietf.org/id/draft-ietf-tls-dtls13-38.txt) there are conflicting DTLS header formats structures defined.\r\n\r\nFigure 3 defines the DTLSCiphertext header as comprising of Connection ID (if any, length as negotiated), Sequence Number and then Length field (if present)\r\n\r\nWhere as Figure 4 defines the dtls header with the Sequence number coming before the connection ID.\r\n\r\nWhich figure is correct?",
       "createdAt": "2020-10-06T12:41:35Z",
-      "updatedAt": "2020-11-03T13:14:23Z",
+      "updatedAt": "2022-09-01T18:08:35Z",
       "closedAt": "2020-11-02T21:06:09Z",
       "comments": [
         {
@@ -1491,6 +1491,13 @@
           "body": "Great. Just one more clarification. From the DTLS 1.2 Connection ID draft we have the following DTLS header format:\r\n        struct {\r\n            ContentType special_type = tls12_cid;\r\n            ProtocolVersion version;\r\n            uint16 epoch;\r\n            uint48 sequence_number;\r\n            opaque cid[cid_length];               // New field\r\n            uint16 length;\r\n            opaque enc_content[DTLSCiphertext.length];\r\n        } DTLSCiphertext;\r\n\r\n            Figure 3: DTLS 1.2 CID-enhanced Ciphertext Record.\r\n\r\nSo the packet formatting is epoch/seqnum/CID/length.\r\nIn the DTLS 1.3 Figure 4 we have the following unified header format: CID/ compressed seqnum/length.\r\n\r\nDo we have an interoperability issue here for Connection ID between DTLS 1.2 and 1.3 header formats?\r\n\r\nRegards\r\nAndy\r\n",
           "createdAt": "2020-11-03T13:14:23Z",
           "updatedAt": "2020-11-03T13:14:23Z"
+        },
+        {
+          "author": "bogroza",
+          "authorAssociation": "NONE",
+          "body": "DTLS 1.2 and DTLS 1.3 do not share the same header format. ",
+          "createdAt": "2022-09-01T18:08:34Z",
+          "updatedAt": "2022-09-01T18:08:34Z"
         }
       ]
     },
@@ -2129,7 +2136,7 @@
       "title": "It seems there a merge conflict.",
       "url": "https://github.com/tlswg/dtls13-spec/issues/243",
       "state": "CLOSED",
-      "author": "lvht",
+      "author": "taoso",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
@@ -2159,15 +2166,15 @@
       "id": "MDU6SXNzdWU5MDk5MjgyMDk=",
       "title": "message_hash construction is ambiguous in DTLS",
       "url": "https://github.com/tlswg/dtls13-spec/issues/247",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "davidben",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "In DTLS 1.2, we do this funny thing where, rather than using the type + length TLS Handshake message header, the transcript uses the longer DTLS header and pretends it was a single fragment:\r\nhttps://www.rfc-editor.org/rfc/rfc6347.html#section-4.2.6\r\n\r\nDTLS 1.3 preserves this text, so I assume the intent is to keep doing this.\r\nhttps://tlswg.org/dtls13-spec/draft-ietf-tls-dtls13.html#name-certificateverify-and-finis\r\n\r\nAlthough we use the transcript in a lot more places now, so perhaps that should be restructured into section about the Transcript Hash. That also gives a good place to talk about...\r\n\r\nRFC8446 describes the message_hash machinery as follows:\r\nhttps://www.rfc-editor.org/rfc/rfc8446.html#section-4.4.1\r\n\r\n```\r\n   As an exception to this general rule, when the server responds to a\r\n   ClientHello with a HelloRetryRequest, the value of ClientHello1 is\r\n   replaced with a special synthetic handshake message of handshake type\r\n   \"message_hash\" containing Hash(ClientHello1).  I.e.,\r\n\r\n  Transcript-Hash(ClientHello1, HelloRetryRequest, ... Mn) =\r\n      Hash(message_hash ||        /* Handshake type */\r\n           00 00 Hash.length  ||  /* Handshake message length (bytes) */\r\n           Hash(ClientHello1) ||  /* Hash of ClientHello1 */\r\n           HelloRetryRequest  || ... || Mn)\r\n```\r\n\r\nI don't see any text in DTLS 1.3 which overrides this, but this text is awkward for DTLS 1.3. Do you follow the implication of the CertificateVerify/Finished text and use the longer DTLS header, or do you follow the formula and use the TLS header, switching back to the DTLS header afterwards? We should probably pick one and specify it.\r\n\r\n(As an aside, this transcript difference means that DTLS and TLS transcripts are not obviously separable. So anything which uses the transcript must use separate labels between the two, which is a bit annoying given things like ECH invent new uses of the transcript. Though switch DTLS to the TLS construction is probably too late now, and will be differently obnoxious because DTLS 1.2 still requires the old one.)",
       "createdAt": "2021-06-02T22:15:45Z",
-      "updatedAt": "2021-06-02T22:15:45Z",
-      "closedAt": null,
+      "updatedAt": "2022-02-01T21:04:27Z",
+      "closedAt": "2022-02-01T21:04:27Z",
       "comments": []
     },
     {
@@ -2234,15 +2241,15 @@
       "id": "MDU6SXNzdWU5NDQxODIzOTc=",
       "title": "DTLS 1.3 limits the number of packets that can be encrypted with AES-GCM to 2^40.5",
       "url": "https://github.com/tlswg/dtls13-spec/issues/249",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "emanjon",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "If I have understood and calculated correctly DTLS 1.3 limits the number of\r\npackets in a AES-GCM connection to 2^40.5 compared to 2^64 in DTLS 1.2. This\r\nis quite a severe limitation that is not mentioned explicitly. The AEAD limits\r\nin themselves are not a problem, but the combination of AEAD limits (2^24.5)\r\nand a small epoch (2^16) is a problem.\r\n\r\nI think this is major problem in some use cases of DTLS. E.g. most 3GPP 5G use\r\ncases where DTLS or DTLS/SCTP is used for semi-permanent connections (lasting years)\r\nand where the terminating the connection cause severe disturbances.\r\n\r\nI did not find any discussion about this problem (but I could easily have missed it)\r\n\r\nIt is known that the limit of 2^48 packets in SRTP can be reached and 2^40.5 is\r\nsignificantly smaller than this...\r\n\r\nIf the document was not in such a late stage, I would have suggested to increase the size\r\nof the epoch to 32 bits.....\r\n\r\nI think this and the other problems DTLS 1.3 has with semi-permanent connections has to be\r\nsolved sooner than later.\r\n",
       "createdAt": "2021-07-14T08:31:13Z",
-      "updatedAt": "2021-07-29T09:13:00Z",
-      "closedAt": null,
+      "updatedAt": "2022-02-25T18:30:11Z",
+      "closedAt": "2022-02-25T18:30:11Z",
       "comments": [
         {
           "author": "ekr",
@@ -2313,6 +2320,13 @@
           "body": "FYI. We have now run into quite many problems with the interworking of semi-permanent DTLS/SCTP connections (lasting years) and DTLS 1.3:\r\n\r\n- No Diffie-Hellman rekeying\r\n- No post-handshake server authentication\r\n- No rekeying of the exporter_secret\r\n- 2^40.5 packets limit\r\n- 2 minute MSL requirement\r\n- 2^38.5 byte SCTP user message size limit\r\n\r\nOur initial plan was to just replace DTLS 1.2 with DTLS 1.3, leave DTLS/SCTP as is, but as the problems keep adding up we are now startnig to consider quite big changes to DTLS/SCTP 1.3 to make this work:\r\nhttps://github.com/gloinul/draft-westerlund-tsvwg-dtls-over-sctp-bis/issues/52\r\n\r\nUsing new DTLS connections instead of KeyUpdate could potentially address the first five, but is a significant change. ",
           "createdAt": "2021-07-29T09:13:00Z",
           "updatedAt": "2021-07-29T09:13:00Z"
+        },
+        {
+          "author": "emanjon",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Hi,\r\n\r\nBased on the problems long-lived DTLS/SCTP had with DTLS 1.3 (as well as DTLS 1.2 without renegotiation and respecting AEAD limits) we restructured DTLS/SCTP (RFC6083bis) to use parallel connections instead of relying on renegotiation and post-handshake messages. We think this quite easily solves all the problems we had without requiring any updates of DTLS 1.3. It also makes DTLS/SCTP less dependant on version specific DTLS mechanisms. It will hopefully work without changes with any future DTLS 1.4.\r\n\r\nhttps://datatracker.ietf.org/doc/draft-ietf-tsvwg-dtls-over-sctp-bis/\r\n\r\nWe can now firmly RECOMMEND DTLS 1.3 which I think is very important. 5G is to a large degree replacing or complementing IPsec with TLS, DTLS, and DTLS/SCTP. I will do my best to transition 3GPP to DTLS 1.3 asap.\r\n\r\nFYI, 3GPP DTLS/SCTP associations have very long lifetimes (can be years), strive for five nines (99.999%) availability and cannot be teared down without causing major disruptions. With such long lifetimes we think mutual reauthentication, rekeying of the SCTP-AUTH key, and forcing attackers to dynamic key exfiltration [RFC7624] are required features.\r\n\r\nI still think #255 should be done. 2^40.5 packets is quite limiting.",
+          "createdAt": "2021-10-26T09:55:42Z",
+          "updatedAt": "2021-10-27T14:27:25Z"
         }
       ]
     },
@@ -2345,15 +2359,15 @@
       "id": "MDU6SXNzdWU5NDYxNzcxMDk=",
       "title": "Rekeying in (D)TLS 1.3 does not update the exporter_secret",
       "url": "https://github.com/tlswg/dtls13-spec/issues/253",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "emanjon",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "This is another major problem for SCTP/DTLS and other semi-permanent uses of DTLS 1.3 uncovered during the work on RFC6083bis.\r\n\r\nhttps://github.com/gloinul/draft-westerlund-tsvwg-dtls-over-sctp-bis\r\n\r\nThe current text is RFC6083bis is a quite unfortune (We would really like to encourage and recommend use of DTLS 1.3):\r\n\"For upper layer protocols where frequent re-run of Diffie-Hellman, rekeying of SCTP-AUTH, and server reauthentication is required and creating a new SCTP connection with DTLS 1.3 to replace the current is not a viable option it is RECOMMENDED to use DTLS 1.2.\"\r\n\r\nSCTP/DTLS uses the TLS exporter to derive keys for SCTP-AUTH. SCTP/DTLS also uses SCTP-AUTH to handle when DTLS traffic keys from old epochs can be forgotten. With DTLS 1.2, renogotiation with ECDHE updates the exporter_secret. In DTLS 1.3, KeyUpdate does not update the exporter_secret. \r\n\r\nRFC6083bis is now considering using a \"hack\" of adding the epoch value (or other info) to the DTLS 1.3 exporter context to at least get different SCTP-AUTH keys for each epoch. This would solve any \"AEAD limits\" problems with HMAC-SHA256 (we don't know what these limits would be but keying at some point seems good). It does not provide good protection against key leakage/compromise as the exporter_secret must be stored for years. A future solution for SCTP/DTLS 1.3 should make sure that an attacker is forced to do dynamic key exfiltration {{RFC7624}}.\r\n\r\nhttps://github.com/gloinul/draft-westerlund-tsvwg-dtls-over-sctp-bis/issues/52\r\n\r\nThe RFC6083bis authors discussed this today and would like to ask **if DTLS 1.3 could provide the feature that the output of the TLS exporter changes after a KeyUpdate?**\r\n\r\nWhile the epoch limitations #249 are purely DTLS, this issue is inherited from TLS 1.3.",
       "createdAt": "2021-07-16T10:56:46Z",
-      "updatedAt": "2021-07-29T09:11:58Z",
-      "closedAt": null,
+      "updatedAt": "2021-10-29T18:33:00Z",
+      "closedAt": "2021-10-29T18:32:59Z",
       "comments": [
         {
           "author": "ekr",
@@ -2375,6 +2389,27 @@
           "body": "FYI. We have now run into quite many problems with the interworking of semi-permanent DTLS/SCTP connections (lasting years) and DTLS 1.3:\r\n\r\n- No Diffie-Hellman rekeying\r\n- No post-handshake server authentication\r\n- No rekeying of the exporter_secret\r\n- 2^40.5 packets limit\r\n- 2 minute MSL requirement\r\n- 2^38.5 byte SCTP user message size limit\r\n\r\nOur initial plan was to just replace DTLS 1.2 with DTLS 1.3, leave DTLS/SCTP as is, but as the problems keep adding up we are now considereing quite big changes to DTLS/SCTP 1.3 to make this work:\r\nhttps://github.com/gloinul/draft-westerlund-tsvwg-dtls-over-sctp-bis/issues/52\r\n\r\nUsing new DTLS connections instead of KeyUpdate could potentially address the first five, but is a significant change. ",
           "createdAt": "2021-07-29T09:11:57Z",
           "updatedAt": "2021-07-29T09:11:57Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@emanjon with the change to track epochs using 64 bits in #255, can we now include the epoch in exported secrets to address this problem?",
+          "createdAt": "2021-10-07T17:58:49Z",
+          "updatedAt": "2021-10-07T17:58:49Z"
+        },
+        {
+          "author": "emanjon",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@chris-wood As I just wrote in #249, we have restructured DTLS/SCTP (RFC6083bis) to solve all the issues we encountered with DTLS 1.3. DTLS 1.3 does not need to do any change to the exporter for the sake of DTLS/SCTP. As @ekr points out there are two different epochs to consider, using them both in the exporter could maybe lead to synchronization problems. It also does not provide the security properties of current IPsec deployments where attackers are forced to do dynamic key exfiltration instead of just static key exfiltration [RFC7624]. For very long-lived connections I think dynamic key exfiltration is a must. I think we can probably close this issue.",
+          "createdAt": "2021-10-26T10:11:46Z",
+          "updatedAt": "2021-10-26T10:11:46Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thanks, @emanjon! Closing.",
+          "createdAt": "2021-10-29T18:32:59Z",
+          "updatedAt": "2021-10-29T18:32:59Z"
         }
       ]
     },
@@ -2383,14 +2418,419 @@
       "id": "MDU6SXNzdWU5NjQ0NTYxNzg=",
       "title": "Mention RFC 7457 in Security section",
       "url": "https://github.com/tlswg/dtls13-spec/issues/254",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "elvey",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "I think it makes sense to refer to [RFC 7457](https://datatracker.ietf.org/doc/rfc7457/), \"Summarizing Known Attacks on Transport Layer Security (TLS) and Datagram TLS (DTLS)\" from the Security Considerations section.\r\nI think this would just be an informative reference.  Would improve the draft, IMVHO. \r\n\r\n<sup>(Hopefully I'm following [CONTRIBUTING.md](https://github.com/tlswg/dtls13-spec/blob/master/CONTRIBUTING.md) by opening this issue.  If such a Security Considerations section change is considered to change the spec, and 1+ editors support a change like this then I should post to the list? [8/15 edit: It's in today's GitHub digest; hope it garners a response.])</sup>",
       "createdAt": "2021-08-09T23:06:12Z",
-      "updatedAt": "2021-08-15T18:10:36Z",
+      "updatedAt": "2021-11-08T18:48:37Z",
+      "closedAt": "2021-11-08T18:48:37Z",
+      "comments": [
+        {
+          "author": "elvey",
+          "authorAssociation": "NONE",
+          "body": " @ekr ?  @martinthomson ? @davidben ",
+          "createdAt": "2021-09-22T05:21:21Z",
+          "updatedAt": "2021-09-28T20:22:07Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Weird.  That comment is 7 days old, but I only saw it today.  I think that this might be fine/harmless, but the draft is pretty far through the process.  I would leave this to the editor, but note that proposing a change (with a pull request) would give you the best odds of any citation happening.",
+          "createdAt": "2021-09-28T22:38:50Z",
+          "updatedAt": "2021-09-28T22:38:50Z"
+        },
+        {
+          "author": "elvey",
+          "authorAssociation": "NONE",
+          "body": "Thanks, @martinthomson.  OK, I made a pull request; perhaps I did it right and it's helpful. \r\n@ekr @hannestschofenig?  I guess this is just an easy editorial change.  Is discussion needed on the mailing list?\r\n\r\n",
+          "createdAt": "2021-10-03T19:38:17Z",
+          "updatedAt": "2021-10-03T19:38:28Z"
+        },
+        {
+          "author": "seanturner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "While it might be harmless to add this reference, I am not really sure it is needed. Do all of the attack apply to DTLS 1.3?\r\n\r\nRFC 7457 motivated RFC 7525 (aka BCP 195). There is currently a 7525bis (an update) that will address (D)TLS1.3. I would argue that the 7525bis is what we care about but DTLS1.3 won't point to it, 7525bis will point to the DTLS 1.3 RFC.\r\n\r\nspt",
+          "createdAt": "2021-10-06T20:29:38Z",
+          "updatedAt": "2021-10-06T20:29:38Z"
+        },
+        {
+          "author": "elvey",
+          "authorAssociation": "NONE",
+          "body": "Thanks. I\u2019m not sure either. I see that neither of those RFCs obsoletes or updates 7457. But the latter *does* refer to it. So if *all* of the 7457-described attacks don\u2019t apply to DTLS 1.3, or are covered and addressed by 7525bis, then the 7457 reference is not needed? OK.  ",
+          "createdAt": "2021-10-07T08:04:34Z",
+          "updatedAt": "2021-10-07T08:04:34Z"
+        },
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think we shouldn't add this for hte reason Sean mentions.",
+          "createdAt": "2021-11-08T18:48:37Z",
+          "updatedAt": "2021-11-08T18:48:37Z"
+        }
+      ]
+    },
+    {
+      "number": 259,
+      "id": "I_kwDOBTh4qM4-jYld",
+      "title": "Consider rewording of handshake buffering requirement",
+      "url": "https://github.com/tlswg/dtls13-spec/issues/259",
+      "state": "CLOSED",
+      "author": "hanno-becker",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": ">    When a DTLS implementation receives a handshake message fragment\r\n   corresponding to the next expected handshake message sequence number,\r\n   it MUST buffer it until it has the entire handshake message. \r\n\r\nAs discussed in https://mailarchive.ietf.org/arch/msg/tls/PLK-EW_bWIXV74nm_8gSHwu5cqk/: The spec mandates buffering all handshake fragments, but some implementations (e.g. GnuTLS) choose to implement simpler reassembly schemes. It has been argued by Ekr that such should be discouraged because they aren't efficient. On the other hand, as Rich Salz remarks, the choice of reassembly mechanism isn't something the peer could tell (the effects of poor reassembly performance are more retransmissions, which could also be due to poor network reliability), so it does feel like we're overspecifying things here. Weakening the MUST to a SHOULD isn't good either as it allows dropping fragments altogether. There's a tension between the desire for a concrete operational guidance, which the current text clearly provides, and a more abstract formulation along the line of \"implementations MUST use a reassembly scheme ensuring forward progress\". \r\n\r\nAs suggested by Ekr, taking this off the mailing list and continuing discussion here.\r\n\r\nTo be clear: This has no bearing on the protocol itself, it's about how much implementation details the spec should enforce.",
+      "createdAt": "2021-11-10T06:53:59Z",
+      "updatedAt": "2021-12-06T19:46:56Z",
+      "closedAt": "2021-12-06T19:46:56Z",
+      "comments": []
+    },
+    {
+      "number": 260,
+      "id": "I_kwDOBTh4qM4_JK6a",
+      "title": "AEAD integrity limits for 0-RTT data",
+      "url": "https://github.com/tlswg/dtls13-spec/issues/260",
+      "state": "CLOSED",
+      "author": "emanjon",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [
+        "propose-close"
+      ],
+      "body": "Regarding the AEAD integrity limits the DTLS 1.3 draft states:\r\n  \"Implementations MUST count the number of received packets\r\n   that fail authentication with each key.\"\r\n\r\nAs currently written the requirement does apply to 0-RTT data and client_early_traffic_secret. Keeping track of the number of times a client_early_traffic_secret has failed authentication seems demanding, especially for long-lived external PSKs. Do DTLS 1.3 implementations do that? \r\n\r\nThe suggested mitigation:\r\n  \"Implementations SHOULD initiate a key update with\r\n   update_requested before reaching this limit.\"\r\n\r\nDoes not work for client_early_traffic_secret.\r\n\r\nSee also\r\nhttps://github.com/tlswg/tls13-spec/issues/1249\r\n",
+      "createdAt": "2021-11-21T12:33:26Z",
+      "updatedAt": "2022-03-15T22:22:38Z",
+      "closedAt": "2022-03-15T22:22:38Z",
+      "comments": [
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@martinthomson this is a good question. Thoughts?",
+          "createdAt": "2022-02-01T21:09:12Z",
+          "updatedAt": "2022-02-01T21:09:12Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Yes, it is a good question.\r\n\r\nThe advice about failed decryptions applies across key updates, so I would say that is easy: have it apply to 0-RTT in the same way.\r\n\r\nThe advice about the number of records that are protected are per-key.  They should apply here also.  In most cases it seems unlikely that you would hit those limits within the limits set by the max_early_data_size field.  But there might be perverse cases.  It's also possible to arbitrarily extend the use of 0-RTT without exceeding max_early_data_size by abusing padding.  Saying that you should stop sending 0-RTT when you hit that limit is probably the best option.",
+          "createdAt": "2022-02-01T23:31:43Z",
+          "updatedAt": "2022-02-01T23:31:43Z"
+        },
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Note to self: because of the 0-RTT anti-replay stuff, we're going to mostly get different keys due to the ticket age so this is mostly like 1-RTT.",
+          "createdAt": "2022-02-08T00:19:12Z",
+          "updatedAt": "2022-02-08T00:19:12Z"
+        },
+        {
+          "author": "emanjon",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> The advice about the number of records that are protected are per-key.\r\n\r\nMy comment was about the recieving side, i.e., the  number of received packets that fail authentication.\r\n\r\n> Saying that you should stop sending 0-RTT when you hit that limit is probably the best option.\r\n\r\nThat seems like a good solution for the sending side.\r\n\r\n",
+          "createdAt": "2022-02-21T08:20:13Z",
+          "updatedAt": "2022-02-21T08:20:13Z"
+        },
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The sending situation seems like it's appropriate for both DTLS 1.3 and TLS 1.3, so if we need a change it's there.\r\n\r\nIn DTLS 1.3, I agree that actually keeping track is awkward, but it's what we have. So maybe this is an RFC 6919 MUST (BUT WE KNOW YOU WON'T). I could be persuaded to downgrade it to SHOULD\r\n",
+          "createdAt": "2022-02-25T19:05:32Z",
+          "updatedAt": "2022-02-25T19:05:32Z"
+        },
+        {
+          "author": "seanturner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "If you can do a SHOULD with a what bad things can happen if you don't, then I could go with a SHOULD.",
+          "createdAt": "2022-03-04T17:05:56Z",
+          "updatedAt": "2022-03-04T17:05:56Z"
+        },
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Well it's currently a MUST in RFC 8446. So unless someone feels strongly, I believe we should just close this.",
+          "createdAt": "2022-03-04T18:54:46Z",
+          "updatedAt": "2022-03-04T18:54:46Z"
+        },
+        {
+          "author": "seanturner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@emanjon @martinthomson PTAL. I am hoping to close this out PDQ.",
+          "createdAt": "2022-03-05T02:31:12Z",
+          "updatedAt": "2022-03-05T02:31:12Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The only thing I would do here is say something like \"As key updates are not possible for early data, a sender MUST instead cease sending early data when a key update would otherwise be required; a receiver MUST track the number of early data records that fail deprotection toward the same per-connection limit that applies after the handshake is complete.\"  I'd be happier if RFC 8446-bis took that change though.\r\n\r\nHappy to close this.",
+          "createdAt": "2022-03-08T00:13:56Z",
+          "updatedAt": "2022-03-08T00:13:56Z"
+        }
+      ]
+    },
+    {
+      "number": 264,
+      "id": "I_kwDOBTh4qM5BjaXj",
+      "title": "Rename TLS HandshakeTypes",
+      "url": "https://github.com/tlswg/dtls13-spec/issues/264",
+      "state": "CLOSED",
+      "author": "seanturner",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This I-D registers two TLS HandshakeTypes. All of the other fields in the registry use snake_case.",
+      "createdAt": "2022-01-12T02:19:02Z",
+      "updatedAt": "2022-01-22T14:48:03Z",
+      "closedAt": "2022-01-22T14:48:03Z",
+      "comments": []
+    },
+    {
+      "number": 267,
+      "id": "I_kwDOBTh4qM5DP5-s",
+      "title": "Peer Address Update",
+      "url": "https://github.com/tlswg/dtls13-spec/issues/267",
+      "state": "CLOSED",
+      "author": "emanjon",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The DTLS 1.2 Connection ID draft (soon-to-be-RFC9146) section on \"peer address update\" and the text in DTLS 1.3 seems quite different.\r\n\r\nhttps://www.rfc-editor.org/rfc/authors/rfc9146.html#name-peer-address-update\r\n\r\nThe \"unless they first perform some reachability test\" seems preferable to the soft text in soon-to-be-RFC9146, but DTLS 1.3 seems to be missing the DTLS 1.2 requirement on \"The received datagram is \"newer\"\". Feels spontanously like DTLS 1.2 and 1.3 should have similar requirements/guidance on \"peer address update\".\r\n\r\nFYI, I started writing some analysis of Peer Address Update in a draft that I intend to submit to T2TRG\r\nhttps://github.com/EricssonResearch/coap-actuators/blob/master/draft-mattsson-t2trg-amplification-attacks.md\r\n",
+      "createdAt": "2022-02-09T09:00:17Z",
+      "updatedAt": "2022-03-05T02:50:50Z",
+      "closedAt": "2022-03-05T02:50:50Z",
+      "comments": [
+        {
+          "author": "emanjon",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "- Would be good to warn implementations that clients must not update the permanent server address based on the \u201cPeer Address Update\u201d mechanism. Using IP addresses instead of DNS names is not uncommon in e.g., IoT, DNS over DTLS (RFC 8094), and 3GPP DTLS interfaces. An client updating the permanent server address based on an MITM attack could be unable to recover.\r\n\r\n- Would be good with a sentence or two on the problems changing the IP address of a gateway multiplexing a lot of DTLS connections with Connection ID. All the client and servers would have to send at least one record before the old IP address can be deactivated. Might take some time in a IoT deployment.\r\n",
+          "createdAt": "2022-02-09T13:14:43Z",
+          "updatedAt": "2022-02-09T13:14:43Z"
+        },
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I tend to think we should at most provide warnings about how it's dangerous. @emanjon would you be willing to provide a quick PR?",
+          "createdAt": "2022-02-25T19:07:27Z",
+          "updatedAt": "2022-02-25T19:07:27Z"
+        },
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "In the interest of being done I opted for basically punting it to a future spec.",
+          "createdAt": "2022-03-04T19:06:43Z",
+          "updatedAt": "2022-03-04T19:06:43Z"
+        },
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "https://github.com/tlswg/dtls13-spec/pull/270\r\n",
+          "createdAt": "2022-03-04T19:07:08Z",
+          "updatedAt": "2022-03-04T19:07:08Z"
+        }
+      ]
+    },
+    {
+      "number": 268,
+      "id": "I_kwDOBTh4qM5EWYZQ",
+      "title": " DTLS behavior on received closure alert",
+      "url": "https://github.com/tlswg/dtls13-spec/issues/268",
+      "state": "CLOSED",
+      "author": "emanjon",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "In RFC6083bis (DTLS/SCTP) we are discussing when to terminate DTLS connections. \r\n\r\nRFC8446 says:\r\n\r\n  \"close_notify:  This alert notifies the recipient that the sender will\r\n   not send any more messages on this connection.  **Any data received\r\n   after a closure alert has been received MUST be ignored.\"**\r\n\r\nAs far as I can see, the DTLS 1.3 draft does not say anything about closure alerts,\r\nwhich according to my understanding means that the above RFC 8446 text apply to\r\nDTLS 1.3 as well. However, this behaviour does not seem to make much sense for DTLS 1.3.\r\nAs DTLS records can be received out of order, shouldn't the DTLS behavior be:\r\n\r\n  \"Any data sent after a closure alert MUST be ignored.\"",
+      "createdAt": "2022-02-22T10:19:56Z",
+      "updatedAt": "2022-03-15T22:22:19Z",
+      "closedAt": "2022-03-15T22:22:19Z",
+      "comments": [
+        {
+          "author": "tuexen",
+          "authorAssociation": "NONE",
+          "body": "I do understand that ignoring data is a valid option for DTLS/UDP, which provides an unreliable  server. However, when providing a reliable service like DTLS/SCTP, I don't think this is an option. Shouldn't you fail the connection under that condition?",
+          "createdAt": "2022-02-22T10:57:27Z",
+          "updatedAt": "2022-02-22T10:57:27Z"
+        },
+        {
+          "author": "gloinul",
+          "authorAssociation": "NONE",
+          "body": "@tuexen so we found this while working on clarifying the shutdown procedure. So the whole point is to ensure that data that has been committed to the DTLS/SCTP layer will be delivered in a controlled shutdown. We are targeting to have DTLS/SCTP behave like SCTP in regards to shutdown when the upper layer protocol request shutdown. For the improved procedure in DTLS/SCTP see https://github.com/gloinul/draft-westerlund-tsvwg-dtls-over-sctp-bis/issues/87 and PR https://github.com/gloinul/draft-westerlund-tsvwg-dtls-over-sctp-bis/pull/94\r\n\r\nThe point of needing this is so that when a peer has requested shutdown, and the DTLS/SCTP has learnt of that by receiving an DTLS close_notify, all data that was sent prior to that must be possible to process and not prevented by this TLS formulation. The DTLS connection state removal can in this case be triggered by the SCTP association shutdown completion or an SCTP abort. We want to be able to use the SCTP shutdown pending mechanism to catch any reordered data requested to be sent prior to DTLS close notify. This avoids new complex SCTP API to learn if the stack has ACKed all data prior to the transmission of the DTLS close notify. So if the SCTP stack fails to deliver the reordered data in time fashion then we will end up in an SCTP abort that the ULP can be informed of. ",
+          "createdAt": "2022-02-22T13:24:05Z",
+          "updatedAt": "2022-02-22T13:24:05Z"
+        },
+        {
+          "author": "gloinul",
+          "authorAssociation": "NONE",
+          "body": "To try to generalize the behavior I expect to be possible with DTLS that is different from TLS. \r\n- DTLS records may arrive after close notify due to reordering. These needs to be processed assuming that their sequence number indicate they being earlier than close notify. \r\n- DTLS connection is not automatically terminated and keys discarded by having sent and received close notify. Instead either default timers or additional mechanism indicate that DTLS connection can be safely terminated and its stated deleted. For example for DTLS/SCTP a SCTP shutdown or SCTP Abort is such an additional indicator that state can be removed. Application termination is also such an additional indicator. ",
+          "createdAt": "2022-02-22T14:55:09Z",
+          "updatedAt": "2022-02-22T14:55:09Z"
+        },
+        {
+          "author": "tuexen",
+          "authorAssociation": "NONE",
+          "body": "> @tuexen so we found this while working on clarifying the shutdown procedure. So the whole point is to ensure that data that has been committed to the DTLS/SCTP layer will be delivered in a controlled shutdown. We are targeting to have \r\nDTLS/SCTP behave like SCTP in regards to shutdown when the upper layer protocol request shutdown. For the improved procedure in DTLS/SCTP see [gloinul/draft-westerlund-tsvwg-dtls-over-sctp-bis#87](https://github.com/gloinul/draft-westerlund-tsvwg-dtls-over-sctp-bis/issues/87) and PR [gloinul/draft-westerlund-tsvwg-dtls-over-sctp-bis#94](https://github.com/gloinul/draft-westerlund-tsvwg-dtls-over-sctp-bis/pull/94)\r\n> \r\n> The point of needing this is so that when a peer has requested shutdown, and the DTLS/SCTP has learnt of that by receiving an DTLS close_notify, all data that was sent prior to that must be possible to process and not prevented by this TLS formulation. The DTLS connection state removal can in this case be triggered by the SCTP association shutdown completion or an SCTP abort. We want to be able to use the SCTP shutdown pending mechanism to catch any reordered data requested to be sent prior to DTLS close notify. This avoids new complex SCTP API to learn if the stack has ACKed all data prior to the transmission of the DTLS close notify. So if the SCTP stack fails to deliver the reordered data in time fashion then we will end up in an SCTP abort that the ULP can be informed of.\r\n\r\nYou could do the normal dance of delay the sending of the close_notify until all prior data has been acked at the SCTP level on the sender side and on the receiver side ensure that you process all data being buffered before processing the close_notify.\r\n\r\nOf course, you can rely on the SCTP SHUTDOWN procedure, but doesn't this only work if you have a one to one relation ship between the DTLS  connection and the SCTP association? If I remember it correctly, you suggested to multiplex several DTLS connections on a single SCTP association. Maybe I misunderstood this.\r\n",
+          "createdAt": "2022-02-22T17:19:49Z",
+          "updatedAt": "2022-02-22T17:19:49Z"
+        },
+        {
+          "author": "gloinul",
+          "authorAssociation": "NONE",
+          "body": "So I want to make clear that this issue is a general one even if we realized it due to DTLS/SCTP work. TLS has an assumption of single stream in order delivery which doesn't hold for DTLS. Thus, DTLS spec needs to change that normative statement to something that makes sense for DTLS where out of order delivery of DTLS records has to be assumed to occur. Thus, I support John's proposal for reformulation because it makes sense and can be judged based on sequence numbers in the DTLS records.\r\n\r\nIn relply to @tuexen \"You could do the normal dance of delay the sending of the close_notify until all prior data has been acked at the SCTP level on the sender side and on the receiver side ensure that you process all data being buffered before processing the close_notify.\"\r\n\r\nYes, but as you know the documented API to SCTP does not support determining when each user message has been non-renegable ACKed by the peer. Thus, API extensions are needed, or we for this use case to have a shutdown procedure that mimics STCP's behavior at shutdown with minimal extra delay, i.e. waiting for ACKs. So that is what we are targeting if that is impossible we will find another solution including requiring API extensions. \r\n\r\n\"Of course, you can rely on the SCTP SHUTDOWN procedure, but doesn't this only work if you have a one to one relation ship between the DTLS connection and the SCTP association? If I remember it correctly, you suggested to multiplex several DTLS connections on a single SCTP association. Maybe I misunderstood this.\" \r\n\r\nWe don't see that as an issue. As the DTLS/SCTP implementation that owns the DTLS sessions in cases there are two DTLS Connections open, the shutdown on SCTP level happens only when both of the DTLS connections have entered the necessary. But please review the PR for the DTLS/SCTP details: https://github.com/gloinul/draft-westerlund-tsvwg-dtls-over-sctp-bis/pull/94\r\n",
+          "createdAt": "2022-02-23T08:58:16Z",
+          "updatedAt": "2022-02-23T08:58:16Z"
+        },
+        {
+          "author": "tuexen",
+          "authorAssociation": "NONE",
+          "body": "> So I want to make clear that this issue is a general one even if we realized it due to DTLS/SCTP work. TLS has an assumption of single stream in order delivery which doesn't hold for DTLS. Thus, DTLS spec needs to change that normative statement to something that makes sense for DTLS where out of order delivery of DTLS records has to be assumed to occur. Thus, I support John's proposal for reformulation because it makes sense and can be judged based on sequence numbers in the DTLS records.\r\n> \r\n> In relply to @tuexen \"You could do the normal dance of delay the sending of the close_notify until all prior data has been acked at the SCTP level on the sender side and on the receiver side ensure that you process all data being buffered before processing the close_notify.\"\r\n> \r\n> Yes, but as you know the documented API to SCTP does not support determining when each user message has been non-renegable ACKed by the peer. Thus, API extensions are needed, or we for this use case to have a shutdown procedure that mimics STCP's behavior at shutdown with minimal extra delay, i.e. waiting for ACKs. So that is what we are targeting if that is impossible we will find another solution including requiring API extensions.\r\n\r\nYou can use the sender dry event, it was specified for that purpose.\r\n\r\n> \r\n> \"Of course, you can rely on the SCTP SHUTDOWN procedure, but doesn't this only work if you have a one to one relation ship between the DTLS connection and the SCTP association? If I remember it correctly, you suggested to multiplex several DTLS connections on a single SCTP association. Maybe I misunderstood this.\"\r\n> \r\n> We don't see that as an issue. As the DTLS/SCTP implementation that owns the DTLS sessions in cases there are two DTLS Connections open, the shutdown on SCTP level happens only when both of the DTLS connections have entered the necessary. But please review the PR for the DTLS/SCTP details: [gloinul/draft-westerlund-tsvwg-dtls-over-sctp-bis#94](https://github.com/gloinul/draft-westerlund-tsvwg-dtls-over-sctp-bis/pull/94)\r\n\r\nSo you will keep all DTLS connections alive until you shutdown the transport?\r\n\r\n",
+          "createdAt": "2022-02-23T09:53:50Z",
+          "updatedAt": "2022-02-23T09:53:50Z"
+        },
+        {
+          "author": "tuexen",
+          "authorAssociation": "NONE",
+          "body": "Just wondering... On the sender side you already have reference counting for keys to implement `SCTP_AUTH_FREE_KEY` in the [SCTP_AUTHENTICATION_EVENT](https://datatracker.ietf.org/doc/html/rfc6458#section-6.1.8). So wouldn't it be a simple extension to add a `SCTP_AUTH_DRY_KEY` way?",
+          "createdAt": "2022-02-23T10:02:17Z",
+          "updatedAt": "2022-02-23T10:02:17Z"
+        },
+        {
+          "author": "tuexen",
+          "authorAssociation": "NONE",
+          "body": "Regarding the suggested text change: How does the receiver now that a message received was sent after the close_notify was sent? ",
+          "createdAt": "2022-02-23T10:32:37Z",
+          "updatedAt": "2022-02-23T10:32:37Z"
+        },
+        {
+          "author": "gloinul",
+          "authorAssociation": "NONE",
+          "body": "> Regarding the suggested text change: How does the receiver now that a message received was sent after the close_notify was sent?\r\n\r\nTo my understanding that would be based on epoch + sequence number of the DTLS record. So any record with a lower extended sequence number than the close_notify alert message should be processed, with a higher discarded. ",
+          "createdAt": "2022-03-03T09:57:40Z",
+          "updatedAt": "2022-03-03T09:57:40Z"
+        }
+      ]
+    },
+    {
+      "number": 282,
+      "id": "I_kwDOBTh4qM5f9MC9",
+      "title": "Whats the status of this?",
+      "url": "https://github.com/tlswg/dtls13-spec/issues/282",
+      "state": "OPEN",
+      "author": "eabase",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "It seem that the proposal has been in the pipeline for a year now. \r\nWhat is preventing progress and why is it taking so long?\r\n\r\nhttps://datatracker.ietf.org/doc/rfc9147/\r\nhttps://github.com/tlswg/dtls13-spec\r\n\r\nPS. Can this proposal be considered as de-facto?",
+      "createdAt": "2023-03-04T17:55:12Z",
+      "updatedAt": "2023-03-08T18:33:31Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "kaduk",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This repository holds the markdown sources that were used to produce RFC 9147.  The RFC is authoritative.\r\nI'm not entirely sure what you think is a \"proposal\" in this repository, but I think you should use the published RFC for whatever you need a reference for.",
+          "createdAt": "2023-03-04T18:11:31Z",
+          "updatedAt": "2023-03-04T18:11:31Z"
+        },
+        {
+          "author": "eabase",
+          "authorAssociation": "NONE",
+          "body": "Hi @kaduk \r\nThanks for rapid reply. I found this repo from the first RFC link above, where it says that this RFC is:  \r\n\r\n> *\"RFC - Proposed Standard (April 2022)\"*. \r\n\r\nIDK what to make of that, or what it means exactly? \r\nAlso the attached emails raises some questions, but it's unclear if they were addressed. ",
+          "createdAt": "2023-03-05T11:10:44Z",
+          "updatedAt": "2023-03-05T11:48:52Z"
+        },
+        {
+          "author": "kaduk",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Proposed Standard is a stage in the Internet Standards process, which is described in BCP 9; BCP 9 currently comprises eight individual RFCs with subsequent ones often modifying aspects of earlier ones.  Perhaps the most interesting ones for your immediate question would be RFCs 7127 and 6410.",
+          "createdAt": "2023-03-05T17:39:22Z",
+          "updatedAt": "2023-03-05T17:39:22Z"
+        },
+        {
+          "author": "eabase",
+          "authorAssociation": "NONE",
+          "body": "Thanks @kaduk\r\nBut that only describe the bureaucracy, whereas I am trying to determine the actual state of the _proposal_. Looking for a de-facto standard that developers can start working with. \r\n\r\n- [Reducing the Standards Track to Two Maturity Levels](https://datatracker.ietf.org/doc/rfc6410/) - RFC-6410\r\n- [Characterization of Proposed Standards](https://datatracker.ietf.org/doc/rfc7127/) - RFC-7127\r\n",
+          "createdAt": "2023-03-08T09:26:28Z",
+          "updatedAt": "2023-03-08T09:27:57Z"
+        },
+        {
+          "author": "seanturner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I believe the contents of this repo are the same as RFC 9147 with the exception of the status of this memo. See[ link](https://datatracker.ietf.org/doc/html/rfc9147). So in that sense, developers can start working with this.",
+          "createdAt": "2023-03-08T18:29:39Z",
+          "updatedAt": "2023-03-08T18:33:31Z"
+        }
+      ]
+    },
+    {
+      "number": 283,
+      "id": "I_kwDOBTh4qM5xW0cs",
+      "title": "Imprecise definitions for handling invalid records",
+      "url": "https://github.com/tlswg/dtls13-spec/issues/283",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "[Section 4.5.2](https://tlswg.org/dtls13-spec/draft-ietf-tls-dtls13.html#section-4.5.2) talks about invalid record handling in a way that is not sufficiently precise.\r\n\r\nTake this:\r\n\r\n> Unlike TLS, DTLS is resilient in the face of invalid records (e.g., invalid formatting, length, MAC, etc.). In general, invalid records SHOULD be silently discarded, thus preserving the association; [...]\r\n\r\nThis recommendation is not great, particularly as it attached to the preceding list, which is a little non-specific.\r\n\r\nQuoting @dennisjackson from another context:\r\n\r\n> I do still think the phrasing in 4.5.2 is needlessly hostile by introducing the concept of an invalid record in the first place. If we asked implementers which of the following are considered invalid records, I'd suspect they'd say \"all of them\":\r\n> \r\n>  * A record which consists of a zero length handshake message\r\n>  * A record which contains a fragment of an alert message (or two alert messages).\r\n>  * A record of application data which appears between two records of a fragmented handshake message.\r\n>  * A record which has an invalid inner content type.\r\n>  * A record which has an invalid outer content type.\r\n>\r\n> I do think 4.5.2 would be significantly clearer if it didn't mention \"invalid records\" at all and just spoke about \"errors arising from record handling\".\r\n\r\nTo this point, it would be clearer if the spec were more definitive.  Records that do not authenticate would always be discarded (i.e., use MUST) and records that do authenticate, but are otherwise invalid, result in fatal alerts always (i.e., use MUST).  I don't see much value in having ambiguous language for something so important.\r\n",
+      "createdAt": "2023-09-18T21:54:56Z",
+      "updatedAt": "2023-09-18T23:58:02Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@martinthomson thanks for raising this. I agree this text could be better, and as you suggest, this was intended to cover errors at the record layer (which was of course somewhat simpler in TLS 1.2). I agree with the resolution you propose but you omit the question of plaintext records. My sense is that they should be treated as authenticated for the purpose above. My reasoning for this is that there are three basic ways to get something that is malformed.\r\n\r\n- The peer generated invalid data.\r\n- Some kind of unintentional mangling (e.g., a bit error)\r\n- Deliberate mangling by an attacker (yes, I realize that the line between these last two is not as clear as one would like).\r\n\r\nThe primary reason to have DTLS discard malformed data is to make it difficult for attackers to DoS a DTLS connection the way they can with TLS. However, the attacker can obviously manipulate unprotected records and DoS the connection, so discarding them if they are malformed doesn't help that much. One could of course say that you're also worried about unintentional damage to the handshake but the UDP checksum makes that comparatively rare, so it's not clear it's worth the effort.\r\n\r\nWith all that said, we already published 9147, so it's a bit unobvious what to do about this. Do you have thoughts?\r\n\r\n",
+          "createdAt": "2023-09-18T23:26:46Z",
+          "updatedAt": "2023-09-18T23:26:46Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Ah, I forgot to record my views on the handshake.  I agree that it is probably best to treat these as having been authenticated, as you propose.  That allows a somewhat consistent treatment throughout, falling back on Finished as the only means of authenticating those.  As you say, the unintentional damage case is the only major gap here and that is not one that is statistically significant enough to worry about (just try the handshake again if you like).\r\n\r\nI wouldn't consider this to be worth a revision of or update to RFC 9147.  Maybe we can hold onto this until such a time as we need to make other changes.",
+          "createdAt": "2023-09-18T23:58:02Z",
+          "updatedAt": "2023-09-18T23:58:02Z"
+        }
+      ]
+    },
+    {
+      "number": 284,
+      "id": "I_kwDOBTh4qM6gQaGd",
+      "title": "regex warning",
+      "url": "https://github.com/tlswg/dtls13-spec/issues/284",
+      "state": "CLOSED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This is pretty concerning.  Do you need to use `r\"\"` strings?\r\n\r\n```\r\n.../dtls13/mk-appendix.py:44: SyntaxWarning: invalid escape sequence '\\S'\r\n  m = re.match(\"\\S\", l)\r\n```",
+      "createdAt": "2024-11-24T23:46:14Z",
+      "updatedAt": "2024-11-25T00:08:22Z",
+      "closedAt": "2024-11-25T00:08:22Z",
+      "comments": [
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Could be. This code is pretty old...",
+          "createdAt": "2024-11-24T23:50:41Z",
+          "updatedAt": "2024-11-24T23:50:41Z"
+        }
+      ]
+    },
+    {
+      "number": 287,
+      "id": "I_kwDOBTh4qM6gRi4u",
+      "title": "Old email for Hannes",
+      "url": "https://github.com/tlswg/dtls13-spec/issues/287",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "@hannestschofenig you should probably update your email address in the draft (and in `.github/CODEOWNERS` while you are there).",
+      "createdAt": "2024-11-25T03:39:50Z",
+      "updatedAt": "2024-11-25T03:39:50Z",
       "closedAt": null,
       "comments": []
     }
@@ -4315,7 +4755,7 @@
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "51e7aa6e338ab1d4d972aaffc5cb6259d72e6d2f",
-      "headRepository": "emanjon/dtls13-spec",
+      "headRepository": null,
       "headRefName": "patch-1",
       "headRefOid": "ec7a88ba31d3550cb42eba6903347ed60291fc62",
       "closedAt": "2019-03-11T22:27:58Z",
@@ -4343,7 +4783,7 @@
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "51e7aa6e338ab1d4d972aaffc5cb6259d72e6d2f",
-      "headRepository": "emanjon/dtls13-spec",
+      "headRepository": null,
       "headRefName": "patch-2",
       "headRefOid": "c38fa9d29412cb0e71a48c34488e79db558f0d91",
       "closedAt": "2019-03-11T22:26:54Z",
@@ -5067,7 +5507,7 @@
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "dc6b80212432acb402821f2b5403a0c5f4c46c27",
-      "headRepository": "seanturner/dtls13-spec",
+      "headRepository": null,
       "headRefName": "iana",
       "headRefOid": "94252d91aa47a7ff59178e4e9c4738edfbc8da29",
       "closedAt": "2019-11-08T14:33:00Z",
@@ -5101,7 +5541,7 @@
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "dc6b80212432acb402821f2b5403a0c5f4c46c27",
-      "headRepository": "seanturner/dtls13-spec",
+      "headRepository": null,
       "headRefName": "iana_ack",
       "headRefOid": "bc5ffc36388836fd5afe23bb1d8029e4559367cd",
       "closedAt": "2019-11-08T14:28:15Z",
@@ -6034,7 +6474,7 @@
           "commit": {
             "abbreviatedOid": "667c32b"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "CHANGES_REQUESTED",
           "body": "I think the underlying issue here is the conception that all that needs to be ensured is the ability to ACK \r\nretransmissions of the KeyUpdate, and the modified version still gives that impression. If that was true, \r\nthe use of 'canned ACKs' as in Draft 37 would be fine. However, the example from the list shows that there's more to retaining old keying material than just ACKing retransmitted KeyUpdates, and I'd therefore opt for a more intrusive change of wording, such as:\r\n\r\n```\r\nDue to the possibility of an ACK message for a KeyUpdate being lost and thereby\r\npreventing the sender of the KeyUpdate from updating its keying material,\r\nreceivers MUST retain the pre-update keying material until receipt and successful\r\ndecryption of a message using the new keys. Receivers MUST NOT delete the\r\npre-update keying material immediately and use canned ACK messages for\r\nretransmitted KeyUpdate messages, since situations can occur in which receivers\r\nstill need to be able to decrypt messages secured with pre-update keying material.\r\n```\r\n\r\nWhat do you think, @hannestschofenig ?",
@@ -6047,7 +6487,7 @@
           "commit": {
             "abbreviatedOid": "314ea5a"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "APPROVED",
           "body": "Thanks @hannestschofenig, looks good to me.",
@@ -6063,7 +6503,7 @@
       "title": "Remove SENDING->FINISHED transition in state machine",
       "url": "https://github.com/tlswg/dtls13-spec/pull/136",
       "state": "MERGED",
-      "author": "hanno-arm",
+      "author": "hanno-becker",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
@@ -6073,7 +6513,7 @@
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "d5220d22ca3a79c23590cddc9e76a227dcf62992",
-      "headRepository": "hanno-arm/dtls13-spec",
+      "headRepository": "hanno-becker/dtls13-spec",
       "headRefName": "dtls13_state_machine_no_sending_to_finished",
       "headRefOid": "d18db07c1ae112e4d12a804967480b36324c8163",
       "closedAt": "2020-04-19T21:49:10Z",
@@ -6105,7 +6545,7 @@
       "title": "Describe duplication of state machines for post-handshake messages",
       "url": "https://github.com/tlswg/dtls13-spec/pull/137",
       "state": "CLOSED",
-      "author": "hanno-arm",
+      "author": "hanno-becker",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
@@ -6115,7 +6555,7 @@
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "d5220d22ca3a79c23590cddc9e76a227dcf62992",
-      "headRepository": "hanno-arm/dtls13-spec",
+      "headRepository": "hanno-becker/dtls13-spec",
       "headRefName": "state_machine_duplication",
       "headRefOid": "6f30e1fa476ec31962081c5f46b3835edcccf08b",
       "closedAt": "2020-04-22T01:04:30Z",
@@ -6124,7 +6564,7 @@
       "mergeCommit": null,
       "comments": [
         {
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "body": "@thomas-fossati I have fixed two further typos, and also added further explanations on when multiple messages of a given post-HS category may be sent. Can you please take another look?",
           "createdAt": "2020-04-03T06:53:47Z",
@@ -6170,7 +6610,7 @@
           "commit": {
             "abbreviatedOid": "6b505b6"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
@@ -6190,7 +6630,7 @@
           "commit": {
             "abbreviatedOid": "6b505b6"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
@@ -6239,7 +6679,7 @@
       "title": "Allow ACKing non-terminal complete flights if response takes time",
       "url": "https://github.com/tlswg/dtls13-spec/pull/138",
       "state": "MERGED",
-      "author": "hanno-arm",
+      "author": "hanno-becker",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
@@ -6249,7 +6689,7 @@
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "d5220d22ca3a79c23590cddc9e76a227dcf62992",
-      "headRepository": "hanno-arm/dtls13-spec",
+      "headRepository": "hanno-becker/dtls13-spec",
       "headRefName": "issue_128",
       "headRefOid": "4b429c81c650b7a83059c5f30d8989ecd499c0f2",
       "closedAt": "2020-04-19T21:53:24Z",
@@ -6267,7 +6707,7 @@
       "title": "Clarify when to ACK and what to ACK",
       "url": "https://github.com/tlswg/dtls13-spec/pull/139",
       "state": "MERGED",
-      "author": "hanno-arm",
+      "author": "hanno-becker",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
@@ -6277,7 +6717,7 @@
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "d5220d22ca3a79c23590cddc9e76a227dcf62992",
-      "headRepository": "hanno-arm/dtls13-spec",
+      "headRepository": "hanno-becker/dtls13-spec",
       "headRefName": "ack_clarification",
       "headRefOid": "c7855357e0ca85121631d34eba450b04df466665",
       "closedAt": "2020-04-22T01:07:24Z",
@@ -6295,7 +6735,7 @@
           "updatedAt": "2020-04-02T20:18:09Z"
         },
         {
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "body": "@jfhamme-cccs Thank you for your feedback! I have removed the sentence because its content is already implied by what's stated in the previous section [ACK message](https://tools.ietf.org/html/draft-ietf-tls-dtls13-37#section-7). See the commit description of https://github.com/tlswg/dtls13-spec/pull/139/commits/f22743cb31e444b4efeabbbca5a69d54a0b3f8a8.",
           "createdAt": "2020-04-02T20:42:33Z",
@@ -6335,7 +6775,7 @@
           "commit": {
             "abbreviatedOid": "c785535"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
@@ -6451,7 +6891,7 @@
           "commit": {
             "abbreviatedOid": "8922129"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
@@ -6471,7 +6911,7 @@
           "commit": {
             "abbreviatedOid": "8922129"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
@@ -6491,7 +6931,7 @@
           "commit": {
             "abbreviatedOid": "8922129"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
@@ -6511,7 +6951,7 @@
           "commit": {
             "abbreviatedOid": "8922129"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "CHANGES_REQUESTED",
           "body": "Thanks @ekr for the PR. Apart from a typo, I left two comments on where I think the text can be further clarified.",
@@ -6597,7 +7037,7 @@
           "commit": {
             "abbreviatedOid": "6d77033"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
@@ -6617,7 +7057,7 @@
           "commit": {
             "abbreviatedOid": "6d77033"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "APPROVED",
           "body": "@ekr LGTM, thanks!",
@@ -6863,7 +7303,7 @@
           "commit": {
             "abbreviatedOid": "4687c2e"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
@@ -6883,7 +7323,7 @@
           "commit": {
             "abbreviatedOid": "4687c2e"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
@@ -6903,7 +7343,7 @@
           "commit": {
             "abbreviatedOid": "4687c2e"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
@@ -6923,7 +7363,7 @@
           "commit": {
             "abbreviatedOid": "4687c2e"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
@@ -6943,7 +7383,7 @@
           "commit": {
             "abbreviatedOid": "4687c2e"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
@@ -7007,7 +7447,7 @@
           "commit": {
             "abbreviatedOid": "4687c2e"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
@@ -7027,7 +7467,7 @@
           "commit": {
             "abbreviatedOid": "a64ec55"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
@@ -7047,7 +7487,7 @@
           "commit": {
             "abbreviatedOid": "a64ec55"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
@@ -7067,7 +7507,7 @@
           "commit": {
             "abbreviatedOid": "a64ec55"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
@@ -7107,7 +7547,7 @@
           "commit": {
             "abbreviatedOid": "a94054d"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
@@ -7462,7 +7902,7 @@
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "94032c96856c3fb1aee71cb2a220d3004932d8af",
-      "headRepository": "emanjon/dtls13-spec",
+      "headRepository": null,
       "headRefName": "patch-4",
       "headRefOid": "8f373e568eed095abbeb73458ae7fca8de1590dd",
       "closedAt": "2020-12-10T16:05:36Z",
@@ -10712,32 +11152,6 @@
       "reviews": []
     },
     {
-      "number": 207,
-      "id": "MDExOlB1bGxSZXF1ZXN0NTYwNTcyMDk3",
-      "title": "rohit.md",
-      "url": "https://github.com/tlswg/dtls13-spec/pull/207",
-      "state": "OPEN",
-      "author": "rohitpc363",
-      "authorAssociation": "NONE",
-      "assignees": [],
-      "labels": [],
-      "body": "rtat.org",
-      "createdAt": "2021-01-24T09:41:46Z",
-      "updatedAt": "2021-01-24T09:41:46Z",
-      "baseRepository": "tlswg/dtls13-spec",
-      "baseRefName": "master",
-      "baseRefOid": "4c57adb7e3cf0ccd004c4697c6f5e6ae90602a3d",
-      "headRepository": "rohitpc363/dtls13-spec",
-      "headRefName": "patch-1",
-      "headRefOid": "a59b7a39c8829fa8afacc61e9db7f903992baeb2",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
-      "reviews": []
-    },
-    {
       "number": 208,
       "id": "MDExOlB1bGxSZXF1ZXN0NTY4NjMzODk2",
       "title": "nits from AD re-review",
@@ -11300,7 +11714,7 @@
           "commit": {
             "abbreviatedOid": "b6ea6da"
           },
-          "author": "hanno-arm",
+          "author": "hanno-becker",
           "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
@@ -12023,25 +12437,33 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NjkwMjYxOTM1",
       "title": "More epochs per connection (uint32 or uint64)",
       "url": "https://github.com/tlswg/dtls13-spec/pull/250",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "emanjon",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "This PR addresses #249.\r\n\r\nLarger epoch (e.g. 32-bit) seems quite straightforward.\r\n\r\n- It changes the DTLSPlaintext structure which is not sent on the wire.\r\n\r\n- It changes the RecordNumber structure used in the ACK message. This should likely contain the full epoch\r\n\r\n- It changes the 64-bit \"record_sequence_number\". This PR suggest the 64 low order bits of the RecordNumber.\r\nI think it could also be set to 0x0000 || sequence_number. I don't think epoch is needed here as the keys are\r\ndifferent.\r\n\r\nNote that a 32-bit epoch still limits the number of packets in a AES-GCM connection compared to what is allowed in DTLS 1.2.\r\n2^56.6 compared to 2^64. 2^56.5 is likely enough for all use cases but epoch could also be made even larger 2^48 or 2^64.",
       "createdAt": "2021-07-14T22:21:22Z",
-      "updatedAt": "2021-08-14T20:53:20Z",
+      "updatedAt": "2021-11-09T16:41:11Z",
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "1edd82ec3ec1fb49df62c45728e1ef3f4d34fef7",
-      "headRepository": "emanjon/dtls13-spec",
+      "headRepository": null,
       "headRefName": "patch-5",
       "headRefOid": "d9a40d5dd170074ba01cfe1dc54849a26d0a3c7d",
-      "closedAt": null,
+      "closedAt": "2021-11-09T16:41:10Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Based on IETF 112, closing in favor of #257.",
+          "createdAt": "2021-11-09T16:41:10Z",
+          "updatedAt": "2021-11-09T16:41:10Z"
+        }
+      ],
       "reviews": [
         {
           "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NzEyMTMzMTAz",
@@ -12170,21 +12592,21 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NjkxMzUzNTc1",
       "title": "More epochs per connection (epoch wrap)",
       "url": "https://github.com/tlswg/dtls13-spec/pull/252",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "emanjon",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Alternative solution to address issue #249 \r\n\r\nThis may be a simpler solution unless there are any security implications. DTLS 1.0 allowed epoch wrapping. DTLS 1.2 forbid epoch wrapping. I don't know the history behind this or if the reasons for forbidding epoch wrapping in DTLS 1.2 still apply to DTLS 1.3",
       "createdAt": "2021-07-16T10:00:01Z",
-      "updatedAt": "2021-07-16T11:53:41Z",
+      "updatedAt": "2021-11-09T16:41:02Z",
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "1edd82ec3ec1fb49df62c45728e1ef3f4d34fef7",
-      "headRepository": "emanjon/dtls13-spec",
+      "headRepository": null,
       "headRefName": "patch-6",
       "headRefOid": "e6af982136ede12668f6effccf5f2aecbe2b264d",
-      "closedAt": null,
+      "closedAt": "2021-11-09T16:41:02Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
@@ -12195,6 +12617,13 @@
           "body": "This change should not be accepted until one have decided if #253 makes sense, because then non-wrapping epoch would avoid creating a risk with the key exporter. ",
           "createdAt": "2021-07-16T11:53:41Z",
           "updatedAt": "2021-07-16T11:53:41Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Based on IETF 112, closing in favor of #257.",
+          "createdAt": "2021-11-09T16:41:02Z",
+          "updatedAt": "2021-11-09T16:41:02Z"
         }
       ],
       "reviews": []
@@ -12204,21 +12633,21 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NzEyODE4Njgy",
       "title": "Increase effective epoch width to 64 bits, keeping the serialized representation 16 bits wide",
       "url": "https://github.com/tlswg/dtls13-spec/pull/255",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "chris-wood",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Yet another alternative to #249. \r\n\r\ncc @emanjon @hannestschofenig ",
       "createdAt": "2021-08-14T18:04:51Z",
-      "updatedAt": "2021-08-14T22:53:25Z",
+      "updatedAt": "2021-11-09T16:40:54Z",
       "baseRepository": "tlswg/dtls13-spec",
       "baseRefName": "master",
       "baseRefOid": "1edd82ec3ec1fb49df62c45728e1ef3f4d34fef7",
       "headRepository": "tlswg/dtls13-spec",
       "headRefName": "caw/epoch-to-64bits",
-      "headRefOid": "91a9879f9158734e518010374d8591ab25301c10",
-      "closedAt": null,
+      "headRefOid": "d9f77b7bf7dd9057a761347481ec7281e51fe738",
+      "closedAt": "2021-11-09T16:40:53Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
@@ -12236,6 +12665,13 @@
           "body": "> so I think all that's needed is to say that the epoch field in DTLSPlaintext is also truncated but that the actual epoch is 64 bits.\r\n\r\nDropped \"effective,\" so the current PR should reflect this. \ud83d\udc4d ",
           "createdAt": "2021-08-14T22:49:30Z",
           "updatedAt": "2021-08-14T22:49:30Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Based on IETF 112, closing in favor of #257.",
+          "createdAt": "2021-11-09T16:40:53Z",
+          "updatedAt": "2021-11-09T16:40:53Z"
         }
       ],
       "reviews": [
@@ -12284,8 +12720,1155 @@
               "updatedAt": "2021-08-14T22:53:25Z"
             }
           ]
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4uBYWo",
+          "commit": {
+            "abbreviatedOid": "91a9879"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "This doesn't work as far as I can tell.",
+          "createdAt": "2021-10-06T01:18:13Z",
+          "updatedAt": "2021-10-06T01:24:41Z",
+          "comments": [
+            {
+              "originalPosition": 32,
+              "body": "Down on line 479/487, it says \"This 64-bit value is used in the ACK message as well as in the \"record_sequence_number\" input to the AEAD function.\r\n\r\nTwo problems:\r\n\r\n1. It's no longer 64 bits.  It's 112 bits.\r\n2. It's no longer 64 bits.  It's 112 bits.\r\n\r\nThe first is just correcting the text.\r\n\r\nThe second is that the per-record nonce construction in https://datatracker.ietf.org/doc/html/rfc8446#section-5.3 no longer works for most, if not all, modern ciphers without additional transforms (which would reduce, not improve security).\r\n\r\nI think that the fix here is to make the epoch 48 bits rather than 64.  Still, this will need a lot more text in order to make the generation of the per-record nonce clear.  You need to point to Section 5.3 of 8446 and say what is different and why.\r\n\r\n(I searched for \"record_sequence_number\" in this document and RFC 8446 and found no other mentions of the string.  I'm sure that people without context will really struggle with this.)",
+              "createdAt": "2021-10-06T01:18:13Z",
+              "updatedAt": "2021-10-06T01:28:55Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4ugxZt",
+          "commit": {
+            "abbreviatedOid": "8b2a5c7"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2021-10-14T23:31:55Z",
+          "updatedAt": "2021-10-14T23:31:55Z",
+          "comments": [
+            {
+              "originalPosition": 37,
+              "body": "So I don't think that this is quite enough.  Technically, it's fine, but \"record_sequence_number\" is not a thing.  I couldn't find a definition in this doc or RFC 8446.  Why not just cite [Section 5.3 of RFC 8446](https://datatracker.ietf.org/doc/html/rfc8446#section-5.3)?",
+              "createdAt": "2021-10-14T23:31:55Z",
+              "updatedAt": "2021-10-14T23:31:55Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4ugxna",
+          "commit": {
+            "abbreviatedOid": "8b2a5c7"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2021-10-14T23:33:54Z",
+          "updatedAt": "2021-10-14T23:33:54Z",
+          "comments": [
+            {
+              "originalPosition": 37,
+              "body": "That's existing text, but we can certainly improve it here.",
+              "createdAt": "2021-10-14T23:33:54Z",
+              "updatedAt": "2021-10-14T23:33:54Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4uin6-",
+          "commit": {
+            "abbreviatedOid": "d9f77b7"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2021-10-15T13:19:15Z",
+          "updatedAt": "2021-10-15T13:19:15Z",
+          "comments": [
+            {
+              "originalPosition": 37,
+              "body": "@martinthomson - done.",
+              "createdAt": "2021-10-15T13:19:15Z",
+              "updatedAt": "2021-10-15T13:19:15Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4ulSbN",
+          "commit": {
+            "abbreviatedOid": "d9f77b7"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-10-18T01:39:02Z",
+          "updatedAt": "2021-10-18T01:39:02Z",
+          "comments": []
         }
       ]
+    },
+    {
+      "number": 256,
+      "id": "PR_kwDOBTh4qM4sm3mc",
+      "title": "Attempt to address #254 : Mention RFC 7457 in Security section",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/256",
+      "state": "CLOSED",
+      "author": "elvey",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-10-03T19:22:48Z",
+      "updatedAt": "2021-11-15T07:41:02Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "1edd82ec3ec1fb49df62c45728e1ef3f4d34fef7",
+      "headRepository": "elvey/dtls13-spec",
+      "headRefName": "patch-1",
+      "headRefOid": "ceb46c706e90900d70bdeb53c6c593d03fe3039a",
+      "closedAt": "2021-11-12T14:50:57Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "seanturner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "As discussed at IETF 112, close this PR.",
+          "createdAt": "2021-11-09T16:45:51Z",
+          "updatedAt": "2021-11-09T16:45:51Z"
+        },
+        {
+          "author": "elvey",
+          "authorAssociation": "NONE",
+          "body": "Okay.",
+          "createdAt": "2021-11-15T07:41:02Z",
+          "updatedAt": "2021-11-15T07:41:02Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 257,
+      "id": "PR_kwDOBTh4qM4uPuM7",
+      "title": "Extended epoch like tls. Fixed #249",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/257",
+      "state": "MERGED",
+      "author": "ekr",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Yet another attempt to fix #249.\r\n\r\nThis builds on Chris's PR but just omits the epoch entirely from the AEAD nonce calculation. This is more consistent with TLS and doesn't require special case reasoning about why we only need to build in the bottom 16 bits. This relies entirely on the keys being different. Needs analysis.",
+      "createdAt": "2021-11-08T19:06:30Z",
+      "updatedAt": "2022-02-25T18:30:12Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "1edd82ec3ec1fb49df62c45728e1ef3f4d34fef7",
+      "headRepository": "ekr/dtls13-spec",
+      "headRefName": "extended_epoch_like_tls",
+      "headRefOid": "85cd3b5eb6fd9c9d82075d2859b3ecfb8bc6a512",
+      "closedAt": "2022-02-25T18:30:11Z",
+      "mergedAt": "2022-02-25T18:30:11Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "85cd3b5eb6fd9c9d82075d2859b3ecfb8bc6a512"
+      },
+      "comments": [
+        {
+          "author": "kaduk",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This seems promising.",
+          "createdAt": "2021-11-08T22:35:39Z",
+          "updatedAt": "2021-11-08T22:35:39Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@ekr this LGTM, but there's a conflict. Can you resolve prior to merging? \r\n\r\n@martinthomson, are you OK with the new rationale, and text that allows it to be relaxed in the future?",
+          "createdAt": "2022-02-03T00:59:45Z",
+          "updatedAt": "2022-02-03T00:59:45Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOBTh4qM4yMcmC",
+          "commit": {
+            "abbreviatedOid": "7d64b32"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "Thanks -- this LGTM. We'll need to do a brief consensus call given the type of change.",
+          "createdAt": "2021-12-31T00:16:42Z",
+          "updatedAt": "2021-12-31T00:16:42Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4yYV59",
+          "commit": {
+            "abbreviatedOid": "7d64b32"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "Many implementations of DTLS use a 16-bit integer to hold epoch.  Sometimes, that leaks into places that mean that it is hard to change.\r\n\r\nThose of us with this problem can probably pull the same trick as here and only expose the low 16 bits, but would it be possible to implement this without allowing key updates that take epoch to 2^16?",
+          "createdAt": "2022-01-06T03:02:14Z",
+          "updatedAt": "2022-01-06T03:07:01Z",
+          "comments": [
+            {
+              "originalPosition": 10,
+              "body": "```suggestion\r\n   MUST NOT be sent with sequence numbers that would exceed 2^48-1, so the\r\n```",
+              "createdAt": "2022-01-06T03:02:14Z",
+              "updatedAt": "2022-01-06T03:07:01Z"
+            },
+            {
+              "originalPosition": 87,
+              "body": "This is somewhat arbitrary.  If the epoch can have 64 bit values, then why not allow for the full range of values to be used?  Is there an analysis that suggests that rekeying too often leads to this problem?\r\n\r\nAlso, I would have said >2^48-1 OR >= 2^48, but not this.  I can almost guarantee a test failure in some compliance test arising from that choice.  The test will be pointless too.",
+              "createdAt": "2022-01-06T03:05:16Z",
+              "updatedAt": "2022-01-06T03:07:01Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4yYXN3",
+          "commit": {
+            "abbreviatedOid": "7d64b32"
+          },
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-01-06T03:16:27Z",
+          "updatedAt": "2022-01-06T03:16:27Z",
+          "comments": [
+            {
+              "originalPosition": 87,
+              "body": "With a key space of 2^{128}, 2^{64} rekeys has a significant chance of key repetition.\r\n\r\nThe IV randomization is intended to address this, but I prefer to be cautious, especially as there is no realistic scenario in which > 24^{48} rekeys will be needed.",
+              "createdAt": "2022-01-06T03:16:27Z",
+              "updatedAt": "2022-01-06T03:16:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4yYXQw",
+          "commit": {
+            "abbreviatedOid": "7d64b32"
+          },
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-01-06T03:16:51Z",
+          "updatedAt": "2022-01-06T03:16:51Z",
+          "comments": [
+            {
+              "originalPosition": 87,
+              "body": "Happy to change this to >= 2^{48}",
+              "createdAt": "2022-01-06T03:16:51Z",
+              "updatedAt": "2022-01-06T03:16:51Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4yYXgq",
+          "commit": {
+            "abbreviatedOid": "7d64b32"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-01-06T03:20:01Z",
+          "updatedAt": "2022-01-06T03:20:01Z",
+          "comments": [
+            {
+              "originalPosition": 87,
+              "body": "If we accept the premise that the nonce is effectively part of the key space, then AES-128 is still probably OK with that many rekeys.  AES-256 and ChaCha20Poly1305 have no such problem.  I'm just concerned that this is arbitrary and unexplained.",
+              "createdAt": "2022-01-06T03:20:01Z",
+              "updatedAt": "2022-01-06T03:20:01Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4z79PC",
+          "commit": {
+            "abbreviatedOid": "fc1788e"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "Seems OK.",
+          "createdAt": "2022-02-03T04:34:23Z",
+          "updatedAt": "2022-02-03T04:43:48Z",
+          "comments": [
+            {
+              "originalPosition": 2,
+              "body": "```suggestion\r\n---\r\n```",
+              "createdAt": "2022-02-03T04:34:24Z",
+              "updatedAt": "2022-02-03T04:43:48Z"
+            },
+            {
+              "originalPosition": 107,
+              "body": "What can it do instead?",
+              "createdAt": "2022-02-03T04:43:12Z",
+              "updatedAt": "2022-02-03T04:43:48Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 258,
+      "id": "PR_kwDOBTh4qM4uVFRv",
+      "title": "Allow immediate processing of handshake data, where possible",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/258",
+      "state": "CLOSED",
+      "author": "hanno-becker",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Change as agreed in https://mailarchive.ietf.org/arch/msg/tls/PLK-EW_bWIXV74nm_8gSHwu5cqk/.",
+      "createdAt": "2021-11-10T06:48:44Z",
+      "updatedAt": "2021-12-06T19:46:46Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "1edd82ec3ec1fb49df62c45728e1ef3f4d34fef7",
+      "headRepository": "hanno-becker/dtls13-spec",
+      "headRefName": "immediate_processing",
+      "headRefOid": "44af27ea9619352a2115e8f6e3c9285439290146",
+      "closedAt": "2021-12-06T19:46:45Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "hanno-becker",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@ekr @chris-wood Any comments/concerns?",
+          "createdAt": "2021-11-12T05:19:29Z",
+          "updatedAt": "2021-11-12T05:19:29Z"
+        },
+        {
+          "author": "hanno-becker",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@kaduk Good idea!\r\n\r\nWhat about this, @kaduk @ekr @chris-wood:\r\n> When a DTLS implementation receives a handshake message fragment corresponding to the next expected handshake message sequence number, it MUST NOT discard it. It is RECOMMENDED that the implementation buffers such fragments until it has the entire handshake message, but it MAY also process the fragment immediately.\r\n\r\n",
+          "createdAt": "2021-11-22T23:25:37Z",
+          "updatedAt": "2021-11-22T23:25:37Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@hanno-arm this seems better given that it avoids the \"where possible\" ambiguity. @ekr, what do you think?",
+          "createdAt": "2021-11-23T23:27:05Z",
+          "updatedAt": "2021-11-23T23:27:05Z"
+        },
+        {
+          "author": "hanno-becker",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@ekr Appreciate it's not the most important issue, but can you take a look so we can get this in, one form or another?",
+          "createdAt": "2021-11-27T05:15:25Z",
+          "updatedAt": "2021-11-27T05:15:41Z"
+        },
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I took another attempt at this in #261 ",
+          "createdAt": "2021-12-01T17:11:38Z",
+          "updatedAt": "2021-12-01T17:11:38Z"
+        },
+        {
+          "author": "hanno-becker",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@ekr What are your concerns with the present version?",
+          "createdAt": "2021-12-01T17:16:47Z",
+          "updatedAt": "2021-12-01T17:16:47Z"
+        },
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Well, originally I just thought my text was clearer. But now that I know that the intent is to allow out-of-order processing I have a technical objection.",
+          "createdAt": "2021-12-01T17:55:39Z",
+          "updatedAt": "2021-12-01T17:55:39Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Closing as proposed in #261.",
+          "createdAt": "2021-12-06T19:46:45Z",
+          "updatedAt": "2021-12-06T19:46:45Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOBTh4qM4v-kN3",
+          "commit": {
+            "abbreviatedOid": "44af27e"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "\"Where possible\" is a bit unclear, but I don't have any better suggestions at the moment.",
+          "createdAt": "2021-11-12T15:26:18Z",
+          "updatedAt": "2021-11-12T15:26:18Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4wPhCr",
+          "commit": {
+            "abbreviatedOid": "44af27e"
+          },
+          "author": "kaduk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "I would be interested to see an alternative proposal that moves to a \"MUST NOT discard\" framing.  This version of \"MUST buffer ... but MAY as an alternative process\" feels a bit like giving conflicting advice.\r\n\r\nI note that the \"next expected handshake message sequence number\" is  important here -- fragments of subsequent messages can be discarded.",
+          "createdAt": "2021-11-18T02:02:00Z",
+          "updatedAt": "2021-11-18T02:02:00Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 261,
+      "id": "PR_kwDOBTh4qM4vQ01h",
+      "title": "Another take on being able to process early. Fixes #259.",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/261",
+      "state": "MERGED",
+      "author": "ekr",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "@kaduk here is another try at this.",
+      "createdAt": "2021-12-01T17:11:12Z",
+      "updatedAt": "2021-12-10T18:05:12Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "1edd82ec3ec1fb49df62c45728e1ef3f4d34fef7",
+      "headRepository": "ekr/dtls13-spec",
+      "headRefName": "early_processing",
+      "headRefOid": "e57f226c329eade42456cd998a2f6276b076bbdd",
+      "closedAt": "2021-12-06T19:46:55Z",
+      "mergedAt": "2021-12-06T19:46:55Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "97a2f619fa9bda8773a13d01b41f85538a828302"
+      },
+      "comments": [
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I did not realize that the intent of your text was to allow out of order processing. IMO that's off the fairway and\r\nwe shouldn't allow that any more than we let you reach into the TCP stack and pull out forward messages.",
+          "createdAt": "2021-12-01T17:51:50Z",
+          "updatedAt": "2021-12-01T17:51:50Z"
+        },
+        {
+          "author": "hanno-becker",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@ekr I don't think the comparison with TCP works - the handshake protocol is internal. We should not force a particular implementation unless there's good reason to. In this case, as explained on the list, there's potential merit of allowing out of order processing of very large handshake messages with known structure.\r\n@chris-wood What's your opinion?",
+          "createdAt": "2021-12-04T21:08:54Z",
+          "updatedAt": "2021-12-04T21:08:54Z"
+        },
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Again, this is a last minute change during Auth48, so the bar is *much*\nhigher than \"potential merit\"\n\n\n\n\nOn Sat, Dec 4, 2021 at 1:09 PM Hanno Becker ***@***.***>\nwrote:\n\n> @ekr <https://github.com/ekr> I don't think the comparison with TCP works\n> - the handshake protocol is internal. We should not force a particular\n> implementation unless there's good reason to. In this case, as explained on\n> the list, there's potential merit of allowing out of order processing of\n> very large handshake messages with known structure.\n> @chris-wood <https://github.com/chris-wood> What's your opinion?\n>\n> \u2014\n> You are receiving this because you were mentioned.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/tlswg/dtls13-spec/pull/261#issuecomment-986093070>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AAIPLIME2Q2D7K6ZCXMVJ53UPJ7PDANCNFSM5JFAGOLA>\n> .\n> Triage notifications on the go with GitHub Mobile for iOS\n> <https://apps.apple.com/app/apple-store/id1477376905?ct=notification-email&mt=8&pt=524675>\n> or Android\n> <https://play.google.com/store/apps/details?id=com.github.android&referrer=utm_campaign%3Dnotification-email%26utm_medium%3Demail%26utm_source%3Dgithub>.\n>\n>\n",
+          "createdAt": "2021-12-06T19:06:12Z",
+          "updatedAt": "2021-12-06T19:06:12Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This isn't motivated by security-related reasons like #257, so I agree with @ekr that this does not raise to the level of an AUTH48 change. I propose we land this PR and close out #258.\r\n",
+          "createdAt": "2021-12-06T19:46:00Z",
+          "updatedAt": "2021-12-06T19:46:00Z"
+        },
+        {
+          "author": "hanno-becker",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thanks @chris-wood @ekr for considering this in the first place. As I understood @ekr, since this does not impact the wire-format, we can revisit once the RFC has been finalized?",
+          "createdAt": "2021-12-10T06:00:57Z",
+          "updatedAt": "2021-12-10T06:00:57Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> we can revisit once the RFC has been finalized?\r\n\r\nOnce the RFC is finalized, it's final. Changes can be requested via the [errata process](https://www.ietf.org/about/groups/iesg/statements/processing-rfc-errata/), or via a new document that updates the RFC in question.",
+          "createdAt": "2021-12-10T16:02:56Z",
+          "updatedAt": "2021-12-10T16:03:13Z"
+        },
+        {
+          "author": "hanno-becker",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Ok, thank you. I was referring to @ekr's comment on the list\r\n> ... we can just do an update without changing the protocol on the wire.",
+          "createdAt": "2021-12-10T16:05:31Z",
+          "updatedAt": "2021-12-10T16:06:03Z"
+        },
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yes. What I was saying is that you could just write an RFC that said \"you can process out of order\"",
+          "createdAt": "2021-12-10T18:05:12Z",
+          "updatedAt": "2021-12-10T18:05:12Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOBTh4qM4w6RGt",
+          "commit": {
+            "abbreviatedOid": "e57f226"
+          },
+          "author": "hanno-becker",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "As mentioned on the list, I don't like the in-order qualification. I agree it's debatable whether there will be cases where it makes sense to process data out of order, but (see list again) it is not inconceivable, and I see no reason to exclude this here. I would therefore prefer to drop the in-order qualification.",
+          "createdAt": "2021-12-01T17:15:32Z",
+          "updatedAt": "2021-12-01T17:15:50Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4xI0Pm",
+          "commit": {
+            "abbreviatedOid": "e57f226"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-12-06T19:46:07Z",
+          "updatedAt": "2021-12-06T19:46:07Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 262,
+      "id": "PR_kwDOBTh4qM4wJ4vD",
+      "title": "Change the transcript to use TLS 1.3-style Handshake messages. Fixes",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/262",
+      "state": "MERGED",
+      "author": "ekr",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This makes the handshake the same as TLS 1.3 (modulo the version\r\nnumbers, which are conveniently different.\r\n\r\n",
+      "createdAt": "2021-12-21T21:27:15Z",
+      "updatedAt": "2022-01-22T14:46:16Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "97a2f619fa9bda8773a13d01b41f85538a828302",
+      "headRepository": "ekr/dtls13-spec",
+      "headRefName": "issue247_transcript",
+      "headRefOid": "20d250a481656c94f7a1df1d9058fa0dd3636502",
+      "closedAt": "2022-01-22T14:46:16Z",
+      "mergedAt": "2022-01-22T14:46:16Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "042f3b191008c4162f6ee8d6c553ca614aba0220"
+      },
+      "comments": [
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "As discussed at the meeting. @davidben, PTAL.",
+          "createdAt": "2021-12-21T21:27:32Z",
+          "updatedAt": "2021-12-21T21:27:32Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOBTh4qM4x8vBt",
+          "commit": {
+            "abbreviatedOid": "5352c64"
+          },
+          "author": "kaduk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2021-12-22T01:51:08Z",
+          "updatedAt": "2021-12-22T01:51:08Z",
+          "comments": [
+            {
+              "originalPosition": 88,
+              "body": "I mostly assume no one implemented the literal reading of this, where CertificateVerify/Finished do not have the fragment-specific fields",
+              "createdAt": "2021-12-22T01:51:08Z",
+              "updatedAt": "2021-12-22T01:51:08Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4x_LJk",
+          "commit": {
+            "abbreviatedOid": "5352c64"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2021-12-22T16:35:25Z",
+          "updatedAt": "2021-12-22T16:37:07Z",
+          "comments": [
+            {
+              "originalPosition": 64,
+              "body": "```suggestion\r\nor by processing any in-order portions of the message.\r\n```",
+              "createdAt": "2021-12-22T16:35:25Z",
+              "updatedAt": "2021-12-22T16:37:07Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4yCpQV",
+          "commit": {
+            "abbreviatedOid": "5352c64"
+          },
+          "author": "davidben",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2021-12-23T18:24:23Z",
+          "updatedAt": "2021-12-23T18:24:24Z",
+          "comments": [
+            {
+              "originalPosition": 55,
+              "body": "Typo and I think missing a word. Did you mean this?\r\n```suggestion\r\nsame message_seq value associated with the original handshake message.  Each new\r\n```",
+              "createdAt": "2021-12-23T18:24:24Z",
+              "updatedAt": "2021-12-23T18:24:24Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4yKshU",
+          "commit": {
+            "abbreviatedOid": "5352c64"
+          },
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2021-12-30T00:23:55Z",
+          "updatedAt": "2021-12-30T00:23:55Z",
+          "comments": [
+            {
+              "originalPosition": 88,
+              "body": "Well that's what we are telling people to do now.",
+              "createdAt": "2021-12-30T00:23:55Z",
+              "updatedAt": "2021-12-30T00:23:55Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4yMcnJ",
+          "commit": {
+            "abbreviatedOid": "969daff"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "This also LGTM. Let's do a brief consensus call before merging.",
+          "createdAt": "2021-12-31T00:17:14Z",
+          "updatedAt": "2021-12-31T00:17:14Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4ydoX9",
+          "commit": {
+            "abbreviatedOid": "969daff"
+          },
+          "author": "thomas-fossati",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-01-07T13:54:46Z",
+          "updatedAt": "2022-01-07T13:54:47Z",
+          "comments": [
+            {
+              "originalPosition": 42,
+              "body": "typo\r\n```suggestion\r\na change from DTLS 1.2 where those values were included\r\n```",
+              "createdAt": "2022-01-07T13:54:46Z",
+              "updatedAt": "2022-01-07T13:54:47Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 263,
+      "id": "PR_kwDOBTh4qM4wP0-d",
+      "title": "RPC Edits",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/263",
+      "state": "CLOSED",
+      "author": "ekr",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-12-24T00:12:49Z",
+      "updatedAt": "2022-02-01T20:51:39Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "97a2f619fa9bda8773a13d01b41f85538a828302",
+      "headRepository": "ekr/dtls13-spec",
+      "headRefName": "auth48",
+      "headRefOid": "717df890d40705615207542ecb66352c64ea06a2",
+      "closedAt": "2022-02-01T20:51:39Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "These are editorial edits to line up with the RPC.",
+          "createdAt": "2021-12-24T00:13:03Z",
+          "updatedAt": "2021-12-24T00:13:03Z"
+        },
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Merged by hand.",
+          "createdAt": "2022-02-01T20:51:39Z",
+          "updatedAt": "2022-02-01T20:51:39Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 265,
+      "id": "PR_kwDOBTh4qM4w1Lvp",
+      "title": "Renaming HandshakeType names in IANA request",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/265",
+      "state": "MERGED",
+      "author": "seanturner",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Resolves #264.",
+      "createdAt": "2022-01-12T02:20:26Z",
+      "updatedAt": "2022-03-05T02:51:50Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "97a2f619fa9bda8773a13d01b41f85538a828302",
+      "headRepository": null,
+      "headRefName": "iana_reg_names",
+      "headRefOid": "c25a2caa01a2aec30b358299fb41587783db2756",
+      "closedAt": "2022-01-22T14:48:03Z",
+      "mergedAt": "2022-01-22T14:48:03Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "8c06d270d567d3d7ff0264ca5b9d3539c541532b"
+      },
+      "comments": [
+        {
+          "author": "seanturner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "As far as referring to the snake case in the main body, I went and looked at RFC 8446 and it does not refer to the snake case.  I tend to think that if we make the change in 5.2 and A.2, that should be enough breadcrumbs for people to figure it out.\r\n\r\nI put them in the same order as they are in the registry and moved up new_session_ticket.\r\n\r\nTriple check this change please.",
+          "createdAt": "2022-01-14T03:54:44Z",
+          "updatedAt": "2022-01-14T03:54:44Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOBTh4qM4yqK2o",
+          "commit": {
+            "abbreviatedOid": "bad5c1e"
+          },
+          "author": "kaduk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "Do we want anything in the prose about how the RequestConnectionId structure is the message contents when the HandshakeType is request_connection_id/etc.?\r\nAlso update Appendix A.2?",
+          "createdAt": "2022-01-12T02:29:09Z",
+          "updatedAt": "2022-01-12T02:29:09Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4zRcvH",
+          "commit": {
+            "abbreviatedOid": "c25a2ca"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2022-01-22T14:47:58Z",
+          "updatedAt": "2022-01-22T14:47:58Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4zmclr",
+          "commit": {
+            "abbreviatedOid": "c25a2ca"
+          },
+          "author": "kaduk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-01-28T05:51:42Z",
+          "updatedAt": "2022-01-28T05:51:43Z",
+          "comments": [
+            {
+              "originalPosition": 16,
+              "body": "Shouldn't this be just \"RequestConnectionId\", not \"Requested\"?",
+              "createdAt": "2022-01-28T05:51:42Z",
+              "updatedAt": "2022-01-28T05:51:43Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOBTh4qM4zmczs",
+          "commit": {
+            "abbreviatedOid": "c25a2ca"
+          },
+          "author": "kaduk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-01-28T05:53:47Z",
+          "updatedAt": "2022-01-28T05:53:47Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "I see NST (4) as before EOED (5) in the registry.",
+              "createdAt": "2022-01-28T05:53:47Z",
+              "updatedAt": "2022-01-28T05:53:47Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOBTh4qM41sh_5",
+          "commit": {
+            "abbreviatedOid": "c25a2ca"
+          },
+          "author": "kaduk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-03-05T02:33:35Z",
+          "updatedAt": "2022-03-05T02:33:35Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "Were we planning to order these by codepoint value in the final RFC?",
+              "createdAt": "2022-03-05T02:33:35Z",
+              "updatedAt": "2022-03-05T02:33:36Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOBTh4qM41siI1",
+          "commit": {
+            "abbreviatedOid": "c25a2ca"
+          },
+          "author": "seanturner",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-03-05T02:39:58Z",
+          "updatedAt": "2022-03-05T02:39:59Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "Yes ... will submit a new PR now to reorder",
+              "createdAt": "2022-03-05T02:39:59Z",
+              "updatedAt": "2022-03-05T02:39:59Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOBTh4qM41sian",
+          "commit": {
+            "abbreviatedOid": "c25a2ca"
+          },
+          "author": "seanturner",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-03-05T02:51:50Z",
+          "updatedAt": "2022-03-05T02:51:50Z",
+          "comments": [
+            {
+              "originalPosition": 16,
+              "body": "Yes fixing this too.",
+              "createdAt": "2022-03-05T02:51:50Z",
+              "updatedAt": "2022-03-05T02:51:50Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 266,
+      "id": "PR_kwDOBTh4qM4x7fsI",
+      "title": "Clarify transcript",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/266",
+      "state": "MERGED",
+      "author": "ekr",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2022-02-01T21:07:42Z",
+      "updatedAt": "2022-02-03T01:00:20Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "2ce6bab20debc7ba580d6faf233178ab08637f52",
+      "headRepository": "ekr/dtls13-spec",
+      "headRefName": "transcript_clarification",
+      "headRefOid": "e2ab331a9fd3aa0f327b6faf756818c5c19cec4e",
+      "closedAt": "2022-02-03T01:00:20Z",
+      "mergedAt": "2022-02-03T01:00:20Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "ce9adfe88ea363ed4ea6dfb370d2f3a723597956"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOBTh4qM4z7oic",
+          "commit": {
+            "abbreviatedOid": "e2ab331"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2022-02-03T01:00:14Z",
+          "updatedAt": "2022-02-03T01:00:14Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 269,
+      "id": "PR_kwDOBTh4qM4zey7C",
+      "title": "Clarify closure alert",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/269",
+      "state": "MERGED",
+      "author": "ekr",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #268.",
+      "createdAt": "2022-02-25T18:50:58Z",
+      "updatedAt": "2022-03-15T22:22:20Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "af059c7d5f5296b3d3e68613dda2cdc7c9932e60",
+      "headRepository": "ekr/dtls13-spec",
+      "headRefName": "issue268_closure_alerts",
+      "headRefOid": "dccc79e0fac1be242100a143b57b78c0402b92db",
+      "closedAt": "2022-03-15T22:22:20Z",
+      "mergedAt": "2022-03-15T22:22:19Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "81362f56fdbf4d61836de147047f3660bcc8d1a7"
+      },
+      "comments": [
+        {
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "body": "It looks like a reasonable statement to make",
+          "createdAt": "2022-03-07T11:53:42Z",
+          "updatedAt": "2022-03-07T11:53:42Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOBTh4qM41TxtN",
+          "commit": {
+            "abbreviatedOid": "059a2a6"
+          },
+          "author": "kaduk",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "I agree that this is the semantics we want from the alert.\r\nDo we need to say something that specifically countermands the directive from RFC 8446 that essentially uses a time-based criterion in addition to this, though?",
+          "createdAt": "2022-02-26T06:06:00Z",
+          "updatedAt": "2022-02-26T06:06:00Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOBTh4qM41kQ-e",
+          "commit": {
+            "abbreviatedOid": "059a2a6"
+          },
+          "author": "gloinul",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "Sufficient. I guess it has more impact on the implementations as you need to separate the received close and the actual final closing that discard the keys and state allowing to process the data.",
+          "createdAt": "2022-03-03T10:05:02Z",
+          "updatedAt": "2022-03-03T10:05:02Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 270,
+      "id": "PR_kwDOBTh4qM4z-J3-",
+      "title": "More words about reachability testing. Fixes #267",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/270",
+      "state": "MERGED",
+      "author": "ekr",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2022-03-04T19:06:53Z",
+      "updatedAt": "2022-03-05T02:50:49Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "e2bc40d07158fb135b897fa10a83e8adbdd52f13",
+      "headRepository": "ekr/dtls13-spec",
+      "headRefName": "reachability_clarification",
+      "headRefOid": "408014dc473b93535c8805513e37a6da04ff0ee2",
+      "closedAt": "2022-03-05T02:50:49Z",
+      "mergedAt": "2022-03-05T02:50:49Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "cbca93f00606a260f49d64c583e0bef38d17c83f"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOBTh4qM41sh9q",
+          "commit": {
+            "abbreviatedOid": "408014d"
+          },
+          "author": "seanturner",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2022-03-05T02:32:08Z",
+          "updatedAt": "2022-03-05T02:32:08Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 271,
+      "id": "PR_kwDOBTh4qM4z-8tY",
+      "title": "fix msg_type's ordering and name",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/271",
+      "state": "MERGED",
+      "author": "seanturner",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "In #265 didn't quite get it right. Fixing it now so the order matches the IANA reg, and the name case matches the field name.",
+      "createdAt": "2022-03-05T02:53:47Z",
+      "updatedAt": "2022-03-05T03:10:30Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "cbca93f00606a260f49d64c583e0bef38d17c83f",
+      "headRepository": null,
+      "headRefName": "reorder_msg-type",
+      "headRefOid": "3c26042b444e3b78722849c113132f2a9aeee414",
+      "closedAt": "2022-03-05T02:54:40Z",
+      "mergedAt": "2022-03-05T02:54:40Z",
+      "mergedBy": "chris-wood",
+      "mergeCommit": {
+        "oid": "bdf1810cf0ef9d0a4f5ae065eb55b123e9875ee5"
+      },
+      "comments": [
+        {
+          "author": "kaduk",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thanks!",
+          "createdAt": "2022-03-05T03:10:30Z",
+          "updatedAt": "2022-03-05T03:10:30Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOBTh4qM41siiH",
+          "commit": {
+            "abbreviatedOid": "3c26042"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2022-03-05T02:54:36Z",
+          "updatedAt": "2022-03-05T02:54:36Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 285,
+      "id": "PR_kwDOBTh4qM6C9Gxr",
+      "title": "Update a lot of stuff",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/285",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I wasn't sure about the name change, but this is what I needed to do to get it to build.",
+      "createdAt": "2024-11-24T23:49:19Z",
+      "updatedAt": "2024-11-25T00:08:10Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "c3fa2df8f83b6166e43e374fc00cfa8e34d1ddbe",
+      "headRepository": "martinthomson/dtls13-spec",
+      "headRefName": "update-stuff",
+      "headRefOid": "684fd004c4595e043471a4c9240a351dc5a8e4ad",
+      "closedAt": "2024-11-25T00:08:10Z",
+      "mergedAt": "2024-11-25T00:08:10Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "1750e6d4a396b004ff4f17e85c6b4e47fb3cc386"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 286,
+      "id": "PR_kwDOBTh4qM6C9IrD",
+      "title": "Python fixes.",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/286",
+      "state": "MERGED",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "And run black to keep things tidy\r\n\r\nCloses #284.",
+      "createdAt": "2024-11-24T23:56:03Z",
+      "updatedAt": "2024-11-25T00:08:21Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "c3fa2df8f83b6166e43e374fc00cfa8e34d1ddbe",
+      "headRepository": "martinthomson/dtls13-spec",
+      "headRefName": "r-string",
+      "headRefOid": "a793fc20298d61c755f30803efe9ab42fb6b33a0",
+      "closedAt": "2024-11-25T00:08:21Z",
+      "mergedAt": "2024-11-25T00:08:21Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "f9f77d75561a7a1aad6a200198f8f5a34ec95468"
+      },
+      "comments": [
+        {
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Something is not quite right with CI here....",
+          "createdAt": "2024-11-25T00:03:20Z",
+          "updatedAt": "2024-11-25T00:03:20Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Yeah, the other PR (#285) fixes that.  I didn't want to stack 'em to make reviewing easier.",
+          "createdAt": "2024-11-25T00:06:45Z",
+          "updatedAt": "2024-11-25T00:06:45Z"
+        }
+      ],
+      "reviews": []
     }
   ]
 }
