@@ -5,10 +5,10 @@
 TLS                                                          E. Rescorla
 Internet-Draft                                               Independent
 Obsoletes: 9147 (if approved)                              H. Tschofenig
-Intended status: Standards Track                             Arm Limited
-Expires: 29 May 2025                                         N. Modadugu
+Intended status: Standards Track                                   H-BRS
+Expires: 10 June 2025                                        N. Modadugu
                                                             Google, Inc.
-                                                        25 November 2024
+                                                         7 December 2024
 
 
    The Datagram Transport Layer Security (DTLS) Protocol Version 1.3
@@ -44,7 +44,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 May 2025.
+   This Internet-Draft will expire on 10 June 2025.
 
 Copyright Notice
 
@@ -3092,8 +3092,8 @@ Authors' Addresses
 
 
    Hannes Tschofenig
-   Arm Limited
-   Email: hannes.tschofenig@arm.com
+   University of Applied Sciences Bonn-Rhein-Siegx
+   Email: hannes.tschofenig@gmx.net
 
 
    Nagendra Modadugu
