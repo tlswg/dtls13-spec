@@ -32,8 +32,9 @@ author:
  -
        ins: H. Tschofenig
        name: Hannes Tschofenig
-       organization: Arm Limited
-       email: hannes.tschofenig@arm.com
+       organization: University of Applied Sciences Bonn-Rhein-Siegx
+       abbrev: H-BRS
+       email: hannes.tschofenig@gmx.net
 
  -
        ins: N. Modadugu
