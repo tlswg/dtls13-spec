@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-12-05T00:47:21.517893+00:00",
+  "timestamp": "2024-12-08T00:51:56.882487+00:00",
   "repo": "tlswg/dtls13-spec",
   "labels": [
     {
@@ -13869,6 +13869,48 @@
         }
       ],
       "reviews": []
+    },
+    {
+      "number": 288,
+      "id": "PR_kwDOBTh4qM6Eal4v",
+      "title": "Changed affiliation",
+      "url": "https://github.com/tlswg/dtls13-spec/pull/288",
+      "state": "MERGED",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-12-07T17:32:57Z",
+      "updatedAt": "2024-12-07T17:56:40Z",
+      "baseRepository": "tlswg/dtls13-spec",
+      "baseRefName": "master",
+      "baseRefOid": "f9f77d75561a7a1aad6a200198f8f5a34ec95468",
+      "headRepository": "tlswg/dtls13-spec",
+      "headRefName": "hannestschofenig-patch-41",
+      "headRefOid": "8160a0c079475dc56b37b6d96222603224d6d6da",
+      "closedAt": "2024-12-07T17:56:40Z",
+      "mergedAt": "2024-12-07T17:56:40Z",
+      "mergedBy": "ekr",
+      "mergeCommit": {
+        "oid": "4bd47ad9dd8a0e59b83143b201a34cedbd837bcc"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOBTh4qM6UN3Th",
+          "commit": {
+            "abbreviatedOid": "8160a0c"
+          },
+          "author": "ekr",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "LGTM",
+          "createdAt": "2024-12-07T17:56:35Z",
+          "updatedAt": "2024-12-07T17:56:35Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
