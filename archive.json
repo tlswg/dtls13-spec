@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-02-27T00:43:56.173953+00:00",
+  "timestamp": "2025-03-02T00:47:35.241605+00:00",
   "repo": "tlswg/dtls13-spec",
   "labels": [
     {
@@ -2183,7 +2183,7 @@
       "title": "Should the protocol specify a mechanism to ensure that the link is disconnected if the peer is restarted or some reason?",
       "url": "https://github.com/tlswg/dtls13-spec/issues/248",
       "state": "CLOSED",
-      "author": "yangyangtiantianlonglong",
+      "author": "hou2gou",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
@@ -2200,7 +2200,7 @@
           "updatedAt": "2021-06-08T15:17:00Z"
         },
         {
-          "author": "yangyangtiantianlonglong",
+          "author": "hou2gou",
           "authorAssociation": "NONE",
           "body": "```DTLS has gotten along pretty well without it so far```\r\nWhen disconnecting a dtls link with a third-party device, there is no common disconnection mechanism and we are always speculating on the behavior of the third-party device. Most dtls users disconnect the link by timeout, and setting different times will cause confusion. And timeout disconnection makes app user experience poor. It would make things easier to suggest a common mechanism to solve the problem.",
           "createdAt": "2021-06-09T01:39:10Z",
@@ -2214,7 +2214,7 @@
           "updatedAt": "2021-06-09T02:00:22Z"
         },
         {
-          "author": "yangyangtiantianlonglong",
+          "author": "hou2gou",
           "authorAssociation": "NONE",
           "body": "I see. Thank you for your reply.",
           "createdAt": "2021-06-09T02:58:37Z",
