@@ -2066,6 +2066,10 @@ As noted above, the receipt of any record responding
 to a given flight MUST be taken as an implicit acknowledgement for the entire
 flight to which it is responding.
 
+If any element of record_numbers in the ACK references an epoch that
+is higher than the epoch in which the ACK was received, the
+implementation MUST terminate the connection with an "illegal_parameter" alert.
+
 ## Design Rationale
 
 ACK messages are used in two circumstances, namely:
