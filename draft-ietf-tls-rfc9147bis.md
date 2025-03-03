@@ -1155,13 +1155,13 @@ a change from DTLS 1.2 where those values were included
 in the transcript.
 
 The first message each side transmits in each association always has
-message_seq = 0.  Whenever a new message is generated, the
+message_seq = 0. Whenever a new message is generated, the
 message_seq value is incremented by one. Implementations MUST NOT
 allow message_seq to wrap, but instead MUST establish a new
 association, terminating the old association. When a message is
 retransmitted, the old message_seq value is reused, i.e., not
-incremented. From the perspective of the DTLS record layer, the retransmission is
-a new record.  This record will have a new
+incremented. From the perspective of the DTLS record layer, the
+retransmission is a new record. This record will have a new
 DTLSPlaintext.sequence_number value.
 
 Note: In DTLS 1.2, the message_seq was reset to zero in case of a
