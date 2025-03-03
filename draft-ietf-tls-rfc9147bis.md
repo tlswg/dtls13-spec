@@ -1965,6 +1965,9 @@ it must do so in epoch 2, as it is required to use an epoch
 greater than or equal to 2 and cannot yet send with any greater
 epoch. Implementations SHOULD simply use the highest
 current sending epoch, which will generally be the highest available.
+The exception is that implementations MUST NOT send ACK records in epoch 1
+(early data). If the highest current sending epoch is epoch 1 (early data),
+implementations MUST use epoch 0 (unencrypted) to send ACK records.
 After the handshake, implementations MUST use the highest available
 sending epoch.
 
