@@ -949,7 +949,7 @@ message, described in Section 4.1.3 of {{!TLS13}}, MUST be empty in DTLS
 from the ClientHello.  DTLS 1.3 clients MUST abort the handshake with
 an "illegal_parameter" alert if the field is not empty.  This applies
 even if the "legacy_session_id" field of the ClientHello is non-empty
-due to a cached session ID set by a pre-DTLS 1.3 server (see {{ClientHelloMsg}}).
+due to a cached session set by a pre-DTLS 1.3 server.
 
 With these exceptions, the DTLS message formats, flows, and logic are
 the same as those of TLS 1.3.
