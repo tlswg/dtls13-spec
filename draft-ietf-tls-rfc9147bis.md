@@ -478,8 +478,7 @@ unpacked RecordNumber structure, as shown below:
     } RecordNumber;
 ~~~
 
-This 128-bit value is used in the ACK message as well as in the "record_sequence_number"
-input to the Authenticated Encryption with Associated Data (AEAD) function.
+This 128-bit value is used in the ACK message.
 The entire header value shown in {{hdr_examples}} (but prior to record number
 encryption; see {{rne}}) is used as the additional data value for the
 AEAD
