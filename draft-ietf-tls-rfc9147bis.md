@@ -940,14 +940,14 @@ prevention mechanism for UDP-based protocols, unlike TCP-based protocols, for wh
 TCP establishes return-routability as part of the connection establishment.
 
 DTLS implementations do not use the TLS 1.3 "compatibility mode" described in
-Appendix D.4 of {{!TLS13}}.  DTLS servers MUST NOT send ChangeCipherSpec messages
+Appendix D.4 of {{!TLS13}}. DTLS servers MUST NOT send ChangeCipherSpec messages
 when negotiating DTLS 1.3.
 
 Additionally, the "legacy_session_id_echo" field of the ServerHello
-message, described in Section 4.1.3 of {{!TLS13}}, MUST be empty in DTLS
-1.3.  DTLS 1.3 servers MUST NOT echo the "legacy_session_id" value
-from the ClientHello.  DTLS 1.3 clients MUST abort the handshake with
-an "illegal_parameter" alert if the field is not empty.  This applies
+message, described in Section 4.1.3 of {{!TLS13}}, MUST be empty in
+DTLS 1.3. DTLS 1.3 servers MUST NOT echo the "legacy_session_id" value
+from the ClientHello. DTLS 1.3 clients MUST abort the handshake with
+an "illegal_parameter" alert if the field is not empty. This applies
 even if the "legacy_session_id" field of the ClientHello is non-empty
 due to a cached session set by a pre-DTLS 1.3 server.
 
