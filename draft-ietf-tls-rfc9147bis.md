@@ -2091,10 +2091,20 @@ of the NewSessionTicket indefinitely until its maximum retransmission count is r
 As with TLS 1.3, DTLS 1.3 implementations send a KeyUpdate message to
 indicate that they are updating their sending keys.  As with other
 handshake messages with no built-in response, KeyUpdates MUST be
-acknowledged.  In order to facilitate epoch reconstruction
-({{reconstructing}}), implementations MUST NOT send records with the new keys or
-send a new KeyUpdate until the previous KeyUpdate has been
-acknowledged (this avoids having too many epochs in active use).
+acknowledged. Acknowledgements are used to both control
+retransmission and transition to the next epoch. Implementations MUST
+NOT send records with the new keys until the KeyUpdate and all
+preceding messages have been acknowledged. This facilitates epoch
+reconstruction ({{reconstructing}}) and avoids too many epochs in active
+use, by ensuring the peer has processed the KeyUpdate and started
+receiving at the new epoch.
+
+A KeyUpdate message terminates the post-handshake stream in an epoch.
+After sending KeyUpdate in an epoch, implementations MUST NOT send
+any new post-handshake messages in that epoch. Note that, if the
+implementation has sent KeyUpdate but is waiting for an ACK, the next
+epoch is not yet active. In this case, subsequent post-handshake
+messages may not be sent until receiving the ACK.
 
 Due to loss and/or reordering, DTLS 1.3 implementations
 may receive a record with an older epoch than the
