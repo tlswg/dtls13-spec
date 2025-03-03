@@ -1193,7 +1193,7 @@ dual-stack DTLS 1.2 / DTLS 1.3 client MUST, however, be prepared to
 interact with a DTLS 1.2 server.
 
 
-## ClientHello Message {#ClientHelloMsg}
+## ClientHello Message
 
 The format of the ClientHello used by a DTLS 1.3 client differs from the
 TLS 1.3 ClientHello format, as shown below.
