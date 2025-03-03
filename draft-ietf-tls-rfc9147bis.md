@@ -940,9 +940,16 @@ prevention mechanism for UDP-based protocols, unlike TCP-based protocols, for wh
 TCP establishes return-routability as part of the connection establishment.
 
 DTLS implementations do not use the TLS 1.3 "compatibility mode" described in
-Appendix D.4 of {{!TLS13}}.  DTLS servers MUST NOT echo the
-"legacy_session_id" value from the client and endpoints MUST NOT send ChangeCipherSpec
-messages.
+Appendix D.4 of {{!TLS13}}.  DTLS servers MUST NOT send ChangeCipherSpec messages
+when negotiating DTLS 1.3.
+
+Additionally, the "legacy_session_id_echo" field of the ServerHello
+message, described in Section 4.1.3 of {{!TLS13}}, MUST be empty in DTLS
+1.3.  DTLS 1.3 servers MUST NOT echo the "legacy_session_id" value
+from the ClientHello.  DTLS 1.3 clients MUST abort the handshake with
+an "illegal_parameter" alert if the field is not empty.  This applies
+even if the "legacy_session_id" field of the ClientHello is non-empty
+due to a cached session ID set by a pre-DTLS 1.3 server (see {{ClientHelloMsg}}).
 
 With these exceptions, the DTLS message formats, flows, and logic are
 the same as those of TLS 1.3.
@@ -1186,7 +1193,7 @@ dual-stack DTLS 1.2 / DTLS 1.3 client MUST, however, be prepared to
 interact with a DTLS 1.2 server.
 
 
-## ClientHello Message
+## ClientHello Message {#ClientHelloMsg}
 
 The format of the ClientHello used by a DTLS 1.3 client differs from the
 TLS 1.3 ClientHello format, as shown below.
