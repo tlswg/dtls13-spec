@@ -64,6 +64,7 @@ informative:
   RFC5246:
   RFC6347:
   RFC7525:
+  RFC6083:
   AEBounds:
     title: "Limits on Authenticated Encryption Use in TLS"
     author:
