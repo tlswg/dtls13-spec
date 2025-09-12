@@ -6,9 +6,9 @@ TLS                                                          E. Rescorla
 Internet-Draft                                               Independent
 Obsoletes: 9147 (if approved)                              H. Tschofenig
 Intended status: Standards Track                                   H-BRS
-Expires: 4 September 2025                                    N. Modadugu
+Expires: 16 March 2026                                       N. Modadugu
                                                             Google, Inc.
-                                                            3 March 2025
+                                                       12 September 2025
 
 
    The Datagram Transport Layer Security (DTLS) Protocol Version 1.3
@@ -44,7 +44,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 September 2025.
+   This Internet-Draft will expire on 16 March 2026.
 
 Copyright Notice
 
@@ -338,14 +338,15 @@ Table of Contents
 
 3.4.  Replay Detection
 
-   DTLS optionally supports record replay detection.  The technique used
-   is the same as in IPsec AH/ESP, by maintaining a bitmap window of
-   received records.  Records that are too old to fit in the window and
-   records that have previously been received are silently discarded.
-   The replay detection feature is optional, since packet duplication is
-   not always malicious but can also occur due to routing errors.
-   Applications may conceivably detect duplicate packets and accordingly
-   modify their data transmission strategy.
+   DTLS can optionally provide replay detection for application data.
+   This mechanism is identical to the one used in IPsec AH/ESP, relying
+   on a sliding bitmap window to track received records.  Records that
+   fall outside the window or that have already been received are
+   silently discarded.  Replay detection is optional because duplicate
+   packets are not always the result of malicious activity—they can also
+   arise from routing anomalies.  In some cases, duplicate detection may
+   instead be handled by the application protocol or by the underlying
+   transport (e.g., DTLS over SCTP [RFC6083]).
 
 4.  The DTLS Record Layer
 
@@ -2621,24 +2622,24 @@ Table of Contents
    [I-D.ietf-tls-esni]
               Rescorla, E., Oku, K., Sullivan, N., and C. A. Wood, "TLS
               Encrypted Client Hello", Work in Progress, Internet-Draft,
-              draft-ietf-tls-esni-23, 19 February 2025,
+              draft-ietf-tls-esni-25, 14 June 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-tls-
-              esni-23>.
+              esni-25>.
 
    [I-D.ietf-uta-tls13-iot-profile]
               Tschofenig, H., Fossati, T., and M. Richardson, "TLS/DTLS
               1.3 Profiles for the Internet of Things", Work in
               Progress, Internet-Draft, draft-ietf-uta-tls13-iot-
-              profile-13, 3 March 2025,
+              profile-15, 19 August 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-uta-
-              tls13-iot-profile-13>.
+              tls13-iot-profile-15>.
 
    [I-D.irtf-cfrg-aead-limits]
               Günther, F., Thomson, M., and C. A. Wood, "Usage Limits on
               AEAD Algorithms", Work in Progress, Internet-Draft, draft-
-              irtf-cfrg-aead-limits-09, 9 October 2024,
+              irtf-cfrg-aead-limits-10, 8 April 2025,
               <https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-
-              aead-limits-09>.
+              aead-limits-10>.
 
    [RFC2522]  Karn, P. and W. Simpson, "Photuris: Session-Key Management
               Protocol", RFC 2522, DOI 10.17487/RFC2522, March 1999,
@@ -2692,6 +2693,12 @@ Table of Contents
               Extensions: Extension Definitions", RFC 6066,
               DOI 10.17487/RFC6066, January 2011,
               <https://www.rfc-editor.org/rfc/rfc6066>.
+
+   [RFC6083]  Tuexen, M., Seggelmann, R., and E. Rescorla, "Datagram
+              Transport Layer Security (DTLS) for Stream Control
+              Transmission Protocol (SCTP)", RFC 6083,
+              DOI 10.17487/RFC6083, January 2011,
+              <https://www.rfc-editor.org/rfc/rfc6083>.
 
    [RFC6347]  Rescorla, E. and N. Modadugu, "Datagram Transport Layer
               Security Version 1.2", RFC 6347, DOI 10.17487/RFC6347,
@@ -3027,24 +3034,25 @@ Appendix C.  Implementation Pitfalls
 
 Appendix D.  Contributors
 
-   Many individuals have contributed to previous versions of DTLS up to
-   1.2, and their contributions are acknowledged in earlier DTLS
-   specifications or in the referenced documents.  The following
-   individuals made significant contributions to RFC 9147:
+   Many people have contributed to previous DTLS versions and they are
+   acknowledged in prior versions of DTLS specifications or in the
+   referenced specifications.  The following people made significant
+   contributions to this specification:
 
    * David Benjamin
      Google
      davidben@google.com
 
    * Thomas Fossati
-     Arm Limited (now Linaro)
-     Thomas.Fossati@linaro.org
+     Arm Limited
+     Thomas.Fossati@arm.com
 
    * Tobias Gondrom
-     Huawei (now United Overseas Bank Limited)
+     Huawei
+     tobias.gondrom@gondrom.org
 
    * Felix Günther
-     ETH Zurich (now IBM Research Zurich)
+     ETH Zurich
      mail@felixguenther.info
 
    * Benjamin Kaduk
@@ -3068,22 +3076,20 @@ Appendix D.  Contributors
      yinxinxing@huawei.com
 
    * Hanno Becker
-     Arm Limited (now Amazon)
+     Arm Limited
+     Hanno.Becker@arm.com
 
    The sequence number encryption concept is taken from QUIC [RFC9000].
-   We would like to thank the authors of RFC 9000 for their work.
+   We would like to thank the authors of RFC 9000 for their work.  Felix
+   Günther and Martin Thomson contributed the analysis in Appendix B.
+   We would like to thank Jonathan Hammell, Bernard Aboba, and Andy
+   Cunningham for their review comments.
 
-   Felix Günther and Martin Thomson contributed the analysis in
-   Appendix B.
-
-   We would like to thank Jonathan Hammell, Bernard Aboba, Nick Harper
-   and Andy Cunningham for their review comments.
-
-   Finally, we would like to thank the following IESG members for their
+   Additionally, we would like to thank the IESG members for their
    review comments: Martin Duke, Erik Kline, Francesca Palombini, Lars
    Eggert, Zaheduzzaman Sarker, John Scudder, Éric Vyncke, Robert
    Wilton, Roman Danyliw, Benjamin Kaduk, Murray Kucherawy, Martin
-   Vigoureux and Alvaro Retana.
+   Vigoureux, and Alvaro Retana.
 
 Authors' Addresses
 
@@ -3093,7 +3099,7 @@ Authors' Addresses
 
 
    Hannes Tschofenig
-   University of Applied Sciences Bonn-Rhein-Sieg
+   University of Applied Sciences Bonn-Rhein-Siegx
    Email: hannes.tschofenig@gmx.net
 
 
