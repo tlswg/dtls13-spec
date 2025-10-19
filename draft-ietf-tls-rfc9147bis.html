@@ -2277,7 +2277,7 @@ Thus, generating fatal alerts is NOT RECOMMENDED for such transports, both
 to increase the reliability of DTLS service and to avoid the risk
 of spoofing attacks sending traffic to unrelated third parties.<a href="#section-4.5.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.5.2-2">If DTLS is being carried over a transport that is resistant to
-forgery (e.g., SCTP with SCTP-AUTH), then it is safer to send alerts
+forgery (e.g., SCTP with SCTP-AUTH <span>[<a href="#RFC6083" class="cite xref">RFC6083</a>]</span>), then it is safer to send alerts
 because an attacker will have difficulty forging a datagram that will
 not be rejected by the transport layer.<a href="#section-4.5.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.5.2-3">Note that because invalid records are rejected at a layer lower than
@@ -4281,6 +4281,10 @@ as specified in Section 4.5.3 of RFC 9147.
 <dt id="RFC6066">[RFC6066]</dt>
         <dd>
 <span class="refAuthor">Eastlake 3rd, D.</span>, <span class="refTitle">"Transport Layer Security (TLS) Extensions: Extension Definitions"</span>, <span class="seriesInfo">RFC 6066</span>, <span class="seriesInfo">DOI 10.17487/RFC6066</span>, <time datetime="2011-01" class="refDate">January 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6066">https://www.rfc-editor.org/rfc/rfc6066</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6083">[RFC6083]</dt>
+        <dd>
+<span class="refAuthor">Tuexen, M.</span>, <span class="refAuthor">Seggelmann, R.</span>, and <span class="refAuthor">E. Rescorla</span>, <span class="refTitle">"Datagram Transport Layer Security (DTLS) for Stream Control Transmission Protocol (SCTP)"</span>, <span class="seriesInfo">RFC 6083</span>, <span class="seriesInfo">DOI 10.17487/RFC6083</span>, <time datetime="2011-01" class="refDate">January 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6083">https://www.rfc-editor.org/rfc/rfc6083</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC6347">[RFC6347]</dt>
         <dd>

@@ -896,9 +896,9 @@ Table of Contents
    traffic to unrelated third parties.
 
    If DTLS is being carried over a transport that is resistant to
-   forgery (e.g., SCTP with SCTP-AUTH), then it is safer to send alerts
-   because an attacker will have difficulty forging a datagram that will
-   not be rejected by the transport layer.
+   forgery (e.g., SCTP with SCTP-AUTH [RFC6083]), then it is safer to
+   send alerts because an attacker will have difficulty forging a
+   datagram that will not be rejected by the transport layer.
 
    Note that because invalid records are rejected at a layer lower than
    the handshake state machine, they do not affect pending
@@ -2692,6 +2692,12 @@ Table of Contents
               Extensions: Extension Definitions", RFC 6066,
               DOI 10.17487/RFC6066, January 2011,
               <https://www.rfc-editor.org/rfc/rfc6066>.
+
+   [RFC6083]  Tuexen, M., Seggelmann, R., and E. Rescorla, "Datagram
+              Transport Layer Security (DTLS) for Stream Control
+              Transmission Protocol (SCTP)", RFC 6083,
+              DOI 10.17487/RFC6083, January 2011,
+              <https://www.rfc-editor.org/rfc/rfc6083>.
 
    [RFC6347]  Rescorla, E. and N. Modadugu, "Datagram Transport Layer
               Security Version 1.2", RFC 6347, DOI 10.17487/RFC6347,
