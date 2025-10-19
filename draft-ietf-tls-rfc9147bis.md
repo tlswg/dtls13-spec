@@ -64,6 +64,7 @@ informative:
   RFC5246:
   RFC6347:
   RFC7525:
+  RFC6083:
   AEBounds:
     title: "Limits on Authenticated Encryption Use in TLS"
     author:
@@ -860,7 +861,7 @@ to increase the reliability of DTLS service and to avoid the risk
 of spoofing attacks sending traffic to unrelated third parties.
 
 If DTLS is being carried over a transport that is resistant to
-forgery (e.g., SCTP with SCTP-AUTH), then it is safer to send alerts
+forgery (e.g., SCTP with SCTP-AUTH {{RFC6083}}), then it is safer to send alerts
 because an attacker will have difficulty forging a datagram that will
 not be rejected by the transport layer.
 
