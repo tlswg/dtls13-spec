@@ -505,7 +505,7 @@ see {{iana-considerations}}.
 Implementations can demultiplex DTLS 1.3 records
 by examining the first byte as follows:
 
-* If the first byte is alert(21), handshake(22), or ack(proposed, 26),
+* If the first byte is alert(21), handshake(22), or ack(26),
 the record MUST be interpreted as a DTLSPlaintext record.
 
 * If the first byte is any other value, then receivers
