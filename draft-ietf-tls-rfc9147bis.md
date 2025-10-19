@@ -32,7 +32,7 @@ author:
  -
        ins: H. Tschofenig
        name: Hannes Tschofenig
-       organization: University of Applied Sciences Bonn-Rhein-Siegx
+       organization: University of Applied Sciences Bonn-Rhein-Sieg
        abbrev: H-BRS
        email: hannes.tschofenig@gmx.net
 
@@ -2657,12 +2657,12 @@ potential sources of issues, noted here.
 - Do you verify that the explicit record length is contained within the
   datagram in which it is contained?
 
-
 # Contributors
 
-Many people have contributed to previous DTLS versions and they are acknowledged
-in prior versions of DTLS specifications or in the referenced specifications. The
-following people made significant contributions to this specification:
+Many individuals have contributed to previous versions of DTLS up to 1.2,
+and their contributions are acknowledged in earlier DTLS specifications
+or in the referenced documents. The following individuals made significant
+contributions to RFC 9147:
 
 ~~~
 * David Benjamin
@@ -2672,19 +2672,18 @@ following people made significant contributions to this specification:
 
 ~~~
 * Thomas Fossati
-  Arm Limited
-  Thomas.Fossati@arm.com
+  Arm Limited (now Linaro)
+  Thomas.Fossati@linaro.org
 ~~~
 
 ~~~
 * Tobias Gondrom
-  Huawei
-  tobias.gondrom@gondrom.org
+  Huawei (now United Overseas Bank Limited)
 ~~~
 
 ~~~
 * Felix Günther
-  ETH Zurich
+  ETH Zurich (now IBM Research Zurich)
   mail@felixguenther.info
 ~~~
 
@@ -2720,14 +2719,19 @@ following people made significant contributions to this specification:
 
 ~~~
 * Hanno Becker
-  Arm Limited
-  Hanno.Becker@arm.com
+  Arm Limited (now Amazon)
 ~~~
 
-The sequence number encryption concept is taken from QUIC
-{{?RFC9000}}. We would like to thank the authors of RFC 9000 for their
-work. Felix Günther and Martin Thomson contributed the analysis in
-{{ccm-bounds}}. We would like to thank Jonathan Hammell, Bernard
-Aboba, and Andy Cunningham for their review comments.
+The sequence number encryption concept is taken from QUIC {{?RFC9000}}.
+We would like to thank the authors of RFC 9000 for their work.
 
-Additionally, we would like to thank the IESG members for their review comments: Martin Duke, Erik Kline, Francesca Palombini, Lars Eggert, Zaheduzzaman Sarker, John Scudder, Éric Vyncke, Robert Wilton, Roman Danyliw, Benjamin Kaduk, Murray Kucherawy, Martin Vigoureux, and Alvaro Retana.
+Felix Günther and Martin Thomson contributed the analysis in {{ccm-bounds}}.
+
+We would like to thank Jonathan Hammell, Bernard Aboba, Nick Harper and
+Andy Cunningham for their review comments.
+
+Finally, we would like to thank the following IESG members for their review
+comments: Martin Duke, Erik Kline, Francesca Palombini, Lars Eggert,
+Zaheduzzaman Sarker, John Scudder, Éric Vyncke, Robert Wilton,
+Roman Danyliw, Benjamin Kaduk, Murray Kucherawy, Martin Vigoureux
+and Alvaro Retana.
