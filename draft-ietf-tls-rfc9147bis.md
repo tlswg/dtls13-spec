@@ -1827,7 +1827,7 @@ protocol exchange to allow identification of the correct cipher state:
      the client does not offer early data.
    * Epoch value (2) is used for messages protected using keys derived
      from \[sender]_handshake_traffic_secret. Messages transmitted during
-     the initial handshake, such as EncryptedExtensions,
+     the handshake, such as EncryptedExtensions,
      CertificateRequest, Certificate, CertificateVerify, and Finished,
      belong to this category. Note, however, that post-handshake messages are
      protected under the appropriate application traffic key and are not included in this category.
@@ -2119,7 +2119,7 @@ Client                                             Server
 
       /-------------------------------------------\
      |                                             |
-     |             Initial Handshake               |
+     |                 Handshake                   |
       \-------------------------------------------/
 
 
@@ -2360,7 +2360,7 @@ is not as high-value as, e.g., a session-ticket-encryption key, rotating the
 cookie-generation key on a similar timescale would ensure that the
 key rotation functionality is exercised regularly and thus in working order.
 
-The cookie exchange provides address validation during the initial handshake.
+The cookie exchange provides address validation during the handshake.
 DTLS with Connection IDs allows for endpoint addresses to change during the
 association; any such updated addresses are not covered by the cookie exchange
 during the handshake.
