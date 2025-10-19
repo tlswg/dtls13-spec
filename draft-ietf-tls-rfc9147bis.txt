@@ -1879,7 +1879,7 @@ Table of Contents
 
    *  Epoch value (2) is used for messages protected using keys derived
       from [sender]_handshake_traffic_secret.  Messages transmitted
-      during the initial handshake, such as EncryptedExtensions,
+      during the handshake, such as EncryptedExtensions,
       CertificateRequest, Certificate, CertificateVerify, and Finished,
       belong to this category.  Note, however, that post-handshake
       messages are protected under the appropriate application traffic
@@ -2163,7 +2163,7 @@ Table of Contents
 
          /-------------------------------------------\
         |                                             |
-        |             Initial Handshake               |
+        |                 Handshake                   |
          \-------------------------------------------/
 
 
@@ -2396,20 +2396,20 @@ Table of Contents
    the key rotation functionality is exercised regularly and thus in
    working order.
 
-   The cookie exchange provides address validation during the initial
-   handshake.  DTLS with Connection IDs allows for endpoint addresses to
-   change during the association; any such updated addresses are not
-   covered by the cookie exchange during the handshake.  DTLS
-   implementations MUST NOT update the address they send to in response
-   to packets from a different address unless they first perform some
-   reachability test; no such test is defined in this specification and
-   a future specification would need to specify a complete procedure for
-   how and when to update addresses.  Even with such a test, an active
-   on-path adversary can also black-hole traffic or create a reflection
-   attack against third parties because a DTLS peer has no means to
-   distinguish a genuine address update event (for example, due to a NAT
-   rebinding) from one that is malicious.  This attack is of concern
-   when there is a large asymmetry of request/response message sizes.
+   The cookie exchange provides address validation during the handshake.
+   DTLS with Connection IDs allows for endpoint addresses to change
+   during the association; any such updated addresses are not covered by
+   the cookie exchange during the handshake.  DTLS implementations MUST
+   NOT update the address they send to in response to packets from a
+   different address unless they first perform some reachability test;
+   no such test is defined in this specification and a future
+   specification would need to specify a complete procedure for how and
+   when to update addresses.  Even with such a test, an active on-path
+   adversary can also black-hole traffic or create a reflection attack
+   against third parties because a DTLS peer has no means to distinguish
+   a genuine address update event (for example, due to a NAT rebinding)
+   from one that is malicious.  This attack is of concern when there is
+   a large asymmetry of request/response message sizes.
 
    With the exception of order protection and non-replayability, the
    security guarantees for DTLS 1.3 are the same as TLS 1.3.  While TLS
