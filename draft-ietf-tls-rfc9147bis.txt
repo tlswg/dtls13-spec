@@ -523,17 +523,15 @@ Table of Contents
            uint64 sequence_number;
        } RecordNumber;
 
-   This 128-bit value is used in the ACK message as well as in the
-   "record_sequence_number" input to the Authenticated Encryption with
-   Associated Data (AEAD) function.  The entire header value shown in
-   Figure 4 (but prior to record number encryption; see Section 4.2.3)
-   is used as the additional data value for the AEAD function.  For
-   instance, if the minimal variant is used, the Associated Data (AD) is
-   2 octets long.  Note that this design is different from the
-   additional data calculation for DTLS 1.2 and for DTLS 1.2 with
-   Connection IDs.  In DTLS 1.3 the 64-bit sequence_number is used as
-   the sequence number for the AEAD computation; unlike DTLS 1.2, the
-   epoch is not included.
+   This 128-bit value is used in the ACK message.  The entire header
+   value shown in Figure 4 (but prior to record number encryption; see
+   Section 4.2.3) is used as the additional data value for the AEAD
+   function.  For instance, if the minimal variant is used, the
+   Associated Data (AD) is 2 octets long.  Note that this design is
+   different from the additional data calculation for DTLS 1.2 and for
+   DTLS 1.2 with Connection IDs.  In DTLS 1.3 the 64-bit sequence_number
+   is used as the sequence number for the AEAD computation; unlike DTLS
+   1.2, the epoch is not included.
 
 4.1.  Demultiplexing DTLS Records
 
