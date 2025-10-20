@@ -279,15 +279,15 @@ message can reassemble the original unfragmented message.
 
 ##  Replay Detection
 
-DTLS optionally supports record replay detection.  The technique used
-is the same as in IPsec AH/ESP, by maintaining a bitmap window of
-received records.  Records that are too old to fit in the window and
-records that have previously been received are silently discarded.
-The replay detection feature is optional, since packet duplication is
-not always malicious but can also occur due to routing errors.
-Applications may conceivably detect duplicate packets and accordingly
-modify their data transmission strategy.
-
+DTLS can optionally provide replay detection for application data. This
+mechanism is identical to the one used in IPsec AH/ESP, relying on a
+sliding bitmap window to track received records. Records that fall
+outside the window or that have already been received are silently
+discarded. Replay detection is optional because duplicate packets are
+not always the result of malicious activity—they can also arise from
+routing anomalies. In some cases, duplicate detection may instead be
+handled by the application protocol or by the underlying transport
+(e.g., DTLS over SCTP {{RFC6083}}).
 
 # The DTLS Record Layer
 
