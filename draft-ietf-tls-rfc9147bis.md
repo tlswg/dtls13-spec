@@ -1239,8 +1239,8 @@ random:
 legacy_session_id:
 : Versions of TLS and DTLS before version 1.3 supported a "session resumption"
 feature, which has been merged with pre-shared keys (PSK) in version 1.3.  A client
-which has a cached session ID set by a pre-DTLS 1.3 server SHOULD set this
-field to that value. Otherwise, it MUST be set as a zero-length vector
+which has a cached session set by a pre-DTLS 1.3 server SHOULD set this
+field according to that session. Otherwise, it MUST be set as a zero-length vector
 (i.e., a zero-valued single byte length field).
 
 legacy_cookie:
