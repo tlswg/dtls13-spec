@@ -2185,14 +2185,20 @@ With a 128-bit key as in AES-128, rekeying 2^64 times has a high
 probability of key reuse within a given connection. Note that even if
 the key repeats, the IV is also independently generated. In order to
 provide an extra margin of security, sending implementations MUST NOT
-allow the epoch to exceed 2^48-1. In order to allow this value to
-be changed later, receiving implementations MUST NOT
-enforce this rule. If a sending implementation receives a KeyUpdate
+allow the epoch to exceed 2^48-1. If a sending implementation receives a KeyUpdate
 with request_update set to "update_requested", it MUST NOT send
 its own KeyUpdate if that would cause it to exceed these limits
 and SHOULD instead ignore the "update_requested" flag.
 Note: this overrides the requirement in TLS 1.3 to always
 send a KeyUpdate in response to "update_requested".
+
+Exceeding the above limit is not possible with the key update
+mechanisms defined in this document.  After the handshake, each epoch
+change consumes a message_seq value, which is limited to 2^16-1. Both
+sending and receiving implementations MAY instead enforce an epoch
+limit of 2^16-1.  In this case, the implementation MUST check for
+this limit, if reached, terminate the association. In some cases, it
+is otherwise possible for the epoch number to reach 2^16+1.
 
 # Connection ID Updates
 
