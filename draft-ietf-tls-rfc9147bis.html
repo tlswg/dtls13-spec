@@ -25,14 +25,14 @@ forgery.
     Python 3.12.12
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
-    intervaltree 3.1.0
+    intervaltree 3.2.1
     Jinja2 3.1.6
-    lxml 5.3.1
-    platformdirs 4.5.0
+    lxml 6.0.2
+    platformdirs 4.5.1
     pycountry 24.6.1
-    PyYAML 6.0.2
+    PyYAML 6.0.3
     requests 2.32.5
-    wcwidth 0.2.14
+    wcwidth 0.3.0
 -->
 <link href="draft-ietf-tls-rfc9147bis.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -173,7 +173,7 @@ forgery.
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
   font-family: 'Oxygen Mono';
@@ -181,7 +181,8 @@ forgery.
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 }
 
 @font-face {
@@ -573,6 +574,7 @@ aside, blockquote {
 }
 blockquote {
   margin: 1em 0;
+  border-left: 2px var(--pilcrow-strong) solid;
 }
 cite {
   display: block;
@@ -643,7 +645,7 @@ a.pilcrow {
   }
 }
 @media not print {
-  :hover > a.pilcrow {
+  :hover > a.pilcrow, a.pilcrow:focus {
     opacity: 1;
   }
   a.pilcrow[href]:hover {
@@ -1051,11 +1053,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">DTLS 1.3</td>
-<td class="right">October 2025</td>
+<td class="right">March 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Rescorla, et al.</td>
-<td class="center">Expires 23 April 2026</td>
+<td class="center">Expires 12 September 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1071,12 +1073,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="https://www.rfc-editor.org/rfc/rfc9147" class="eref">9147</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-10-20" class="published">20 October 2025</time>
+<time datetime="2026-03-11" class="published">11 March 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-04-23">23 April 2026</time></dd>
+<dd class="expires"><time datetime="2026-09-12">12 September 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1124,7 +1126,7 @@ forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 23 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 12 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1133,7 +1135,7 @@ forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2025 IETF Trust and the persons identified as the
+            Copyright (c) 2026 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -4242,11 +4244,11 @@ as specified in Section 4.5.3 of RFC 9147.
 <dd class="break"></dd>
 <dt id="I-D.ietf-uta-tls13-iot-profile">[I-D.ietf-uta-tls13-iot-profile]</dt>
         <dd>
-<span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Fossati, T.</span>, and <span class="refAuthor">M. Richardson</span>, <span class="refTitle">"TLS/DTLS 1.3 Profiles for the Internet of Things"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-uta-tls13-iot-profile-17</span>, <time datetime="2025-10-18" class="refDate">18 October 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-uta-tls13-iot-profile-17">https://datatracker.ietf.org/doc/html/draft-ietf-uta-tls13-iot-profile-17</a>&gt;</span>. </dd>
+<span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Fossati, T.</span>, <span class="refAuthor">Richardson, M.</span>, and <span class="refAuthor">D. Migault</span>, <span class="refTitle">"TLS/DTLS 1.3 Profiles for the Internet of Things"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-uta-tls13-iot-profile-19</span>, <time datetime="2026-02-20" class="refDate">20 February 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-uta-tls13-iot-profile-19">https://datatracker.ietf.org/doc/html/draft-ietf-uta-tls13-iot-profile-19</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.irtf-cfrg-aead-limits">[I-D.irtf-cfrg-aead-limits]</dt>
         <dd>
-<span class="refAuthor">Günther, F.</span>, <span class="refAuthor">Thomson, M.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Usage Limits on AEAD Algorithms"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-irtf-cfrg-aead-limits-10</span>, <time datetime="2025-04-08" class="refDate">8 April 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aead-limits-10">https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aead-limits-10</a>&gt;</span>. </dd>
+<span class="refAuthor">Günther, F.</span>, <span class="refAuthor">Thomson, M.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Usage Limits on AEAD Algorithms"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-irtf-cfrg-aead-limits-11</span>, <time datetime="2025-12-04" class="refDate">4 December 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aead-limits-11">https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-aead-limits-11</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2522">[RFC2522]</dt>
         <dd>
@@ -4704,84 +4706,66 @@ datagram in which it is contained?<a href="#appendix-C-2.6.1" class="pilcrow">¶
 and their contributions are acknowledged in earlier DTLS specifications
 or in the referenced documents. The following individuals made significant
 contributions to RFC 9147:<a href="#appendix-D-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-D-2">
-<pre>
-* David Benjamin
-  Google
-  davidben@google.com
-</pre><a href="#appendix-D-2" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-D-3">
-<pre>
-* Thomas Fossati
-  Arm Limited (now Linaro)
-  Thomas.Fossati@linaro.org
-</pre><a href="#appendix-D-3" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-D-4">
-<pre>
-* Tobias Gondrom
-  Huawei (now United Overseas Bank Limited)
-</pre><a href="#appendix-D-4" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-D-5">
-<pre>
-* Felix Günther
-  ETH Zurich (now IBM Research Zurich)
-  mail@felixguenther.info
-</pre><a href="#appendix-D-5" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-D-6">
-<pre>
-* Benjamin Kaduk
-  Akamai Technologies
-  kaduk@mit.edu
-</pre><a href="#appendix-D-6" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-D-7">
-<pre>
-* Ilari Liusvaara
-  Independent
-  ilariliusvaara@welho.com
-</pre><a href="#appendix-D-7" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-D-8">
-<pre>
-* Martin Thomson
-  Mozilla
-  mt@lowentropy.net
-</pre><a href="#appendix-D-8" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-D-9">
-<pre>
-* Christopher A. Wood
-  Apple Inc.
-  cawood@apple.com
-</pre><a href="#appendix-D-9" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-D-10">
-<pre>
-* Yin Xinxing
-  Huawei
-  yinxinxing@huawei.com
-</pre><a href="#appendix-D-10" class="pilcrow">¶</a>
-</div>
-<div class="alignLeft art-text artwork" id="appendix-D-11">
-<pre>
-* Hanno Becker
-  Arm Limited (now Amazon)
-</pre><a href="#appendix-D-11" class="pilcrow">¶</a>
-</div>
-<p id="appendix-D-12">The sequence number encryption concept is taken from QUIC <span>[<a href="#RFC9000" class="cite xref">RFC9000</a>]</span>.
-We would like to thank the authors of RFC 9000 for their work.<a href="#appendix-D-12" class="pilcrow">¶</a></p>
-<p id="appendix-D-13">Felix Günther and Martin Thomson contributed the analysis in <a href="#ccm-bounds" class="auto internal xref">Appendix B</a>.<a href="#appendix-D-13" class="pilcrow">¶</a></p>
-<p id="appendix-D-14">We would like to thank Jonathan Hammell, Bernard Aboba, Nick Harper and
-Andy Cunningham for their review comments.<a href="#appendix-D-14" class="pilcrow">¶</a></p>
-<p id="appendix-D-15">Finally, we would like to thank the following IESG members for their review
+<ul class="normal">
+<li class="normal" id="appendix-D-2.1">
+          <p id="appendix-D-2.1.1">David Benjamin<br>
+Google<br>
+davidben@google.com<a href="#appendix-D-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.2">
+          <p id="appendix-D-2.2.1">Thomas Fossati<br>
+Arm Limited (now Linaro)<br>
+Thomas.Fossati@linaro.org<a href="#appendix-D-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.3">
+          <p id="appendix-D-2.3.1">Tobias Gondrom<br>
+Huawei (now United Overseas Bank Limited)<a href="#appendix-D-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.4">
+          <p id="appendix-D-2.4.1">Felix Günther<br>
+ETH Zurich (now IBM Research Zurich)<br>
+mail@felixguenther.info<a href="#appendix-D-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.5">
+          <p id="appendix-D-2.5.1">Benjamin Kaduk<br>
+Akamai Technologies<br>
+kaduk@mit.edu<a href="#appendix-D-2.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.6">
+          <p id="appendix-D-2.6.1">Ilari Liusvaara<br>
+Independent<br>
+ilariliusvaara@welho.com<a href="#appendix-D-2.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.7">
+          <p id="appendix-D-2.7.1">Martin Thomson<br>
+Mozilla<br>
+mt@lowentropy.net<a href="#appendix-D-2.7.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.8">
+          <p id="appendix-D-2.8.1">Christopher A. Wood<br>
+Apple Inc.<br>
+cawood@apple.com<a href="#appendix-D-2.8.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.9">
+          <p id="appendix-D-2.9.1">Yin Xinxing<br>
+Huawei<br>
+yinxinxing@huawei.com<a href="#appendix-D-2.9.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="appendix-D-2.10">
+          <p id="appendix-D-2.10.1">Hanno Becker<br>
+Arm Limited (now Amazon)<a href="#appendix-D-2.10.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="appendix-D-3">The sequence number encryption concept is taken from QUIC <span>[<a href="#RFC9000" class="cite xref">RFC9000</a>]</span>.
+We would like to thank the authors of RFC 9000 for their work.<a href="#appendix-D-3" class="pilcrow">¶</a></p>
+<p id="appendix-D-4">Felix Günther and Martin Thomson contributed the analysis in <a href="#ccm-bounds" class="auto internal xref">Appendix B</a>.<a href="#appendix-D-4" class="pilcrow">¶</a></p>
+<p id="appendix-D-5">We would like to thank Jonathan Hammell, Bernard Aboba, Nick Harper and
+Andy Cunningham for their review comments.<a href="#appendix-D-5" class="pilcrow">¶</a></p>
+<p id="appendix-D-6">Finally, we would like to thank the following IESG members for their review
 comments: Martin Duke, Erik Kline, Francesca Palombini, Lars Eggert,
 Zaheduzzaman Sarker, John Scudder, Éric Vyncke, Robert Wilton,
 Roman Danyliw, Benjamin Kaduk, Murray Kucherawy, Martin Vigoureux
-and Alvaro Retana.<a href="#appendix-D-15" class="pilcrow">¶</a></p>
+and Alvaro Retana.<a href="#appendix-D-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
