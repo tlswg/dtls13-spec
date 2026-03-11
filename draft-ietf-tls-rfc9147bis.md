@@ -2676,63 +2676,43 @@ and their contributions are acknowledged in earlier DTLS specifications
 or in the referenced documents. The following individuals made significant
 contributions to RFC 9147:
 
-~~~
-* David Benjamin
-  Google
+* David Benjamin<br>
+  Google<br>
   davidben@google.com
-~~~
 
-~~~
-* Thomas Fossati
-  Arm Limited (now Linaro)
+* Thomas Fossati<br>
+  Arm Limited (now Linaro)<br>
   Thomas.Fossati@linaro.org
-~~~
 
-~~~
-* Tobias Gondrom
+* Tobias Gondrom<br>
   Huawei (now United Overseas Bank Limited)
-~~~
 
-~~~
-* Felix Günther
-  ETH Zurich (now IBM Research Zurich)
+* Felix Günther<br>
+  ETH Zurich (now IBM Research Zurich)<br>
   mail@felixguenther.info
-~~~
 
-~~~
-* Benjamin Kaduk
-  Akamai Technologies
+* Benjamin Kaduk<br>
+  Akamai Technologies<br>
   kaduk@mit.edu
-~~~
 
-~~~
-* Ilari Liusvaara
-  Independent
+* Ilari Liusvaara<br>
+  Independent<br>
   ilariliusvaara@welho.com
-~~~
 
-~~~
-* Martin Thomson
-  Mozilla
+* Martin Thomson<br>
+  Mozilla<br>
   mt@lowentropy.net
-~~~
 
-~~~
-* Christopher A. Wood
-  Apple Inc.
+* Christopher A. Wood<br>
+  Apple Inc.<br>
   cawood@apple.com
-~~~
 
-~~~
-* Yin Xinxing
-  Huawei
+* Yin Xinxing<br>
+  Huawei<br>
   yinxinxing@huawei.com
-~~~
 
-~~~
-* Hanno Becker
+* Hanno Becker<br>
   Arm Limited (now Amazon)
-~~~
 
 The sequence number encryption concept is taken from QUIC {{?RFC9000}}.
 We would like to thank the authors of RFC 9000 for their work.
