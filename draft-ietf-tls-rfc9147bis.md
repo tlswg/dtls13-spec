@@ -284,7 +284,7 @@ mechanism is identical to the one used in IPsec AH/ESP, relying on a
 sliding bitmap window to track received records. Records that fall
 outside the window or that have already been received are silently
 discarded. Replay detection is optional because duplicate packets are
-not always the result of malicious activity-they can also arise from
+not always the result of malicious activity; they can also arise from
 routing anomalies. In some cases, duplicate detection may instead be
 handled by the application protocol or by the underlying transport
 (e.g., DTLS over SCTP {{RFC6083}}).
