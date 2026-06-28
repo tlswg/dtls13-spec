@@ -37,7 +37,7 @@ author:
        city: Neubiberg
        region: Bavaria
        country: Germany
-       code: 85577       
+       code: 85577
        email: hannes.tschofenig@gmx.net
 
  -
