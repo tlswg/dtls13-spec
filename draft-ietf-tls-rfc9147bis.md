@@ -2714,7 +2714,7 @@ The following individuals made significant contributions to RFC 9147:
   yinxinxing@huawei.com
 
 * Hanno Becker<br>
-  Arm Limited (now Amazon)
+  Arm Limited (now Amazon Web Services (AWS))
 
 The sequence number encryption concept is taken from QUIC {{?RFC9000}}.
 We would like to thank the authors of RFC 9000 for their work.
