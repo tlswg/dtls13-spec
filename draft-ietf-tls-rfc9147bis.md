@@ -582,6 +582,48 @@ the IETF for MSL, as specified in {{RFC0793}} or successors,
 not that they attempt to interrogate the MSL that
 the system TCP stack is using.)
 
+For the purposes of this section, closing a receive epoch means discarding
+the record-protection keys, record number reconstruction state, replay state,
+and any ACK processing state associated with that epoch. Once a receive epoch
+is closed, records from that epoch MUST be treated as records for which no
+corresponding cipher state can be determined.
+
+In the base protocol, receive epochs are created by the initial handshake and,
+after the handshake has completed, by KeyUpdate. Other post-handshake messages
+are protected under the current application traffic epoch and do not create a
+new epoch.
+
+During the initial handshake, a receiver MAY retain receive state for older
+epochs to tolerate packet reordering or to complete retransmission and
+acknowledgement processing. Closing an epoch affects only records from that
+epoch that arrive after the closure; those records will be discarded as
+undecryptable. A receiver MAY close epoch 0 after it has processed the
+plaintext handshake messages needed to establish the next receive epoch and no
+longer needs to process retransmissions of those messages. A server MAY close
+epoch 1 when it rejects early data or when it no longer intends to accept
+reordered 0-RTT records. A receiver MAY close epoch 2 after the handshake has
+completed and ACK or retransmission processing for records protected under the
+handshake traffic keys has completed or been abandoned.
+
+After the handshake, the base protocol creates new receive epochs only through
+KeyUpdate. A receiver MAY retain the previous application traffic epoch to
+tolerate reordering and to process records, including post-handshake records,
+that were already sent under that epoch. Closing an older application traffic
+epoch too early can therefore cause loss of reordered application data, prevent
+processing of post-handshake records protected under that epoch, or violate the
+KeyUpdate retention requirements below. A receiver MAY close an older
+application traffic epoch when it no longer intends to tolerate reordering from
+that epoch, subject to the KeyUpdate rules below and any extension-specific
+rules.
+
+In particular, a receiver MUST close an older receive epoch once it is no longer
+needed for reordering, retransmission, or acknowledgement processing, and
+MUST NOT retain receive state for an older epoch longer than the default MSL.
+Protected DTLS 1.3 records carry only the low-order bits of the epoch.
+A receiver MUST close older receive epochs before retaining a later epoch would
+make epoch reconstruction ambiguous. In particular, a receiver MUST NOT retain
+two receive epochs with the same encoded epoch bits for the same peer.
+
 Conversely, it is possible for records that are protected with the
 new epoch to be received prior to the completion of a
 handshake.  For instance, the server may send its Finished message
@@ -1317,7 +1359,14 @@ from the wire and the handshake transcript. Because DTLS
 records have epochs, EndOfEarlyData is not necessary to determine
 when the early data is complete, and because DTLS is lossy,
 attackers can trivially mount the deletion attacks that EndOfEarlyData
-prevents in TLS. Servers SHOULD NOT accept records from epoch 1 indefinitely once they are able to process records from epoch 3. Though reordering of IP packets can result in records from epoch 1 arriving after records from epoch 3, this is not likely to persist for very long relative to the round trip time. Servers could discard epoch 1  keys after the first epoch 3 data arrives, or retain keys for processing epoch 1 data for a short period.
+prevents in TLS. Servers SHOULD NOT accept records from epoch 1 indefinitely
+once they are able to process records from epoch 3. Though reordering of IP
+packets can result in records from epoch 1 arriving after records from epoch 3,
+this is not likely to persist for very long relative to the round trip time.
+Servers could discard epoch 1 keys after the first epoch 3 data arrives, or
+retain keys for processing epoch 1 data for a short period. In all cases,
+servers MUST close epoch 1 once they no longer need it for reordering, and MUST
+NOT retain epoch 1 longer than the default MSL.
 (See {{dtls-epoch}} for the definitions of each epoch.)
 
 
@@ -2101,7 +2150,10 @@ of the NewSessionTicket indefinitely until its maximum retransmission count is r
 # Key Updates
 
 As with TLS 1.3, DTLS 1.3 implementations send a KeyUpdate message to
-indicate that they are updating their sending keys.  As with other
+indicate that they are updating their sending keys. In the base protocol,
+KeyUpdate is the only post-handshake message that creates a new application
+traffic epoch; other post-handshake messages are protected under the current
+application traffic epoch. As with other
 handshake messages with no built-in response, KeyUpdates MUST be
 acknowledged.  In order to facilitate epoch reconstruction
 ({{reconstructing}}), implementations MUST NOT send records with the new keys or
@@ -2119,7 +2171,13 @@ such out-of-epoch records.
 Due to the possibility of an ACK message for a KeyUpdate being lost and thereby
 preventing the sender of the KeyUpdate from updating its keying material,
 receivers MUST retain the pre-update keying material until receipt and successful
-decryption of a message using the new keys.
+decryption of a message using the new keys. After successfully decrypting a
+message using the new keys, receivers MUST close the previous receive epoch
+once it is no longer needed for reordering or retransmission processing, as
+described in {{seq-and-epoch}}. Extensions that define a different key update
+state machine, such as Extended Key Update {{?I-D.ietf-tls-extended-key-update}}, are
+responsible for defining the receive epoch retention and closure points for
+that state machine.
 
 {{dtls-key-update}} shows an example exchange illustrating that successful
 ACK processing updates the keys of the KeyUpdate message sender, which is
