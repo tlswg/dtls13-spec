@@ -3090,7 +3090,7 @@ Appendix D.  Contributors
       yinxinxing@huawei.com
 
    *  Hanno Becker
-      Arm Limited (now Amazon)
+      Arm Limited (now Amazon Web Services (AWS))
 
    The sequence number encryption concept is taken from QUIC [RFC9000].
    We would like to thank the authors of RFC 9000 for their work.
