@@ -2672,16 +2672,16 @@ potential sources of issues, noted here.
 # Contributors
 
 Many individuals have contributed to previous versions of DTLS up to 1.2,
-and their contributions are acknowledged in earlier DTLS specifications
-or in the referenced documents. The following individuals made significant
-contributions to RFC 9147:
+and to the original specification of DTLS 1.3 and their contributions are
+acknowledged in earlier DTLS specifications or in the referenced documents.
+The following individuals made significant contributions to RFC 9147:
 
 * David Benjamin<br>
   Google<br>
   davidben@google.com
 
 * Thomas Fossati<br>
-  Arm Limited (now Linaro)<br>
+  Arm Limited (now Nvidia)<br>
   Thomas.Fossati@linaro.org
 
 * Tobias Gondrom<br>
@@ -2719,8 +2719,9 @@ We would like to thank the authors of RFC 9000 for their work.
 
 Felix Günther and Martin Thomson contributed the analysis in {{ccm-bounds}}.
 
-We would like to thank Jonathan Hammell, Bernard Aboba, Nick Harper and
-Andy Cunningham for their review comments.
+We would like to thank Jonathan Hammell, Bernard Aboba, Nick Harper,
+Andy Cunningham, Anna Weine, Sean Turner, Michael Tüxen, and John Mattsson
+for their valuable review comments and contributions.
 
 Finally, we would like to thank the following IESG members for their review
 comments: Martin Duke, Erik Kline, Francesca Palombini, Lars Eggert,
