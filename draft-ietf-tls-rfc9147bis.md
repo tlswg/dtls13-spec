@@ -2690,7 +2690,9 @@ The following individuals made significant contributions to RFC 9147:
 * Felix Günther<br>
   ETH Zurich (now IBM Research Zurich)<br>
   mail@felixguenther.info
-
+* Felix Günther<br>
+ETH Zurich (now IBM Research Europe - Zurich)<br>
+mail@felixguenther.info
 * Benjamin Kaduk<br>
   Akamai Technologies<br>
   kaduk@mit.edu
