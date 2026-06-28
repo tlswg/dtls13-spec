@@ -1931,6 +1931,21 @@ with code point 26. This avoids having ACK being added
 to the handshake transcript. Note that ACKs can still be
 sent in the same UDP datagram as handshake records.
 
+DTLS 1.3 endpoints MUST NOT send ACK records until the sender knows that
+the peer is negotiating DTLS 1.3. A server knows this after it has received
+and processed a complete ClientHello and selected DTLS 1.3. A client knows
+this after it has received and processed a ServerHello or HelloRetryRequest
+selecting DTLS 1.3.
+
+Until that point, ACK records received in epoch 0 MUST be ignored. This
+preserves compatibility with DTLS 1.2 endpoints, which do not define the
+ACK content type and might treat it as a fatal error.
+
+After an endpoint knows that the peer is negotiating DTLS 1.3, it MAY send
+and process ACK records in epoch 0. Such ACKs are processed according to the
+normal ACK rules. In particular, epoch 0 ACKs can acknowledge plaintext
+handshake records and are used for the epoch 1 exception described below.
+
 ~~~
 %%% ACKs
     struct {
@@ -2047,15 +2062,17 @@ messages might have crossed in flight.
 ACKs MUST NOT be sent for records of any content type
 other than handshake or for records which cannot be deprotected.
 
-Note that in some cases it may be necessary to send an ACK which
-does not contain any record numbers. For instance, a client
-might receive an EncryptedExtensions message prior to receiving
-a ServerHello. Because it cannot decrypt the EncryptedExtensions,
-it cannot safely acknowledge it (as it might be damaged). If the client
-does not send an ACK, the server will eventually retransmit
-its first flight, but this might take far longer than the
-actual round trip time between client and server. Having
-the client send an empty ACK shortcuts this process.
+After DTLS 1.3 has been selected, it can still be useful to send an
+ACK which does not contain any record numbers. Such an ACK does not
+acknowledge any record; it only indicates that the sender is still live
+and can trigger faster retransmission. For example, after processing a
+HelloRetryRequest that selects DTLS 1.3 and sending a second ClientHello,
+a client might receive the protected EncryptedExtensions record from the
+server before receiving the ServerHello. Because the client cannot yet
+derive the handshake traffic keys, it cannot deprotect and therefore
+safely acknowledge that record. Sending an empty ACK can avoid waiting
+for the server's retransmission timeout. Empty ACKs MUST NOT be sent
+before DTLS 1.3 has been selected.
 
 ## Receiving ACKs
 
