@@ -285,9 +285,26 @@ sliding bitmap window to track received records. Records that fall
 outside the window or that have already been received are silently
 discarded. Replay detection is optional because duplicate packets are
 not always the result of malicious activity; they can also arise from
-routing anomalies. In some cases, duplicate detection may instead be
-handled by the application protocol or by the underlying transport
-(e.g., DTLS over SCTP {{RFC6083}}).
+routing anomalies.
+
+This option applies to application data. Handshake messages, including
+post-handshake messages, use the message_seq and next_receive_seq
+mechanism. A receiver processes a handshake message only when its message_seq
+matches next_receive_seq, increments next_receive_seq before processing the
+message, and discards handshake messages with lower sequence numbers.
+Consequently, post-handshake messages are processed in order and at most once,
+independently of whether record-layer replay detection for application data is
+enabled.
+
+In some cases, replay or duplicate detection for application data can instead
+be handled by the application protocol or by the underlying transport.
+Reliability or in-order delivery alone is not sufficient to replace DTLS record
+replay detection. If an underlying transport provides replay or duplicate
+detection for this purpose, the transport metadata used for that detection MUST
+be protected against modification by an on-path attacker and the resulting
+protection MUST be at least equivalent to DTLS record replay detection. For
+example, DTLS over SCTP can rely on SCTP-AUTH {{RFC6083}}, not on
+unauthenticated SCTP sequencing alone.
 
 # The DTLS Record Layer
 
