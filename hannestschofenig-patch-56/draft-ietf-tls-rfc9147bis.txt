@@ -3065,6 +3065,10 @@ Appendix D.  Contributors
       ETH Zurich (now IBM Research Zurich)
       mail@felixguenther.info
 
+   *  Felix Günther
+      ETH Zurich (now IBM Research Europe - Zurich)
+      mail@felixguenther.info
+
    *  Benjamin Kaduk
       Akamai Technologies
       kaduk@mit.edu
