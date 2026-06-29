@@ -845,29 +845,30 @@ record has been deprotected  successfully.
 
 ### Handling Invalid Records
 
-Unlike TLS, DTLS can be resilient when receiving invalid records (e.g.,
-invalid formatting, length, MAC, etc.).
+Unlike TLS, DTLS can be resilient when receiving records that cannot be
+processed at the record layer.
 
-When receiving a record that is invalid, endpoints SHOULD discard the record
-rather than generating a fatal alert. This includes only the construction of
-records and the AEAD protection on the record (if any), not the contents of
-a record that is successfully decrypted.  This includes:
+An endpoint MUST discard a record, without updating handshake state, ACK state,
+retransmission state, or replay windows, when the record cannot be processed at
+the record layer.  This includes:
 
-* Records that contain invalid header values.  For instance, records with
+* Records with invalid header values.  For instance, records with
   invalid values for fields other than `fragment` in `DTLSPlaintext` or
   `DTLSCiphertext`; see {{dtls-record}}.
 
-* Records where length does not match the length of available data. For
+* Records whose length is inconsistent with the remaining datagram contents. For
   instance, where the length indicates a length longer than what remains in
   a UDP datagram.
 
 * Records with an epoch that is not currently being accepted.
 
-* Records where authenticated encryption protection cannot be removed
+* Records where AEAD protection cannot be removed
   successfully.
 
-* Records that contain an invalid inner content type or unterminated
-  padding; see `DTLSInnerPlaintext` in {{dtls-record}}}.
+* Records with an invalid inner content type or invalid; and
+  padding; see `DTLSInnerPlaintext` in {{dtls-record}}.
+
+* Records that cannot be demultiplexed as DTLS records.
 
 Records that are successfully decoded and decrypted can be assumed to be
 valid and errors in the contents of records MUST be regarded as originating
