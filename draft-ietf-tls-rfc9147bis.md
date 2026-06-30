@@ -571,16 +571,17 @@ are provided in {{dtls-epoch}}.
 
 ### Processing Guidelines
 
-Because DTLS records could be reordered, a record from epoch
-M may be received after epoch N (where N > M) has begun.
-Implementations SHOULD discard records from earlier epochs but
-MAY choose to
-retain keying material from previous epochs for up to the default MSL
-specified for TCP {{RFC0793}} to allow for packet reordering.  (Note that
-the intention here is that implementers use the current guidance from
-the IETF for MSL, as specified in {{RFC0793}} or successors,
-not that they attempt to interrogate the MSL that
-the system TCP stack is using.)
+Because DTLS records can arrive out of order, a record from epoch
+M might be received after epoch N, where N > M, has already begun.
+Implementations SHOULD discard records from earlier epochs. However,
+they MAY retain keying material for previous epochs for up to the
+default Maximum Segment Lifetime (MSL) specified for TCP in {{RFC0793}}
+or its successors, in order to tolerate packet reordering.
+
+The intent is that implementers follow the current IETF guidance for
+TCP MSL, as specified in {{RFC0793}} or successor documents.
+Implementations are not expected to determine or depend on the MSL
+value used by the local system TCP stack.
 
 For the purposes of this section, closing a receive epoch means discarding
 the record-protection keys, record number reconstruction state, replay state,
