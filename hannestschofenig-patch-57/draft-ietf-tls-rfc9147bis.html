@@ -1056,7 +1056,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Rescorla, et al.</td>
-<td class="center">Expires 30 December 2026</td>
+<td class="center">Expires 1 January 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1072,12 +1072,12 @@ svg {
 <a href="https://www.rfc-editor.org/rfc/rfc9147" class="eref">9147</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-06-28" class="published">28 June 2026</time>
+<time datetime="2026-06-30" class="published">30 June 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-12-30">30 December 2026</time></dd>
+<dd class="expires"><time datetime="2027-01-01">1 January 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1125,7 +1125,7 @@ forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 30 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 1 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1971,26 +1971,26 @@ are provided in <a href="#dtls-epoch" class="auto internal xref">Section 6.1</a>
           <h4 id="name-processing-guidelines">
 <a href="#section-4.2.1" class="section-number selfRef">4.2.1. </a><a href="#name-processing-guidelines" class="section-name selfRef">Processing Guidelines</a>
           </h4>
-<p id="section-4.2.1-1">Because DTLS records could be reordered, a record from epoch
-M may be received after epoch N (where N &gt; M) has begun.
-Implementations SHOULD discard records from earlier epochs but
-MAY choose to
-retain keying material from previous epochs for up to the default MSL
-specified for TCP <span>[<a href="#RFC0793" class="cite xref">RFC0793</a>]</span> to allow for packet reordering.  (Note that
-the intention here is that implementers use the current guidance from
-the IETF for MSL, as specified in <span>[<a href="#RFC0793" class="cite xref">RFC0793</a>]</span> or successors,
-not that they attempt to interrogate the MSL that
-the system TCP stack is using.)<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-2">For the purposes of this section, closing a receive epoch means discarding
+<p id="section-4.2.1-1">Because DTLS records can arrive out of order, a record from epoch
+M might be received after epoch N, where N &gt; M, has already begun.
+Implementations SHOULD discard records from earlier epochs. However,
+they MAY retain keying material for previous epochs for up to the
+default Maximum Segment Lifetime (MSL) specified for TCP in <span>[<a href="#RFC0793" class="cite xref">RFC0793</a>]</span>
+or its successors, in order to tolerate packet reordering.<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-2">The intent is that implementers follow the current IETF guidance for
+TCP MSL, as specified in <span>[<a href="#RFC0793" class="cite xref">RFC0793</a>]</span> or successor documents.
+Implementations are not expected to determine or depend on the MSL
+value used by the local system TCP stack.<a href="#section-4.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-3">For the purposes of this section, closing a receive epoch means discarding
 the record-protection keys, record number reconstruction state, replay state,
 and any ACK processing state associated with that epoch. Once a receive epoch
 is closed, records from that epoch MUST be treated as records for which no
-corresponding cipher state can be determined.<a href="#section-4.2.1-2" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-3">In the base protocol, receive epochs are created by the initial handshake and,
+corresponding cipher state can be determined.<a href="#section-4.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-4">In the base protocol, receive epochs are created by the initial handshake and,
 after the handshake has completed, by KeyUpdate. Other post-handshake messages
 are protected under the current application traffic epoch and do not create a
-new epoch.<a href="#section-4.2.1-3" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-4">During the initial handshake, a receiver MAY retain receive state for older
+new epoch.<a href="#section-4.2.1-4" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-5">During the initial handshake, a receiver MAY retain receive state for older
 epochs to tolerate packet reordering or to complete retransmission and
 acknowledgement processing. Closing an epoch affects only records from that
 epoch that arrive after the closure; those records will be discarded as
@@ -2000,8 +2000,8 @@ longer needs to process retransmissions of those messages. A server MAY close
 epoch 1 when it rejects early data or when it no longer intends to accept
 reordered 0-RTT records. A receiver MAY close epoch 2 after the handshake has
 completed and ACK or retransmission processing for records protected under the
-handshake traffic keys has completed or been abandoned.<a href="#section-4.2.1-4" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-5">After the handshake, the base protocol creates new receive epochs only through
+handshake traffic keys has completed or been abandoned.<a href="#section-4.2.1-5" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-6">After the handshake, the base protocol creates new receive epochs only through
 KeyUpdate. A receiver MAY retain the previous application traffic epoch to
 tolerate reordering and to process records, including post-handshake records,
 that were already sent under that epoch. Closing an older application traffic
@@ -2010,15 +2010,15 @@ processing of post-handshake records protected under that epoch, or violate the
 KeyUpdate retention requirements below. A receiver MAY close an older
 application traffic epoch when it no longer intends to tolerate reordering from
 that epoch, subject to the KeyUpdate rules below and any extension-specific
-rules.<a href="#section-4.2.1-5" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-6">In particular, a receiver MUST close an older receive epoch once it is no longer
+rules.<a href="#section-4.2.1-6" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-7">In particular, a receiver MUST close an older receive epoch once it is no longer
 needed for reordering, retransmission, or acknowledgement processing, and
 MUST NOT retain receive state for an older epoch longer than the default MSL.
 Protected DTLS 1.3 records carry only the low-order bits of the epoch.
 A receiver MUST close older receive epochs before retaining a later epoch would
 make epoch reconstruction ambiguous. In particular, a receiver MUST NOT retain
-two receive epochs with the same encoded epoch bits for the same peer.<a href="#section-4.2.1-6" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-7">Conversely, it is possible for records that are protected with the
+two receive epochs with the same encoded epoch bits for the same peer.<a href="#section-4.2.1-7" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-8">Conversely, it is possible for records that are protected with the
 new epoch to be received prior to the completion of a
 handshake.  For instance, the server may send its Finished message
 and then start transmitting data.  Implementations MAY either buffer
@@ -2026,13 +2026,13 @@ or discard such records, though when DTLS is used over reliable
 transports (e.g., SCTP <span>[<a href="#RFC4960" class="cite xref">RFC4960</a>]</span>), they SHOULD be buffered and
 processed once the handshake completes.  Note that TLS's restrictions
 on when records may be sent still apply, and the receiver treats the
-records as if they were sent in the right order.<a href="#section-4.2.1-7" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-8">Implementations MUST send retransmissions of lost messages using the same
-epoch and keying material as the original transmission.<a href="#section-4.2.1-8" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-9">Implementations MUST either abandon an association or rekey prior to
-allowing the sequence number to wrap.<a href="#section-4.2.1-9" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-10">Implementations MUST NOT allow the epoch to wrap, but instead MUST
-establish a new association, terminating the old association.<a href="#section-4.2.1-10" class="pilcrow">¶</a></p>
+records as if they were sent in the right order.<a href="#section-4.2.1-8" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-9">Implementations MUST send retransmissions of lost messages using the same
+epoch and keying material as the original transmission.<a href="#section-4.2.1-9" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-10">Implementations MUST either abandon an association or rekey prior to
+allowing the sequence number to wrap.<a href="#section-4.2.1-10" class="pilcrow">¶</a></p>
+<p id="section-4.2.1-11">Implementations MUST NOT allow the epoch to wrap, but instead MUST
+establish a new association, terminating the old association.<a href="#section-4.2.1-11" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="reconstructing">
