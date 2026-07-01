@@ -14,7 +14,7 @@
 Internet in a way that is designed to prevent eavesdropping, tampering, and message
 forgery. 
        The DTLS 1.3 protocol is based on the Transport Layer Security (TLS)
-1.3 protocol and provides equivalent security guarantees with the exception of order protection / non-replayability.  Datagram semantics of the underlying transport are preserved by the DTLS protocol. 
+1.3 protocol and provides equivalent security guarantees with the exception of order protection.  Datagram semantics of the underlying transport are preserved by the DTLS protocol. 
        This document obsoletes RFC 6347. 
     " name="description">
 <meta content="xml2rfc 3.34.0" name="generator">
@@ -1052,11 +1052,11 @@ svg {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">DTLS 1.3</td>
-<td class="right">June 2026</td>
+<td class="right">July 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Rescorla, et al.</td>
-<td class="center">Expires 30 December 2026</td>
+<td class="center">Expires 2 January 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1072,12 +1072,12 @@ svg {
 <a href="https://www.rfc-editor.org/rfc/rfc9147" class="eref">9147</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-06-28" class="published">28 June 2026</time>
+<time datetime="2026-07-01" class="published">1 July 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-12-30">30 December 2026</time></dd>
+<dd class="expires"><time datetime="2027-01-02">2 January 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1103,7 +1103,7 @@ svg {
 Internet in a way that is designed to prevent eavesdropping, tampering, and message
 forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <p id="section-abstract-2">The DTLS 1.3 protocol is based on the Transport Layer Security (TLS)
-1.3 protocol and provides equivalent security guarantees with the exception of order protection / non-replayability.  Datagram semantics of the underlying transport are preserved by the DTLS protocol.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+1.3 protocol and provides equivalent security guarantees with the exception of order protection.  Datagram semantics of the underlying transport are preserved by the DTLS protocol.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
 <p id="section-abstract-3">This document obsoletes RFC 6347.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
@@ -1125,7 +1125,7 @@ forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 30 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 2 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1616,30 +1616,25 @@ message can reassemble the original unfragmented message.<a href="#section-3.3-1
         <h3 id="name-replay-detection">
 <a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-replay-detection" class="section-name selfRef">Replay Detection</a>
         </h3>
-<p id="section-3.4-1">DTLS can optionally provide replay detection for application data. This
-mechanism is identical to the one used in IPsec AH/ESP, relying on a
-sliding bitmap window to track received records. Records that fall
-outside the window or that have already been received are silently
-discarded. Replay detection is optional because duplicate packets are
-not always the result of malicious activity; they can also arise from
-routing anomalies.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
-<p id="section-3.4-2">This option applies to application data. Handshake messages, including
+<p id="section-3.4-1">DTLS provides replay detection for application data. This mechanism is identical
+to the one used in IPsec AH/ESP, relying on a sliding bitmap window to track
+received records. Records that fall outside the window or that have already
+been received are silently discarded. Duplicate packets are not always the
+result of malicious activity; they can also arise from routing anomalies.
+Nevertheless, application data replay detection is mandatory in DTLS 1.3.
+Earlier versions of DTLS treated this feature as optional.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-2">This mechanism applies to application data. Handshake messages, including
 post-handshake messages, use the message_seq and next_receive_seq
 mechanism. A receiver processes a handshake message only when its message_seq
 matches next_receive_seq, increments next_receive_seq before processing the
 message, and discards handshake messages with lower sequence numbers.
 Consequently, post-handshake messages are processed in order and at most once,
-independently of whether record-layer replay detection for application data is
-enabled.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
-<p id="section-3.4-3">In some cases, replay or duplicate detection for application data can instead
-be handled by the application protocol or by the underlying transport.
-Reliability or in-order delivery alone is not sufficient to replace DTLS record
-replay detection. If an underlying transport provides replay or duplicate
-detection for this purpose, the transport metadata used for that detection MUST
-be protected against modification by an on-path attacker and the resulting
-protection MUST be at least equivalent to DTLS record replay detection. For
-example, DTLS over SCTP can rely on SCTP-AUTH <span>[<a href="#RFC6083" class="cite xref">RFC6083</a>]</span>, not on
-unauthenticated SCTP sequencing alone.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
+independently of record-layer replay detection for application data.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
+<p id="section-3.4-3">Application protocols or underlying transports can provide additional replay,
+duplicate, ordering, or freshness mechanisms, but those mechanisms do not
+replace DTLS record-layer replay detection for application data. Reliability or
+in-order delivery alone is not sufficient to replace DTLS record replay
+detection.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -4006,16 +4001,16 @@ has no means to distinguish a genuine address update event (for
 example, due to a NAT rebinding) from one that is malicious. This
 attack is of concern when there is a large asymmetry of
 request/response message sizes.<a href="#section-11-7" class="pilcrow">¶</a></p>
-<p id="section-11-8">With the exception of order protection and non-replayability, the security
-guarantees for DTLS 1.3 are the same as TLS 1.3. While TLS always provides
-order protection and non-replayability, DTLS does not provide order protection
-and may not provide replay protection.<a href="#section-11-8" class="pilcrow">¶</a></p>
+<p id="section-11-8">With the exception of order protection, the security guarantees for DTLS 1.3 are
+the same as TLS 1.3. While TLS always provides order protection, DTLS preserves
+the datagram semantics of the underlying transport and therefore does not
+provide order protection.<a href="#section-11-8" class="pilcrow">¶</a></p>
 <p id="section-11-9">Unlike TLS implementations, DTLS implementations SHOULD NOT respond
 to invalid records by terminating the connection.<a href="#section-11-9" class="pilcrow">¶</a></p>
 <p id="section-11-10">TLS 1.3 requires replay protection for 0-RTT data (or rather, for connections
-that use 0-RTT data; see Section 8 of <span>[<a href="#TLS13" class="cite xref">TLS13</a>]</span>).  DTLS provides an optional
-per-record replay-protection mechanism, since datagram protocols are
-inherently subject to message reordering and replay.  These two
+that use 0-RTT data; see Section 8 of <span>[<a href="#TLS13" class="cite xref">TLS13</a>]</span>).  DTLS provides a mandatory
+per-record replay-protection mechanism for application data, since datagram
+protocols are inherently subject to message reordering and replay.  These two
 replay-protection mechanisms are orthogonal, and neither mechanism meets the
 requirements for the other.<a href="#section-11-10" class="pilcrow">¶</a></p>
 <p id="section-11-11">DTLS 1.3's handshake transcript does not include the new DTLS fields,
@@ -4677,7 +4672,7 @@ potential sources of issues, noted here.<a href="#appendix-C-1" class="pilcrow">
 <li class="normal" id="appendix-C-2.1">
           <p id="appendix-C-2.1.1">Do you correctly handle messages received from multiple epochs during a key
 transition?  This includes locating the correct key as well as performing
-replay detection, if enabled.<a href="#appendix-C-2.1.1" class="pilcrow">¶</a></p>
+replay detection.<a href="#appendix-C-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="appendix-C-2.2">
           <p id="appendix-C-2.2.1">Do you retransmit handshake messages that are not (implicitly or explicitly)
