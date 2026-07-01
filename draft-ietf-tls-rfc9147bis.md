@@ -2169,14 +2169,22 @@ with that epoch (see {{reconstructing}} for information
 on determining the correct epoch) but MAY opt to discard
 such out-of-epoch records.
 
-Due to the possibility of an ACK message for a KeyUpdate being lost and thereby
-preventing the sender of the KeyUpdate from updating its keying material,
-receivers MUST retain the pre-update keying material until receipt and successful
-decryption of a message using the new keys. After successfully decrypting a
-message using the new keys, receivers MUST close the previous receive epoch
-once it is no longer needed for reordering or retransmission processing, as
-described in {{seq-and-epoch}}. Extensions that define a different key update
-state machine, such as Extended Key Update {{?I-D.ietf-tls-extended-key-update}}, are
+Upon successfully processing a KeyUpdate received in epoch N, an endpoint
+creates receive epoch N+1 for that peer. Because the peer cannot send records
+protected with epoch N+1 until its KeyUpdate has been acknowledged, the endpoint
+MUST retain the receive state for epoch N until it has successfully deprotected
+a record from that peer in epoch N+1. This allows the endpoint to process
+retransmissions of the KeyUpdate if the ACK for the KeyUpdate is lost.
+
+Successfully deprotecting a record from epoch N+1 proves that the peer has
+received the ACK for the KeyUpdate and no longer depends on retransmission of
+that KeyUpdate. At that point, epoch N is no longer needed for KeyUpdate
+retransmission processing. The endpoint MAY close epoch N immediately. If it
+retains epoch N to process reordered records that were sent before the peer
+changed keys, it MUST close epoch N according to the limits in
+{{seq-and-epoch}} and before retaining epoch state would make epoch
+reconstruction ambiguous. Extensions that define a different key update state
+machine, such as Extended Key Update {{?I-D.ietf-tls-extended-key-update}}, are
 responsible for defining the receive epoch retention and closure points for
 that state machine.
 
