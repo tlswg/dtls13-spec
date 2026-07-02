@@ -870,7 +870,7 @@ the record layer.  This includes:
 
 * Records that cannot be demultiplexed as DTLS records.
 
-Records that are successfully decoded and decrypted can be assumed to be
+Records that are successfully decoded and deprotected can be assumed to be
 valid and errors in the contents of records MUST be regarded as originating
 from the peer.  Fatal alerts can be generated based on the content of
 records.  This includes all the unprotected records exchanged as part of the
@@ -881,10 +881,6 @@ caused by damage to handshake messages carried in unprotected records.
 
 In general, invalid records SHOULD be silently discarded, thus preserving
 the association; however, an error MAY be logged for diagnostic purposes.
-
-Generating fatal alerts is NOT RECOMMENDED for unreliable transports, both to
-increase the reliability of DTLS service and to avoid the risk of spoofing
-attacks sending traffic to unrelated third parties.
 
 If DTLS is being carried over a transport that is resistant to
 forgery (e.g., SCTP with SCTP-AUTH {{RFC6083}}), then it is safer to send alerts
