@@ -119,14 +119,14 @@ DTLS 1.0 {{RFC4347}} was originally defined as a delta from TLS 1.1 {{RFC4346}},
 DTLS 1.2 {{RFC6347}} was defined as a series of deltas to TLS 1.2 {{RFC5246}}.  There
 is no DTLS 1.1; that version number was skipped in order to harmonize version numbers
 with TLS.  This specification describes the most current version of the DTLS protocol
-as a delta from TLS 1.3 {{!TLS13=RFC8446}}. It obsoletes DTLS 1.2.
+as a delta from TLS 1.3 {{!TLS13=I-D.ietf-tls-rfc8446bis}}. It obsoletes DTLS 1.2.
 
 Implementations that speak both DTLS 1.2 and DTLS 1.3 can interoperate with those
 that speak only DTLS 1.2 (using DTLS 1.2 of course), just as TLS 1.3 implementations
 can interoperate with TLS 1.2 (see Appendix D of {{TLS13}} for details).
 While backwards compatibility with DTLS 1.0 is possible, the use of DTLS 1.0 is not
 recommended, as explained in Section 3.1.2 of {{RFC7525}}.
-{{?DEPRECATE=I-D.ietf-tls-oldversions-deprecate}} forbids the use of DTLS 1.0.
+{{?DEPRECATE=RFC8996}} forbids the use of DTLS 1.0.
 
 #  Conventions and Terminology
 
@@ -2369,7 +2369,7 @@ to be functional are described in Section 3.3 of {{?RFC2522}}:
 Although the cookie must allow the server to produce the right handshake
 transcript, it SHOULD be constructed so that knowledge of the cookie
 is insufficient to reproduce the ClientHello contents. Otherwise,
-this may create problems with future extensions such as Encrypted Client Hello {{?I-D.ietf-tls-esni}}.
+this may create problems with future extensions such as Encrypted Client Hello {{?ECH=RFC9849}}.
 
 When cookies are generated using a keyed authentication mechanism,
 it should be possible to rotate the associated
