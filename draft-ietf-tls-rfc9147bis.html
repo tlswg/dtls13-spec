@@ -3653,6 +3653,9 @@ for records which have already been ACKed.
 As noted above, the receipt of any record responding
 to a given flight MUST be taken as an implicit acknowledgement for the entire
 flight to which it is responding.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.2-2">If any element of record_numbers in the ACK references an epoch that
+is higher than the epoch in which the ACK was received, the
+implementation MUST terminate the connection with an "illegal_parameter" alert.<a href="#section-7.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="design-rationale">
