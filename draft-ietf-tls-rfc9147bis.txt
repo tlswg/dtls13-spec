@@ -2401,7 +2401,7 @@ Table of Contents
    handshake transcript, it SHOULD be constructed so that knowledge of
    the cookie is insufficient to reproduce the ClientHello contents.
    Otherwise, this may create problems with future extensions such as
-   Encrypted Client Hello [I-D.ietf-tls-esni].
+   Encrypted Client Hello [ECH].
 
    When cookies are generated using a keyed authentication mechanism, it
    should be possible to rotate the associated secret key, so that
@@ -2611,8 +2611,10 @@ Table of Contents
               <https://www.rfc-editor.org/rfc/rfc9146>.
 
    [TLS13]    Rescorla, E., "The Transport Layer Security (TLS) Protocol
-              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
-              <https://www.rfc-editor.org/rfc/rfc8446>.
+              Version 1.3", Work in Progress, Internet-Draft, draft-
+              ietf-tls-rfc8446bis-14, 13 September 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-tls-
+              rfc8446bis-14>.
 
 15.2.  Informative References
 
@@ -2629,17 +2631,12 @@ Table of Contents
 
    [DEPRECATE]
               Moriarty, K. and S. Farrell, "Deprecating TLS 1.0 and TLS
-              1.1", Work in Progress, Internet-Draft, draft-ietf-tls-
-              oldversions-deprecate-12, 21 January 2021,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-tls-
-              oldversions-deprecate-12>.
+              1.1", BCP 195, RFC 8996, DOI 10.17487/RFC8996, March 2021,
+              <https://www.rfc-editor.org/rfc/rfc8996>.
 
-   [I-D.ietf-tls-esni]
-              Rescorla, E., Oku, K., Sullivan, N., and C. A. Wood, "TLS
-              Encrypted Client Hello", Work in Progress, Internet-Draft,
-              draft-ietf-tls-esni-25, 14 June 2025,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-tls-
-              esni-25>.
+   [ECH]      Rescorla, E., Oku, K., Sullivan, N., and C. A. Wood, "TLS
+              Encrypted Client Hello", RFC 9849, DOI 10.17487/RFC9849,
+              March 2026, <https://www.rfc-editor.org/rfc/rfc9849>.
 
    [I-D.ietf-uta-tls13-iot-profile]
               Tschofenig, H., Fossati, T., Richardson, M., and D.
