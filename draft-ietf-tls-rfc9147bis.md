@@ -2672,9 +2672,9 @@ potential sources of issues, noted here.
 # Contributors
 
 Many individuals have contributed to previous versions of DTLS up to 1.2,
-and to the original specification of DTLS 1.3 and their contributions are
-acknowledged in earlier DTLS specifications or in the referenced documents.
-The following individuals made significant contributions to RFC 9147:
+and their contributions are acknowledged in earlier DTLS specifications
+or in the referenced documents. The following individuals made significant
+contributions to DTLS 1.3:
 
 * David Benjamin<br>
   Google<br>
