@@ -6,9 +6,9 @@ TLS                                                          E. Rescorla
 Internet-Draft                                               Independent
 Obsoletes: 9147 (if approved)                              H. Tschofenig
 Intended status: Standards Track                                UniBw M.
-Expires: 3 January 2027                                      N. Modadugu
+Expires: 4 January 2027                                      N. Modadugu
                                                             Google, Inc.
-                                                             2 July 2026
+                                                             3 July 2026
 
 
    The Datagram Transport Layer Security (DTLS) Protocol Version 1.3
@@ -44,7 +44,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 January 2027.
+   This Internet-Draft will expire on 4 January 2027.
 
 Copyright Notice
 
@@ -3068,21 +3068,21 @@ Appendix D.  Contributors
    Many individuals have contributed to previous versions of DTLS up to
    1.2, and their contributions are acknowledged in earlier DTLS
    specifications or in the referenced documents.  The following
-   individuals made significant contributions to RFC 9147:
+   individuals made significant contributions to DTLS 1.3:
 
    *  David Benjamin
       Google
       davidben@google.com
 
    *  Thomas Fossati
-      Arm Limited (now Linaro)
-      Thomas.Fossati@linaro.org
+      Arm Limited (now Nvidia)
+      tfossati@nvidia.com
 
    *  Tobias Gondrom
       Huawei (now United Overseas Bank Limited)
 
    *  Felix Günther
-      ETH Zurich (now IBM Research Zurich)
+      ETH Zurich (now IBM Research Europe - Zurich)
       mail@felixguenther.info
 
    *  Benjamin Kaduk
@@ -3106,7 +3106,7 @@ Appendix D.  Contributors
       yinxinxing@huawei.com
 
    *  Hanno Becker
-      Arm Limited (now Amazon)
+      Arm Limited (now Amazon Web Services (AWS))
 
    The sequence number encryption concept is taken from QUIC [RFC9000].
    We would like to thank the authors of RFC 9000 for their work.
@@ -3114,8 +3114,10 @@ Appendix D.  Contributors
    Felix Günther and Martin Thomson contributed the analysis in
    Appendix B.
 
-   We would like to thank Jonathan Hammell, Bernard Aboba, Nick Harper
-   and Andy Cunningham for their review comments.
+   We would like to thank Bernard Aboba, Antony Antony, Andy Cunningham,
+   Jonathan Hammell, Nick Harper, John Mattsson, Sean Turner, Michael
+   Tüxen, and Anna Weine for their valuable review comments and
+   contributions.
 
    Finally, we would like to thank the following IESG members for their
    review comments: Martin Duke, Erik Kline, Francesca Palombini, Lars
