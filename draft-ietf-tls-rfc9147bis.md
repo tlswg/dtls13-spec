@@ -2682,7 +2682,7 @@ The following individuals made significant contributions to RFC 9147:
 
 * Thomas Fossati<br>
   Arm Limited (now Nvidia)<br>
-  Thomas.Fossati@linaro.org
+  tfossati@nvidia.com
 
 * Tobias Gondrom<br>
   Huawei (now United Overseas Bank Limited)
