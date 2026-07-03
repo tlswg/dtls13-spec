@@ -2699,21 +2699,21 @@ potential sources of issues, noted here.
 Many individuals have contributed to previous versions of DTLS up to 1.2,
 and their contributions are acknowledged in earlier DTLS specifications
 or in the referenced documents. The following individuals made significant
-contributions to RFC 9147:
+contributions to DTLS 1.3:
 
 * David Benjamin<br>
   Google<br>
   davidben@google.com
 
 * Thomas Fossati<br>
-  Arm Limited (now Linaro)<br>
-  Thomas.Fossati@linaro.org
+  Arm Limited (now Nvidia)<br>
+  tfossati@nvidia.com
 
 * Tobias Gondrom<br>
   Huawei (now United Overseas Bank Limited)
 
 * Felix Günther<br>
-  ETH Zurich (now IBM Research Zurich)<br>
+  ETH Zurich (now IBM Research Europe - Zurich)<br>
   mail@felixguenther.info
 
 * Benjamin Kaduk<br>
@@ -2737,15 +2737,14 @@ contributions to RFC 9147:
   yinxinxing@huawei.com
 
 * Hanno Becker<br>
-  Arm Limited (now Amazon)
+  Arm Limited (now Amazon Web Services (AWS))
 
 The sequence number encryption concept is taken from QUIC {{?RFC9000}}.
 We would like to thank the authors of RFC 9000 for their work.
 
 Felix Günther and Martin Thomson contributed the analysis in {{ccm-bounds}}.
 
-We would like to thank Jonathan Hammell, Bernard Aboba, Nick Harper and
-Andy Cunningham for their review comments.
+We would like to thank Bernard Aboba, Antony Antony, Andy Cunningham, Jonathan Hammell, Nick Harper, John Mattsson, Sean Turner, Michael Tüxen, and Anna Weine for their valuable review comments and contributions.
 
 Finally, we would like to thank the following IESG members for their review
 comments: Martin Duke, Erik Kline, Francesca Palombini, Lars Eggert,
