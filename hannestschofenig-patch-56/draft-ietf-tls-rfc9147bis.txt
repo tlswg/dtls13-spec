@@ -3056,7 +3056,7 @@ Appendix D.  Contributors
 
    *  Thomas Fossati
       Arm Limited (now Nvidia)
-      Thomas.Fossati@linaro.org
+      tfossati@nvidia.com
 
    *  Tobias Gondrom
       Huawei (now United Overseas Bank Limited)
