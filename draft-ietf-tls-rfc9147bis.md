@@ -2102,7 +2102,8 @@ receiving at the new epoch.
 A KeyUpdate message terminates the post-handshake stream in an epoch.
 After sending KeyUpdate in an epoch, implementations MUST NOT send
 any new post-handshake messages in that epoch. If a peer violates this
-rule, the receiving peer MUST treat it as a protocol violation, send an "unexpected_message" alert, and terminate the connection. Note that, if
+rule, the receiving peer MUST treat it as a protocol violation, send an
+"unexpected_message" alert, and terminate the connection. Note that, if
 the implementation has sent KeyUpdate but is waiting for an ACK, the
 next epoch is not yet active. In this case, subsequent post-handshake
 messages may not be sent until receiving the ACK.
