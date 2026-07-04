@@ -2186,7 +2186,7 @@ change consumes a message_seq value, which is limited to 2^16-1. Both
 sending and receiving implementations MAY instead enforce an epoch
 limit of 2^16-1.  In this case, the implementation MUST check for
 this limit, if reached, terminate the association. In some cases, it
-is otherwise possible for the epoch number to reach 2^16+1.
+is otherwise possible for the epoch number to reach 2^16.
 
 # Connection ID Updates
 
