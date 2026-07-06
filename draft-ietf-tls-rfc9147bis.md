@@ -2182,11 +2182,12 @@ send a KeyUpdate in response to "update_requested".
 
 Exceeding the above limit is not possible with the key update
 mechanisms defined in this document.  After the handshake, each epoch
-change consumes a message_seq value, which is limited to 2^16-1. Both
-sending and receiving implementations MAY instead enforce an epoch
-limit of 2^16-1.  In this case, the implementation MUST check for
-this limit, if reached, terminate the association. In some cases, it
-is otherwise possible for the epoch number to reach 2^16.
+change consumes a message_seq value, which is limited to 2^16-1.
+As a result, the maximum possible number an epoch can reach
+is 2^16+1. In order to allow implementations to store epochs in
+a 16-bit value, MAY choose to enforce an epoch limit of 2^16-1.
+In this case, the implementation MUST check for
+this limit, if reached, terminate the association.
 
 # Connection ID Updates
 
