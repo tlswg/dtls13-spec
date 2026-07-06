@@ -1056,7 +1056,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Rescorla, et al.</td>
-<td class="center">Expires 5 January 2027</td>
+<td class="center">Expires 7 January 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1072,12 +1072,12 @@ svg {
 <a href="https://www.rfc-editor.org/rfc/rfc9147" class="eref">9147</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-07-04" class="published">4 July 2026</time>
+<time datetime="2026-07-06" class="published">6 July 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-01-05">5 January 2027</time></dd>
+<dd class="expires"><time datetime="2027-01-07">7 January 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1125,7 +1125,7 @@ forgery.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 5 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -3774,11 +3774,12 @@ Note: this overrides the requirement in TLS 1.3 to always
 send a KeyUpdate in response to "update_requested".<a href="#section-8-6" class="pilcrow">¶</a></p>
 <p id="section-8-7">Exceeding the above limit is not possible with the key update
 mechanisms defined in this document.  After the handshake, each epoch
-change consumes a message_seq value, which is limited to 2^16-1. Both
-sending and receiving implementations MAY instead enforce an epoch
-limit of 2^16-1.  In this case, the implementation MUST check for
-this limit, if reached, terminate the association. In some cases, it
-is otherwise possible for the epoch number to reach 2^16.<a href="#section-8-7" class="pilcrow">¶</a></p>
+change consumes a message_seq value, which is limited to 2^16-1.
+As a result, the maximum possible number an epoch can reach
+is 2^16+1. In order to allow implementations to store epochs in
+a 16-bit value, MAY choose to enforce an epoch limit of 2^16-1.
+In this case, the implementation MUST check for
+this limit, if reached, terminate the association.<a href="#section-8-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="connection-id-updates">
