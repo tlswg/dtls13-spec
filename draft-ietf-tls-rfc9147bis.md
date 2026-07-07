@@ -849,28 +849,57 @@ record has been deprotected  successfully.
 
 ### Handling Invalid Records
 
-Unlike TLS, DTLS is resilient in the face of invalid records (e.g.,
-invalid formatting, length, MAC, etc.).  In general, invalid records
-SHOULD be silently discarded, thus preserving the association;
-however, an error MAY be logged for diagnostic purposes.
-Implementations which choose to generate an alert instead MUST
-generate fatal alerts to avoid attacks where the attacker
-repeatedly probes the implementation to see how it responds to
-various types of error.  Note that if DTLS is run over UDP, then any
-implementation which does this will be extremely susceptible to
-DoS attacks because UDP forgery is so easy.
-Thus, generating fatal alerts is NOT RECOMMENDED for such transports, both
-to increase the reliability of DTLS service and to avoid the risk
-of spoofing attacks sending traffic to unrelated third parties.
+Unlike TLS, DTLS can be resilient when receiving records that cannot be
+processed at the record layer.
 
-If DTLS is being carried over a transport that is resistant to
-forgery (e.g., SCTP with SCTP-AUTH {{RFC6083}}), then it is safer to send alerts
-because an attacker will have difficulty forging a datagram that will
-not be rejected by the transport layer.
+An endpoint MUST discard a record which cannot be processed at
+the record layer. This includes:
 
-Note that because invalid records are rejected at a layer lower than
-the handshake state machine, they do not affect pending
+* Records with invalid header values.  For instance, records with
+  invalid values for fields other than `fragment` in `DTLSPlaintext` or
+  `DTLSCiphertext`; see {{dtls-record}}.
+
+* Records whose length is inconsistent with the remaining datagram contents. For
+  instance, where the length indicates a length longer than what remains in
+  a UDP datagram.
+
+* Records with an epoch that is not currently being accepted.
+
+* Records where AEAD protection cannot be removed
+  successfully.
+
+* Records with an invalid inner content type or invalid; and
+  padding; see `DTLSInnerPlaintext` in {{dtls-record}}.
+
+* Records that cannot be demultiplexed as DTLS records.
+
+Upon receiving such a record, implementations SHOULD discard it
+silently, without sending an alert, updating handshake state, ACK
+state, retransmission state, or replay windows. This maximizes the
+robustness of DTLS associations to error and forgery-based DoS attacks
+on the assocation. An error MAY be logged for diagnostic purposes.
+
+Implementations MAY instead send an alert, thus terminating the
+connection. If DTLS is being carried over UDP, then any implementation
+which does this will be extremely susceptible to DoS attacks because
+UDP forgery is so easy. If DTLS is being carried over a transport that
+is resistant to forgery (e.g., SCTP with SCTP-AUTH {{RFC6083}}), the
+risk of DoS attack is lower because an attacker will have difficulty
+forging a datagram that will not be rejected by the transport layer.
+
+Note that because invalid records are rejected at a layer
+lower than the handshake state machine, they do not affect pending
 retransmission timers.
+
+Records that are successfully decoded and deprotected can be assumed to be
+valid and errors in the contents of records MUST be regarded as originating
+from the peer.  Fatal alerts can be generated based on the content of
+records.  This includes all the unprotected records exchanged as part of the
+handshake.
+
+Note that this means that DTLS does not safeguard against denial of
+service caused by damage to handshake messages carried in unprotected
+records.
 
 
 ### AEAD Limits {#aead-lim}
