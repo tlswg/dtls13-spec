@@ -1975,7 +1975,8 @@ preserves compatibility with DTLS 1.2 endpoints, which do not define the
 ACK content type and might treat it as a fatal error.
 
 After an endpoint knows that the peer is negotiating DTLS 1.3, it MAY send
-and process ACK records in epoch 0. Such ACKs are processed according to the
+and process ACK records in epoch 0, subject to the restrictions in this
+section and in {{receiving-acks}}. Such ACKs are processed according to the
 normal ACK rules. In particular, epoch 0 ACKs can acknowledge plaintext
 handshake records and are used for the epoch 1 exception described below.
 
@@ -2025,6 +2026,10 @@ current sending epoch, which will generally be the highest available.
 The exception is that implementations MUST NOT send ACK records in epoch 1
 (early data). If the highest current sending epoch is epoch 1 (early data),
 implementations MUST use epoch 0 (unencrypted) to send ACK records.
+Once a client has processed a ServerHello, or a server has sent one,
+it MUST NOT send ACK records in epoch 0. Because ACK records are sent
+with an epoch equal to or higher than the record being acknowledged,
+an ACK record sent in epoch 0 only acknowledges records from epoch 0.
 After the handshake, implementations MUST use the highest available
 sending epoch.
 
@@ -2128,9 +2133,21 @@ As noted above, the receipt of any record responding
 to a given flight MUST be taken as an implicit acknowledgement for the entire
 flight to which it is responding.
 
-If any element of record_numbers in the ACK references an epoch that
-is higher than the epoch in which the ACK was received, the
-implementation MUST terminate the connection with an "illegal_parameter" alert.
+ACK records received in epoch 0 are unprotected and can therefore be
+forged. An implementation MUST silently discard an ACK received in
+epoch 0 if any element of record_numbers references an epoch other
+than 0. In addition, a client MUST discard any ACK received in epoch 0
+once it has processed a ServerHello, and a server MUST discard any ACK
+received in epoch 0 once it has successfully deprotected a record from
+the client in epoch 2 or higher. Records protected in epoch 2 or higher
+are therefore only acknowledged by protected ACKs.
+
+If an ACK received in a protected record references an epoch in which
+the implementation has not sent any record, the implementation MUST
+terminate the connection with an "illegal_parameter" alert. Because
+sending epochs advance independently in each direction, such an ACK
+may otherwise legitimately be carried in a lower epoch than the records
+it references (see {{key-updates}}).
 
 ## Design Rationale
 
