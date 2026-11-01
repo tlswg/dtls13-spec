@@ -1130,6 +1130,59 @@ still offer the "connection_id" extension {{RFC9146}} unless
 there is an application profile to the contrary. This permits
 a server which wants to receive a CID to negotiate one.
 
+### Fragmented ClientHello Messages {#fragmented-ch}
+
+A ClientHello that carries a post-quantum key share typically exceeds
+the size of a single datagram and is therefore fragmented (see
+{{hs-fragmentation}}). Offering key shares for several post-quantum
+groups increases the size further. This interacts with the cookie
+exchange. The cookie
+has to carry the hash of the complete initial ClientHello, so a server
+cannot send a HelloRetryRequest before it has reassembled the initial
+ClientHello. A server that wants to avoid per-client state until the
+client's address has been validated therefore has to hold reassembly
+state for clients it has not yet validated.
+
+Servers MUST be able to process a fragmented initial ClientHello and
+MUST NOT reject or ignore an initial ClientHello merely because it is
+fragmented. Rejecting fragmented ClientHello messages prevents
+interoperation with clients that offer a post-quantum key share in the
+initial ClientHello.
+
+The reassembly state needed before address validation can be kept
+small and bounded. Servers SHOULD use a bounded reassembly cache for
+initial ClientHello fragments, keyed by the source and destination
+addresses and ports, and SHOULD evict the oldest entries when the
+cache is full. Fragments in this cache are not acknowledged (see
+{{ack-msg}}), no cryptographic operation is performed on them, and no
+connection state is created until the ClientHello has been reassembled
+and, if a cookie exchange is performed, the cookie has been verified.
+A client whose fragments were evicted receives no response and
+retransmits, as for any lost flight. Under a flood of handshake
+initiations from spoofed addresses, such clients may be unable to
+complete a handshake with a fragmented ClientHello.
+
+The ClientHello sent in response to a HelloRetryRequest can also be
+fragmented, because it carries the key share for the group selected by
+the server. The server needs the "cookie" extension to validate the
+client before committing reassembly state to it. Clients SHOULD
+therefore place the "cookie" extension at the beginning of the
+extensions block of that ClientHello, so that it is contained in the
+first fragment. Servers cannot rely on this placement and can use the
+same bounded reassembly cache for ClientHello messages whose cookie
+has not yet been seen.
+
+Clients that expect the server to perform a cookie exchange can avoid a
+fragmented initial ClientHello by sending an empty client_shares list
+(see Section 4.2.8 of {{!TLS13}}). The HelloRetryRequest then carries
+both the cookie and the selected group, so no additional round trip is
+needed. If the server does not perform a cookie exchange, this costs
+one round trip.
+
+A mechanism that allows a server to validate the client's address
+based on the first fragment alone requires changes to both clients and
+servers and is out of scope for this document.
+
 ##  DTLS Handshake Message Format
 
 DTLS uses the same Handshake messages as TLS 1.3. However,
@@ -1298,7 +1351,7 @@ The DTLS 1.3 ServerHello message is the same as the TLS 1.3
 ServerHello message, except that the legacy_version field
 is set to 0xfefd, indicating DTLS 1.2.
 
-##  Handshake Message Fragmentation and Reassembly
+##  Handshake Message Fragmentation and Reassembly {#hs-fragmentation}
 
 As described in {{transport-layer-mapping}}, one or more handshake
 messages may be carried in a single datagram. However, handshake messages are
@@ -2738,6 +2791,9 @@ potential sources of issues, noted here.
 
 - Do you limit how much data you send to a peer before its address is
   validated?
+
+- Do you accept and reassemble a fragmented initial ClientHello, also
+  when you perform a cookie exchange ({{fragmented-ch}})?
 
 - Do you verify that the explicit record length is contained within the
   datagram in which it is contained?
