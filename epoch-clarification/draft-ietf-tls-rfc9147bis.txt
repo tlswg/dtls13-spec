@@ -5,10 +5,10 @@
 TLS                                                          E. Rescorla
 Internet-Draft                                               Independent
 Obsoletes: 9147 (if approved)                              H. Tschofenig
-Intended status: Standards Track                                   H-BRS
-Expires: 30 December 2026                                    N. Modadugu
+Intended status: Standards Track                                UniBw M.
+Expires: 5 May 2027                                          N. Modadugu
                                                             Google, Inc.
-                                                            28 June 2026
+                                                         1 November 2026
 
 
    The Datagram Transport Layer Security (DTLS) Protocol Version 1.3
@@ -44,7 +44,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 30 December 2026.
+   This Internet-Draft will expire on 5 May 2027.
 
 Copyright Notice
 
@@ -879,28 +879,58 @@ Table of Contents
 
 4.5.2.  Handling Invalid Records
 
-   Unlike TLS, DTLS is resilient in the face of invalid records (e.g.,
-   invalid formatting, length, MAC, etc.).  In general, invalid records
-   SHOULD be silently discarded, thus preserving the association;
-   however, an error MAY be logged for diagnostic purposes.
-   Implementations which choose to generate an alert instead MUST
-   generate fatal alerts to avoid attacks where the attacker repeatedly
-   probes the implementation to see how it responds to various types of
-   error.  Note that if DTLS is run over UDP, then any implementation
-   which does this will be extremely susceptible to DoS attacks because
-   UDP forgery is so easy.  Thus, generating fatal alerts is NOT
-   RECOMMENDED for such transports, both to increase the reliability of
-   DTLS service and to avoid the risk of spoofing attacks sending
-   traffic to unrelated third parties.
+   Unlike TLS, DTLS can be resilient when receiving records that cannot
+   be processed at the record layer.
 
-   If DTLS is being carried over a transport that is resistant to
-   forgery (e.g., SCTP with SCTP-AUTH [RFC6083]), then it is safer to
-   send alerts because an attacker will have difficulty forging a
-   datagram that will not be rejected by the transport layer.
+   An endpoint MUST discard a record which cannot be processed at the
+   record layer.  This includes:
+
+   *  Records with invalid header values.  For instance, records with
+      invalid values for fields other than fragment in DTLSPlaintext or
+      DTLSCiphertext; see Figure 2.
+
+   *  Records whose length is inconsistent with the remaining datagram
+      contents.  For instance, where the length indicates a length
+      longer than what remains in a UDP datagram.
+
+   *  Records with an epoch that is not currently being accepted.
+
+   *  Records where AEAD protection cannot be removed successfully.
+
+   *  Records with an invalid inner content type or invalid; and
+      padding; see DTLSInnerPlaintext in Figure 2.
+
+   *  Records that cannot be demultiplexed as DTLS records.
+
+   Upon receiving such a record, implementations SHOULD discard it
+   silently, without sending an alert, updating handshake state, ACK
+   state, retransmission state, or replay windows.  This maximizes the
+   robustness of DTLS associations to error and forgery-based DoS
+   attacks on the assocation.  An error MAY be logged for diagnostic
+   purposes.
+
+   Implementations MAY instead send an alert, thus terminating the
+   connection.  If DTLS is being carried over UDP, then any
+   implementation which does this will be extremely susceptible to DoS
+   attacks because UDP forgery is so easy.  If DTLS is being carried
+   over a transport that is resistant to forgery (e.g., SCTP with SCTP-
+   AUTH [RFC6083]), the risk of DoS attack is lower because an attacker
+   will have difficulty forging a datagram that will not be rejected by
+   the transport layer.
 
    Note that because invalid records are rejected at a layer lower than
    the handshake state machine, they do not affect pending
    retransmission timers.
+
+   Records that are successfully decoded and deprotected can be assumed
+   to be valid and errors in the contents of records MUST be regarded as
+   originating from the peer.  Fatal alerts can be generated based on
+   the content of records.  This includes all the unprotected records
+   exchanged as part of the handshake.
+
+   Note that this means that DTLS does not safeguard against denial of
+   service caused by damage to handshake messages carried in unprotected
+   records.
 
 4.5.3.  AEAD Limits
 
@@ -1994,7 +2024,8 @@ Table of Contents
    define the ACK content type and might treat it as a fatal error.
 
    After an endpoint knows that the peer is negotiating DTLS 1.3, it MAY
-   send and process ACK records in epoch 0.  Such ACKs are processed
+   send and process ACK records in epoch 0, subject to the restrictions
+   in this section and in Section 7.2.  Such ACKs are processed
    according to the normal ACK rules.  In particular, epoch 0 ACKs can
    acknowledge plaintext handshake records and are used for the epoch 1
    exception described below.
@@ -2041,8 +2072,12 @@ Table of Contents
    implementations MUST NOT send ACK records in epoch 1 (early data).
    If the highest current sending epoch is epoch 1 (early data),
    implementations MUST use epoch 0 (unencrypted) to send ACK records.
-   After the handshake, implementations MUST use the highest available
-   sending epoch.
+   Once a client has processed a ServerHello, or a server has sent one,
+   it MUST NOT send ACK records in epoch 0.  Because ACK records are
+   sent with an epoch equal to or higher than the record being
+   acknowledged, an ACK record sent in epoch 0 only acknowledges records
+   from epoch 0.  After the handshake, implementations MUST use the
+   highest available sending epoch.
 
 7.1.  Sending ACKs
 
@@ -2139,6 +2174,22 @@ Table of Contents
    taken as an implicit acknowledgement for the entire flight to which
    it is responding.
 
+   ACK records received in epoch 0 are unprotected and can therefore be
+   forged.  An implementation MUST silently discard an ACK received in
+   epoch 0 if any element of record_numbers references an epoch other
+   than 0.  In addition, a client MUST discard any ACK received in epoch
+   0 once it has processed a ServerHello, and a server MUST discard any
+   ACK received in epoch 0 once it has successfully deprotected a record
+   from the client in epoch 2 or higher.  Records protected in epoch 2
+   or higher are therefore only acknowledged by protected ACKs.
+
+   If an ACK received in a protected record references an epoch in which
+   the implementation has not sent any record, the implementation MUST
+   terminate the connection with an "illegal_parameter" alert.  Because
+   sending epochs advance independently in each direction, such an ACK
+   may otherwise legitimately be carried in a lower epoch than the
+   records it references (see Section 8).
+
 7.3.  Design Rationale
 
    ACK messages are used in two circumstances, namely:
@@ -2167,10 +2218,23 @@ Table of Contents
    As with TLS 1.3, DTLS 1.3 implementations send a KeyUpdate message to
    indicate that they are updating their sending keys.  As with other
    handshake messages with no built-in response, KeyUpdates MUST be
-   acknowledged.  In order to facilitate epoch reconstruction
-   (Section 4.2.2), implementations MUST NOT send records with the new
-   keys or send a new KeyUpdate until the previous KeyUpdate has been
-   acknowledged (this avoids having too many epochs in active use).
+   acknowledged.  Acknowledgements are used to both control
+   retransmission and transition to the next epoch.  Implementations
+   MUST NOT send records with the new keys until the KeyUpdate and all
+   preceding messages have been acknowledged.  This facilitates epoch
+   reconstruction (Section 4.2.2) and avoids too many epochs in active
+   use, by ensuring the peer has processed the KeyUpdate and started
+   receiving at the new epoch.
+
+   A KeyUpdate message terminates the post-handshake stream in an epoch.
+   After sending KeyUpdate in an epoch, implementations MUST NOT send
+   any new post-handshake messages in that epoch.  If a peer violates
+   this rule, the receiving peer MUST treat it as a protocol violation,
+   send an "unexpected_message" alert, and terminate the connection.
+   Note that, if the implementation has sent KeyUpdate but is waiting
+   for an ACK, the next epoch is not yet active.  In this case,
+   subsequent post-handshake messages may not be sent until receiving
+   the ACK.
 
    Due to loss and/or reordering, DTLS 1.3 implementations may receive a
    record with an older epoch than the current one (the requirements
@@ -2248,14 +2312,21 @@ Table of Contents
    probability of key reuse within a given connection.  Note that even
    if the key repeats, the IV is also independently generated.  In order
    to provide an extra margin of security, sending implementations MUST
-   NOT allow the epoch to exceed 2^48-1.  In order to allow this value
-   to be changed later, receiving implementations MUST NOT enforce this
-   rule.  If a sending implementation receives a KeyUpdate with
-   request_update set to "update_requested", it MUST NOT send its own
-   KeyUpdate if that would cause it to exceed these limits and SHOULD
-   instead ignore the "update_requested" flag.  Note: this overrides the
-   requirement in TLS 1.3 to always send a KeyUpdate in response to
-   "update_requested".
+   NOT allow the epoch to exceed 2^48-1.  If a sending implementation
+   receives a KeyUpdate with request_update set to "update_requested",
+   it MUST NOT send its own KeyUpdate if that would cause it to exceed
+   these limits and SHOULD instead ignore the "update_requested" flag.
+   Note: this overrides the requirement in TLS 1.3 to always send a
+   KeyUpdate in response to "update_requested".
+
+   Exceeding the above limit is not possible with the key update
+   mechanisms defined in this document.  After the handshake, each epoch
+   change consumes a message_seq value, which is limited to 2^16-1.  As
+   a result, the maximum possible number an epoch can reach is 2^16+1.
+   In order to allow implementations to store epochs in a 16-bit value,
+   MAY choose to enforce an epoch limit of 2^16-1.  In this case, the
+   implementation MUST check for this limit, if reached, terminate the
+   association.
 
 9.  Connection ID Updates
 
@@ -2415,7 +2486,7 @@ Table of Contents
    handshake transcript, it SHOULD be constructed so that knowledge of
    the cookie is insufficient to reproduce the ClientHello contents.
    Otherwise, this may create problems with future extensions such as
-   Encrypted Client Hello [I-D.ietf-tls-esni].
+   Encrypted Client Hello [ECH].
 
    When cookies are generated using a keyed authentication mechanism, it
    should be possible to rotate the associated secret key, so that
@@ -2584,11 +2655,11 @@ Table of Contents
               <https://www.rfc-editor.org/rfc/rfc8439>.
 
    [RFC0768]  Postel, J., "User Datagram Protocol", STD 6, RFC 768,
-              DOI 10.17487/RFC0768, August 1980,
+              DOI 10.17487/RFC768, August 1980,
               <https://www.rfc-editor.org/rfc/rfc768>.
 
    [RFC0793]  Postel, J., "Transmission Control Protocol", RFC 793,
-              DOI 10.17487/RFC0793, September 1981,
+              DOI 10.17487/RFC793, September 1981,
               <https://www.rfc-editor.org/rfc/rfc793>.
 
    [RFC1191]  Mogul, J. and S. Deering, "Path MTU discovery", RFC 1191,
@@ -2625,8 +2696,10 @@ Table of Contents
               <https://www.rfc-editor.org/rfc/rfc9146>.
 
    [TLS13]    Rescorla, E., "The Transport Layer Security (TLS) Protocol
-              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
-              <https://www.rfc-editor.org/rfc/rfc8446>.
+              Version 1.3", Work in Progress, Internet-Draft, draft-
+              ietf-tls-rfc8446bis-14, 13 September 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-tls-
+              rfc8446bis-14>.
 
 15.2.  Informative References
 
@@ -2643,32 +2716,27 @@ Table of Contents
 
    [DEPRECATE]
               Moriarty, K. and S. Farrell, "Deprecating TLS 1.0 and TLS
-              1.1", Work in Progress, Internet-Draft, draft-ietf-tls-
-              oldversions-deprecate-12, 21 January 2021,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-tls-
-              oldversions-deprecate-12>.
+              1.1", BCP 195, RFC 8996, DOI 10.17487/RFC8996, March 2021,
+              <https://www.rfc-editor.org/rfc/rfc8996>.
 
-   [I-D.ietf-tls-esni]
-              Rescorla, E., Oku, K., Sullivan, N., and C. A. Wood, "TLS
-              Encrypted Client Hello", Work in Progress, Internet-Draft,
-              draft-ietf-tls-esni-25, 14 June 2025,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-tls-
-              esni-25>.
+   [ECH]      Rescorla, E., Oku, K., Sullivan, N., and C. A. Wood, "TLS
+              Encrypted Client Hello", RFC 9849, DOI 10.17487/RFC9849,
+              March 2026, <https://www.rfc-editor.org/rfc/rfc9849>.
 
    [I-D.ietf-uta-tls13-iot-profile]
               Tschofenig, H., Fossati, T., Richardson, M., and D.
               Migault, "TLS/DTLS 1.3 Profiles for the Internet of
               Things", Work in Progress, Internet-Draft, draft-ietf-uta-
-              tls13-iot-profile-21, 25 May 2026,
+              tls13-iot-profile-25, 3 September 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-uta-
-              tls13-iot-profile-21>.
+              tls13-iot-profile-25>.
 
    [I-D.irtf-cfrg-aead-limits]
               Günther, F., Thomson, M., and C. A. Wood, "Usage Limits on
               AEAD Algorithms", Work in Progress, Internet-Draft, draft-
-              irtf-cfrg-aead-limits-11, 4 December 2025,
+              irtf-cfrg-aead-limits-13, 3 September 2026,
               <https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-
-              aead-limits-11>.
+              aead-limits-13>.
 
    [RFC2522]  Karn, P. and W. Simpson, "Photuris: Session-Key Management
               Protocol", RFC 2522, DOI 10.17487/RFC2522, March 1999,
@@ -3066,21 +3134,21 @@ Appendix D.  Contributors
    Many individuals have contributed to previous versions of DTLS up to
    1.2, and their contributions are acknowledged in earlier DTLS
    specifications or in the referenced documents.  The following
-   individuals made significant contributions to RFC 9147:
+   individuals made significant contributions to DTLS 1.3:
 
    *  David Benjamin
       Google
       davidben@google.com
 
    *  Thomas Fossati
-      Arm Limited (now Linaro)
-      Thomas.Fossati@linaro.org
+      Arm Limited (now Nvidia)
+      tfossati@nvidia.com
 
    *  Tobias Gondrom
       Huawei (now United Overseas Bank Limited)
 
    *  Felix Günther
-      ETH Zurich (now IBM Research Zurich)
+      ETH Zurich (now IBM Research Europe - Zurich)
       mail@felixguenther.info
 
    *  Benjamin Kaduk
@@ -3104,7 +3172,7 @@ Appendix D.  Contributors
       yinxinxing@huawei.com
 
    *  Hanno Becker
-      Arm Limited (now Amazon)
+      Arm Limited (now Amazon Web Services (AWS))
 
    The sequence number encryption concept is taken from QUIC [RFC9000].
    We would like to thank the authors of RFC 9000 for their work.
@@ -3112,8 +3180,10 @@ Appendix D.  Contributors
    Felix Günther and Martin Thomson contributed the analysis in
    Appendix B.
 
-   We would like to thank Jonathan Hammell, Bernard Aboba, Nick Harper
-   and Andy Cunningham for their review comments.
+   We would like to thank Bernard Aboba, Antony Antony, Andy Cunningham,
+   Jonathan Hammell, Nick Harper, John Mattsson, Sean Turner, Michael
+   Tüxen, and Anna Weine for their valuable review comments and
+   contributions.
 
    Finally, we would like to thank the following IESG members for their
    review comments: Martin Duke, Erik Kline, Francesca Palombini, Lars
@@ -3129,7 +3199,9 @@ Authors' Addresses
 
 
    Hannes Tschofenig
-   University of Applied Sciences Bonn-Rhein-Sieg
+   University of the Bundeswehr Munich
+   85577 Neubiberg
+   Germany
    Email: hannes.tschofenig@gmx.net
 
 
