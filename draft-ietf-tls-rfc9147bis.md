@@ -2398,7 +2398,7 @@ records it receives that contain a CID.
 
 #  Application Data Protocol
 
-Application data messages are carried by the record layer and are split
+Application data messages are carried by the record layer and are encapsulated
 into records
 and encrypted based on the current connection state. The messages
 are treated as transparent data to the record layer.
